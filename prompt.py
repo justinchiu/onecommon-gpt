@@ -31,7 +31,7 @@ class Understand(TemplatePrompt[str]):
     stop_template = "#"
 
 
-class Execute():
+class Execute(Prompt[str,str]):
     def prompt():
         pass
 
