@@ -16,8 +16,11 @@ class State:
 
 
 class Agent:
-    def __init__(self):
-        self.understand = Understand()
+    def __init__(self, backend):
+        self.backend = backend
+        self.understand = Understand(backend.OpenAI(
+            model = "code-davinci-002",
+        ))
 
     def read(self):
         pass

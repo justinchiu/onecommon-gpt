@@ -23,7 +23,7 @@ class TemplatePrompt(McTemplatePrompt[Output]):
             x = tmp.render(**kwargs)
         else:
             x = tmp.render(**asdict(kwargs))
-        return x
+        print(x)
 
 
 class Understand(TemplatePrompt[str]):

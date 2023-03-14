@@ -62,9 +62,11 @@ class Generation(Eval):
 if __name__ == "__main__":
     from ocdata import get_data
     from agent import Agent, State
+    import minichain
 
     data = get_data()
-    agent = Agent()
-    reseval = Resolution().compute(agent, data)
+    with minichain.start_chain("eval-res") as backend:
+        agent = Agent(backend)
+        reseval = Resolution().compute(agent, data)
     print(reseval)
     pdb.set_trace()
