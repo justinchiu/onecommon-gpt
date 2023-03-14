@@ -5,11 +5,11 @@ from jinja2 import (
     Template,
     select_autoescape,
 )
-from minichain import TemplatePrompt as McTemplatePrompt
+from minichain import TemplatePrompt as BaseTemplatePrompt
 from minichain import Output
 
 
-class TemplatePrompt(McTemplatePrompt[Output]):
+class TemplatePrompt(BaseTemplatePrompt[Output]):
     def print(self, kwargs):
         if self.template_file:
             tmp = Environment(loader=FileSystemLoader(".")).get_template(
