@@ -2,18 +2,18 @@ import datasets
 from pathlib import Path
 import numpy as np
 
-EOS_TOKEN = '<eos>'
-SELECTION_TOKEN = '<selection>'
-YOU_TOKEN = 'YOU:'
-THEM_TOKEN = 'THEM:'
-SILENCE_TOKEN = '__SILENCE__'
+EOS_TOKEN = "<eos>"
+SELECTION_TOKEN = "<selection>"
+YOU_TOKEN = "YOU:"
+THEM_TOKEN = "THEM:"
+SILENCE_TOKEN = "__SILENCE__"
 
-INPUT_TAG = 'input'
-DIALOGUE_TAG = 'dialogue'
-REFERENTS_TAG = 'referents'
-PARTNER_REFERENTS_TAG = 'partner_referents_our_view'
-OUTPUT_TAG = 'output'
-REAL_IDS_TAG = 'real_ids'
+INPUT_TAG = "input"
+DIALOGUE_TAG = "dialogue"
+REFERENTS_TAG = "referents"
+PARTNER_REFERENTS_TAG = "partner_referents_our_view"
+OUTPUT_TAG = "output"
+REAL_IDS_TAG = "real_ids"
 
 SCENARIO_TAG = "scenario_id"
 CHAT_TAG = "chat_id"
@@ -31,9 +31,10 @@ def get_tag(tokens, tag):
     """
     Extracts the value inside the given tag.
     """
-    start = tokens.index('<' + tag + '>') + 1
-    stop = tokens.index('</' + tag + '>')
+    start = tokens.index("<" + tag + ">") + 1
+    stop = tokens.index("</" + tag + ">")
     return tokens[start:stop]
+
 
 def _split_dialogue(words, separator=EOS_TOKEN):
     sentences = []
@@ -60,6 +61,7 @@ def _split_dialogue(words, separator=EOS_TOKEN):
             utterance = sentences[i]
     dialogue.append(utterance)
 
+    """
     if dialogue[0][0] == YOU_TOKEN:
         # Dialogue starts with YOU
         dialogue.insert(0, None)
@@ -68,8 +70,10 @@ def _split_dialogue(words, separator=EOS_TOKEN):
         # Dialogue starts with THEM
         dialogue.append(None)
         spans.append(None)
+    """
 
     return dialogue, spans
+
 
 def _split_referents(raw_referents, spans):
     """
@@ -98,9 +102,9 @@ def _split_referents(raw_referents, spans):
         while idx < len(splitted_referents):
             if splitted_referents[idx][REF_EOS_IDX] == span[1]:
                 ref = {
-                    'begin': splitted_referents[idx][REF_BEGIN_IDX] - (span[0] + 1),
-                    'end': splitted_referents[idx][REF_END_IDX] - (span[0] + 1),
-                    'target': splitted_referents[idx][REF_BEGIN_TARGET_IDX:],
+                    "begin": splitted_referents[idx][REF_BEGIN_IDX] - (span[0] + 1),
+                    "end": splitted_referents[idx][REF_END_IDX] - (span[0] + 1),
+                    "target": splitted_referents[idx][REF_BEGIN_TARGET_IDX:],
                 }
                 refs.append(ref)
                 idx += 1
@@ -109,6 +113,7 @@ def _split_referents(raw_referents, spans):
         referents.append(refs)
 
     return referents
+
 
 def get_data():
     data_file = Path("data/onecommon/valid_reference_0.txt")
@@ -123,29 +128,48 @@ def get_data():
         # There should be 28 values = 4 values * 7 dots.
         context = list(map(float, get_tag(words, INPUT_TAG)))
         dialogue, spans = _split_dialogue(get_tag(words, DIALOGUE_TAG))
+
+        # all referents are in your view
         referents = _split_referents(get_tag(words, REFERENTS_TAG), spans)
-        partner_referents = _split_referents(get_tag(words, PARTNER_REFERENTS_TAG), spans)
+        partner_referents = _split_referents(
+            get_tag(words, PARTNER_REFERENTS_TAG), spans
+        )
+
         output = int(get_tag(words, OUTPUT_TAG)[0])
-        context = np.array(context).reshape((7,4))
-        real_ids = get_tag(words, 'real_ids')
-        partner_real_ids = get_tag(words, 'partner_real_ids')
-        agent = int(get_tag(words, 'agent')[0])
+        context = np.array(context).reshape((7, 4))
+        real_ids = get_tag(words, "real_ids")
+        partner_real_ids = get_tag(words, "partner_real_ids")
+        agent = int(get_tag(words, "agent")[0])
         scenario_id = get_tag(words, SCENARIO_TAG)[0]
         chat_id = get_tag(words, CHAT_TAG)[0]
-        examples.append({
-            'context': context,
-            'dialogue': dialogue,
-            'referents': referents,
-            'output': output,
-            "scenario_id": scenario_id,
-            "chat_id": chat_id,
-            "agent": agent,
-            "real_ids": real_ids,
-            "partner_real_ids": partner_real_ids,
-        })
+
+        examples.append(
+            {
+                "context": context,
+                "dialogue": [
+                    " ".join(turn).replace("YOU", "You").replace("THEM", "Them")
+                    if turn
+                    else turn
+                    for turn in dialogue
+                ],
+                "all_referents": [
+                    a if len(a) > 0 else b for a, b in zip(referents, partner_referents)
+                ],
+                "referents": referents,
+                "partner_referents": partner_referents,
+                "output": output,
+                "scenario_id": scenario_id,
+                "chat_id": chat_id,
+                "agent": agent,
+                "real_ids": real_ids,
+                "partner_real_ids": partner_real_ids,
+            }
+        )
     return examples
 
 
 if __name__ == "__main__":
     data = get_data()
-    import pdb; pdb.set_trace()
+    import pdb
+
+    pdb.set_trace()

@@ -1,3 +1,4 @@
 datasets
 evaluate
 openai
+scikit-learn

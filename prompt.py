@@ -1,6 +1,9 @@
-
 from minichain import TemplatePrompt
 
 
-class Understanding(TemplatePrompt[str]):
-    template_file = "prompts/understanding.j2"
+class Understand(TemplatePrompt[str]):
+    template_file = "prompts/understand.j2"
+
+
+class Generate(TemplatePrompt[str]):
+    template_file = "prompts/generate.j2"

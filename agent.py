@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import openai
 
 from prompt import Understand, Generate
@@ -5,7 +6,7 @@ from prompt import Understand, Generate
 
 @dataclass
 class State:
-    memory: List[Tuple[str, str]]
+    memory: list[tuple[str, str]]
     human_input: str = ""
 
     def push(self, response: str) -> "State":
@@ -24,7 +25,7 @@ class Agent:
         pass
 
     def resolve_reference(text, past, view):
-        pass
+        return np.zeros(7)
 
     def plan(past, view):
         pass

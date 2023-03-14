@@ -1,8 +1,6 @@
-
-
 class Dot:
     def __init__(self, item):
-        for k,v in item.items():
+        for k, v in item.items():
             setattr(self, k, v)
         self.id = int(self.id)
 
@@ -11,7 +9,8 @@ class Dot:
         y = self.y
         r = self.size
         f = self.color
-        label = (f'<text x="{x+12}" y="{y-12}" font-size="18">{self.id}</text>'
+        label = (
+            f'<text x="{x+12}" y="{y-12}" font-size="18">{self.id}</text>'
             if value is None
             else f'<text x="{x+12}" y="{y-12}" font-size="18">{self.id} ({value:.2f})</text>'
         )
@@ -21,14 +20,14 @@ class Dot:
         x = self.x + shift
         y = self.y
         r = self.size + 8
-        f = self.color # ignored
+        f = self.color  # ignored
         return f'<circle cx="{x}" cy="{y}" r="{r}" fill="none" stroke="red" stroke-width="3" stroke-dasharray="3,3"  />'
 
     def intersect_html(self, shift=0):
         x = self.x + shift
         y = self.y
         r = self.size + 4
-        f = self.color # ignored
+        f = self.color  # ignored
         return f'<circle cx="{x}" cy="{y}" r="{r}" fill="none" stroke="blue" stroke-width="3" stroke-dasharray="3,3"  />'
 
     def __repr__(self):
@@ -36,20 +35,27 @@ class Dot:
 
 
 def visualize_board(
-    left_dots, right_dots,
-    left_mentions, right_mentions,
-    left_intersect, right_intersect,
-    left_beliefs=None, right_beliefs=None,
+    left_dots,
+    right_dots,
+    left_mentions,
+    right_mentions,
+    left_intersect,
+    right_intersect,
+    left_beliefs=None,
+    right_beliefs=None,
 ):
     import streamlit as st
     import streamlit.components.v1 as components
+
     shift = 430
 
-    left_dots_html = (map(lambda x: x.html(), left_dots)
+    left_dots_html = (
+        map(lambda x: x.html(), left_dots)
         if left_beliefs is None
         else map(lambda x: x[0].html(value=x[1]), zip(left_dots, left_beliefs))
     )
-    right_dots_html = (map(lambda x: x.html(shift), right_dots)
+    right_dots_html = (
+        map(lambda x: x.html(shift), right_dots)
         if right_beliefs is None
         else map(lambda x: x[0].html(shift, value=x[1]), zip(right_dots, right_beliefs))
     )
