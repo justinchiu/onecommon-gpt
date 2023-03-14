@@ -31,5 +31,14 @@ class Understand(TemplatePrompt[str]):
     stop_template = "#"
 
 
+class Execute():
+    def prompt():
+        pass
+
+    def parse():
+        pass
+
+
 class Generate(TemplatePrompt[str]):
     template_file = "prompts/generate.j2"
+

@@ -2,8 +2,7 @@ from dataclasses import dataclass
 import numpy as np
 import openai
 
-from prompt import Understand, Generate
-from minichain import SimplePrompt
+from prompt import Understand, Execute, Generate
 
 
 @dataclass
@@ -23,7 +22,7 @@ class Agent:
             model = "code-davinci-002",
             max_tokens=256,
         ))
-        self.execute = SimplePrompt(backend.Python())
+        self.execute = Execute(backend.Python())
 
     def read(self):
         pass
