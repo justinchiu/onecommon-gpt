@@ -23,7 +23,7 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
             x = tmp.render(**kwargs)
         else:
             x = tmp.render(**asdict(kwargs))
-        print(x)
+        return x
 
 
 class Understand(TemplatePrompt[str]):

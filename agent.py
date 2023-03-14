@@ -3,6 +3,7 @@ import numpy as np
 import openai
 
 from prompt import Understand, Generate
+from minichain import SimplePrompt
 
 
 @dataclass
@@ -22,6 +23,7 @@ class Agent:
             model = "code-davinci-002",
             max_tokens=256,
         ))
+        self.execute = SimplePrompt(backend.Python())
 
     def read(self):
         pass
@@ -31,9 +33,11 @@ class Agent:
 
     def resolve_reference(self, text, past, view):
         kwargs = dict(text=text, past=past, view=view)
-        self.understand.print(kwargs,)
+        input = self.understand.print(kwargs)
+        print(input)
         out = self.understand(kwargs)
         print(out)
+        result = self.execute(input + out)
         import pdb; pdb.set_trace()
         return np.zeros(7, dtype=bool)
 
