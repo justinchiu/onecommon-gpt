@@ -36,7 +36,9 @@ class Agent:
         print(input)
         out = self.understand(kwargs)
         print(out)
-        result = self.execute(input + out)
+        kw = dict(code=input + out)
+        print(self.execute.print(kw))
+        result = self.execute(kw)
         import pdb; pdb.set_trace()
         return np.zeros(7, dtype=bool)
 
