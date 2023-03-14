@@ -6,33 +6,48 @@ from color import is_black, is_grey, is_light
 from size import is_large, is_small, largest, smallest
 from iterators import get2dots, get3dots
 
-dots = get_dots()
 
-# Them: got a triangle of 3 black dots.
+dots = get_dots()
+context = []
+
+# Them: got a triangle of 3 light dots.
 def turn(dots, context):
     results = context
     for x,y,z, in get3(dots):
-        if is_triangle(x,y,z) and all(map(is_black, [x,y,z])):
+        if is_triangle(x,y,z) and all(map(is_light, [x,y,z])):
             results.append([x,y,z])
     return results
+context = turn(dots, context)
 
-# You: Could be. One on right is smallest?
+# You: Could be. One on right is largest?
 def turn(dots, context):
     results = context
     for result in results:
-        if smallest(result) == get_right(result):
+        if largest(result) == get_right(result):
             results.append(result)
     return results
+context = turn(dots, context)
 
 # Them: Nevermind. Do you see a pair of light dots?
 def turn(dots, context):
-    results = get2dots(dots)
-    for result in results:
-        if smallest(result) == get_right(result):
+    results = []
+    for result in get2dots(dots):
+        if is_close(result) and all(map(is_light(result))):
             results.append(result)
     return results
+context = turn(dots, context)
 
-# You: 
+# You: No.
+def turn(dots, context):
+    results = []
+    return results
+context = turn(dots, context)
 
-{{past}}
+{% if past is defined and past|length > 0 %}
+{% for block in past %}
+# {{ block[0] }}
+{{ block[1] }}
+{% endfor %}
+{% endif %}
+
 # {{text}}
