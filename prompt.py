@@ -6,7 +6,7 @@ from jinja2 import (
     select_autoescape,
 )
 from minichain import TemplatePrompt as BaseTemplatePrompt
-from minichain import Output
+from minichain import Output, Request, Prompt
 
 
 class TemplatePrompt(BaseTemplatePrompt[Output]):
@@ -31,11 +31,11 @@ class Understand(TemplatePrompt[str]):
     stop_template = "#"
 
 
-class Execute(Prompt[str,str]):
-    def prompt():
-        pass
+class Execute(TemplatePrompt[str]):
+    template_file = "prompts/execute.j2"
 
-    def parse():
+    def parse(self, output, input) -> str:
+        import pdb; pdb.set_trace()
         pass
 
 
