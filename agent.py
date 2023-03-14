@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import numpy as np
+from pathlib import Path
 import openai
 
 from prompt import Understand, Execute, Generate
@@ -38,6 +39,10 @@ class Agent:
         print(out)
         kw = dict(code=input + out)
         print(self.execute.print(kw))
+        with Path("temporary_code.py").open("w") as f:
+            f.write(self.execute.print(kw))
+        import temporary_code
+        import pdb; pdb.set_trace()
         result = self.execute(kw)
         import pdb; pdb.set_trace()
         return np.zeros(7, dtype=bool)

@@ -1,5 +1,5 @@
 def get2dots(dots):
-    return range(5)
+    return zip(range(5), range(5))
 
 def get3dots(dots):
-    return range(6)
+    return zip(range(6), range(6), range(6))
