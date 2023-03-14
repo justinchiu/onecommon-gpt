@@ -28,6 +28,7 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
 
 class Understand(TemplatePrompt[str]):
     template_file = "prompts/understand.j2"
+    stop_template = "#"
 
 
 class Generate(TemplatePrompt[str]):

@@ -42,8 +42,8 @@ def turn(dots, context):
     results = []
     return results
 context = turn(dots, context)
-
 {% if past is defined and past|length > 0 %}
+
 {% for block in past %}
 # {{ block[0] }}
 {{ block[1] }}

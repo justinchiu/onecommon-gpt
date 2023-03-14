@@ -20,6 +20,7 @@ class Agent:
         self.backend = backend
         self.understand = Understand(backend.OpenAI(
             model = "code-davinci-002",
+            max_tokens=256,
         ))
 
     def read(self):
@@ -30,8 +31,9 @@ class Agent:
 
     def resolve_reference(self, text, past, view):
         kwargs = dict(text=text, past=past, view=view)
-        self.understand.print(kwargs)
+        self.understand.print(kwargs,)
         out = self.understand(kwargs)
+        print(out)
         import pdb; pdb.set_trace()
         return np.zeros(7, dtype=bool)
 
