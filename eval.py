@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import evaluate
+import bitutils
 import pdb
 
 
@@ -31,14 +32,14 @@ def collapse_referents(xs):
     ret = np.zeros(7, dtype=bool)
     for x in xs:
         ret |= np.array(x["target"], dtype=bool)
-    return ret
+    return bitutils.config_to_int(ret)
 
 
 class Resolution(Eval):
     metric = evaluate.load("accuracy")
 
     def predict(self, agent, text, past, view):
-        return agent.resolve_reference(text, past, view)
+        return bitutils.config_to_int(agent.resolve_reference(text, past, view))
 
     def get_labels(self, example):
         referents = example["all_referents"]
@@ -65,4 +66,5 @@ if __name__ == "__main__":
     data = get_data()
     agent = Agent()
     reseval = Resolution().compute(agent, data)
+    print(reseval)
     pdb.set_trace()
