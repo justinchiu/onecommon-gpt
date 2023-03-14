@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 import evaluate
-
+import pdb
 
 class Eval(ABC):
     def compute(self, agent, data):
@@ -13,10 +13,7 @@ class Eval(ABC):
                 text = turns[t]
                 past = turns[:t]
                 label = labels[t]
-                import pdb
-
-                pdb.set_trace()
-                pred = self.predict(x)
+                pred = self.predict(agent, text, past, view)
                 self.metric.add(prediction=pred, reference=label)
         return self.metric.compute()
 
@@ -30,33 +27,30 @@ class Eval(ABC):
 
 
 def collapse_referents(xs):
-    ret = np.ones(7)
+    ret = np.zeros(7, dtype=bool)
     for x in xs:
-        ret *= np.array(x["target"])
+        ret |= np.array(x["target"], dtype=bool)
     return ret
 
 
 class Resolution(Eval):
     metric = evaluate.load("accuracy")
 
-    def predict(self, x):
-        import pdb
-
-        pdb.set_trace()
+    def predict(self, agent, text, past, view):
+        return agent.resolve_reference(text, past, view)
 
     def get_labels(self, example):
         referents = example["all_referents"]
         # collapse the referents in each turn
         return [collapse_referents(xs) for xs in referents]
-        return
 
 
 class Generation(Eval):
     metric = evaluate.load("bleu")
 
-    def predict(self, x):
-        import pdb
-
+    def predict(self, agent, text, past, view):
+        plan = agent.plan(past, view)
+        return agent.generate(plan, past, view)
         pdb.set_trace()
 
     def get_labels(self, example):
@@ -70,6 +64,4 @@ if __name__ == "__main__":
     data = get_data()
     agent = Agent()
     reseval = Resolution().compute(agent, data)
-    import pdb
-
     pdb.set_trace()

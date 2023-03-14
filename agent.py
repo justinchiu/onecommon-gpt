@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import numpy as np
 import openai
 
 from prompt import Understand, Generate
@@ -24,11 +25,11 @@ class Agent:
     def write(self):
         pass
 
-    def resolve_reference(text, past, view):
-        return np.zeros(7)
+    def resolve_reference(self, text, past, view):
+        return np.zeros(7, dtype=bool)
 
-    def plan(past, view):
+    def plan(self, past, view):
         pass
 
-    def generate_text(past, view):
+    def generate(self, past, view):
         pass
