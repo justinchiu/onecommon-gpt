@@ -1,5 +1,5 @@
 def get2dots(dots):
-    pass
+    return range(5)
 
 def get3dots(dots):
-    pass
+    return range(6)

@@ -13,7 +13,7 @@ context = []
 # Them: got a triangle of 3 light dots.
 def turn(dots, context):
     results = context
-    for x,y,z, in get3(dots):
+    for x,y,z in get3dots(dots):
         if is_triangle(x,y,z) and all(map(is_light, [x,y,z])):
             results.append([x,y,z])
     return results
