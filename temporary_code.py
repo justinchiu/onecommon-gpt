@@ -12,7 +12,7 @@ import numpy as np
 
 
 def get_dots():
-    dots = np.array([[-0.765, 0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, 0.76, 0.0, -0.24], [0.565, -0.085, -1.0, 0.9866666666666667], [-0.83, -0.405, 0.0, -0.6], [-0.365, -0.035, 0.3333333333333333, -0.88], [0.785, 0.025, 0.0, 0.30666666666666664], [0.59, -0.5, -0.6666666666666666, -0.22666666666666666]])
+    dots = np.array([[-0.025, 0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, -0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, 0.155, 0.0, -0.24], [0.535, -0.685, -1.0, 0.9866666666666667], [-0.395, -0.635, 0.3333333333333333, -0.88], [0.755, -0.575, 0.0, 0.30666666666666664], [-0.625, 0.5, 0.3333333333333333, 0.06666666666666667]])
     return dots
 
 
@@ -22,10 +22,10 @@ context = []
 
 # Them: got a triangle of 3 light grey dots.
 def turn(dots, context):
-    results = context
+    results = []
     for x,y,z in get3dots(dots):
         if is_triangle([x,y,z], dots) and all(map(is_light, [x,y,z])):
-            results.append([x,y,z])
+            results.append(np.array([x,y,z]))
     return results
 context = turn(dots, context)
 
@@ -33,7 +33,7 @@ context = turn(dots, context)
 def turn(dots, context):
     results = context
     for result in results:
-        if largest(result) == get_right(result):
+        if (largest(result) == get_right(result)).all():
             results.append(result)
     return results
 context = turn(dots, context)
@@ -84,14 +84,25 @@ context = select(dots, context)
 dots = get_dots()
 context = []
 
-# Them: i have a light grey small dot next to a medium grey medium dot.
+
+# You: i have a light grey small dot next to a medium grey medium dot.
 def turn(dots, context):
     results = []
-    for x,y in get2dots(dots):
-        if is_small(x) and is_light(x) and is_medium(y) and is_grey(y) and all_close([x,y]):
-            results.append([x,y])
+    for dot in dots:
+        if is_light(dot) and is_small(dot):
+            results.append(dot)
     return results
 context = turn(dots, context)
+
+
+# Them: yes i see that pair choose the small light grey dot <selection>.
+def select(dots, context):
+    results = [dot for dots in context for dot in dots]
+    for dot in results:
+        if is_light(dot) and is_small(dot):
+            return dot[None,None]
+context = select(dots, context)
+
 
 
 #print(context)

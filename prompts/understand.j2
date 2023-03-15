@@ -5,10 +5,10 @@ context = []
 
 # Them: got a triangle of 3 light grey dots.
 def turn(dots, context):
-    results = context
+    results = []
     for x,y,z in get3dots(dots):
         if is_triangle([x,y,z], dots) and all(map(is_light, [x,y,z])):
-            results.append([x,y,z])
+            results.append(np.array([x,y,z]))
     return results
 context = turn(dots, context)
 
@@ -16,7 +16,7 @@ context = turn(dots, context)
 def turn(dots, context):
     results = context
     for result in results:
-        if largest(result) == get_right(result):
+        if (largest(result) == get_right(result)).all():
             results.append(result)
     return results
 context = turn(dots, context)

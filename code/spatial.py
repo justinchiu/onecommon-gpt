@@ -19,7 +19,7 @@ def all_close(dots):
     return diagonal < 0.3
 
 def is_close(x, y):
-    return np.linalg.norm(x-y) < 0.3
+    return np.linalg.norm(x[:2]-y[:2]) < 0.3
 
 def is_above(dots):
     pass
