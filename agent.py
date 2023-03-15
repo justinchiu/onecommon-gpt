@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import numpy as np
 from pathlib import Path
+import re
 import openai
 
 from prompt import HEADER, Understand, Execute, Generate
@@ -32,6 +33,11 @@ class Agent:
         pass
 
     def resolve_reference(self, text, past, view):
+        # ensure text ends in punctuation
+        # codex seems to need a period
+        if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
+            text += "."
+
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
 
         # print for debugging
