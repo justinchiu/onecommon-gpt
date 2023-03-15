@@ -6,8 +6,8 @@ import pdb
 
 
 class Eval(ABC):
-    def compute(self, agent, data):
-        for example in data:
+    def compute(self, agent, data, num_examples=None):
+        for example in data[:num_examples]:
             chatid = example["chat_id"]
             scenarioid = example["scenario_id"]
             print(scenarioid)
@@ -21,6 +21,8 @@ class Eval(ABC):
                 text = turns[t]
                 label = labels[t]
                 pred, past = self.predict(agent, text, past, view)
+                print(pred, label)
+                import pdb; pdb.set_trace()
                 self.metric.add(prediction=pred, reference=label)
         return self.metric.compute()
 
@@ -73,6 +75,6 @@ if __name__ == "__main__":
     data = get_data()
     with minichain.start_chain("eval-res") as backend:
         agent = Agent(backend)
-        reseval = Resolution().compute(agent, data)
+        reseval = Resolution().compute(agent, data, 2)
     print(reseval)
     pdb.set_trace()

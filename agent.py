@@ -56,6 +56,7 @@ class Agent:
         print(input)
         
         result = self.execute(kw)
+        print(result)
 
         mention = np.zeros(7, dtype=bool)
         mention[result] = 1
