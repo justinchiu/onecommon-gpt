@@ -3,7 +3,7 @@ sys.path.append("code")
 
 from dot import get_dots
 from shapes import is_triangle, is_line, is_square
-from spatial import is_close, is_above, is_below, is_right, is_left
+from spatial import all_close, is_close, is_above, is_below, is_right, is_left
 from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
@@ -12,7 +12,7 @@ import numpy as np
 
 
 def get_dots():
-    dots = np.array([[-0.765, 0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, 0.76, 0.0, -0.24], [0.565, -0.085, -1.0, 0.9866666666666667], [-0.83, -0.405, 0.0, -0.6], [-0.365, -0.035, 0.3333333333333333, -0.88], [0.785, 0.025, 0.0, 0.30666666666666664], [0.59, -0.5, -0.6666666666666666, -0.22666666666666666]])
+    dots = np.array([[0.83, -0.245, -0.3333333333333333, -0.44], [0.445, -0.72, 0.3333333333333333, -0.5466666666666666], [0.575, 0.39, -1.0, -0.8933333333333333], [-0.865, 0.32, -1.0, 0.9066666666666666], [0.215, -0.37, -0.3333333333333333, 0.84], [0.675, -0.39, 1.0, 0.6], [-0.57, 0.485, 0.3333333333333333, -0.6533333333333333]])
     return dots
 
 
@@ -84,12 +84,12 @@ context = select(dots, context)
 dots = get_dots()
 context = []
 
-# Them: i have a light grey small dot next to a medium grey medium dot.
+# Them: i have a larger black dot all by itself down and to the left.
 def turn(dots, context):
     results = []
-    for x,y in get2dots(dots):
-        if is_small(x) and is_light(x) and is_medium(y) and is_grey(y) and all_close([x,y]):
-            results.append([x,y])
+    for dot in dots:
+        if is_large(dot) and is_dark(dot) and is_left(dot) and is_below(dot):
+            results.append(dot)
     return results
 context = turn(dots, context)
 
