@@ -49,7 +49,7 @@ class Agent:
 
         # new input for python execution
         input = self.understand.print(dict(text=text, past=past, view=view))
-        kw = dict(header=HEADER, code=input + out, dots=view.tolist())
+        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
 
         # debugging
         input = self.execute.print(kw)
@@ -64,12 +64,12 @@ class Agent:
         return mention, past + [(text.strip(), out.strip())]
 
 
-    def plan(self, past, view):
+    def plan(self, past, view, info=None):
         import pdb; pdb.set_trace()
         raise NotImplementedError
 
 
-    def generate(self, past, view):
+    def generate(self, past, view, info=None):
         kwargs = dict(plan=plan, past=past, view=view)
         self.understand.print(kwargs)
         out = self.understand(kwargs)
