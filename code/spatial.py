@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 # validate
-def is_close(dots):
+def all_close(dots):
     dots = np.array(dots)
     xy = dots[:,:2]
 
@@ -17,6 +17,9 @@ def is_close(dots):
 
     # HARD CODE
     return diagonal < 0.3
+
+def is_close(x, y):
+    return np.linalg.norm(x-y) < 0.3
 
 def is_above(dots):
     pass

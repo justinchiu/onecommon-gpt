@@ -12,7 +12,7 @@ import numpy as np
 
 
 def get_dots():
-    dots = np.array([[-0.025, 0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, -0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, 0.155, 0.0, -0.24], [0.535, -0.685, -1.0, 0.9866666666666667], [-0.395, -0.635, 0.3333333333333333, -0.88], [0.755, -0.575, 0.0, 0.30666666666666664], [-0.625, 0.5, 0.3333333333333333, 0.06666666666666667]])
+    dots = np.array([[-0.765, 0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, 0.76, 0.0, -0.24], [0.565, -0.085, -1.0, 0.9866666666666667], [-0.83, -0.405, 0.0, -0.6], [-0.365, -0.035, 0.3333333333333333, -0.88], [0.785, 0.025, 0.0, 0.30666666666666664], [0.59, -0.5, -0.6666666666666666, -0.22666666666666666]])
     return dots
 
 
@@ -42,7 +42,7 @@ context = turn(dots, context)
 def turn(dots, context):
     results = []
     for result in get2dots(dots):
-        if is_close(result) and all(map(is_dark, result)):
+        if all_close(result) and all(map(is_dark, result)):
             results.append(result)
     return results
 context = turn(dots, context)
@@ -67,7 +67,7 @@ def turn(dots, context):
     results = []
     for prev_dots in context:
         for dot in dots:
-            if is_small(dot) and is_dark(dot) and is_close(prev_dots + [dot]) and not_in(dot, dots):
+            if is_small(dot) and is_dark(dot) and all_close(prev_dots + [dot]) and not_in(dot, dots):
                 results.append(dots + [dot])
     return results
 context = turn(dots, context)
@@ -84,11 +84,11 @@ context = select(dots, context)
 dots = get_dots()
 context = []
 
-# You: i have a light grey small dot next to a medium grey medium dot.
+# Them: i have a light grey small dot next to a medium grey medium dot.
 def turn(dots, context):
     results = []
     for x,y in get2dots(dots):
-        if is_light(x) and is_small(x) and is_medium(y) and is_close(x,y):
+        if is_small(x) and is_light(x) and is_medium(y) and is_grey(y) and all_close([x,y]):
             results.append([x,y])
     return results
 context = turn(dots, context)
