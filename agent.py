@@ -21,7 +21,7 @@ class Agent:
         self.backend = backend
         self.understand = Understand(backend.OpenAI(
             model = "code-davinci-002",
-            max_tokens=256,
+            max_tokens=2048,
         ))
         self.execute = Execute(backend.Python())
 
@@ -35,22 +35,28 @@ class Agent:
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
 
         # print for debugging
-        input = self.understand.print(kwargs)
-        print(input)
+        #input = self.understand.print(kwargs)
+        #print(input)
 
         out = self.understand(kwargs)
-        print(out)
+        #print(out)
 
         # new input
-        input = self.understand.print(dict(header=None, text=text, past=past, view=view))
+        input = self.understand.print(dict(text=text, past=past, view=view))
         kw = dict(header=HEADER, code=input + out, dots=view.tolist())
+
+        # debugging
         input = self.execute.print(kw)
         print(input)
+        
         result = self.execute(kw)
 
-        import pdb; pdb.set_trace()
+        mention = np.zeros(7, dtype=bool)
+        mention[result] = 1
+        if past:
+            import pdb; pdb.set_trace()
+        return mention, past + [(text.strip(), out.strip())]
 
-        return np.zeros(7, dtype=bool)
 
     def plan(self, past, view):
         import pdb; pdb.set_trace()

@@ -15,7 +15,7 @@ def get_dots():
     dots = np.array([[-0.765, 0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, 0.76, 0.0, -0.24], [0.565, -0.085, -1.0, 0.9866666666666667], [-0.83, -0.405, 0.0, -0.6], [-0.365, -0.035, 0.3333333333333333, -0.88], [0.785, 0.025, 0.0, 0.30666666666666664], [0.59, -0.5, -0.6666666666666666, -0.22666666666666666]])
     return dots
 
-None
+
 
 dots = get_dots()
 context = []
@@ -62,26 +62,52 @@ def turn(dots, context):
     return results
 context = turn(dots, context)
 
-# You: Don't see that either.
+# You: Is there a small black one next to it?
 def turn(dots, context):
     results = []
+    for prev_dots in context:
+        for dot in dots:
+            if is_small(dot) and is_dark(dot) and is_close(prev_dots + [dot]) and not_in(dot, dots):
+                results.append(dots + [dot])
     return results
 context = turn(dots, context)
+
+# Them: Yes, let's select the large one.
+def select(dots, context):
+    results = [dot for dots in context for dot in dots]
+    for dot in results:
+        if is_large(dot):
+            return dot[None,None]
+context = select(dots, context)
 
 
 dots = get_dots()
 context = []
 
 
-# Them: i have a light grey small dot next to a medium grey medium dot
+# Them: i have a light grey small dot next to a medium grey medium dot.
 def turn(dots, context):
     results = []
     for x,y in get2dots(dots):
-        if is_close([x,y]) and is_light(x) and is_small(x) and is_medium(y) and is_grey(y):
+        if is_close([x,y]) and is_small(x) and is_light(x) and is_medium(y) and is_grey(y):
             results.append([x,y])
     return results
 context = turn(dots, context)
 
 
+# You: yes i see that pair choose the small light grey dot <selection>
+def select(dots, context):
+    results = [dot for dots in context for dot in dots]
+    for dot in results:
+        if is_small(dot) and is_light(dot) and is_grey(dot):
+            return dot[None,None]
+context = select(dots, context)
 
-print(context)
+
+
+#print(context)
+# context: num_candidates x size x feats=4
+# dots: 7 x feats=4
+# heuristic: take first candidate res[0]
+res = (np.array(context)[:,None] == dots[:,None]).all(-1)
+print(res[0].nonzero()[0].tolist())

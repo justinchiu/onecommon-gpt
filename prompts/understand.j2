@@ -45,21 +45,30 @@ def turn(dots, context):
     return results
 context = turn(dots, context)
 
-# You: Don't see that either.
+# You: Is there a small black one next to it?
 def turn(dots, context):
     results = []
+    for prev_dots in context:
+        for dot in dots:
+            if is_small(dot) and is_dark(dot) and is_close(prev_dots + [dot]) and not_in(dot, dots):
+                results.append(dots + [dot])
     return results
 context = turn(dots, context)
+
+# Them: Yes, let's select the large one.
+def select(dots, context):
+    results = [dot for dots in context for dot in dots]
+    for dot in results:
+        if is_large(dot):
+            return dot[None,None]
+context = select(dots, context)
 
 
 dots = get_dots()
 context = []
 {% if past is defined and past|length > 0 %}
-
 {% for block in past %}
-# {{ block[0] }}
-{{ block[1] }}
+# {{ block[0] }}{{ block[1] }}
 {% endfor %}
 {% endif %}
-
 # {{text}}

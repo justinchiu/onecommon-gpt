@@ -1,3 +1,4 @@
+import ast
 from jinja2 import (
     Environment,
     FileSystemLoader,
@@ -40,12 +41,13 @@ class Understand(TemplatePrompt[str]):
     stop_template = "#"
 
 
-class Execute(TemplatePrompt[str]):
+class Execute(TemplatePrompt[list[int]]):
     template_file = "prompts/execute.j2"
 
-    def parse(self, output, input) -> str:
+    def parse(self, output, input) -> list[int]:
+        print(output)
         import pdb; pdb.set_trace()
-        pass
+        return ast.literal_eval(output)
 
 
 class Generate(TemplatePrompt[str]):

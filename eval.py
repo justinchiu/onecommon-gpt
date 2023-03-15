@@ -16,11 +16,11 @@ class Eval(ABC):
             view = example["context"]
             turns = example["dialogue"]
             labels = self.get_labels(example)
+            past = []
             for t in range(len(turns)):
                 text = turns[t]
-                past = turns[:t]
                 label = labels[t]
-                pred = self.predict(agent, text, past, view)
+                pred, past = self.predict(agent, text, past, view)
                 self.metric.add(prediction=pred, reference=label)
         return self.metric.compute()
 
@@ -44,7 +44,8 @@ class Resolution(Eval):
     metric = evaluate.load("accuracy")
 
     def predict(self, agent, text, past, view):
-        return bitutils.config_to_int(agent.resolve_reference(text, past, view))
+        pred, newpast = agent.resolve_reference(text, past, view)
+        return bitutils.config_to_int(pred), newpast
 
     def get_labels(self, example):
         referents = example["all_referents"]
