@@ -21,8 +21,8 @@ class Eval(ABC):
                 text = turns[t]
                 label = labels[t]
                 pred, past = self.predict(agent, text, past, view)
-                print(pred, label)
-                import pdb; pdb.set_trace()
+                #print(pred, label)
+                #import pdb; pdb.set_trace()
                 self.metric.add(prediction=pred, reference=label)
         return self.metric.compute()
 
@@ -61,7 +61,6 @@ class Generation(Eval):
     def predict(self, agent, text, past, view):
         plan = agent.plan(past, view)
         return agent.generate(plan, past, view)
-        pdb.set_trace()
 
     def get_labels(self, example):
         return example["dialogue"]
@@ -75,6 +74,13 @@ if __name__ == "__main__":
     data = get_data()
     with minichain.start_chain("eval-res") as backend:
         agent = Agent(backend)
-        reseval = Resolution().compute(agent, data, 2)
+        reseval = Resolution().compute(agent, data, 1)
     print(reseval)
+
+    with minichain.start_chain("eval-gen") as backend:
+        agent = Agent(backend)
+        geneval = Generation().compute(agent, data, 1)
+    print(geneval)
+
+
     pdb.set_trace()
