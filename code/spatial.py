@@ -1,4 +1,4 @@
-from shapely import MultiPoint
+from shapely import MultiPoint, Point
 import numpy as np
 import math
 
@@ -6,6 +6,7 @@ import math
 def is_close(dots):
     dots = np.array(dots)
     xy = dots[:,:2]
+
     rect = MultiPoint(xy).minimum_rotated_rectangle
 
     minx, miny, maxx, maxy = rect.bounds
@@ -15,7 +16,7 @@ def is_close(dots):
     diagonal = math.hypot(width, height)
 
     # HARD CODE
-    return diagonal < 0.1
+    return diagonal < 0.3
 
 def is_above(dots):
     pass

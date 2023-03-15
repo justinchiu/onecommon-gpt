@@ -8,4 +8,5 @@ def is_light(dot):
     return dot[-1] < -0.4
 
 def is_grey(dot):
+    return True
     return not is_black(dot) and not is_light(dot)

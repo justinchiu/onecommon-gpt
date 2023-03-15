@@ -8,6 +8,11 @@ import pdb
 class Eval(ABC):
     def compute(self, agent, data):
         for example in data:
+            chatid = example["chat_id"]
+            scenarioid = example["scenario_id"]
+            print(scenarioid)
+            print(chatid)
+
             view = example["context"]
             turns = example["dialogue"]
             labels = self.get_labels(example)

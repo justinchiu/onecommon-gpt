@@ -25,7 +25,7 @@ context = turn(dots, context)
 def turn(dots, context):
     results = []
     for result in get2dots(dots):
-        if is_close(result) and all(map(is_light(result))):
+        if is_close(result) and all(map(is_light, result)):
             results.append(result)
     return results
 context = turn(dots, context)
