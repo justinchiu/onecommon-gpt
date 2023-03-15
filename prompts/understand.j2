@@ -3,7 +3,7 @@
 dots = get_dots()
 context = []
 
-# Them: got a triangle of 3 light dots.
+# Them: got a triangle of 3 light grey dots.
 def turn(dots, context):
     results = context
     for x,y,z in get3dots(dots):
@@ -21,11 +21,11 @@ def turn(dots, context):
     return results
 context = turn(dots, context)
 
-# Them: Nevermind. Do you see a pair of light dots?
+# Them: Nevermind. Do you see a pair of dark dots?
 def turn(dots, context):
     results = []
     for result in get2dots(dots):
-        if is_close(result) and all(map(is_light, result)):
+        if is_close(result) and all(map(is_dark, result)):
             results.append(result)
     return results
 context = turn(dots, context)
@@ -35,6 +35,25 @@ def turn(dots, context):
     results = []
     return results
 context = turn(dots, context)
+
+# Them: What about a large medium grey dot?
+def turn(dots, context):
+    results = []
+    for dot in dots:
+        if is_large(dot):
+            results.append(dot)
+    return results
+context = turn(dots, context)
+
+# You: Don't see that either.
+def turn(dots, context):
+    results = []
+    return results
+context = turn(dots, context)
+
+
+dots = get_dots()
+context = []
 {% if past is defined and past|length > 0 %}
 
 {% for block in past %}
