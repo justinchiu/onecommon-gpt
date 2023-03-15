@@ -87,7 +87,6 @@ context = select(dots, context)
 dots = get_dots()
 context = []
 
-
 # Them: i have a light grey small dot next to a medium grey medium dot.
 def turn(dots, context):
     results = []
@@ -97,7 +96,6 @@ def turn(dots, context):
     return results
 context = turn(dots, context)
 
-
 # You: yes i see that pair choose the small light grey dot <selection>.
 def select(dots, context):
     results = [dot for dots in context for dot in dots]
@@ -105,7 +103,6 @@ def select(dots, context):
         if is_small(dot) and is_light(dot) and is_grey(dot):
             return dot[None,None]
 context = select(dots, context)
-
 
 
 #print(context)
