@@ -85,6 +85,9 @@ class Agent:
             descstring.append(f"* A {size} and {color} dot")
 
         kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
+        print("INPUT")
         print(self.generate.print(kwargs))
         out = self.generate(kwargs)
+        print("OUTPUT")
+        print(out)
         return out, past + [out]
