@@ -20,7 +20,7 @@ class Eval(ABC):
             for t in range(len(turns)):
                 text = turns[t]
                 label = labels[t]
-                pred, past = self.predict(agent, text, past, view)
+                pred, past = self.predict(agent, text, past, view, info=(scenarioid, chatid))
                 #print(pred, label)
                 #import pdb; pdb.set_trace()
                 self.metric.add(prediction=pred, reference=label)
@@ -45,8 +45,8 @@ def collapse_referents(xs):
 class Resolution(Eval):
     metric = evaluate.load("accuracy")
 
-    def predict(self, agent, text, past, view):
-        pred, newpast = agent.resolve_reference(text, past, view)
+    def predict(self, agent, text, past, view, info=None):
+        pred, newpast = agent.resolve_reference(text, past, view, info)
         return bitutils.config_to_int(pred), newpast
 
     def get_labels(self, example):
@@ -58,9 +58,9 @@ class Resolution(Eval):
 class Generation(Eval):
     metric = evaluate.load("bleu")
 
-    def predict(self, agent, text, past, view):
-        plan = agent.plan(past, view)
-        return agent.generate(plan, past, view)
+    def predict(self, agent, text, past, view, info=None):
+        plan = agent.plan(past, view, info)
+        return agent.generate(plan, past, view, info)
 
     def get_labels(self, example):
         return example["dialogue"]

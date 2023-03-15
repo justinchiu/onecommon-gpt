@@ -32,7 +32,7 @@ class Agent:
     def write(self):
         pass
 
-    def resolve_reference(self, text, past, view):
+    def resolve_reference(self, text, past, view, info=None):
         # ensure text ends in punctuation
         # codex seems to need a period
         if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
@@ -47,7 +47,7 @@ class Agent:
         out = self.understand(kwargs)
         #print(out)
 
-        # new input
+        # new input for python execution
         input = self.understand.print(dict(text=text, past=past, view=view))
         kw = dict(header=HEADER, code=input + out, dots=view.tolist())
 
