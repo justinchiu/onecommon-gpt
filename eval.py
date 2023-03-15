@@ -7,6 +7,8 @@ import pdb
 
 class Eval(ABC):
     def compute(self, agent, data, num_examples=None):
+        preds = []
+        truelabels = []
         for example in data[:num_examples]:
             chatid = example["chat_id"]
             scenarioid = example["scenario_id"]
@@ -15,16 +17,33 @@ class Eval(ABC):
 
             view = example["context"]
             turns = example["dialogue"]
+            referents = example["all_referents"]
             labels = self.get_labels(example)
             past = []
             for t in range(len(turns)):
                 text = turns[t]
-                label = labels[t]
-                pred, past = self.predict(agent, text, past, view, info=(scenarioid, chatid))
+                past_turns = turns[:t]
+                plan = referents[t]
+
+                input = dict(
+                    agent = agent,
+                    text = text,
+                    past = past,
+                    view = view,
+                    past_turns = past_turns,
+                    plan = plan,
+                    info = (scenarioid, chatid),
+                )
+
+                pred, past = self.predict(**input)
                 #print(pred, label)
                 #import pdb; pdb.set_trace()
-                self.metric.add(prediction=pred, reference=label)
-        return self.metric.compute()
+                if self.do_eval(text):
+                    label = labels[t]
+                    preds.append(pred)
+                    truelabels.append(label)
+
+        return self.metric.compute(predictions=preds, references=truelabels)
 
     @abstractmethod
     def predict(self, x):
@@ -32,6 +51,10 @@ class Eval(ABC):
 
     @abstractmethod
     def get_labels(self, x):
+        pass
+
+    @abstractmethod
+    def do_eval(self, x):
         pass
 
 
@@ -45,7 +68,7 @@ def collapse_referents(xs):
 class Resolution(Eval):
     metric = evaluate.load("accuracy")
 
-    def predict(self, agent, text, past, view, info=None):
+    def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)
         return bitutils.config_to_int(pred), newpast
 
@@ -54,16 +77,22 @@ class Resolution(Eval):
         # collapse the referents in each turn
         return [collapse_referents(xs) for xs in referents]
 
+    def do_eval(self, turn):
+        return True
+
 
 class Generation(Eval):
     metric = evaluate.load("bleu")
 
-    def predict(self, agent, text, past, view, info=None):
-        plan = agent.plan(past, view, info)
-        return agent.generate(plan, past, view, info)
+    def predict(self, agent, text, past, view, plan, past_turns, info=None):
+        #plan = agent.plan(past, view, info)
+        return agent.generate_text(plan, past_turns, view, info)
 
     def get_labels(self, example):
         return example["dialogue"]
+
+    def do_eval(self, turn):
+        return turn.split()[0] == "You:"
 
 
 if __name__ == "__main__":
@@ -79,7 +108,7 @@ if __name__ == "__main__":
 
     with minichain.start_chain("eval-gen") as backend:
         agent = Agent(backend)
-        geneval = Generation().compute(agent, data, 1)
+        geneval = Generation().compute(agent, data, 5)
     print(geneval)
 
 

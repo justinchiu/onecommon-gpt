@@ -5,6 +5,7 @@ import re
 import openai
 
 from prompt import HEADER, Understand, Execute, Generate
+from template import size_map5, color_map5, size_color_descriptions, process_ctx
 
 
 @dataclass
@@ -25,6 +26,10 @@ class Agent:
             max_tokens=2048,
         ))
         self.execute = Execute(backend.Python())
+        self.generate = Generate(backend.OpenAI(
+            model = "text-davinci-003",
+            max_tokens=512,
+        ))
 
     def read(self):
         pass
@@ -69,8 +74,17 @@ class Agent:
         raise NotImplementedError
 
 
-    def generate(self, past, view, info=None):
-        kwargs = dict(plan=plan, past=past, view=view)
-        self.understand.print(kwargs)
-        out = self.understand(kwargs)
-        return out
+    def generate_text(self, plan, past, view, info=None):
+        # process plan
+        refs = [r["target"] for r in plan]
+        size_color = process_ctx(view)
+        dots = size_color[np.array(refs).any(0)]
+        descs = size_color_descriptions(dots)
+        descstring = []
+        for size, color in descs:
+            descstring.append(f"* A {size} and {color} dot")
+
+        kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
+        print(self.generate.print(kwargs))
+        out = self.generate(kwargs)
+        return out, past + [out]
