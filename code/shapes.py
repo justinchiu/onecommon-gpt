@@ -39,8 +39,8 @@ def is_line(dots, all_dots):
 
 def is_triangle(dots, all_dots):
     line = is_line(dots, all_dots)
-    return not line and is_contiguous(dots, all_dots)
+    return not line and len(dots) == 3 and is_contiguous(dots, all_dots)
 
 
 def is_square(dots, all_dots):
-    pass
+    return len(dots) == 4 and is_contiguous(dots, all_dots)

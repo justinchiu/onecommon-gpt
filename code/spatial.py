@@ -15,46 +15,56 @@ def all_close(dots):
     height = maxy - miny
     diagonal = math.hypot(width, height)
 
-    # HARD CODE
+    # HARD CODE, try to be a bit generous
     return diagonal < 0.3
 
 def is_close(x, y):
     return np.linalg.norm(x[:2]-y[:2]) < 0.3
 
-def is_above(dots):
-    pass
+def is_above(dot, dots):
+    raise NotImplementedError
 
-def is_below(dots):
-    pass
+def is_below(dot, dots):
+    raise NotImplementedError
 
-def is_right(dots):
-    pass
+def is_right(dot, dots):
+    raise NotImplementedError
 
-def is_left(dots):
-    pass
+def is_left(dot, dots):
+    raise NotImplementedError
 
 # getters
+def get_magnitude(dots, direction):
+    xy = dots[:,:2]
+    delta = xy[:,None] - xy[None]
+    # magnitude: target x source
+    return (delta @ direction).sum(-1)
+
+def get_direction(dots, direction):
+    magnitude = get_magnitude(dots, direction)
+    return dots[magnitude.argmax()]
+
 def get_top(dots):
-    pass
+    return get_direction(dots, np.array([0,1]))
 
 def get_bottom(dots):
-    pass
+    return get_direction(dots, np.array([0,-1]))
 
 def get_right(dots):
-    pass
+    return get_direction(dots, np.array([1,0]))
 
 def get_left(dots):
-    pass
+    return get_direction(dots, np.array([-1,0]))
 
 def get_top_right(dots):
-    pass
+    return get_direction(dots, np.array([1,1]))
 
 def get_top_left(dots):
-    pass
+    return get_direction(dots, np.array([-1,1]))
 
 def get_bottom_right(dots):
-    pass
+    return get_direction(dots, np.array([1,-1]))
 
 def get_bottom_left(dots):
-    pass
+    return get_direction(dots, np.array([-1,-1]))
 
