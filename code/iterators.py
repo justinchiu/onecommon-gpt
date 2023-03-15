@@ -1,5 +1,13 @@
+import numpy as np
+import itertools
+
+
 def get2dots(dots):
-    return zip(range(5), range(5))
+    N = dots.shape[0]
+    idx = np.stack(list(itertools.combinations(np.arange(N), r=2)))
+    return dots[idx]
 
 def get3dots(dots):
-    return zip(range(6), range(6), range(6))
+    N = dots.shape[0]
+    idx = np.stack(list(itertools.combinations(np.arange(N), r=3)))
+    return dots[idx]

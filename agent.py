@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 import openai
 
-from prompt import Understand, Execute, Generate
+from prompt import HEADER, Understand, Execute, Generate
 
 
 @dataclass
@@ -32,19 +32,24 @@ class Agent:
         pass
 
     def resolve_reference(self, text, past, view):
-        kwargs = dict(text=text, past=past, view=view)
+        kwargs = dict(header=HEADER, text=text, past=past, view=view)
+
+        # print for debugging
         input = self.understand.print(kwargs)
         print(input)
+
         out = self.understand(kwargs)
         print(out)
-        kw = dict(code=input + out)
-        print(self.execute.print(kw))
-        with Path("temporary_code.py").open("w") as f:
-            f.write(self.execute.print(kw))
-        import temporary_code
-        import pdb; pdb.set_trace()
+
+        # new input
+        input = self.understand.print(dict(header=None, text=text, past=past, view=view))
+        kw = dict(header=HEADER, code=input + out, dots=view.tolist())
+        input = self.execute.print(kw)
+        print(input)
         result = self.execute(kw)
+
         import pdb; pdb.set_trace()
+
         return np.zeros(7, dtype=bool)
 
     def plan(self, past, view):

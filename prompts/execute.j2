@@ -1,7 +1,12 @@
 import sys
 sys.path.append("code")
-print(sys.path)
 
-{{code}}
+{{ header }}
+
+def get_dots():
+    dots = np.array({{dots}})
+    return dots
+
+{{ code }}
 
 print(context)
