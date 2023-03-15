@@ -36,12 +36,14 @@ class Eval(ABC):
                 )
 
                 pred, past = self.predict(**input)
-                #print(pred, label)
+
+                label = labels[t]
                 #import pdb; pdb.set_trace()
                 if self.do_eval(text):
-                    label = labels[t]
                     preds.append(pred)
                     truelabels.append(label)
+                    print("LABEL")
+                    print(label)
 
         return self.metric.compute(predictions=preds, references=truelabels)
 
