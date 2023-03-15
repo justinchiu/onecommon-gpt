@@ -85,7 +85,8 @@ dots = get_dots()
 context = []
 
 
-# Them: i have a light grey small dot next to a medium grey medium dot.
+# Them: i have a light grey small dot next to a medium grey medium dot
+.
 def turn(dots, context):
     results = []
     for x,y in get2dots(dots):

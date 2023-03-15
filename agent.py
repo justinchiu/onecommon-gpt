@@ -53,8 +53,7 @@ class Agent:
 
         mention = np.zeros(7, dtype=bool)
         mention[result] = 1
-        if past:
-            import pdb; pdb.set_trace()
+
         return mention, past + [(text.strip(), out.strip())]
 
 

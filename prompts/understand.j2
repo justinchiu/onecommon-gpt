@@ -68,7 +68,8 @@ dots = get_dots()
 context = []
 {% if past is defined and past|length > 0 %}
 {% for block in past %}
-# {{ block[0] }}{{ block[1] }}
+# {{ block[0] }}
+{{ block[1] }}
 {% endfor %}
 {% endif %}
 # {{text}}
