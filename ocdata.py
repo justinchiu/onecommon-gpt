@@ -177,7 +177,35 @@ def get_data():
 
 
 if __name__ == "__main__":
-    train, valid = get_data()
     import pdb
+    import features
+    from itertools import combinations
+
+    from code.shapes import is_triangle, is_line, is_contiguous
+    from code.spatial import is_close
+
+    train, valid = get_data()
+
+    example = train[10]
+    turn = 2
+
+    context = example["context"]
+    turns = example["dialogue"]
+    refs = example["all_referents"]
+
+    xy = context[:,:2]
+    sc = features.process_ctx(context)
+
+    closedots = [
+        (x,y) for x,y in combinations(range(7), 2)
+        if is_close(context[x], context[y])
+    ]
+
+    triangles = [
+        (x,y,z) for x,y,z in combinations(range(7), 3)
+        if is_triangle(context[[x,y,z]], context)
+    ]
+
 
     pdb.set_trace()
+

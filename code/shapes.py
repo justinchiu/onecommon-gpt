@@ -35,7 +35,7 @@ def is_line(dots, all_dots):
     width = min(edge_length)
 
     # check angle later
-    return math.fabs(math.atan(length / width)) < math.pi / 8
+    return math.fabs(math.atan(length / width)) < math.pi / 15
 
 def is_triangle(dots, all_dots):
     line = is_line(dots, all_dots)

@@ -5,7 +5,7 @@ import re
 import openai
 
 from prompt import HEADER, Understand, Execute, Generate
-from template import size_map5, color_map5, size_color_descriptions, process_ctx
+from features import size_map5, color_map5, size_color_descriptions, process_ctx
 
 
 @dataclass
