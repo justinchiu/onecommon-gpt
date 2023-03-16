@@ -107,19 +107,20 @@ if __name__ == "__main__":
     #gen = "sc"
     gen = "template"
 
+    RUNREFRES = False
+    RUNGEN = True
+
     train, valid = get_data()
 
-    """
-    with minichain.start_chain("eval-res") as backend:
-        agent = Agent(backend, refres, gen)
-        reseval = Resolution().compute(agent, valid, 1)
-    print(reseval)
-    """
+    if RUNREFRES:
+        with minichain.start_chain("eval-res") as backend:
+            agent = Agent(backend, refres, gen)
+            reseval = Resolution().compute(agent, valid, 1)
+        print(reseval)
 
-    with minichain.start_chain("eval-gen") as backend:
-        agent = Agent(backend, refres, gen)
-        geneval = Generation().compute(agent, valid, 5)
-    print(geneval)
+    if RUNGEN:
+        with minichain.start_chain("eval-gen") as backend:
+            agent = Agent(backend, refres, gen)
+            geneval = Generation().compute(agent, valid, 5)
+        print(geneval)
 
-
-    #pdb.set_trace()
