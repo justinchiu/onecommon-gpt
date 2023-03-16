@@ -146,13 +146,17 @@ class Agent:
     def generate_text_scxy(self, plan, past, view, info=None):
         # process plan
         refs = [r["target"] for r in plan]
+        plan = np.array(refs).any(0)
+
         size_color = process_ctx(view)
-        dots = size_color[np.array(refs).any(0)]
+        dots = size_color[plan]
         descs = size_color_descriptions(dots)
-        import pdb; pdb.set_trace()
+        xy = view[plan,:2]
+
+
         descstring = []
-        for size, color in descs:
-            descstring.append(f"* A {size} and {color} dot")
+        for (size, color), (x,y) in zip(descs, xy):
+            descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
         kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
         #print("INPUT")
