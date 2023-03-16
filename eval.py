@@ -102,19 +102,24 @@ if __name__ == "__main__":
     from agent import Agent, State
     import minichain
 
+    #refres = "codegen"
+    refres = "mc"
+    #gen = "sc"
+    gen = "template"
+
     train, valid = get_data()
 
     """
     with minichain.start_chain("eval-res") as backend:
-        agent = Agent(backend)
+        agent = Agent(backend, refres, gen)
         reseval = Resolution().compute(agent, valid, 1)
     print(reseval)
     """
 
     with minichain.start_chain("eval-gen") as backend:
-        agent = Agent(backend)
+        agent = Agent(backend, refres, gen)
         geneval = Generation().compute(agent, valid, 5)
     print(geneval)
 
 
-    pdb.set_trace()
+    #pdb.set_trace()

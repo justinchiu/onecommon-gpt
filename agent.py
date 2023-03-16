@@ -5,7 +5,7 @@ import re
 import openai
 
 from prompt import HEADER, Understand, Execute, Generate
-from features import size_map5, color_map5, size_color_descriptions, process_ctx
+from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
 from prompt import UnderstandMc, GenerateTemplate
 
@@ -38,8 +38,10 @@ class Agent:
                 model = "text-davinci-003",
                 max_tokens=512,
             ))
+        else:
+            raise ValueError
 
-        if gen == "sc"
+        if gen == "sc":
             self.generate = Generate(backend.OpenAI(
                 model = "text-davinci-003",
                 max_tokens=512,
@@ -49,6 +51,8 @@ class Agent:
                 model = "text-davinci-003",
                 max_tokens=1024,
             ))
+        else:
+            raise ValueError
 
 
     def read(self):
@@ -124,24 +128,27 @@ class Agent:
             descstring.append(f"* A {size} and {color} dot")
 
         kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
-        print("INPUT")
-        print(self.generate.print(kwargs))
+        #print("INPUT")
+        #print(self.generate.print(kwargs))
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
         return out, past + [out]
 
     def generate_text_template(self, plan, past, view, info=None):
+        if len(plan) == 0:
+            # no references...
+            return "okay", past + ["okay"]
+
         # process plan
         refs = [r["target"] for r in plan]
         plan = np.array(refs).any(0)
         desc = render(plan, view)
 
         kwargs = dict(plan=desc, past="\n".join(past))
-        print("INPUT")
-        print(self.generate.print(kwargs))
+        #print("INPUT")
+        #print(self.generate.print(kwargs))
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
-        import pdb; pdb.set_trace()
         return out, past + [out]
