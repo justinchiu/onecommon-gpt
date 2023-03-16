@@ -1,59 +1,722 @@
 S_N3atbPCA1hsEIsRn
 C_5e57c484d8d24b788d3e13577b8617ef
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+
+Describe the following:
+* A very small and very light dot (x=0.56,y=-0.09)
+* A medium and light dot (x=0.79,y=0.03)
+Answer:
 OUTPUT
  I have a very small, almost white dot, and a medium sized, slightly darker dot close to it.
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+Them: i have a light grey small dot next to a medium grey medium dot
+Describe the following:
+* A very small and very light dot (x=0.56,y=-0.09)
+* A medium and light dot (x=0.79,y=0.03)
+Answer:
 OUTPUT
  I have a very small, almost white dot, and a medium sized, light grey dot close to it.
 LABEL
 You: yes i see that pair choose the small light grey dot <selection>
 S_N3atbPCA1hsEIsRn
 C_5e57c484d8d24b788d3e13577b8617ef
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+
+Describe the following:
+* A very small and very light dot (x=0.54,y=-0.69)
+* A medium and light dot (x=0.76,y=-0.57)
+Answer:
 OUTPUT
  I have a very small, almost white dot, and a medium sized, slightly darker dot close to it.
 LABEL
 You: i have a light grey small dot next to a medium grey medium dot
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a light grey small dot next to a medium grey medium dot
+Describe the following:
+* A very small and very light dot (x=0.54,y=-0.69)
+* A medium and light dot (x=0.76,y=-0.57)
+Answer:
 OUTPUT
  I have a very small, almost white dot, with a slightly larger, but still light grey dot to the right and slightly lower.
 S_8CssskB0X9LJ9A51
 C_834057f6f90b4bff9e8ddcc3a03cb88c
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+
+Describe the following:
+* A large and very dark dot (x=-0.57,y=0.48)
+Answer:
 OUTPUT
  I have a large, very dark dot that stands out from the rest. It's located at the bottom left corner of the image.
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+Them: i have a larger black dot all by itself down and to the left
+Describe the following:
+* A small and dark dot (x=0.83,y=-0.24)
+* A large and dark dot (x=0.45,y=-0.72)
+* A very large and light dot (x=0.68,y=-0.39)
+Answer:
 OUTPUT
  I have a small dark dot near the top right corner, a large dark dot near the bottom left corner, and a very large light dot near the middle of the image.
 LABEL
 You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+Them: i have a larger black dot all by itself down and to the left
+You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Describe the following:
+* A very large and light dot (x=0.68,y=-0.39)
+Answer:
 OUTPUT
  I have a large light grey dot all by itself, near the bottom right corner.
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+Them: i have a larger black dot all by itself down and to the left
+You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Them: yes lets choose the middle one
+Describe the following:
+
+Answer:
 OUTPUT
  I have a large light grey dot in the middle, with a small black dot to the bottom right and a medium sized black dot to the top left.
 LABEL
 You: okay <selection>
 S_8CssskB0X9LJ9A51
 C_834057f6f90b4bff9e8ddcc3a03cb88c
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+
+Describe the following:
+* A large and very dark dot (x=-0.75,y=0.60)
+Answer:
 OUTPUT
  I have a large, very dark dot all by itself, located at the bottom left corner of the image.
 LABEL
 You: i have a larger black dot all by itself down and to the left
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a larger black dot all by itself down and to the left
+Describe the following:
+* A small and dark dot (x=0.66,y=-0.12)
+* A large and dark dot (x=0.27,y=-0.60)
+* A very large and light dot (x=0.49,y=-0.27)
+Answer:
 OUTPUT
  I have a small dark dot near the top right corner, a large dark dot near the bottom left corner, and a very large light dot near the middle of the image.
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a larger black dot all by itself down and to the left
+Them: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Describe the following:
+* A very large and light dot (x=0.49,y=-0.27)
+Answer:
 OUTPUT
  I have a large light grey dot all by itself, near the bottom left corner.
 LABEL
 You: yes lets choose the middle one
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a larger black dot all by itself down and to the left
+Them: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+You: yes lets choose the middle one
+Describe the following:
+
+Answer:
 OUTPUT
  I have a large light grey dot in the middle, with a small black dot to the bottom right and a medium sized black dot to the top left.
 S_kQfCI1MRe21DDsqK
 C_27a843b6c8f94ffc86fde88cc86b0772
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+
+Describe the following:
+* A very large and very light dot (x=0.30,y=0.12)
+* A large and light dot (x=0.07,y=-0.01)
+* A medium and dark dot (x=-0.03,y=0.17)
+Answer:
 OUTPUT
  I have a very large and very light dot at the top right corner, a large and light dot at the bottom left corner, and a medium and dark dot in the middle.
 LABEL
 You: i have a triangle of 3 dots near the center
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a triangle of 3 dots near the center
+Describe the following:
+* A very large and very light dot (x=0.30,y=0.12)
+* A large and light dot (x=0.07,y=-0.01)
+* A medium and dark dot (x=-0.03,y=0.17)
+Answer:
 OUTPUT
- I have a large, very light dot near the center, with a slightly smaller and lighter dot to the left and a medium dark dot to the right.
+ I have a large, very light dot near the center, with a slightly smaller, but still light dot to the left and a medium dark dot below it.
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a triangle of 3 dots near the center
+Them: are they all of different tone
+Describe the following:
+* A very large and very light dot (x=0.30,y=0.12)
+* A large and light dot (x=0.07,y=-0.01)
+* A medium and dark dot (x=-0.03,y=0.17)
+Answer:
 OUTPUT
  I have a very large and very light dot near the center, a large and light dot near the top left corner, and a medium and dark dot near the bottom right corner.
 LABEL
 You: yes the black is smallest with a medium gray on top and the largest is light gray
+INPUT
+Describe the following:
+* A very small and dark dot (x=0.8, y=0.8)
+* A very small and dark dot (x=0.85, y=0.85)
+Answer: i have two small dark dots pretty separated from the others
+
+Them: I have a medium sized black with a smaller, also black dot very close below it and slightly to the right
+Describe the following:
+* A very large and dark dot (x=0.54, y=0.69)
+Answer: my largest dot is medium dark and all by itself
+
+Them: two dots very close togeher and med grey?
+You: no do you have a dark dot by itself
+Them: no. do you have a kind of small black dot?
+Describe the following:
+* A small and dark dot (x=0.1, y=-0.1)
+* A small and grey dot (x=0.15, y=-.13)
+Answer: is it near a med color grey dot
+
+You: I have a large black dot, with an equally sized dark grey dot down and to the right
+Them: Do you have a large black dot all the way a the top left, touching the outline?
+You: Our outlines are different. Does it have the large dark grey down and to the right
+Them: No. It does not
+Describe the following:
+* A small and dark dot (x=-0.6, y=0.5)
+* A small and grey dot (x=-0.62, y=0.8)
+Answer: Ok, then I don't think I have it. Do you have a tiny very dark grey dot, with another tiny, but slightly larger dot up and to the left?
+
+You: I have TWO large grey dots beside each other
+Them: I have two large near each other, but with mine the left one is higher.
+You: I have that. Is the one on the right darker?
+Them: no, they are the same color. how about one black dot thats very small?
+Describe the following:
+* A small black dot (x=-0.3, y=0.2)
+Answer: I have that. It's the only black dot right?
+
+You: i have a triangle of 3 dots near the center
+Them: are they all of different tone
+You: yes the black is smallest with a medium gray on top and the largest is light gray
+Describe the following:
+* A medium and dark dot (x=-0.03,y=0.17)
+Answer:
 OUTPUT
  I have a medium dark dot that is slightly off center and slightly above the center.
 {'bleu': 0.02904533956139998, 'precisions': [0.18552036199095023, 0.051643192488262914, 0.014634146341463415, 0.005076142131979695], 'brevity_penalty': 1.0, 'length_ratio': 1.8114754098360655, 'translation_length': 221, 'reference_length': 122}
