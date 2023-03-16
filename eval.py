@@ -7,6 +7,7 @@ import pdb
 
 class Eval(ABC):
     def compute(self, agent, data, num_examples=None):
+        configs = bitutils.get_configs(128)
         preds = []
         truelabels = []
         for example in data[:num_examples]:
@@ -43,7 +44,7 @@ class Eval(ABC):
                     preds.append(pred)
                     truelabels.append(label)
                     print("LABEL")
-                    print(label)
+                    print(configs[label].nonzero()[0])
 
         return self.metric.compute(predictions=preds, references=truelabels)
 
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     if args.run_refres:
         with minichain.start_chain("eval-res") as backend:
             agent = Agent(backend, refres, gen)
-            reseval = Resolution().compute(agent, valid, 1)
+            reseval = Resolution().compute(agent, valid, 5)
         print(reseval)
 
     if args.run_gen:

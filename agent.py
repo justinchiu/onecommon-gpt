@@ -88,10 +88,12 @@ class Agent:
         view = "\n".join(viewstr)
 
         kwargs = dict(text=text, past=past, view=view)
-        #print(self.understand.print(kwargs))
+        print(self.understand.print(kwargs))
         out = self.understand(kwargs)
 
         result = np.array(ast.literal_eval(out)) - 1
+        print("PRED")
+        print(result)
         mention = np.zeros(7, dtype=bool)
         if result is not None:
             mention[result] = 1
