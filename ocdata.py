@@ -181,7 +181,7 @@ if __name__ == "__main__":
     import features
     from itertools import combinations
 
-    from features import render
+    from features import render, size_color_descriptions
     from code.shapes import is_triangle, is_line, is_contiguous
     from code.spatial import is_close
 
@@ -195,25 +195,32 @@ if __name__ == "__main__":
         xy = context[:,:2]
         sc = features.process_ctx(context)
 
-        closedots = [
-            (x,y) for x,y in combinations(range(7), 2)
-            if is_close(context[x], context[y])
-        ]
+        print(example["scenario_id"])
+        print(example["chat_id"])
 
-        triangles = [
-            (x,y,z) for x,y,z in combinations(range(7), 3)
-            if is_triangle(context[[x,y,z]], context)
-        ]
-
+        # print for multiple choice GPT resolution
+        print("Description:")
+        for i, ((s, c), (x, y)) in enumerate(zip(size_color_descriptions(sc), xy)):
+            print(f"* Dot {i+1}: {s} and {c} (x={x:.2f}, y={y:.2f})")
 
         for t in range(len(turns)):
             plan = np.array([r["target"] for r in refs[t]]).any(0)
-            if plan.sum() <= 0:
-                continue
             turn = turns[t]
 
-            desc = render(plan, context)
+            print(turn)
 
+            mentioned_dots = (plan.nonzero()[0] + 1).tolist()
+            if len(mentioned_dots) > 0:
+                print(f"Mentions dots: {mentioned_dots}")
+            else:
+                print(f"Mentions dots: None")
+
+
+            """
+            if plan.sum() <= 0:
+                continue
+            # print stuff out for template prompt
+            desc = render(plan, context)
             print("PAST")
             print(turns[:t])
             print("DESC")
@@ -221,4 +228,5 @@ if __name__ == "__main__":
             print("TURN")
             print(turn)
             pdb.set_trace()
-
+            """
+        import pdb; pdb.set_trace()

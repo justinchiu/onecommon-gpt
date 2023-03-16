@@ -1,0 +1,62 @@
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+{{view}}{% if past is not none %}{% for block in past %}
+{{ block[0] }}
+Mentions dots: {{ block[1] }}
+{% endfor %}{% endif %}
+{{text}}
+Mentions dots:

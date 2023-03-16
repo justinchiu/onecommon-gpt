@@ -59,6 +59,7 @@ class GenerateScxy(TemplatePrompt[str]):
 
 class UnderstandMc(TemplatePrompt[str]):
     template_file = "prompts/understand_mc.j2"
+    stop_template = "\n"
 
 class GenerateTemplate(TemplatePrompt[str]):
     template_file = "prompts/generate_template.j2"

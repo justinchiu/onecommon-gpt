@@ -37,7 +37,7 @@ class Agent:
         elif refres == "mc":
             self.understand = UnderstandMc(backend.OpenAI(
                 model = "text-davinci-003",
-                max_tokens=512,
+                max_tokens=1024,
             ))
         else:
             raise ValueError
@@ -77,7 +77,20 @@ class Agent:
             raise ValueError
 
     def resolve_reference_mc(self, text, past, view, info=None):
+        xy = view[:,:2]
+        sc = process_ctx(view)
+
+        # print for multiple choice GPT resolution
+        viewstr = []
+        for i, ((s, c), (x, y)) in enumerate(zip(size_color_descriptions(sc), xy)):
+            viewstr.append(f"* Dot {i+1}: {s} and {c} (x={x:.2f}, y={y:.2f})")
+        view = "\n".join(viewstr)
+
+        kwargs = dict(text=text, past=past, view=view)
+        #print(self.understand.print(kwargs))
+        out = self.understand(kwargs)
         import pdb; pdb.set_trace()
+        return out, past + [(text.strip(), out.strip())]
 
     def resolve_reference_codegen(self, text, past, view, info=None):
         # ensure text ends in punctuation
