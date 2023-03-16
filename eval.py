@@ -102,15 +102,15 @@ if __name__ == "__main__":
     from agent import Agent, State
     import minichain
 
-    data = get_data()
+    train, valid = get_data()
     with minichain.start_chain("eval-res") as backend:
         agent = Agent(backend)
-        reseval = Resolution().compute(agent, data, 1)
+        reseval = Resolution().compute(agent, valid, 1)
     print(reseval)
 
     with minichain.start_chain("eval-gen") as backend:
         agent = Agent(backend)
-        geneval = Generation().compute(agent, data, 5)
+        geneval = Generation().compute(agent, valid, 5)
     print(geneval)
 
 

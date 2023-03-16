@@ -115,11 +115,7 @@ def _split_referents(raw_referents, spans):
     return referents
 
 
-def get_data():
-    data_file = Path("data/onecommon/valid_reference_0.txt")
-    with data_file.open("r") as f:
-        raw_data = f.readlines()
-
+def get_examples(raw_data):
     examples = []
     for data in raw_data:
         words = data.strip().split()
@@ -168,8 +164,20 @@ def get_data():
     return examples
 
 
+def get_data():
+    datas = []
+    for data_file in [
+        Path("data/onecommon/train_reference_0.txt"),
+        Path("data/onecommon/valid_reference_0.txt"),
+    ]:
+        with data_file.open("r") as f:
+            raw_data = f.readlines()
+            datas.append(get_examples(raw_data))
+    return datas
+
+
 if __name__ == "__main__":
-    data = get_data()
+    train, valid = get_data()
     import pdb
 
     pdb.set_trace()
