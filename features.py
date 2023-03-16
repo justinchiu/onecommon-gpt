@@ -1,6 +1,8 @@
 from jinja2 import Template
 import numpy as np
 
+import template_rec
+
 RADIUS = .2
 size_map3 = ["small", "medium", "large"]
 color_map3 = ["dark", "grey", "light"]
@@ -50,3 +52,18 @@ def size_color_descriptions(sc, size_map=size_map5, color_map=color_map5):
     ]
 
 
+def get_feats(plan, xy, size_color):
+    plan_size = plan.sum().item()
+    plan_sc = size_color[plan.astype(bool)]
+    plan_xy = xy[plan.astype(bool)]
+    return plan_size, plan_sc, plan_xy
+
+
+def render(plan, context, confirm=None):
+    #plan = np.array([0,1,0,0,0,0,1])
+    xy = context[:,:2]
+    sc = process_ctx(context)
+    feats = get_feats(plan, xy, sc)
+    ids = plan.nonzero()[0]
+    desc = template_rec.render(*feats, ids, confirm=confirm)
+    return desc

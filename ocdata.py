@@ -186,8 +186,7 @@ if __name__ == "__main__":
 
     train, valid = get_data()
 
-    example = train[10]
-    turn = 2
+    example = train[5]
 
     context = example["context"]
     turns = example["dialogue"]
@@ -206,6 +205,13 @@ if __name__ == "__main__":
         if is_triangle(context[[x,y,z]], context)
     ]
 
+    from features import render
+
+    t = 2
+    plan = np.array([r["target"] for r in refs[t]]).any(0)
+    turn = turns[t]
+
+    desc = render(plan, context)
 
     pdb.set_trace()
 
