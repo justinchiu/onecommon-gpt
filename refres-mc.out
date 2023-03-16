@@ -1,0 +1,2619 @@
+S_N3atbPCA1hsEIsRn
+C_5e57c484d8d24b788d3e13577b8617ef
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very light (x=-0.77, y=0.33)
+* Dot 2: medium and dark (x=-0.57, y=0.76)
+* Dot 3: very small and very light (x=0.56, y=-0.09)
+* Dot 4: medium and very dark (x=-0.83, y=-0.41)
+* Dot 5: large and very dark (x=-0.36, y=-0.04)
+* Dot 6: medium and light (x=0.79, y=0.03)
+* Dot 7: very small and dark (x=0.59, y=-0.50)
+Them: i have a light grey small dot next to a medium grey medium dot
+Mentions dots:
+PRED
+[2 5]
+LABEL
+[2 5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very light (x=-0.77, y=0.33)
+* Dot 2: medium and dark (x=-0.57, y=0.76)
+* Dot 3: very small and very light (x=0.56, y=-0.09)
+* Dot 4: medium and very dark (x=-0.83, y=-0.41)
+* Dot 5: large and very dark (x=-0.36, y=-0.04)
+* Dot 6: medium and light (x=0.79, y=0.03)
+* Dot 7: very small and dark (x=0.59, y=-0.50)
+Them: i have a light grey small dot next to a medium grey medium dot
+Mentions dots: Mentions dots: [3, 6]
+You: yes i see that pair choose the small light grey dot <selection>
+Mentions dots:
+PRED
+[2]
+LABEL
+[2 5]
+S_N3atbPCA1hsEIsRn
+C_5e57c484d8d24b788d3e13577b8617ef
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and dark (x=-0.03, y=0.82)
+* Dot 2: very large and very light (x=-0.80, y=-0.28)
+* Dot 3: medium and dark (x=-0.60, y=0.15)
+* Dot 4: very small and very light (x=0.54, y=-0.69)
+* Dot 5: large and very dark (x=-0.40, y=-0.64)
+* Dot 6: medium and light (x=0.76, y=-0.57)
+* Dot 7: large and grey (x=-0.62, y=0.50)
+You: i have a light grey small dot next to a medium grey medium dot
+Mentions dots:
+PRED
+[3 6]
+LABEL
+[3 5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and dark (x=-0.03, y=0.82)
+* Dot 2: very large and very light (x=-0.80, y=-0.28)
+* Dot 3: medium and dark (x=-0.60, y=0.15)
+* Dot 4: very small and very light (x=0.54, y=-0.69)
+* Dot 5: large and very dark (x=-0.40, y=-0.64)
+* Dot 6: medium and light (x=0.76, y=-0.57)
+* Dot 7: large and grey (x=-0.62, y=0.50)
+You: i have a light grey small dot next to a medium grey medium dot
+Mentions dots: Mentions dots: [4, 7]
+Them: yes i see that pair choose the small light grey dot <selection>
+Mentions dots:
+PRED
+[3]
+LABEL
+[3 5]
+S_8CssskB0X9LJ9A51
+C_834057f6f90b4bff9e8ddcc3a03cb88c
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.83, y=-0.24)
+* Dot 2: large and dark (x=0.45, y=-0.72)
+* Dot 3: very small and very dark (x=0.57, y=0.39)
+* Dot 4: very small and very light (x=-0.86, y=0.32)
+* Dot 5: small and very light (x=0.21, y=-0.37)
+* Dot 6: very large and light (x=0.68, y=-0.39)
+* Dot 7: large and very dark (x=-0.57, y=0.48)
+Them: i have a larger black dot all by itself down and to the left
+Mentions dots:
+PRED
+[1]
+LABEL
+[6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.83, y=-0.24)
+* Dot 2: large and dark (x=0.45, y=-0.72)
+* Dot 3: very small and very dark (x=0.57, y=0.39)
+* Dot 4: very small and very light (x=-0.86, y=0.32)
+* Dot 5: small and very light (x=0.21, y=-0.37)
+* Dot 6: very large and light (x=0.68, y=-0.39)
+* Dot 7: large and very dark (x=-0.57, y=0.48)
+Them: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots:
+PRED
+[1 3 4]
+LABEL
+[0 1 5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.83, y=-0.24)
+* Dot 2: large and dark (x=0.45, y=-0.72)
+* Dot 3: very small and very dark (x=0.57, y=0.39)
+* Dot 4: very small and very light (x=-0.86, y=0.32)
+* Dot 5: small and very light (x=0.21, y=-0.37)
+* Dot 6: very large and light (x=0.68, y=-0.39)
+* Dot 7: large and very dark (x=-0.57, y=0.48)
+Them: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots: Mentions dots: [2, 4, 5]
+Them: yes lets choose the middle one
+Mentions dots:
+PRED
+[1]
+LABEL
+[5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.83, y=-0.24)
+* Dot 2: large and dark (x=0.45, y=-0.72)
+* Dot 3: very small and very dark (x=0.57, y=0.39)
+* Dot 4: very small and very light (x=-0.86, y=0.32)
+* Dot 5: small and very light (x=0.21, y=-0.37)
+* Dot 6: very large and light (x=0.68, y=-0.39)
+* Dot 7: large and very dark (x=-0.57, y=0.48)
+Them: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots: Mentions dots: [2, 4, 5]
+Them: yes lets choose the middle one
+Mentions dots: Mentions dots: [2]
+You: okay <selection>
+Mentions dots:
+PRED
+[1]
+LABEL
+[]
+S_8CssskB0X9LJ9A51
+C_834057f6f90b4bff9e8ddcc3a03cb88c
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.66, y=-0.12)
+* Dot 2: large and dark (x=0.27, y=-0.60)
+* Dot 3: very small and very dark (x=0.40, y=0.51)
+* Dot 4: small and very light (x=0.04, y=-0.25)
+* Dot 5: very large and light (x=0.49, y=-0.27)
+* Dot 6: large and very dark (x=-0.75, y=0.60)
+* Dot 7: very small and very dark (x=0.64, y=-0.52)
+You: i have a larger black dot all by itself down and to the left
+Mentions dots:
+PRED
+[1]
+LABEL
+[5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.66, y=-0.12)
+* Dot 2: large and dark (x=0.27, y=-0.60)
+* Dot 3: very small and very dark (x=0.40, y=0.51)
+* Dot 4: small and very light (x=0.04, y=-0.25)
+* Dot 5: very large and light (x=0.49, y=-0.27)
+* Dot 6: large and very dark (x=-0.75, y=0.60)
+* Dot 7: very small and very dark (x=0.64, y=-0.52)
+You: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+Them: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots:
+PRED
+[3 4 6]
+LABEL
+[0 1 4]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.66, y=-0.12)
+* Dot 2: large and dark (x=0.27, y=-0.60)
+* Dot 3: very small and very dark (x=0.40, y=0.51)
+* Dot 4: small and very light (x=0.04, y=-0.25)
+* Dot 5: very large and light (x=0.49, y=-0.27)
+* Dot 6: large and very dark (x=-0.75, y=0.60)
+* Dot 7: very small and very dark (x=0.64, y=-0.52)
+You: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+Them: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots: Mentions dots: [4, 5, 7]
+You: yes lets choose the middle one
+Mentions dots:
+PRED
+[4]
+LABEL
+[4]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=0.66, y=-0.12)
+* Dot 2: large and dark (x=0.27, y=-0.60)
+* Dot 3: very small and very dark (x=0.40, y=0.51)
+* Dot 4: small and very light (x=0.04, y=-0.25)
+* Dot 5: very large and light (x=0.49, y=-0.27)
+* Dot 6: large and very dark (x=-0.75, y=0.60)
+* Dot 7: very small and very dark (x=0.64, y=-0.52)
+You: i have a larger black dot all by itself down and to the left
+Mentions dots: Mentions dots: [2]
+Them: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?
+Mentions dots: Mentions dots: [4, 5, 7]
+You: yes lets choose the middle one
+Mentions dots: Mentions dots: [5]
+Them: okay <selection>
+Mentions dots:
+PRED
+[4]
+LABEL
+[]
+S_kQfCI1MRe21DDsqK
+C_27a843b6c8f94ffc86fde88cc86b0772
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.41, y=-0.41)
+* Dot 2: medium and very dark (x=0.48, y=0.65)
+* Dot 3: very large and very light (x=0.97, y=-0.06)
+* Dot 4: very large and very light (x=0.30, y=0.12)
+* Dot 5: large and light (x=0.07, y=-0.01)
+* Dot 6: very small and dark (x=-0.90, y=-0.05)
+* Dot 7: medium and dark (x=-0.03, y=0.17)
+You: i have a triangle of 3 dots near the center
+Mentions dots:
+PRED
+[2 3 4]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.41, y=-0.41)
+* Dot 2: medium and very dark (x=0.48, y=0.65)
+* Dot 3: very large and very light (x=0.97, y=-0.06)
+* Dot 4: very large and very light (x=0.30, y=0.12)
+* Dot 5: large and light (x=0.07, y=-0.01)
+* Dot 6: very small and dark (x=-0.90, y=-0.05)
+* Dot 7: medium and dark (x=-0.03, y=0.17)
+You: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [3, 4, 5]
+Them: are they all of different tone
+Mentions dots:
+PRED
+[2 3 4]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.41, y=-0.41)
+* Dot 2: medium and very dark (x=0.48, y=0.65)
+* Dot 3: very large and very light (x=0.97, y=-0.06)
+* Dot 4: very large and very light (x=0.30, y=0.12)
+* Dot 5: large and light (x=0.07, y=-0.01)
+* Dot 6: very small and dark (x=-0.90, y=-0.05)
+* Dot 7: medium and dark (x=-0.03, y=0.17)
+You: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [3, 4, 5]
+Them: are they all of different tone
+Mentions dots: Mentions dots: [3, 4, 5]
+You: yes the black is smallest with a medium gray on top and the largest is light gray
+Mentions dots:
+PRED
+[1 5 6]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.41, y=-0.41)
+* Dot 2: medium and very dark (x=0.48, y=0.65)
+* Dot 3: very large and very light (x=0.97, y=-0.06)
+* Dot 4: very large and very light (x=0.30, y=0.12)
+* Dot 5: large and light (x=0.07, y=-0.01)
+* Dot 6: very small and dark (x=-0.90, y=-0.05)
+* Dot 7: medium and dark (x=-0.03, y=0.17)
+You: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [3, 4, 5]
+Them: are they all of different tone
+Mentions dots: Mentions dots: [3, 4, 5]
+You: yes the black is smallest with a medium gray on top and the largest is light gray
+Mentions dots: Mentions dots: [2, 6, 7]
+Them: let us select the smallest <selection>
+Mentions dots:
+PRED
+[1]
+LABEL
+[6]
+S_kQfCI1MRe21DDsqK
+C_27a843b6c8f94ffc86fde88cc86b0772
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.07, y=-0.30)
+* Dot 2: medium and very light (x=-0.96, y=0.27)
+* Dot 3: very large and grey (x=-0.09, y=-0.99)
+* Dot 4: very large and very light (x=0.64, y=0.23)
+* Dot 5: large and light (x=0.40, y=0.10)
+* Dot 6: very small and dark (x=-0.57, y=0.06)
+* Dot 7: medium and dark (x=0.30, y=0.28)
+Them: i have a triangle of 3 dots near the center
+Mentions dots:
+PRED
+[0 4 6]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.07, y=-0.30)
+* Dot 2: medium and very light (x=-0.96, y=0.27)
+* Dot 3: very large and grey (x=-0.09, y=-0.99)
+* Dot 4: very large and very light (x=0.64, y=0.23)
+* Dot 5: large and light (x=0.40, y=0.10)
+* Dot 6: very small and dark (x=-0.57, y=0.06)
+* Dot 7: medium and dark (x=0.30, y=0.28)
+Them: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [1, 5, 7]
+You: are they all of different tone
+Mentions dots:
+PRED
+[0 4 6]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.07, y=-0.30)
+* Dot 2: medium and very light (x=-0.96, y=0.27)
+* Dot 3: very large and grey (x=-0.09, y=-0.99)
+* Dot 4: very large and very light (x=0.64, y=0.23)
+* Dot 5: large and light (x=0.40, y=0.10)
+* Dot 6: very small and dark (x=-0.57, y=0.06)
+* Dot 7: medium and dark (x=0.30, y=0.28)
+Them: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [1, 5, 7]
+You: are they all of different tone
+Mentions dots: Mentions dots: [1, 5, 7]
+Them: yes the black is smallest with a medium gray on top and the largest is light gray
+Mentions dots:
+PRED
+[5 0 3]
+LABEL
+[3 4 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: medium and grey (x=-0.07, y=-0.30)
+* Dot 2: medium and very light (x=-0.96, y=0.27)
+* Dot 3: very large and grey (x=-0.09, y=-0.99)
+* Dot 4: very large and very light (x=0.64, y=0.23)
+* Dot 5: large and light (x=0.40, y=0.10)
+* Dot 6: very small and dark (x=-0.57, y=0.06)
+* Dot 7: medium and dark (x=0.30, y=0.28)
+Them: i have a triangle of 3 dots near the center
+Mentions dots: Mentions dots: [1, 5, 7]
+You: are they all of different tone
+Mentions dots: Mentions dots: [1, 5, 7]
+Them: yes the black is smallest with a medium gray on top and the largest is light gray
+Mentions dots: Mentions dots: [6, 1, 4]
+You: let us select the smallest <selection>
+Mentions dots:
+PRED
+[5]
+LABEL
+[6]
+S_mQa5OGEpE3cZmIly
+C_724e8318439a4302ac6ade104f12e101
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots:
+PRED
+[5]
+LABEL
+[5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+You: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots:
+PRED
+[0]
+LABEL
+[0]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+You: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [1]
+Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots:
+PRED
+[1 2 3]
+LABEL
+[0 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+You: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [1]
+Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3, 4]
+You: yep ! choose the darkest ?
+Mentions dots:
+PRED
+[0]
+LABEL
+[0]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+You: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [1]
+Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3, 4]
+You: yep ! choose the darkest ?
+Mentions dots: Mentions dots: [1]
+Them: yes ! have a good day .
+Mentions dots:
+PRED
+LABEL
+[]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very large and very dark (x=0.41, y=-0.56)
+* Dot 2: large and very light (x=-0.34, y=0.69)
+* Dot 3: very large and light (x=-0.30, y=0.10)
+* Dot 4: large and very light (x=-0.53, y=0.17)
+* Dot 5: medium and dark (x=0.79, y=0.04)
+* Dot 6: very small and grey (x=0.10, y=-0.04)
+* Dot 7: large and grey (x=-0.09, y=-0.61)
+Them: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+You: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [1]
+Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3, 4]
+You: yep ! choose the darkest ?
+Mentions dots: Mentions dots: [1]
+Them: yes ! have a good day .
+Mentions dots: Mentions dots: None
+You: you too , thanks ! <selection>
+Mentions dots:
+PRED
+LABEL
+[]
+S_mQa5OGEpE3cZmIly
+C_724e8318439a4302ac6ade104f12e101
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots:
+PRED
+[5]
+LABEL
+[5]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+Them: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots:
+PRED
+[1]
+LABEL
+[1]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+Them: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [2]
+You: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots:
+PRED
+[1 2]
+LABEL
+[1 6]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+Them: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [2]
+You: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3]
+Them: yep ! choose the darkest ?
+Mentions dots:
+PRED
+[1]
+LABEL
+[1]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+Them: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [2]
+You: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3]
+Them: yep ! choose the darkest ?
+Mentions dots: Mentions dots: [2]
+You: yes ! have a good day .
+Mentions dots:
+PRED
+[1]
+LABEL
+[]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: large and grey (x=0.44, y=-0.31)
+* Dot 2: very large and very dark (x=-0.18, y=-0.47)
+* Dot 3: very large and light (x=-0.90, y=0.18)
+* Dot 4: medium and dark (x=0.20, y=0.12)
+* Dot 5: small and dark (x=0.06, y=-0.98)
+* Dot 6: very small and grey (x=-0.49, y=0.04)
+* Dot 7: large and grey (x=-0.68, y=-0.53)
+You: hi ! do you see a tiny grey dot ?
+Mentions dots: Mentions dots: [6]
+Them: ok , do you have a very large dot that is the darkest gray in the circle ?
+Mentions dots: Mentions dots: [2]
+You: yes i do ! is there a slightly lighter and smaller dot to the left of it ?
+Mentions dots: Mentions dots: [2, 3]
+Them: yep ! choose the darkest ?
+Mentions dots: Mentions dots: [2]
+You: yes ! have a good day .
+Mentions dots: Mentions dots: [2]
+Them: you too , thanks ! <selection>
+Mentions dots:
+PRED
+[1]
+LABEL
+[]
+S_cSjaqwqc2EXKGFEY
+C_c836669707f4454da547d68ce5809151
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=-0.22, y=-0.17)
+* Dot 2: small and very light (x=0.05, y=0.53)
+* Dot 3: small and dark (x=-0.14, y=0.69)
+* Dot 4: very small and dark (x=0.41, y=0.91)
+* Dot 5: large and very light (x=-0.43, y=-0.87)
+* Dot 6: small and grey (x=-0.98, y=0.01)
+* Dot 7: medium and dark (x=0.12, y=-0.27)
+You: two small dots one dark gray and to the right and above a lighter dot same size ?
+Mentions dots:
+PRED
+[5 2]
+LABEL
+[1 2]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: small and dark (x=-0.22, y=-0.17)
+* Dot 2: small and very light (x=0.05, y=0.53)
+* Dot 3: small and dark (x=-0.14, y=0.69)
+* Dot 4: very small and dark (x=0.41, y=0.91)
+* Dot 5: large and very light (x=-0.43, y=-0.87)
+* Dot 6: small and grey (x=-0.98, y=0.01)
+* Dot 7: medium and dark (x=0.12, y=-0.27)
+You: two small dots one dark gray and to the right and above a lighter dot same size ?
+Mentions dots: Mentions dots: [6, 3]
+Them: i think i see this , i 'm picking the bottom left darker one . <selection>
+Mentions dots:
+PRED
+[5]
+LABEL
+[1 2]
+S_cSjaqwqc2EXKGFEY
+C_c836669707f4454da547d68ce5809151
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very small and very light (x=0.07, y=0.89)
+* Dot 2: small and dark (x=-0.42, y=-0.43)
+* Dot 3: very small and very light (x=0.96, y=0.07)
+* Dot 4: small and very light (x=-0.15, y=0.27)
+* Dot 5: small and dark (x=-0.35, y=0.42)
+* Dot 6: very small and dark (x=0.20, y=0.64)
+* Dot 7: medium and dark (x=-0.09, y=-0.53)
+Them: two small dots one dark gray and to the right and above a lighter dot same size ?
+Mentions dots:
+PRED
+[1 4]
+LABEL
+[3 4]
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [2, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [2, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: very large and very dark (x=0.67, y=0.43)
+* Dot 2: very large and light (x=-0.31, y=-0.11)
+* Dot 3: medium and very dark (x=-0.10, y=-0.92)
+* Dot 4: very large and dark (x=0.96, y=-0.07)
+* Dot 5: large and very dark (x=0.60, y=0.18)
+* Dot 6: very large and dark (x=-0.34, y=0.43)
+* Dot 7: small and light (x=-0.47, y=-0.25)
+Them: i have 3 black dots medium to large sized next to each other
+Mentions dots: [1, 4, 5]
+You: yes they make a triangle , and the one on the bottom is the darkest and largest ?
+Mentions dots: [1, 4, 5]
+Them: yes ! let 's click that one <selection>
+Mentions dots: [1]
+
+Description:
+* Dot 1: large and grey (x=0.08, y=-0.81)
+* Dot 2: very small and very dark (x=0.56, y=0.59)
+* Dot 3: medium and grey (x=-0.34, y=-0.85)
+* Dot 4: medium and grey (x=0.74, y=-0.59)
+* Dot 5: very small and dark (x=0.00, y=0.55)
+* Dot 6: medium and grey (x=-0.56, y=-0.36)
+* Dot 7: small and very dark (x=-0.40, y=-0.53)
+Them: two almost identical in size large dots close to each other but opposite in shade ?
+Mentions dots: [6, 7]
+You: yes , i see that towards the upper left
+Mentions dots: [6, 7]
+Them: yes which one did you click ? ?
+Mentions dots: None
+You: the lighter one , which is slightly larger .
+Mentions dots: [6]
+Them: where is the lighter one in relation to the top ?
+Mentions dots: [6, 7]
+You: the lighter one is lower than the darker one
+Mentions dots: [6, 7]
+Them: right but to which side ?
+Mentions dots: None
+You: the lighter one is farther left than the lighter one . <selection>
+Mentions dots: [6, 7]
+
+Description:
+* Dot 1: very small and very light (x=0.07, y=0.89)
+* Dot 2: small and dark (x=-0.42, y=-0.43)
+* Dot 3: very small and very light (x=0.96, y=0.07)
+* Dot 4: small and very light (x=-0.15, y=0.27)
+* Dot 5: small and dark (x=-0.35, y=0.42)
+* Dot 6: very small and dark (x=0.20, y=0.64)
+* Dot 7: medium and dark (x=-0.09, y=-0.53)
+Them: two small dots one dark gray and to the right and above a lighter dot same size ?
+Mentions dots: Mentions dots: [2, 5]
+You: i think i see this , i 'm picking the bottom left darker one . <selection>
+Mentions dots:
+PRED
+[1]
+LABEL
+[3 4]
+{'accuracy': 0.2777777777777778}
