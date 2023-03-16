@@ -181,37 +181,44 @@ if __name__ == "__main__":
     import features
     from itertools import combinations
 
+    from features import render
     from code.shapes import is_triangle, is_line, is_contiguous
     from code.spatial import is_close
 
     train, valid = get_data()
 
-    example = train[5]
+    for example in train:
+        context = example["context"]
+        turns = example["dialogue"]
+        refs = example["all_referents"]
 
-    context = example["context"]
-    turns = example["dialogue"]
-    refs = example["all_referents"]
+        xy = context[:,:2]
+        sc = features.process_ctx(context)
 
-    xy = context[:,:2]
-    sc = features.process_ctx(context)
+        closedots = [
+            (x,y) for x,y in combinations(range(7), 2)
+            if is_close(context[x], context[y])
+        ]
 
-    closedots = [
-        (x,y) for x,y in combinations(range(7), 2)
-        if is_close(context[x], context[y])
-    ]
+        triangles = [
+            (x,y,z) for x,y,z in combinations(range(7), 3)
+            if is_triangle(context[[x,y,z]], context)
+        ]
 
-    triangles = [
-        (x,y,z) for x,y,z in combinations(range(7), 3)
-        if is_triangle(context[[x,y,z]], context)
-    ]
 
-    from features import render
+        for t in range(len(turns)):
+            plan = np.array([r["target"] for r in refs[t]]).any(0)
+            if plan.sum() <= 0:
+                continue
+            turn = turns[t]
 
-    t = 2
-    plan = np.array([r["target"] for r in refs[t]]).any(0)
-    turn = turns[t]
+            desc = render(plan, context)
 
-    desc = render(plan, context)
-
-    pdb.set_trace()
+            print("PAST")
+            print(turns[:t])
+            print("DESC")
+            print(desc)
+            print("TURN")
+            print(turn)
+            pdb.set_trace()
 

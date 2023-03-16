@@ -53,3 +53,9 @@ class Execute(TemplatePrompt[list[int]]):
 class Generate(TemplatePrompt[str]):
     template_file = "prompts/generate.j2"
 
+
+class UnderstandMc(TemplatePrompt[str]):
+    template_file = "prompts/understand_mc.j2"
+
+class GenerateTemplate(TemplatePrompt[str]):
+    template_file = "prompts/generate_template.j2"
