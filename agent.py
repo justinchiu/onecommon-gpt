@@ -181,8 +181,8 @@ class Agent:
             descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
         kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
-        #print("INPUT")
-        #print(self.generate.print(kwargs))
+        print("INPUT")
+        print(self.generate.print(kwargs))
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
