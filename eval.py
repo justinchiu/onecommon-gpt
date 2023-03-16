@@ -123,7 +123,7 @@ if __name__ == "__main__":
     if args.run_refres:
         with minichain.start_chain("eval-res") as backend:
             agent = Agent(backend, refres, gen)
-            reseval = Resolution().compute(agent, valid, 5)
+            reseval = Resolution().compute(agent, valid, 10)
         print(reseval)
 
     if args.run_gen:

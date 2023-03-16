@@ -91,11 +91,12 @@ class Agent:
         print(self.understand.print(kwargs))
         out = self.understand(kwargs)
 
-        result = np.array(ast.literal_eval(out)) - 1
+        result = ast.literal_eval(out)
         print("PRED")
-        print(result)
         mention = np.zeros(7, dtype=bool)
         if result is not None:
+            result = np.array(result) - 1
+            print(result)
             mention[result] = 1
 
         return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")]
