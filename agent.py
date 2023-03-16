@@ -4,10 +4,11 @@ from pathlib import Path
 import re
 import openai
 
-from prompt import HEADER, Understand, Execute, Generate
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import UnderstandMc, GenerateTemplate
+from prompt import HEADER, Understand, Execute, Generate
+from prompt import GenerateScxy, GenerateTemplate
+from prompt import UnderstandMc
 
 
 @dataclass
@@ -43,6 +44,11 @@ class Agent:
 
         if gen == "sc":
             self.generate = Generate(backend.OpenAI(
+                model = "text-davinci-003",
+                max_tokens=512,
+            ))
+        elif gen == "scxy":
+            self.generate = GenerateScxy(backend.OpenAI(
                 model = "text-davinci-003",
                 max_tokens=512,
             ))
@@ -112,6 +118,8 @@ class Agent:
     def generate_text(self, plan, past, view, info=None):
         if self.gen == "sc":
             return self.generate_text_sc(plan, past, view, info)
+        if self.gen == "scxy":
+            return self.generate_text_scxy(plan, past, view, info)
         elif self.gen == "template":
             return self.generate_text_template(plan, past, view, info)
         else:
@@ -123,6 +131,25 @@ class Agent:
         size_color = process_ctx(view)
         dots = size_color[np.array(refs).any(0)]
         descs = size_color_descriptions(dots)
+        descstring = []
+        for size, color in descs:
+            descstring.append(f"* A {size} and {color} dot")
+
+        kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
+        #print("INPUT")
+        #print(self.generate.print(kwargs))
+        out = self.generate(kwargs)
+        print("OUTPUT")
+        print(out)
+        return out, past + [out]
+
+    def generate_text_scxy(self, plan, past, view, info=None):
+        # process plan
+        refs = [r["target"] for r in plan]
+        size_color = process_ctx(view)
+        dots = size_color[np.array(refs).any(0)]
+        descs = size_color_descriptions(dots)
+        import pdb; pdb.set_trace()
         descstring = []
         for size, color in descs:
             descstring.append(f"* A {size} and {color} dot")

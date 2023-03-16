@@ -102,23 +102,30 @@ if __name__ == "__main__":
     from agent import Agent, State
     import minichain
 
-    #refres = "codegen"
-    refres = "mc"
-    #gen = "sc"
-    gen = "template"
+    import argparse
 
-    RUNREFRES = False
-    RUNGEN = True
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--refres", choices=["codegen", "mc"], default="mc")
+    parser.add_argument("--gen",
+        choices=["sc", "scxy", "template"],
+        default="template",
+    )
+    parser.add_argument("--run_refres", action="store_true")
+    parser.add_argument("--run_gen", action="store_true")
+    args = parser.parse_args()
+
+    refres = args.refres
+    gen = args.gen
 
     train, valid = get_data()
 
-    if RUNREFRES:
+    if args.run_refres:
         with minichain.start_chain("eval-res") as backend:
             agent = Agent(backend, refres, gen)
             reseval = Resolution().compute(agent, valid, 1)
         print(reseval)
 
-    if RUNGEN:
+    if args.run_gen:
         with minichain.start_chain("eval-gen") as backend:
             agent = Agent(backend, refres, gen)
             geneval = Generation().compute(agent, valid, 5)
