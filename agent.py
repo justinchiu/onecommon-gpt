@@ -3,6 +3,7 @@ import numpy as np
 from pathlib import Path
 import re
 import openai
+import ast
 
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
@@ -89,8 +90,13 @@ class Agent:
         kwargs = dict(text=text, past=past, view=view)
         #print(self.understand.print(kwargs))
         out = self.understand(kwargs)
-        import pdb; pdb.set_trace()
-        return out, past + [(text.strip(), out.strip())]
+
+        result = np.array(ast.literal_eval(out)) - 1
+        mention = np.zeros(7, dtype=bool)
+        if result is not None:
+            mention[result] = 1
+
+        return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")]
 
     def resolve_reference_codegen(self, text, past, view, info=None):
         # ensure text ends in punctuation
