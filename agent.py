@@ -19,8 +19,12 @@ class State:
 
 
 class Agent:
-    def __init__(self, backend):
+    def __init__(self, backend, refres, gen):
         self.backend = backend
+
+        self.refres = refres
+        self.gen = gen
+
         self.understand = Understand(backend.OpenAI(
             model = "code-davinci-002",
             max_tokens=2048,
@@ -31,6 +35,7 @@ class Agent:
             max_tokens=512,
         ))
 
+
     def read(self):
         pass
 
@@ -38,6 +43,16 @@ class Agent:
         pass
 
     def resolve_reference(self, text, past, view, info=None):
+        # dispatch
+        if self.refres == "codegen":
+            return self.resolve_reference_codegen(text, past, view, info=info)
+        elif self.refres == "mc":
+            return self.resolve_reference_mc(text, past, view, info=info)
+
+    def resolve_reference_mc(self, text, past, view, info=None):
+        import pdb; pdb.set_trace()
+
+    def resolve_reference_codegen(self, text, past, view, info=None):
         # ensure text ends in punctuation
         # codex seems to need a period
         if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
@@ -73,8 +88,31 @@ class Agent:
         import pdb; pdb.set_trace()
         raise NotImplementedError
 
-
     def generate_text(self, plan, past, view, info=None):
+        if self.gen == "sc":
+            return self.generate_text_sc(plan, past, view, info)
+        elif self.gen == "template":
+            return self.generate_text_template(plan, past, view, info)
+
+    def generate_text_sc(self, plan, past, view, info=None):
+        # process plan
+        refs = [r["target"] for r in plan]
+        size_color = process_ctx(view)
+        dots = size_color[np.array(refs).any(0)]
+        descs = size_color_descriptions(dots)
+        descstring = []
+        for size, color in descs:
+            descstring.append(f"* A {size} and {color} dot")
+
+        kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
+        print("INPUT")
+        print(self.generate.print(kwargs))
+        out = self.generate(kwargs)
+        print("OUTPUT")
+        print(out)
+        return out, past + [out]
+
+    def generate_text_template(self, plan, past, view, info=None):
         # process plan
         refs = [r["target"] for r in plan]
         size_color = process_ctx(view)
