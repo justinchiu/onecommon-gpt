@@ -1,5 +1,6 @@
 # Features for generation
- 
+
+from collections import defaultdict
 from itertools import combinations
 import numpy as np
 
@@ -13,12 +14,12 @@ from code.spatial import (
     get_top_right, get_top_left, get_bottom_right, get_bottom_left,
 )
 
-from features import size_color_descriptions
+from features import process_ctx, size_color_descriptions
 
 unary_functions = {
     "all_close": all_close,
-    "all_color": all_color,
-    "all_size": all_size,
+    #"all_color": all_color,
+    #"all_size": all_size,
 }
 
 binary_functions = {
@@ -29,9 +30,25 @@ binary_functions = {
 }
 
 def get_features(ctx):
+    xy = ctx[:,:2]
+    sc = process_ctx(ctx)
+
     set_features = {None: {}}
+    costs = defaultdict(int)
     for n in range(1,5):
         for idxs in combinations(range(7), n):
+            ndots = len(idxs)
+            dots = ctx[list(idxs)]
+            xys = xy[list(idxs)]
+            scs = sc[list(idxs)]
+            sizes = scs[:,0]
+            colors = scs[:,1]
+
+            counts = {
+                "colors": len(set(colors)),
+                "sizes": len(set(sizes)),
+            }
+
             unarys = {
                 k: fn(ctx[list(idxs)].reshape((n, 4)))
                 for k, fn in unary_functions.items()
@@ -40,8 +57,15 @@ def get_features(ctx):
                 k: fn(ctx[list(idxs)].reshape((n, 4)), ctx)
                 for k, fn in binary_functions.items()
             }
-            set_features[idxs] = unarys | binarys
-    return set_features
+            set_features[idxs] = counts | unarys | binarys
+
+            color_size_cost = sum(counts.values())
+            dist_cost = 1 if unarys["all_close"] else ndots
+            shape_cost = 1 if any(binarys.values()) else ndots
+
+            costs[idxs] = color_size_cost + dist_cost + shape_cost
+
+    return set_features, costs
 
 def partitions(plan):
     total_bits = 8
@@ -81,6 +105,7 @@ if __name__ == "__main__":
     ctx[:,1] = -ctx[:,1]
     #xy = np.random.rand((7,2)) * 2 - 1
     xy = ctx[:,:2]
+    sc = process_ctx(ctx)
 
     fig, ax = plt.subplots(figsize=(4,4))
     ax.scatter(
@@ -105,11 +130,11 @@ if __name__ == "__main__":
     st.image(buf, width=300)
     """
 
-    features = get_features(ctx)
+    features, costs = get_features(ctx)
 
     for parts in partitions(plan):
         feats = [features[part] for part in parts]
-        scores = [sum(part_feats.values()) for part_feats in feats]
+        scores = [costs[part ]for part in parts]
         score = sum(scores)
         print(parts)
         print(feats)
