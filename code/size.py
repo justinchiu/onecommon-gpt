@@ -16,3 +16,8 @@ def largest(dots):
 
 def smallest(dots):
     return dots[np.argmin(dots[:,-2])]
+
+
+def all_size(dots):
+    sizes = dots[:,-2] 
+    return np.abs(sizes[None] - sizes).max() < 0.1

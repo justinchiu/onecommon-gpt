@@ -15,6 +15,9 @@ def is_contiguous(dots, all_dots):
     return contiguous
 
 def is_line(dots, all_dots):
+    if len(dots) < 2: return False
+    if len(dots) == 2: return True
+
     dots = np.stack(dots)
     xy = dots[:,:2]
     rect = MultiPoint(xy).minimum_rotated_rectangle

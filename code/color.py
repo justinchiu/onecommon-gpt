@@ -1,3 +1,4 @@
+import numpy as np
 # dots are x, y, size, color
 
 # -1 is darkest
@@ -14,3 +15,7 @@ def is_light(dot):
 def is_grey(dot):
     return True
     return not is_dark(dot) and not is_light(dot)
+
+def all_color(dots):
+    colors = dots[:,-1]
+    return np.abs(colors[None] - colors).max() < 0.1
