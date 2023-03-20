@@ -16,7 +16,7 @@ def get_dots():
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
-if len(state) > 0:
+if state:
     print(state[0].tolist())
 else:
     print([0])
