@@ -18,6 +18,7 @@ from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
+from lists import add
 import numpy as np
 from functools import partial
 """

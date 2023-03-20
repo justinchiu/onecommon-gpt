@@ -44,8 +44,8 @@ class Eval(ABC):
                     preds.append(pred)
                     truelabels.append(label)
                     print("LABEL")
-                    print(label)
-                    #print(configs[label].nonzero()[0])
+                    #print(label)
+                    print(configs[label].nonzero()[0])
                     # use this for refres
 
         return self.metric.compute(predictions=preds, references=truelabels)

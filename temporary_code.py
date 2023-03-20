@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
 
 import sys
 sys.path.append("code")
@@ -13,12 +13,13 @@ from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
+from lists import add
 import numpy as np
 from functools import partial
 
 
 def get_dots():
-    dots = np.array([[-0.765, 0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, 0.76, 0.0, -0.24], [0.565, -0.085, -1.0, 0.9866666666666667], [-0.83, -0.405, 0.0, -0.6], [-0.365, -0.035, 0.3333333333333333, -0.88], [0.785, 0.025, 0.0, 0.30666666666666664], [0.59, -0.5, -0.6666666666666666, -0.22666666666666666]])
+    dots = np.array([[0.83, -0.245, -0.3333333333333333, -0.44], [0.445, -0.72, 0.3333333333333333, -0.5466666666666666], [0.575, 0.39, -1.0, -0.8933333333333333], [-0.865, 0.32, -1.0, 0.9066666666666666], [0.215, -0.37, -0.3333333333333333, 0.84], [0.675, -0.39, 1.0, 0.6], [-0.57, 0.485, 0.3333333333333333, -0.6533333333333333]])
     return dots
 
 
@@ -65,7 +66,7 @@ state = turn(state)
 # Them: What about a large medium grey dot?
 def turn(state):
     results = []
-    for dot in all_dots:
+    for dot in get1dots(all_dots):
         if is_large(dot, ctx):
             results.append(dot)
     return results
@@ -76,7 +77,7 @@ def turn(state):
     results = []
     for prev_dots in state:
         for dot in get1dots(all_dots):
-            if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(prev_dots + dot, ctx) and not are_middle(dot, prev_dots, ctx):
+            if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(prev_dots, dot), ctx) and not are_middle(dot, prev_dots, ctx):
                 results.append(prev_dots + dot)
     return results
 state = turn(state)
@@ -93,22 +94,14 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# Them: i have a light grey small dot next to a medium grey medium dot.
+# Them: i have a larger black dot all by itself down and to the left.
 def turn(state):
     results = []
-    for x,y in get2dots(all_dots):
-        if are_close(x,y, ctx) and is_light(x, ctx) and is_small(x, ctx) and is_medium(y, ctx) and is_medium(y, ctx):
-            results.append(np.array([x,y]))
+    for dot in get1dots(all_dots):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, ctx):
+            results.append(dot)
     return results
 state = turn(state)
-
-# You: yes i see that pair choose the small light grey dot <selection>.
-def select(state):
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if is_light(dot, ctx) and is_small(dot, ctx):
-            return [dot]
-state = select(state)
 
 
 
@@ -116,4 +109,7 @@ state = select(state)
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
-print(state[0].tolist())
+if len(state) > 0:
+    print(state[0].tolist())
+else:
+    print([0])
