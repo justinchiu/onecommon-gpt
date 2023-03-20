@@ -67,3 +67,6 @@ class UnderstandMc(TemplatePrompt[str]):
 
 class GenerateTemplate(TemplatePrompt[str]):
     template_file = "prompts/generate_template.j2"
+
+class GenerateMentions(TemplatePrompt[str]):
+    tempalte_file = "prompts/generate_mention.j2"

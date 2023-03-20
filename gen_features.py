@@ -131,9 +131,11 @@ def choose_mentions(plan, ctx):
                 is_valid = False
 
         score = sum(scores)
+        """
         print(parts)
         print(feats)
         print(scores)
+        """
         if is_valid and score < min_score:
             min_score = score
             best_parts = parts
@@ -141,59 +143,106 @@ def choose_mentions(plan, ctx):
             best_fn_name = fn_name
     mentions = get_mention(best_parts)
     mention_desc = describe_mention_specific_dots(ctx, plan, mentions)
+    """
     print(min_score)
     print(best_feats)
     print(best_parts)
     print(mention_desc)
     print(best_fn_name)
+    """
 
+    # TODO: Likely will need relative dot descriptions, as done in templates.
+    # Try this for now though!
     return mention_desc
 
+def print_mentions(dot_desc, mention_desc):
+    dot_string = "\n".join([f"* {d}" for d in dot_desc])
+    mention_string = "\n".join([f"* {d}" for d in mention_desc])
+    return f"Dot descriptions:\n{dot_string}\nMention:\n{mention_string}"
 
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    from matplotlib import cm
+    def plot_test_dots():
+        import matplotlib.pyplot as plt
+        from matplotlib import cm
 
-    ctx = np.array([
-        0.635, -0.4,   2/3, -1/6,  # 8
-        0.395, -0.7,   0.0,  3/4,  # 11
-        -0.74,  0.09,  2/3, -2/3,  # 13
-        -0.24, -0.63, -1/3, -1/6,  # 15
-        0.15,  -0.58,  0.0,  0.24, # 40
-        -0.295, 0.685, 0.0, -8/9,  # 50
-        0.035, -0.79, -2/3,  0.56, # 77
-    ], dtype=float).reshape(-1, 4)
-    real_ids = np.array(['8', '11', '13', '15', '40', '50', '77'], dtype=int)
-    # reflect across y axis
-    ctx[:,1] = -ctx[:,1]
-    #xy = np.random.rand((7,2)) * 2 - 1
-    xy = ctx[:,:2]
-    sc = process_ctx(ctx)
+        ctx = np.array([
+            0.635, -0.4,   2/3, -1/6,  # 8
+            0.395, -0.7,   0.0,  3/4,  # 11
+            -0.74,  0.09,  2/3, -2/3,  # 13
+            -0.24, -0.63, -1/3, -1/6,  # 15
+            0.15,  -0.58,  0.0,  0.24, # 40
+            -0.295, 0.685, 0.0, -8/9,  # 50
+            0.035, -0.79, -2/3,  0.56, # 77
+        ], dtype=float).reshape(-1, 4)
+        real_ids = np.array(['8', '11', '13', '15', '40', '50', '77'], dtype=int)
+        # reflect across y axis
+        ctx[:,1] = -ctx[:,1]
+        #xy = np.random.rand((7,2)) * 2 - 1
+        xy = ctx[:,:2]
+        sc = process_ctx(ctx)
 
-    fig, ax = plt.subplots(figsize=(4,4))
-    ax.scatter(
-        xy[:,0], xy[:,1],
-        marker='o',
-        s = 100 * (ctx[:,2] + 1),
-        c = -ctx[:,3],
-        cmap="binary",
-        edgecolor="black",
-        linewidth=1,
-    )
+        fig, ax = plt.subplots(figsize=(4,4))
+        ax.scatter(
+            xy[:,0], xy[:,1],
+            marker='o',
+            s = 100 * (ctx[:,2] + 1),
+            c = -ctx[:,3],
+            cmap="binary",
+            edgecolor="black",
+            linewidth=1,
+        )
 
-    #plan = np.array([1,0,1,1,0,0,0], dtype=bool)
-    plan = np.array([1,1,0,0,1,0,0], dtype=bool)
-    ax.scatter(xy[plan,0], xy[plan,1], marker="x", s=100, c="r")
-    for i, id in enumerate(real_ids):
-        ax.annotate(id, (xy[i,0]+.025, xy[i,1]+.025))
-    fig.savefig("view.png")
-    """
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    st.image(buf, width=300)
-    """
+        #plan = np.array([1,0,1,1,0,0,0], dtype=bool)
+        plan = np.array([1,1,0,0,1,0,0], dtype=bool)
+        ax.scatter(xy[plan,0], xy[plan,1], marker="x", s=100, c="r")
+        for i, id in enumerate(real_ids):
+            ax.annotate(id, (xy[i,0]+.025, xy[i,1]+.025))
+        fig.savefig("view.png")
+        """
+        buf = BytesIO()
+        fig.savefig(buf, format="png")
+        st.image(buf, width=300)
+        """
 
-    print(choose_mentions(plan, ctx))
-    import pdb; pdb.set_trace()
+        print(choose_mentions(plan, ctx))
+        import pdb; pdb.set_trace()
+    #plot_test_dots()
+
+    chat_ids = [
+        "C_de7fa0f481fd496e9e1ca0782dab395a",
+        "C_989ab1d919f0451fb0fee8376fcc5845",
+        "C_d629f8af77fe470db9e1ab8a6316ab62",
+        "C_13986318d82e4d6cb5fc544257e80fcc",
+        "C_303226e403bd4564b230cc462e12971b",
+    ]
+
+    from ocdata import get_data
+    train_data, valid_data = get_data()
+    for chat_id in chat_ids:
+        print(f"CHAT ID {chat_id}")
+        # find example
+        example = [
+            x for x in train_data
+            if x["chat_id"] == chat_id #and x["dialogue"][0].split() == "You:"
+        ][0]
+        ctx = example["context"]
+
+        mentions = example["all_referents"]
+
+        turns = example["dialogue"]
+
+        for t, turn in enumerate(turns):
+            if turn.split()[0] == "You:":
+                mention = np.array([x["target"] for x in mentions[t]])
+                if mention.sum() == 0:
+                    continue
+                plan = mention.any(0)
+                if t > 0:
+                    print("Previous turns:")
+                    print("\n".join(turns[:t]))
+                print(print_mentions(*choose_mentions(plan, ctx)))
+                print("Answer:")
+                print(turn)
+                import pdb; pdb.set_trace()
 
