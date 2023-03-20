@@ -10,6 +10,7 @@ from fns.color import all_color
 from fns.spatial import (
     all_close, are_close,
     are_above, are_below, are_right, are_left,
+    are_above_right, are_above_left, are_below_right, are_below_left,
     get_top, get_bottom, get_right, get_left,
     get_top_right, get_top_left, get_bottom_right, get_bottom_left,
 )
@@ -90,12 +91,64 @@ def partitions(plan):
     return idxs
 
 def get_mention(parts):
-    filtered_parts = [x for x in parts if x is not None]
+    filtered_parts = [list(x) for x in parts if x is not None]
     num_parts = len(filtered_parts)
     mentions = np.zeros((num_parts, 7))
-    for part in filtered_parts:
-        mentions[part] = 1
+    for i,part in enumerate(filtered_parts):
+        mentions[i, part] = 1
     return mentions
+
+def choose_mentions(plan, ctx):
+    features, costs = get_features(ctx)
+
+    min_score = 100
+    best_feats = None
+    best_parts = None
+    best_rel = None
+    best_fn_name = None
+    # ONLY BINARY PARTITIONS
+    for parts in partitions(plan):
+        parts = [part for part in parts if part]
+        feats = [features[part] for part in parts]
+        scores = [costs[part] for part in parts]
+        transition_score = 0
+        is_valid = True
+        fn_name = None
+        if len(parts) > 1:
+            # if there are multiple parts, require consistent spatial relationship
+            base = list(parts[0])
+            next = list(parts[1])
+
+            rels = [
+                are_above, are_below, are_left, are_right,
+                are_above_left, are_above_right, are_below_left, are_below_right,
+            ]
+            on_rels = [rel(next, base, ctx) for rel in rels]
+
+            if any(on_rels):
+                fn_name = rels[on_rels.index(True)].__name__
+            else:
+                is_valid = False
+
+        score = sum(scores)
+        print(parts)
+        print(feats)
+        print(scores)
+        if is_valid and score < min_score:
+            min_score = score
+            best_parts = parts
+            best_feats = feats
+            best_fn_name = fn_name
+    mentions = get_mention(best_parts)
+    mention_desc = describe_mention_specific_dots(ctx, plan, mentions)
+    print(min_score)
+    print(best_feats)
+    print(best_parts)
+    print(mention_desc)
+    print(best_fn_name)
+
+    return mention_desc
+
 
 
 if __name__ == "__main__":
@@ -141,32 +194,6 @@ if __name__ == "__main__":
     st.image(buf, width=300)
     """
 
-    features, costs = get_features(ctx)
-
-    min_score = 100
-    best_feats = None
-    best_parts = None
-    for parts in partitions(plan):
-        parts = [part for part in parts if part]
-        feats = [features[part] for part in parts]
-        scores = [costs[part] for part in parts]
-        transition_score = 0
-        if len(parts) > 1:
-            for cur, next in zip(parts[:-1], parts[1:]):
-                import pdb; pdb.set_trace()
-        score = sum(scores)
-        print(parts)
-        print(feats)
-        print(scores)
-        if score < min_score:
-            min_score = score
-            best_parts = parts
-            best_feats = feats
-    mentions = get_mention(parts)
-    mention_desc = describe_mention_specific_dots(ctx, plan, mentions)
-    print(min_score)
-    print(best_feats)
-    print(best_parts)
-    print(mention_desc)
+    print(choose_mentions(plan, ctx))
     import pdb; pdb.set_trace()
 

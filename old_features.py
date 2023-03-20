@@ -31,7 +31,8 @@ def describe_dot(i, dot_strings, dots, size_color):
     size_map = template.size_map5
     color_map = template.color_map5
     size, color = size_color[i]
-    return f"{dot_strings[i]} size {size_map[size]} and color {color_map[color]}"
+    #return f"{dot_strings[i]} size {size_map[size]} and color {color_map[color]}"
+    return f"{dot_strings[i]} {size_map[size]} size and {color_map[color]} color"
 
 def describe_dot_pair(
     i, j, dot_strings, dots,
@@ -440,7 +441,8 @@ def describe_mention_specific_dots(
     rounded_dots = (dots.round(2) * 100).astype(int)
 
     num_dots = dots.shape[0]
-    dot_strings = [f"dot{i}" for i in range(1, num_dots+1)]
+    #dot_strings = [f"dot{i}" for i in range(1, num_dots+1)]
+    dot_strings = [f"dot {i}" for i in range(1, num_dots+1)]
 
     ctx = process_ctx(dots)
     # unary
@@ -490,7 +492,8 @@ def describe_mention_specific_dots(
 
     mention_description = " [SEP] ".join(mention_descriptions)
 
-    return f"{description} [MSEP] {mention_description}"
+    return descs, mention_descriptions
+    #return f"{description} [MSEP] {mention_description}"
 
 
 if __name__ == "__main__":
