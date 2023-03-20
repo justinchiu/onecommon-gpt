@@ -66,4 +66,6 @@ def render(plan, context, confirm=None):
     feats = get_feats(plan, xy, sc)
     ids = plan.nonzero()[0]
     desc = template_rec.render(*feats, ids, confirm=confirm)
+    print(desc)
+    import pdb; pdb.set_trace()
     return desc

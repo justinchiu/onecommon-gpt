@@ -15,6 +15,7 @@ from template import (
     dot_template,
     spatial_dot_template,
     named_dot_template,
+    render_1,
     render_2,
     size_map3,
     color_map3,
@@ -452,11 +453,24 @@ class RegionNode:
             # already a RegionNode
             node.add(dot)
 
-def render(n, sc, xy, ids, confirm=None, flip_y=True, inner=False, num_buckets=5):
+def render(
+    n, sc, xy, ids,
+    confirm=None,
+    flip_y=False,
+    inner=False,
+    num_buckets=5,
+    use_names=False,
+):
     confirm_text = "Yes ." if confirm == 1 else "No ." if confirm == 0 else None
-    names = [NAMES[id] for id in ids]
+    names = [NAMES[id] for id in ids] if use_names else None
     size_map = size_map5 if num_buckets == 5 else size_map3
     color_map = color_map5 if num_buckets == 5 else color_map3
+    if n == 1:
+        if confirm is None:
+            return f"Do you see a {render_1(xy, sc, names, flip_y=flip_y, size_map=size_map, color_map=color_map)} dot"
+        else:
+            return f"{confirm_text} Do you see a {render_1(xy, sc, names, flip_y=flip_y, size_map=size_map,color_map=color_map)} dot"
+
     if n == 2:
         if confirm is None:
             return f"Do you see {render_2(xy, sc, names, flip_y=flip_y, size_map=size_map, color_map=color_map)}"

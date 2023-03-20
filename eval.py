@@ -44,8 +44,10 @@ class Eval(ABC):
                     preds.append(pred)
                     truelabels.append(label)
                     print("LABEL")
-                    #print(label)
-                    print(configs[label].nonzero()[0])
+                    if isinstance(self, Generation):
+                        print(label)
+                    elif isinstance(self, Resolution):
+                        print(configs[label].nonzero()[0])
                     # use this for refres
 
         return self.metric.compute(predictions=preds, references=truelabels)
@@ -110,7 +112,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--refres", choices=["codegen", "mc"], default="mc")
     parser.add_argument("--gen",
-        choices=["sc", "scxy", "template"],
+        choices=["sc", "scxy", "template", "templateonly"],
         default="template",
     )
     parser.add_argument("--run_refres", action="store_true")

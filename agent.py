@@ -58,6 +58,8 @@ class Agent:
                 model = "text-davinci-003",
                 max_tokens=1024,
             ))
+        elif gen == "templateonly":
+            pass
         else:
             raise ValueError
 
@@ -144,6 +146,8 @@ class Agent:
             return self.generate_text_scxy(plan, past, view, info)
         elif self.gen == "template":
             return self.generate_text_template(plan, past, view, info)
+        elif self.gen == "templateonly":
+            return self.generate_text_template_only(plan, past, view, info)
         else:
             raise ValueError
 
@@ -205,3 +209,16 @@ class Agent:
         print("OUTPUT")
         print(out)
         return out, past + [out]
+
+    def generate_text_template_only(self, plan, past, view, info=None):
+        if len(plan) == 0:
+            # no references...
+            return "okay", past + ["okay"]
+
+        # process plan
+        refs = [r["target"] for r in plan]
+        plan = np.array(refs).any(0)
+        desc = render(plan, view)
+        print(desc)
+        return desc, past + [desc]
+

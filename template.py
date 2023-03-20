@@ -304,6 +304,21 @@ def size_color_descriptions(sc, size_map=size_map5, color_map=color_map5):
         (size_map[x[0]], color_map[x[1]]) for x in sc
     ]
 
+def render_1(
+    xy, sc,
+    names=None, flip_y=True, concise=False,
+    size_map=size_map5,
+    color_map=color_map5,
+):
+    sc_desc = size_color_descriptions(sc, size_map, color_map)
+    return mention_1.render(
+        dot1 = named_dot_template.render(
+            size = sc_desc[0][0],
+            color = sc_desc[0][1],
+            name = names[0] if names is not None else None,
+        ),
+    )
+
 def render_2(
     xy, sc,
     names=None, flip_y=True, concise=False,
