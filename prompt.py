@@ -42,7 +42,7 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
 
 class Understand(TemplatePrompt[str]):
     template_file = "prompts/understand.j2"
-    stop_template = "#"
+    stop_templates = ["#", "# NEW"]
 
 
 class Execute(TemplatePrompt[list[int]]):

@@ -59,12 +59,14 @@ state = turn(state)
 
 # You: No.
 def turn(state):
+    # New question.
     results = []
     return results
 state = turn(state)
 
 # Them: What about a large medium grey dot?
 def turn(state):
+    # New question.
     results = []
     for dot in get1dots(all_dots):
         if is_large(dot, ctx):
@@ -74,6 +76,7 @@ state = turn(state)
 
 # You: Is there a small black one next to it?
 def turn(state):
+    # Follow up question, new dot.
     results = []
     for prev_dots in state:
         for dot in get1dots(all_dots):
@@ -82,7 +85,25 @@ def turn(state):
     return results
 state = turn(state)
 
-# Them: Yes, let's select the large one.
+# Them: No. Do you see three dots in a line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
+def turn(state):
+    # New question.
+    results = []
+    for x, y, z in get3dots(all_dots):
+        if (
+            is_line([x,y,z], ctx)
+            and x == get_top_left([x, y, z], ctx)
+            and is_light(x, ctx)
+            and are_middle(y, [x,y,z], ctx)
+            and is_grey(y, ctx)
+            and z == get_bottom_right([x, y, z], ctx)
+            and is_dark(z, ctx)
+        ):
+            results.append(prev_dots + dot)
+    return results
+state = turn(state)
+
+# You: Yes, let's select the large one.
 def select(state):
     results = [dot for dots in state for dot in dots]
     for dot in results:
@@ -102,6 +123,46 @@ def turn(state):
             results.append(dot)
     return results
 state = turn(state)
+
+# You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?.
+def turn(state):
+    results = []
+    for x, y, z in get3dots(all_dots):
+        if (
+            is_line([x,y,z], ctx)
+            and x == get_top_left([x, y, z], ctx)
+            and is_medium(x, ctx)
+            and is_dark(x, ctx)
+            and are_middle(y, [x,y,z], ctx)
+            and is_large(y, ctx)
+            and is_light(y, ctx)
+            and z == get_bottom_right([x, y, z], ctx)
+            and is_small(z, ctx)
+            and is_dark(z, ctx)
+        ):
+            results.append(prev_dots + dot)
+    return results
+state = turn(state)
+
+# Them: yes lets choose the middle one.
+def select(state):
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if are_middle(dot, results, ctx):
+            return [dot]
+state = select(state)
+
+
+dots = get_dots()
+state = []
+
+# You: okay <selection>.
+def select(state):
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if are_middle(dot, results, ctx):
+            return [dot]
+state = select(state)
 
 
 
