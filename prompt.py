@@ -19,6 +19,7 @@ from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
 import numpy as np
+from functools import partial
 """
 
 class TemplatePrompt(BaseTemplatePrompt[Output]):

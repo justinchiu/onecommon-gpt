@@ -14,6 +14,7 @@ from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
 import numpy as np
+from functools import partial
 
 
 def get_dots():
@@ -64,7 +65,7 @@ state = turn(state)
 # Them: What about a large medium grey dot?
 def turn(state):
     results = []
-    for dot in dots:
+    for dot in all_dots:
         if is_large(dot, ctx):
             results.append(dot)
     return results
@@ -76,35 +77,43 @@ def turn(state):
     for prev_dots in state:
         for dot in get1dots(all_dots):
             if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(prev_dots + dot, ctx) and not are_middle(dot, prev_dots, ctx):
-                results.append(dots + [dot])
+                results.append(prev_dots + dot)
     return results
 state = turn(state)
 
 # Them: Yes, let's select the large one.
 def select(state):
-    results = [dot for dots in context for dot in dots]
+    results = [dot for dots in state for dot in dots]
     for dot in results:
         if is_large(dot):
-            return dot[None,None]
-state = select(dots, state)
+            return [dot]
+state = select(state)
 
 
 dots = get_dots()
-context = []
+state = []
 
 # Them: i have a light grey small dot next to a medium grey medium dot.
-def turn(context):
+def turn(state):
     results = []
     for x,y in get2dots(all_dots):
-        if is_small(x, dots) and is_light(x, dots) and is_medium(y, dots) and is_grey(y, dots) and are_close(x,y, dots):
+        if are_close(x,y, ctx) and is_light(x, ctx) and is_small(x, ctx) and is_medium(y, ctx) and is_medium(y, ctx):
             results.append(np.array([x,y]))
     return results
-context = turn(context)
+state = turn(state)
+
+# You: yes i see that pair choose the small light grey dot <selection>.
+def select(state):
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if is_light(dot, ctx) and is_small(dot, ctx):
+            return [dot]
+state = select(state)
 
 
-#print(context)
-# context: num_candidates x size x feats=4
+
+#print(state)
+# state: num_candidates x size x feats=4
 # dots: 7 x feats=4
-# heuristic: take first candidate res[0]
-res = (np.array(context)[:,None] == dots[:,None]).all(-1)
-print(res[0].nonzero()[0].tolist())
+# heuristic: take first candidate state[0]
+print(state[0].tolist())

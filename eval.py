@@ -115,6 +115,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
+    parser.add_argument("--num_examples", default=1, type=int)
     args = parser.parse_args()
 
     refres = args.refres
@@ -125,12 +126,12 @@ if __name__ == "__main__":
     if args.run_refres:
         with minichain.start_chain("eval-res") as backend:
             agent = Agent(backend, refres, gen)
-            reseval = Resolution().compute(agent, valid, 10)
+            reseval = Resolution().compute(agent, valid, args.num_examples)
         print(reseval)
 
     if args.run_gen:
         with minichain.start_chain("eval-gen") as backend:
             agent = Agent(backend, refres, gen)
-            geneval = Generation().compute(agent, valid, 5)
+            geneval = Generation().compute(agent, valid, args.num_examples)
         print(geneval)
 

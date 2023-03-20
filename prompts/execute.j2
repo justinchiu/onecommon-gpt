@@ -11,9 +11,9 @@ def get_dots():
     return dots
 
 {{ code }}
-#print(context)
-# context: num_candidates x size x feats=4
+
+#print(state)
+# state: num_candidates x size x feats=4
 # dots: 7 x feats=4
-# heuristic: take first candidate res[0]
-res = (np.array(context)[:,None] == dots[:,None]).all(-1)
-print(res[0].nonzero()[0].tolist())
+# heuristic: take first candidate state[0]
+print(state[0].tolist())

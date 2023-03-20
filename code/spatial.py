@@ -68,7 +68,7 @@ def get_magnitude(x, direction, ctx):
 
 def get_direction(x, direction, ctx):
     magnitude = get_magnitude(x, direction, ctx)
-    return dots[magnitude.argmax()]
+    return x[magnitude.argmax()]
 
 def get_top(x, ctx):
     return get_direction(x, np.array([0,1]), ctx)
