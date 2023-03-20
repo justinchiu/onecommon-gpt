@@ -131,11 +131,9 @@ def choose_mentions(plan, ctx):
                 is_valid = False
 
         score = sum(scores)
-        """
-        print(parts)
-        print(feats)
-        print(scores)
-        """
+        #print(parts)
+        #print(feats)
+        #print(scores)
         if is_valid and score < min_score:
             min_score = score
             best_parts = parts
@@ -150,6 +148,7 @@ def choose_mentions(plan, ctx):
     print(mention_desc)
     print(best_fn_name)
     """
+    print(best_parts)
 
     # TODO: Likely will need relative dot descriptions, as done in templates.
     # Try this for now though!

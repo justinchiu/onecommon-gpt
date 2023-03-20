@@ -488,6 +488,7 @@ def describe_mention_specific_dots(
             #mention_descriptions.append(
                 #f"{src_str} {relation_string} {tgt_str}"
             #)
+            print(relation_string)
         mention_descriptions.append(describe_mention(tuple(tgt_mention), dots))
 
     mention_description = " [SEP] ".join(mention_descriptions)
