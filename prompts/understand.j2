@@ -59,7 +59,7 @@ def turn(state):
     for prev_dots in state:
         for dot in get1dots(all_dots):
             if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(prev_dots, dot), ctx) and not are_middle(dot, prev_dots, ctx):
-                results.append(prev_dots + dot)
+                results.append(add(prev_dots, dot))
     return results
 state = turn(state)
 
@@ -77,7 +77,7 @@ def turn(state):
             and z == get_bottom_right([x, y, z], ctx)
             and is_dark(z, ctx)
         ):
-            results.append(prev_dots + dot)
+            results.append(np.array([x,y,z]))
     return results
 state = turn(state)
 

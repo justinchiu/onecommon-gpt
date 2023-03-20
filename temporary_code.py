@@ -25,6 +25,8 @@ def get_dots():
 
 
 all_dots = np.arange(7)
+
+# NEW
 ctx = get_dots()
 state = []
 
@@ -81,7 +83,7 @@ def turn(state):
     for prev_dots in state:
         for dot in get1dots(all_dots):
             if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(prev_dots, dot), ctx) and not are_middle(dot, prev_dots, ctx):
-                results.append(prev_dots + dot)
+                results.append(add(prev_dots, dot))
     return results
 state = turn(state)
 
@@ -99,7 +101,7 @@ def turn(state):
             and z == get_bottom_right([x, y, z], ctx)
             and is_dark(z, ctx)
         ):
-            results.append(prev_dots + dot)
+            results.append(np.array([x,y,z]))
     return results
 state = turn(state)
 
@@ -111,7 +113,7 @@ def select(state):
             return [dot]
 state = select(state)
 
-
+# NEW
 dots = get_dots()
 state = []
 
@@ -119,50 +121,10 @@ state = []
 def turn(state):
     results = []
     for dot in get1dots(all_dots):
-        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, ctx):
+        if is_large(dot, dots) and is_dark(dot, dots) and are_below_left(dot, dots):
             results.append(dot)
     return results
 state = turn(state)
-
-# You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?.
-def turn(state):
-    results = []
-    for x, y, z in get3dots(all_dots):
-        if (
-            is_line([x,y,z], ctx)
-            and x == get_top_left([x, y, z], ctx)
-            and is_medium(x, ctx)
-            and is_dark(x, ctx)
-            and are_middle(y, [x,y,z], ctx)
-            and is_large(y, ctx)
-            and is_light(y, ctx)
-            and z == get_bottom_right([x, y, z], ctx)
-            and is_small(z, ctx)
-            and is_dark(z, ctx)
-        ):
-            results.append(prev_dots + dot)
-    return results
-state = turn(state)
-
-# Them: yes lets choose the middle one.
-def select(state):
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if are_middle(dot, results, ctx):
-            return [dot]
-state = select(state)
-
-
-dots = get_dots()
-state = []
-
-# You: okay <selection>.
-def select(state):
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if are_middle(dot, results, ctx):
-            return [dot]
-state = select(state)
 
 
 

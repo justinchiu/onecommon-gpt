@@ -7,7 +7,7 @@ def getnr(x, r):
     return x[np.stack(list(itertools.permutations(np.arange(n), r=r)))]
 
 def get1dots(x):
-    return [[x] for x in x]
+    return [np.array([x]) for x in x]
 
 def get2dots(x):
     return getnr(x, 2)
