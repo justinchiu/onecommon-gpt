@@ -79,7 +79,7 @@ def turn(state):
             is_line([x,y,z], ctx)
             and x == get_top_left([x, y, z], ctx)
             and is_light(x, ctx)
-            and are_middle(y, [x,y,z], ctx)
+            and are_middle([y], [x,y,z], ctx)
             and is_grey(y, ctx)
             and z == get_bottom_right([x, y, z], ctx)
             and is_dark(z, ctx)

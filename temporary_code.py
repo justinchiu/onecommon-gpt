@@ -26,18 +26,20 @@ def get_dots():
 
 all_dots = np.arange(7)
 
-# NEW
+# New.
 ctx = get_dots()
 state = []
 
 # Them: got a triangle of 3 light grey dots.
 def turn(state):
+    # New question.
     results = []
     for x,y,z in get3dots(all_dots):
         if is_triangle([x,y,z], ctx) and all(map(partial(is_light, ctx=ctx), [x,y,z])):
             results.append(np.array([x,y,z]))
     return results
 state = turn(state)
+# End.
 
 # You: Could be. One on right is largest?
 def turn(state):
@@ -48,6 +50,7 @@ def turn(state):
             results.append(result)
     return results
 state = turn(state)
+# End.
 
 # Them: Nevermind. Do you see a pair of dark dots?
 def turn(state):
@@ -58,6 +61,7 @@ def turn(state):
             results.append(result)
     return results
 state = turn(state)
+# End.
 
 # You: No.
 def turn(state):
@@ -65,6 +69,7 @@ def turn(state):
     results = []
     return results
 state = turn(state)
+# End.
 
 # Them: What about a large medium grey dot?
 def turn(state):
@@ -75,6 +80,7 @@ def turn(state):
             results.append(dot)
     return results
 state = turn(state)
+# End.
 
 # You: Is there a small black one next to it?
 def turn(state):
@@ -86,6 +92,7 @@ def turn(state):
                 results.append(add(prev_dots, dot))
     return results
 state = turn(state)
+# End.
 
 # Them: No. Do you see three dots in a line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
 def turn(state):
@@ -104,61 +111,53 @@ def turn(state):
             results.append(np.array([x,y,z]))
     return results
 state = turn(state)
+# End.
 
 # You: Yes, let's select the large one.
 def select(state):
+    # Select a dot.
     results = [dot for dots in state for dot in dots]
     for dot in results:
         if is_large(dot):
             return [dot]
 state = select(state)
+# End.
 
-# NEW
+# New.
 dots = get_dots()
 state = []
 
 # Them: i have a larger black dot all by itself down and to the left.
 def turn(state):
+    # New question.
     results = []
     for dot in get1dots(all_dots):
-        if is_large(dot, dots) and is_dark(dot, dots) and are_below_left(dot, dots):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, ctx):
             results.append(dot)
     return results
 state = turn(state)
+# End.
 
 # You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?.
 def turn(state):
+    # New question.
     results = []
     for x, y, z in get3dots(all_dots):
         if (
-            is_line([x,y,z], dots)
-            and x == get_top_left([x, y, z], dots)
-            and is_medium(x, dots)
-            and is_dark(x, dots)
-            and are_middle(y, [x,y,z], dots)
-            and is_large(y, dots)
-            and is_light(y, dots)
-            and z == get_bottom_right([x, y, z], dots)
-            and is_small(z, dots)
-            and is_dark(z, dots)
+            is_triangle([x,y,z], ctx)
+            and x == get_top_left([x, y, z], ctx)
+            and is_medium(x, ctx)
+            and is_dark(x, ctx)
+            and are_middle(y, [x,y,z], ctx)
+            and is_large(y, ctx)
+            and is_light(y, ctx)
+            and z == get_bottom_right([x, y, z], ctx)
+            and is_small(z, ctx)
+            and is_dark(z, ctx)
         ):
             results.append(np.array([x,y,z]))
     return results
 state = turn(state)
-
-# Them: yes lets choose the middle one.
-def select(state):
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if are_middle(dot, results, dots):
-            return [dot]
-state = select(state)
-
-# You: okay <selection>.
-def select(state):
-    return state
-state = select(state)
-
 
 
 #print(state)
