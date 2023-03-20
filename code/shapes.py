@@ -3,13 +3,12 @@ from shapely import Point, MultiPoint
 import numpy as np
 import math
 
-def is_nearest(dots, all_dots):
+def is_nearest(x, ctx):
     raise NotImplementedError
 
-def is_contiguous(dots, all_dots):
-    dots = np.stack(dots)
-    xy = dots[:,:2]
-    all_xy = all_dots[:,:2]
+def is_contiguous(x, ctx):
+    xy = ctx[x,:2]
+    all_xy = ctx[:,:2]
     hull = MultiPoint(xy).convex_hull
     contiguous = not any([
         shapely.contains_xy(hull, x, y)
@@ -17,12 +16,11 @@ def is_contiguous(dots, all_dots):
     ])
     return contiguous
 
-def is_line(dots, all_dots):
-    if len(dots) < 2: return False
-    if len(dots) == 2: return True
+def is_line(x, ctx):
+    if len(x) < 2: return False
+    if len(x) == 2: return True
 
-    dots = np.stack(dots)
-    xy = dots[:,:2]
+    xy = ctx[x,:2]
     rect = MultiPoint(xy).minimum_rotated_rectangle
 
     # get coordinates of polygon vertices
@@ -43,10 +41,10 @@ def is_line(dots, all_dots):
     # check angle later
     return math.fabs(math.atan(length / width)) < math.pi / 15
 
-def is_triangle(dots, all_dots):
-    line = is_line(dots, all_dots)
-    return not line and len(dots) == 3 and is_contiguous(dots, all_dots)
+def is_triangle(x, ctx):
+    line = is_line(x, ctx)
+    return not line and len(x) == 3 and is_contiguous(x, ctx)
 
 
-def is_square(dots, all_dots):
-    return len(dots) == 4 and is_contiguous(dots, all_dots)
+def is_square(x, ctx):
+    return len(x) == 4 and is_contiguous(x, ctx)

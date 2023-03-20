@@ -1,23 +1,23 @@
 import numpy as np
 
 
-def is_large(dot):
-    return dot[-2] > 0.4
+def is_large(x, ctx):
+    return ctx[x, -2] > 0.4
 
-def is_small(dot):
-    return dot[-2] < -0.4
+def is_small(x, ctx):
+    return ctx[x, -2] < -0.4
 
-def is_medium(dot):
+def is_medium(x, ctx):
     return True
 
 
-def largest(dots):
-    return dots[np.argmax(dots[:,-2])]
+def largest(x, ctx):
+    return np.argmax(ctx[x,-2])
 
-def smallest(dots):
-    return dots[np.argmin(dots[:,-2])]
+def smallest(x, ctx):
+    return np.argmin(ctx[x,-2])
 
 
-def all_size(dots):
-    sizes = dots[:,-2] 
+def all_size(dots, ctx):
+    sizes = ctx[x,-2] 
     return np.abs(sizes[None] - sizes).max() < 0.1

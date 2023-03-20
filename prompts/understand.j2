@@ -1,67 +1,70 @@
 {{ header }}
 
-dots = get_dots()
-context = []
+all_dots = np.arange(7)
+ctx = get_dots()
+state = []
 
 # Them: got a triangle of 3 light grey dots.
-def turn(dots, context):
+def turn(state):
     results = []
-    for x,y,z in get3dots(dots):
-        if is_triangle([x,y,z], dots) and all(map(is_light, [x,y,z])):
+    for x,y,z in get3dots(all_dots):
+        if is_triangle([x,y,z], ctx) and all(map(partial(is_light, ctx=ctx), [x,y,z])):
             results.append(np.array([x,y,z]))
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # You: Could be. One on right is largest?
-def turn(dots, context):
-    results = context
+def turn(state):
+    # Follow up question.
+    results = state
     for result in results:
-        if (largest(result) == get_right(result)).all():
+        if (largest(result, ctx) == get_right(result, ctx)).all():
             results.append(result)
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # Them: Nevermind. Do you see a pair of dark dots?
-def turn(dots, context):
+def turn(state):
+    # New question.
     results = []
-    for result in get2dots(dots):
+    for result in get2dots(all_dots):
         if all_close(result) and all(map(is_dark, result)):
             results.append(result)
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # You: No.
-def turn(dots, context):
+def turn(state):
     results = []
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # Them: What about a large medium grey dot?
-def turn(dots, context):
+def turn(state):
     results = []
     for dot in dots:
         if is_large(dot):
             results.append(dot)
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # You: Is there a small black one next to it?
-def turn(dots, context):
+def turn(state):
     results = []
     for prev_dots in context:
         for dot in dots:
             if is_small(dot) and is_dark(dot) and all_close(prev_dots + [dot]) and not_in(dot, dots):
                 results.append(dots + [dot])
     return results
-context = turn(dots, context)
+state = turn(state)
 
 # Them: Yes, let's select the large one.
-def select(dots, context):
+def select(state):
     results = [dot for dots in context for dot in dots]
     for dot in results:
         if is_large(dot):
             return dot[None,None]
-context = select(dots, context)
+state = select(dots, state)
 
 
 dots = get_dots()

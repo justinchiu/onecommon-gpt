@@ -8,13 +8,14 @@ from code.shapes import is_triangle, is_line, is_square, is_contiguous
 from code.size import is_large, is_small, all_size
 from code.color import all_color
 from code.spatial import (
-    all_close, is_close,
-    is_above, is_below, is_right, is_left,
+    all_close, are_close,
+    are_above, are_below, are_right, are_left,
     get_top, get_bottom, get_right, get_left,
     get_top_right, get_top_left, get_bottom_right, get_bottom_left,
 )
 
 from features import process_ctx, size_color_descriptions
+from old_features import describe_mention_specific_dots
 
 unary_functions = {
     "all_close": all_close,
@@ -65,8 +66,6 @@ def get_features(ctx):
 
             costs[idxs] = color_size_cost + dist_cost + shape_cost
 
-            import pdb; pdb.set_trace()
-
     return set_features, costs
 
 # only into two partitions
@@ -89,6 +88,15 @@ def partitions(plan):
         for mask, complement in zip(masks[:num_masks//2], complements[:num_masks//2])
     ]
     return idxs
+
+def get_mention(parts):
+    filtered_parts = [x for x in parts if x is not None]
+    num_parts = len(filtered_parts)
+    mentions = np.zeros((num_parts, 7))
+    for part in filtered_parts:
+        mentions[part] = 1
+    return mentions
+
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
@@ -140,7 +148,7 @@ if __name__ == "__main__":
     best_parts = None
     for parts in partitions(plan):
         feats = [features[part] for part in parts]
-        scores = [costs[part ]for part in parts]
+        scores = [costs[part]for part in parts]
         score = sum(scores)
         print(parts)
         print(feats)
@@ -149,8 +157,11 @@ if __name__ == "__main__":
             min_score = score
             best_parts = parts
             best_feats = feats
+    mentions = get_mention(parts)
+    mention_desc = describe_mention_specific_dots(ctx, plan, mentions)
     print(min_score)
     print(best_feats)
     print(best_parts)
+    print(mention_desc)
     import pdb; pdb.set_trace()
 

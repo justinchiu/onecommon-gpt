@@ -6,7 +6,7 @@ sys.path.append("code")
 
 from dot import get_dots
 from shapes import is_triangle, is_line, is_square
-from spatial import all_close, is_close, is_above, is_below, is_right, is_left
+from spatial import all_close, are_close, are_above, are_below, are_right, are_left, are_above_left, are_above_right, are_below_right, are_below_left
 from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
@@ -91,18 +91,10 @@ context = []
 def turn(dots, context):
     results = []
     for x,y in get2dots(dots):
-        if is_close(x,y) and is_small(x) and is_light(x) and is_medium(y) and is_grey(y):
+        if is_small(x) and is_light(x) and is_medium(y) and is_grey(y) and all_close([x,y]):
             results.append(np.array([x,y]))
     return results
 context = turn(dots, context)
-
-# You: yes i see that pair choose the small light grey dot <selection>.
-def select(dots, context):
-    results = [dot for dots in context for dot in dots]
-    for dot in results:
-        if is_small(dot) and is_light(dot) and is_grey(dot):
-            return dot[None,None]
-context = select(dots, context)
 
 
 #print(context)

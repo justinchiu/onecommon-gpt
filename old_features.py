@@ -312,7 +312,8 @@ def describe_plan_specific_dots(
                     multihot = np.zeros(7, dtype=bool)
                     multihot[list(idxs)] = True
                     #contig = is_contiguous(multihot, dots[:,:2], 7)
-                    contig = is_contiguous(dots[multihot], dots)
+                    #contig = is_contiguous(dots[multihot], dots)
+                    contig = is_contiguous(multihot, dots)
                     angles = get_angles(xy)
                     max_angle = angles.max() * 180 / math.pi
                     # hard-coded threshold
@@ -386,7 +387,8 @@ def describe_mention(idxs, dots):
         multihot = np.zeros(7, dtype=bool)
         multihot[list(idxs)] = True
         #contig = is_contiguous(multihot, dots[:,:2], 7)
-        contig = is_contiguous(dots[multihot], dots)
+        #contig = is_contiguous(dots[multihot], dots)
+        contig = is_contiguous(multihot, dots)
         angles = get_angles(xy)
         max_angle = angles.max() * 180 / math.pi
         # hard-coded threshold
@@ -512,13 +514,17 @@ if __name__ == "__main__":
     plan = np.zeros(7, dtype=np.int8)
     plan[plan_idx] = 1
 
-
     mentions = plan[None]
+    mentions = np.array([
+        [1,1,0,0,0,0,0],
+        [0,0,0,0,1,0,0],
+    ])
 
+    # mention_out looks pretty good
     mention_out = describe_mention_specific_dots(ctx, plan, mentions)
-
     dots_out = describe_dots(ctx)
-
     plan_out = describe_plan_specific_dots(ctx, plan)
-    import pdb; pdb.set_trace()
+    print(mention_out)
+    print(dots_out)
+    print(plan_out)
 
