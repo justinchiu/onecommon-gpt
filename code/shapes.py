@@ -3,6 +3,9 @@ from shapely import Point, MultiPoint
 import numpy as np
 import math
 
+def is_nearest(dots, all_dots):
+    raise NotImplementedError
+
 def is_contiguous(dots, all_dots):
     dots = np.stack(dots)
     xy = dots[:,:2]

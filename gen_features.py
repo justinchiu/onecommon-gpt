@@ -65,8 +65,11 @@ def get_features(ctx):
 
             costs[idxs] = color_size_cost + dist_cost + shape_cost
 
+            import pdb; pdb.set_trace()
+
     return set_features, costs
 
+# only into two partitions
 def partitions(plan):
     total_bits = 8
     size = plan.sum().item()
@@ -132,6 +135,9 @@ if __name__ == "__main__":
 
     features, costs = get_features(ctx)
 
+    min_score = 100
+    best_feats = None
+    best_parts = None
     for parts in partitions(plan):
         feats = [features[part] for part in parts]
         scores = [costs[part ]for part in parts]
@@ -139,4 +145,12 @@ if __name__ == "__main__":
         print(parts)
         print(feats)
         print(scores)
+        if score < min_score:
+            min_score = score
+            best_parts = parts
+            best_feats = feats
+    print(min_score)
+    print(best_feats)
+    print(best_parts)
     import pdb; pdb.set_trace()
+
