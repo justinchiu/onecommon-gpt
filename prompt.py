@@ -11,11 +11,13 @@ from minichain import Output, Request, Prompt
 
 HEADER = """from dot import get_dots
 from shapes import is_triangle, is_line, is_square
-from spatial import all_close, are_close, are_above, are_below, are_right, are_left, are_above_left, are_above_right, are_below_right, are_below_left
+from spatial import all_close, are_close, are_above, are_below, are_right, are_left
+from spatial import are_above_left, are_above_right, are_below_right, are_below_left
+from spatial import are_middle
 from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
-from iterators import get2dots, get3dots
+from iterators import get1dots, get2dots, get3dots
 import numpy as np
 """
 

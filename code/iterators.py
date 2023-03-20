@@ -5,6 +5,9 @@ def getnr(x, r):
     n = len(x)
     return x[np.stack(list(itertools.combinations(np.arange(n), r=r)))]
 
+def get1dots(x):
+    return [[x] for x in x]
+
 def get2dots(x):
     return getnr(x, 2)
 

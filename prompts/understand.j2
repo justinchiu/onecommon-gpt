@@ -28,7 +28,7 @@ def turn(state):
     # New question.
     results = []
     for result in get2dots(all_dots):
-        if all_close(result) and all(map(is_dark, result)):
+        if all_close(result, ctx) and all(map(partial(is_dark, ctx=ctx), result)):
             results.append(result)
     return results
 state = turn(state)
@@ -43,7 +43,7 @@ state = turn(state)
 def turn(state):
     results = []
     for dot in dots:
-        if is_large(dot):
+        if is_large(dot, ctx):
             results.append(dot)
     return results
 state = turn(state)
@@ -51,9 +51,9 @@ state = turn(state)
 # You: Is there a small black one next to it?
 def turn(state):
     results = []
-    for prev_dots in context:
-        for dot in dots:
-            if is_small(dot) and is_dark(dot) and all_close(prev_dots + [dot]) and not_in(dot, dots):
+    for prev_dots in state:
+        for dot in get1dots(all_dots):
+            if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(prev_dots + dot, ctx) and not are_middle(dot, prev_dots, ctx):
                 results.append(dots + [dot])
     return results
 state = turn(state)
