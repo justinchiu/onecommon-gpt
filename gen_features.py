@@ -4,10 +4,10 @@ from collections import defaultdict
 from itertools import combinations
 import numpy as np
 
-from code.shapes import is_triangle, is_line, is_square, is_contiguous
-from code.size import is_large, is_small, all_size
-from code.color import all_color
-from code.spatial import (
+from fns.shapes import is_triangle, is_line, is_square, is_contiguous
+from fns.size import is_large, is_small, all_size
+from fns.color import all_color
+from fns.spatial import (
     all_close, are_close,
     are_above, are_below, are_right, are_left,
     get_top, get_bottom, get_right, get_left,
@@ -39,9 +39,10 @@ def get_features(ctx):
     for n in range(1,5):
         for idxs in combinations(range(7), n):
             ndots = len(idxs)
-            dots = ctx[list(idxs)]
-            xys = xy[list(idxs)]
-            scs = sc[list(idxs)]
+            idxs = list(idxs)
+            dots = ctx[idxs]
+            xys = xy[idxs]
+            scs = sc[idxs]
             sizes = scs[:,0]
             colors = scs[:,1]
 
@@ -51,21 +52,20 @@ def get_features(ctx):
             }
 
             unarys = {
-                k: fn(ctx[list(idxs)].reshape((n, 4)))
+                k: fn(idxs, ctx)
                 for k, fn in unary_functions.items()
             }
             binarys = {
-                k: fn(ctx[list(idxs)].reshape((n, 4)), ctx)
+                k: fn(idxs, ctx)
                 for k, fn in binary_functions.items()
             }
-            set_features[idxs] = counts | unarys | binarys
+            set_features[tuple(idxs)] = counts | unarys | binarys
 
             color_size_cost = sum(counts.values())
             dist_cost = 1 if unarys["all_close"] else ndots
             shape_cost = 1 if any(binarys.values()) else ndots
 
-            costs[idxs] = color_size_cost + dist_cost + shape_cost
-
+            costs[tuple(idxs)] = color_size_cost + dist_cost + shape_cost
     return set_features, costs
 
 # only into two partitions
@@ -147,8 +147,13 @@ if __name__ == "__main__":
     best_feats = None
     best_parts = None
     for parts in partitions(plan):
+        parts = [part for part in parts if part]
         feats = [features[part] for part in parts]
-        scores = [costs[part]for part in parts]
+        scores = [costs[part] for part in parts]
+        transition_score = 0
+        if len(parts) > 1:
+            for cur, next in zip(parts[:-1], parts[1:]):
+                import pdb; pdb.set_trace()
         score = sum(scores)
         print(parts)
         print(feats)

@@ -10,7 +10,7 @@ import itertools
 import math
 
 import template
-from code.shapes import is_contiguous
+from fns.shapes import is_contiguous
 from features import process_ctx
 
 import bitutils
