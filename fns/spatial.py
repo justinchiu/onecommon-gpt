@@ -54,8 +54,13 @@ def are_middle(x, y, ctx):
     xy_a = ctx[x,:2]
     xy_b = ctx[y,:2]
     hull = MultiPoint(xy_b).convex_hull
+    # very generous
     return all([
         shapely.contains_xy(hull, x, y)
+        or shapely.contains_xy(hull, x+0.01, y)
+        or shapely.contains_xy(hull, x-0.01, y)
+        or shapely.contains_xy(hull, x, y+0.01)
+        or shapely.contains_xy(hull, x, y-0.01)
         for x,y in xy_a
     ])
 

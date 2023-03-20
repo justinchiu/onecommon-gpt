@@ -2,10 +2,10 @@ import numpy as np
 
 
 def is_large(x, ctx):
-    return ctx[x, -2] > 0.4
+    return ctx[x, -2] > 0.3
 
 def is_small(x, ctx):
-    return ctx[x, -2] < -0.4
+    return ctx[x, -2] < -0.3
 
 def is_medium(x, ctx):
     return True

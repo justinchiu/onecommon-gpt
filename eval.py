@@ -10,9 +10,10 @@ class Eval(ABC):
         configs = bitutils.get_configs(128)
         preds = []
         truelabels = []
-        for example in data[:num_examples]:
+        for ne, example in enumerate(data[:num_examples]):
             chatid = example["chat_id"]
             scenarioid = example["scenario_id"]
+            print(f"Example {ne}")
             print(scenarioid)
             print(chatid)
 

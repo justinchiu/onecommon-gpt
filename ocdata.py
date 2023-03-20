@@ -133,6 +133,8 @@ def get_examples(raw_data):
 
         output = int(get_tag(words, OUTPUT_TAG)[0])
         context = np.array(context).reshape((7, 4))
+        # y-axis is inverted
+        context[:,1] = -context[:,1]
         real_ids = get_tag(words, "real_ids")
         partner_real_ids = get_tag(words, "partner_real_ids")
         agent = int(get_tag(words, "agent")[0])

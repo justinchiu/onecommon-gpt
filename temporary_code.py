@@ -19,7 +19,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[0.83, -0.245, -0.3333333333333333, -0.44], [0.445, -0.72, 0.3333333333333333, -0.5466666666666666], [0.575, 0.39, -1.0, -0.8933333333333333], [-0.865, 0.32, -1.0, 0.9066666666666666], [0.215, -0.37, -0.3333333333333333, 0.84], [0.675, -0.39, 1.0, 0.6], [-0.57, 0.485, 0.3333333333333333, -0.6533333333333333]])
+    dots = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
     return dots
 
 
@@ -167,9 +167,11 @@ def turn(state):
             and is_dark(z, ctx)
         ):
             results.append(np.array([x,y,z]))
+            import pdb; pdb.set_trace()
     return results
 state = turn(state)
 # End.
+import pdb; pdb.set_trace()
 
 # Them: yes lets choose the middle one.
 def select(state):
@@ -178,14 +180,6 @@ def select(state):
     for dot in results:
         if are_middle(dot, results, ctx):
             return [dot]
-state = select(state)
-# End.
-
-# You: okay <selection>.
-def select(state):
-    # Select a dot.
-    results = [dot for dots in state for dot in dots]
-    return results
 state = select(state)
 
 
@@ -196,4 +190,6 @@ state = select(state)
 if state:
     print(state[0].tolist())
 else:
-    print([0])
+    print("None")
+    #raise ValueError
+    #print([0])
