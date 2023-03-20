@@ -20,8 +20,8 @@ state = turn(state)
 # You: Could be. One on right is largest?
 def turn(state):
     # Follow up question.
-    results = state
-    for result in results:
+    results = []
+    for result in state:
         if (largest(result, ctx) == get_right(result, ctx)).all():
             results.append(result)
     return results
@@ -89,7 +89,18 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Yes, let's select the large one.
+# You: Yes. Is the top one close to the middle one?
+def turn(state):
+    # Follow up question.
+    results = []
+    for prev_dots in state:
+        if are_close([get_top(prev_dots, ctx)], [get_middle(prev_dots, ctx)], ctx):
+            results.append(prev_dots)
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, let's select the large one.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
