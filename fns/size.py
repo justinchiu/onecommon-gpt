@@ -18,13 +18,13 @@ def smallest(x, ctx):
     return x[np.argmin(ctx[x,-2])]
 
 
-def same_size(dots, ctx):
+def same_size(x, ctx):
     sizes = ctx[x,-2] 
-    return np.abs(sizes[None] - sizes).max() < 0.1
+    return np.abs(sizes[:,None] - sizes).max() < 0.1
 
-def different_size(dots, ctx):
+def different_size(x, ctx):
     sizes = ctx[x,-2]
-    return np.abs(sizes[None] - sizes).min() > 0.3
+    return np.abs(sizes[:,None] - sizes + np.eye(len(x))).min() > 0.3
 
 
 def are_larger(x, y, ctx):

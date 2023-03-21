@@ -16,30 +16,46 @@ def is_contiguous(x, ctx):
     ])
     return contiguous
 
+def unit_vector(vector, axis=None):
+    """ Returns the unit vector of the vector.  """
+    return vector / np.linalg.norm(vector, axis=axis, keepdims=True)
+
+def angle_between(v1, v2):
+    """ Returns the angle in radians between vectors 'v1' and 'v2'::
+            >>> angle_between((1, 0, 0), (0, 1, 0))
+            1.5707963267948966
+            >>> angle_between((1, 0, 0), (1, 0, 0))
+            0.0
+            >>> angle_between((1, 0, 0), (-1, 0, 0))
+            3.141592653589793
+    """
+    v1_u = unit_vector(v1)
+    v2_u = unit_vector(v2)
+    return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
+
+def get_angles(xys):
+    num_dots = xys.shape[0]
+    pairs = [
+        [tgt for tgt in range(num_dots) if src != tgt]
+        for src in range(num_dots)
+    ]
+    xy_pairs = xys[np.array(pairs)]
+    diffs = xys[:,None] - xy_pairs
+    diffs = unit_vector(diffs, 1)
+    return np.arccos(np.clip(
+        (diffs[:,0] * diffs[:,1]).sum(-1),
+        -1, 1
+    ))
+
 def is_line(x, ctx):
     if len(x) < 2: return False
     if len(x) == 2: return True
 
     xy = ctx[x,:2]
-    rect = MultiPoint(xy).minimum_rotated_rectangle
 
-    # get coordinates of polygon vertices
-    x, y = rect.exterior.coords.xy
+    angles = get_angles(xy)
+    return max(angles) * 180 / math.pi > 135
 
-    # get length of bounding box edges
-    edge_length = (
-        Point(x[0], y[0]).distance(Point(x[1], y[1])),
-        Point(x[1], y[1]).distance(Point(x[2], y[2])),
-    )
-
-    # get length of polygon as the longest edge of the bounding box
-    length = max(edge_length)
-
-    # get width of polygon as the shortest edge of the bounding box
-    width = min(edge_length)
-
-    # check angle later
-    return math.fabs(math.atan(width / length)) < math.pi / 15
 
 def is_triangle(x, ctx):
     line = is_line(x, ctx)

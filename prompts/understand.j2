@@ -17,12 +17,12 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Could be. One on right is largest?
+# You: Could be. One on right is largest with a small gray on top??
 def turn(state):
     # Follow up question.
     results = []
     for result in state:
-        if (largest(result, ctx) == get_right(result, ctx)).all():
+        if (largest(result, ctx) == get_right(result, ctx)).all() and is_small(get_top(result, ctx), ctx):
             results.append(result)
     return results
 state = turn(state)

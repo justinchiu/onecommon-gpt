@@ -26,11 +26,11 @@ def lightest(x, ctx):
 
 def same_color(x, ctx):
     colors = ctx[x,-1]
-    return np.abs(colors[None] - colors).max() < 0.1
+    return np.abs(colors[:,None] - colors).max() < 0.1
 
 def different_color(x, ctx):
     colors = ctx[x,-1]
-    return np.abs(colors[None] - colors).min() > 0.3
+    return np.abs(colors[:,None] - colors + np.eye(len(x))).min() > 0.3
 
 
 def are_darker(x, y, ctx):

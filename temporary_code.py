@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
+    dots = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
     return dots
 
 
@@ -43,12 +43,12 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Could be. One on right is largest?
+# You: Could be. One on right is largest with a small gray on top??
 def turn(state):
     # Follow up question.
     results = []
     for result in state:
-        if (largest(result, ctx) == get_right(result, ctx)).all():
+        if (largest(result, ctx) == get_right(result, ctx)).all() and is_small(get_top(result, ctx), ctx):
             results.append(result)
     return results
 state = turn(state)
@@ -185,7 +185,7 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# You: i have a light grey small dot next to a medium grey medium dot.
+# Them: i have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
@@ -196,7 +196,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: yes i see that pair choose the small light grey dot <selection>.
+# You: yes i see that pair choose the small light grey dot <selection>.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
