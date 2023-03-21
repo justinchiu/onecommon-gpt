@@ -105,7 +105,7 @@ def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
     for dot in results:
-        if is_large(dot):
+        if is_large(dot, ctx):
             return [dot]
 state = select(state)
 # End.
@@ -137,7 +137,17 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Select the large black one. <selection>.
+# You: Select the large black one.
+def turn(state):
+    # Follow up question.
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if is_large(dot, ctx) and is_dark(dot, ctx):
+            return [dot]
+state = select(state)
+# End.
+ 
+# Them: Okay. <selection>.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]

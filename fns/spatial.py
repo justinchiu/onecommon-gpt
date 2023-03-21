@@ -103,16 +103,12 @@ def get_middle(x, ctx):
     # x in convex hull of y
     xy = ctx[x,:2]
     centroid = MultiPoint(xy).centroid
-    import pdb; pdb.set_trace()
-    # very generous
-    return all([
-        shapely.contains_xy(hull, x, y)
-        or shapely.contains_xy(hull, x+0.01, y)
-        or shapely.contains_xy(hull, x-0.01, y)
-        or shapely.contains_xy(hull, x, y+0.01)
-        or shapely.contains_xy(hull, x, y-0.01)
-        for x,y in xy_a
-    ])
+    return x[
+        np.linalg.norm(
+            xy - np.array([centroid.x, centroid.y]),
+            axis=1,
+        ).argmin()
+    ]
 
 if __name__ == "__main__":
     ctx = np.array([[1,1], [1,0], [0,0], [0,0]])
