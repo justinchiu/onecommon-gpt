@@ -43,6 +43,7 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
 
 class Reformat(TemplatePrompt[str]):
     template_file = "prompts/reformat.j2"
+    stop_templates = ["\n"]
 
 class Understand(TemplatePrompt[str]):
     template_file = "prompts/understand.j2"

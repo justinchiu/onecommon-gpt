@@ -1,5 +1,5 @@
 
-# ('S_mQa5OGEpE3cZmIly', 'C_724e8318439a4302ac6ade104f12e101')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[0.41, 0.56, 0.6666666666666666, -0.7333333333333333], [-0.335, -0.69, 0.3333333333333333, 0.8], [-0.305, -0.095, 0.6666666666666666, 0.36], [-0.525, -0.175, 0.3333333333333333, 0.8533333333333334], [0.785, -0.035, 0.0, -0.24], [0.095, 0.04, -1.0, 0.02666666666666667], [-0.09, 0.615, 0.3333333333333333, -0.05333333333333334]])
+    dots = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return dots
 
 
@@ -185,37 +185,15 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# Them: hi ! do you see a tiny grey dot ?.
+# 
+
+You: I have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dots):
-        if is_small(dot, ctx) and is_grey(dot, ctx):
-            results.append(dot)
-    return results
-state = turn(state)
-# End.
-
-# You: ok , do you have a very large dot that is the darkest gray in the circle ?
-.
-def turn(state):
-    # New question.
-    results = []
-    for dot in get1dots(all_dots):
-        if is_large(dot, ctx) and is_dark(dot, ctx):
-            results.append(dot)
-    return results
-state = turn(state)
-# End.
-
-# Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?.
-def turn(state):
-    # Follow up question.
-    results = []
-    for prev_dots in state:
-        for dot in get1dots(all_dots):
-            if are_left(dot, prev_dots, ctx) and are_lighter(dot, prev_dots, ctx) and are_smaller(dot, prev_dots, ctx):
-                results.append(add(prev_dots, dot))
+    for x,y in get2dots(all_dots):
+        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
+            results.append(np.array([x,y]))
     return results
 state = turn(state)
 

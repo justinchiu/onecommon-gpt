@@ -7,7 +7,7 @@ import ast
 
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import HEADER, Understand, Execute, Generate
+from prompt import HEADER, Understand, Execute, Generate, Reformat
 from prompt import GenerateScxy, GenerateTemplate
 from prompt import UnderstandMc
 
@@ -28,6 +28,11 @@ class Agent:
 
         self.refres = refres
         self.gen = gen
+
+        self.reformat = Reformat(backend.OpenAIChat(
+            model = "gpt-3.5-turbo",
+            max_tokens = 64,
+        ))
 
         if refres == "codegen":
             self.understand = Understand(backend.OpenAI(
@@ -70,6 +75,13 @@ class Agent:
     def write(self):
         pass
 
+    def reformat_text(self, text):
+        speaker, utt  = text.split(":")
+        #print(self.reformat.print(dict(source=utt.strip())))
+        out = self.reformat(dict(source=utt)).strip()
+        text = f"{speaker}: {out}"
+        return text
+
     def resolve_reference(self, text, past, view, info=None):
         # dispatch
         if self.refres == "codegen":
@@ -106,8 +118,12 @@ class Agent:
     def resolve_reference_codegen(self, text, past, view, info=None):
         # ensure text ends in punctuation
         # codex seems to need a period
-        if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
-            text += "."
+
+        text = self.reformat_text(text)
+        print(text)
+        import pdb; pdb.set_trace()
+        #if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
+        #    text += "."
 
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
 
