@@ -103,10 +103,11 @@ state = turn(state)
 # Them: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if is_large(dot, ctx):
-            return [dot]
+    results = []
+    for dots in state:
+        for dot in dots:
+            if is_large([dot], ctx):
+                results.append(np.array([dot]))
 state = select(state)
 # End.
 
@@ -142,8 +143,8 @@ def turn(state):
     results = []
     for dots in state:
         for dot in dots:
-            if is_large(dot, ctx) and is_dark(dot, ctx):
-                results.append(dot)
+            if is_large([dot], ctx) and is_dark([dot], ctx):
+                results.append(np.array([dot]))
 state = turn(state)
 # End.
  

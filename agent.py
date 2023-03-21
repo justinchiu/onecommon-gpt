@@ -81,7 +81,11 @@ class Agent:
         speaker, utt  = text.split(":")
         #print(self.reformat.print(dict(source=utt.strip())))
         out = self.reformat(dict(source=utt)).strip()
+        #print("Reformatted")
+        #print(text)
         text = f"{speaker}: {out}"
+        #print(text)
+        #import pdb; pdb.set_trace()
         return text
 
     def resolve_reference(self, text, past, view, info=None):
@@ -118,23 +122,11 @@ class Agent:
         return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")]
 
     def resolve_reference_codegen(self, text, past, view, info=None):
-        # ensure text ends in punctuation
-        # codex seems to need a period
-
         text = self.reformat_text(text)
-        print(text)
-        import pdb; pdb.set_trace()
-        #if re.match('^[A-Z][^?!.]*[?.!]$', text) is None:
-        #    text += "."
 
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
 
-        # print for debugging
-        #input = self.understand.print(kwargs)
-        #print(input)
-
         out = self.understand(kwargs)
-        #print(out)
 
         # new input for python execution
         input = self.understand.print(dict(text=text, past=past, view=view))
