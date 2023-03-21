@@ -119,7 +119,7 @@ def turn(state):
     # New question.
     results = []
     for dot in get1dots(all_dots):
-        if is_large(dot, ctx) and is_dark(dot, ctx) and global_bottom_left(dot, ctx):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, None, ctx):
             results.append(dot)
     return results
 state = turn(state)

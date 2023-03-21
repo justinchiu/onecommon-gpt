@@ -22,6 +22,9 @@ def are_close(x, y, ctx):
     return np.linalg.norm(ctx[x,:2]-ctx[y,:2]) < 0.3
 
 def are_direction(x, y, direction, ctx):
+    # Relative to view: always True
+    if y is None:
+        return True
     deltas = ctx[x,None,:2] - ctx[y,:2]
     return ((deltas * direction) >= 0).all()
 
@@ -50,6 +53,10 @@ def are_below_left(x, y, ctx):
     return are_direction(x, y, np.array([-1,-1]), ctx)
 
 def are_middle(x, y, ctx):
+    # Relative to view: always True
+    if y is None:
+        return True
+
     # x in convex hull of y
     xy_a = ctx[x,:2]
     xy_b = ctx[y,:2]

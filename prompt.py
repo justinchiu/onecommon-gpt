@@ -17,9 +17,6 @@ from spatial import are_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle
-from spatial import global_top, global_bottom, global_right, global_left
-from spatial import global_top_right, global_top_left, global_bottom_right, global_bottom_left
-from spatial import global_middle
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
