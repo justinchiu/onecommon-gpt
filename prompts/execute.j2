@@ -12,11 +12,13 @@ def get_dots():
 
 {{ code }}
 
-#print(state)
+print([x.tolist() for x in state])
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
+"""
 if state:
     print(state[0].tolist())
 else:
     print("None")
+"""

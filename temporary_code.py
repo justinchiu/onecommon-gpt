@@ -54,16 +54,17 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: Nevermind. Do you see a pair of dark dots? One above and to the right of the other?
+# Them: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 def turn(state):
     # New question.
     results = []
     for result in get2dots(all_dots):
         if (
             all_close(result, ctx)
-            and all(map(partial(is_dark, ctx=ctx), result)
-            and are_right(result[0], result[1], ctx)
-            and are_above(result[0], result[1], ctx)
+            and all(map(partial(is_dark, ctx=ctx), result))
+            and are_right(result[1], result[0], ctx)
+            and are_above(result[1], result[0], ctx)
+            and same_size(result, ctx)
         ):
             results.append(result)
     return results
@@ -196,17 +197,25 @@ def turn(state):
     # New question.
     results = []
     for x,y in get2dots(all_dots):
-        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
+        if (
+            are_close([x,y], dots)
+            and is_small(x, dots)
+            and is_light(x, dots)
+            and is_medium(y, dots)
+            and is_grey(y, dots)
+        ):
             results.append(np.array([x,y]))
     return results
 state = turn(state)
 
 
-#print(state)
+print([x.tolist() for x in state])
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
+"""
 if state:
     print(state[0].tolist())
 else:
     print("None")
+"""

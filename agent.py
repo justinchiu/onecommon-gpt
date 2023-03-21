@@ -137,6 +137,7 @@ class Agent:
         print(input)
         
         result = self.execute(kw)
+        import pdb; pdb.set_trace()
         print(result)
 
         mention = np.zeros(7, dtype=bool)
