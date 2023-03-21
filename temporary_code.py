@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_cSjaqwqc2EXKGFEY', 'C_c836669707f4454da547d68ce5809151')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    dots = np.array([[0.07, -0.89, -1.0, 0.76], [-0.42, 0.435, -0.3333333333333333, -0.21333333333333335], [0.96, -0.07, -0.6666666666666666, 0.8133333333333334], [-0.155, -0.265, -0.3333333333333333, 0.8933333333333333], [-0.35, -0.42, -0.3333333333333333, -0.41333333333333333], [0.205, -0.64, -0.6666666666666666, -0.4], [-0.09, 0.53, 0.0, -0.41333333333333333]])
     return dots
 
 
@@ -186,25 +186,23 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# Them: I have a small, light-grey dot next to a medium-grey, medium-sized dot.
-turn(state):
+# Them: Two small dots: one dark gray, to the right and above a lighter dot, same size.
+def turn(state):
     # New question.
     results = []
     for x,y in get2dots(all_dots):
-        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
+        if (
+            is_small(x, ctx)
+            and is_small(y, ctx)
+            and is_dark(x, ctx)
+            and is_grey(x, ctx)
+            and are_right(x, y, ctx)
+            and are_above(x, y, ctx)
+            and is_light(y, ctx)
+            and same_size(x, y, ctx)
+        ):
             results.append(np.array([x,y]))
     return results
-state = turn(state)
-# End.
-
-# You: Yes, I see that pair. Choose the small, light grey dot.
-def turn(state):
-    # Follow up question.
-    results = []
-    for dots in state:
-        for dot in dots:
-            if is_small([dot], ctx) and is_light([dot], ctx):
-                results.append(np.array([dot]))
 state = turn(state)
 
 
