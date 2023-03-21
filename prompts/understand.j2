@@ -144,7 +144,7 @@ def turn(state):
     for dot in results:
         if is_large(dot, ctx) and is_dark(dot, ctx):
             return [dot]
-state = select(state)
+state = turn(state)
 # End.
  
 # Them: Okay. <selection>.
