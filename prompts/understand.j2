@@ -119,8 +119,7 @@ def turn(state):
     # New question.
     results = []
     for dot in get1dots(all_dots):
-        # Ignore absolute spatial positions. Only use relative ones.
-        if is_large(dot, ctx) and is_dark(dot, ctx):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and global_bottom_left(dot, ctx):
             results.append(dot)
     return results
 state = turn(state)
@@ -140,20 +139,18 @@ state = turn(state)
 # You: Select the large black one.
 def turn(state):
     # Follow up question.
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if is_large(dot, ctx) and is_dark(dot, ctx):
-            return [dot]
+    results = []
+    for dots in state:
+        for dot in dots:
+            if is_large(dot, ctx) and is_dark(dot, ctx):
+                results.append(dot)
 state = turn(state)
 # End.
  
 # Them: Okay. <selection>.
 def select(state):
     # Select a dot.
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if is_large(dot):
-            return [dot]
+    return state
 state = select(state)
 # End.
 
