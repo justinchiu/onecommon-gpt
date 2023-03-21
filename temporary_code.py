@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return ctx
 
 
@@ -29,7 +29,7 @@ def get_ctx():
 all_dots = np.arange(7)
 
 # New.
-ctx = get_dots()
+ctx = get_ctx()
 state = []
 
 # Them: got a triangle of 3 light grey dots.
@@ -144,7 +144,7 @@ state = select(state)
 # End.
 
 # New.
-ctx = get_dots()
+ctx = get_ctx()
 state = []
 
 # You: Do you see a large black dot on the bottom left?
@@ -189,21 +189,15 @@ state = select(state)
 
 
 # New.
-dots = get_dots()
+dots = get_ctx()
 state = []
 
-# Them: I have a small, light-grey dot next to a medium-grey, medium-sized dot.
+# You: I have a small, light-grey dot next to a medium-grey, medium-sized dot.
 def turn(state):
     # New question.
     results = []
     for x,y in get2dots(all_dots):
-        if (
-            are_close([x,y], dots)
-            and is_small(x, dots)
-            and is_light(x, dots)
-            and is_medium(y, dots)
-            and is_grey(y, dots)
-        ):
+        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
             results.append(np.array([x,y]))
     return results
 state = turn(state)

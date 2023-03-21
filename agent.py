@@ -137,13 +137,15 @@ class Agent:
         print(input)
         
         result = self.execute(kw)
-        import pdb; pdb.set_trace()
         print(result)
 
-        mention = np.zeros(7, dtype=bool)
-        mention[result] = 1
+        num_preds = len(result)
+        mentions = np.zeros((num_preds, 7), dtype=bool)
+        for i in range(num_preds):
+            mentions[i, result[i]] = 1
+        import pdb; pdb.set_trace()
 
-        return mention, past + [(text.strip(), f"def {out.strip()}")]
+        return mentions, past + [(text.strip(), f"def {out.strip()}")]
 
 
     def plan(self, past, view, info=None):
