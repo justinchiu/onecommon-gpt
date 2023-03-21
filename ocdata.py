@@ -179,5 +179,6 @@ def get_data():
 
 
 if __name__ == "__main__":
-    pass
+    train_data, valid_data = get_data()
+    import pdb; pdb.set_trace()
 

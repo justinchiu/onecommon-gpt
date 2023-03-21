@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_mQa5OGEpE3cZmIly', 'C_724e8318439a4302ac6ade104f12e101')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    dots = np.array([[0.41, 0.56, 0.6666666666666666, -0.7333333333333333], [-0.335, -0.69, 0.3333333333333333, 0.8], [-0.305, -0.095, 0.6666666666666666, 0.36], [-0.525, -0.175, 0.3333333333333333, 0.8533333333333334], [0.785, -0.035, 0.0, -0.24], [0.095, 0.04, -1.0, 0.02666666666666667], [-0.09, 0.615, 0.3333333333333333, -0.05333333333333334]])
     return dots
 
 
@@ -185,25 +185,39 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# Them: i have a light grey small dot next to a medium grey medium dot.
+# Them: hi ! do you see a tiny grey dot ?.
 def turn(state):
     # New question.
     results = []
-    for x,y in get2dots(all_dots):
-        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
-            results.append(np.array([x,y]))
+    for dot in get1dots(all_dots):
+        if is_small(dot, ctx) and is_grey(dot, ctx):
+            results.append(dot)
     return results
 state = turn(state)
 # End.
 
-# You: yes i see that pair choose the small light grey dot <selection>.
-def select(state):
-    # Select a dot.
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if is_light(dot, ctx) and is_small(dot, ctx):
-            return [dot]
-state = select(state)
+# You: ok , do you have a very large dot that is the darkest gray in the circle ?
+.
+def turn(state):
+    # New question.
+    results = []
+    for dot in get1dots(all_dots):
+        if is_large(dot, ctx) and is_dark(dot, ctx):
+            results.append(dot)
+    return results
+state = turn(state)
+# End.
+
+# Them: yes i do ! is there a slightly lighter and smaller dot to the left of it ?.
+def turn(state):
+    # Follow up question.
+    results = []
+    for prev_dots in state:
+        for dot in get1dots(all_dots):
+            if are_left(dot, prev_dots, ctx) and are_lighter(dot, prev_dots, ctx) and are_smaller(dot, prev_dots, ctx):
+                results.append(add(prev_dots, dot))
+    return results
+state = turn(state)
 
 
 #print(state)

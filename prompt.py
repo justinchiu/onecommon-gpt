@@ -41,6 +41,8 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
             x = tmp.render(**asdict(kwargs))
         return x
 
+class Reformat(TemplatePrompt[str]):
+    template_file = "prompts/reformat.j2"
 
 class Understand(TemplatePrompt[str]):
     template_file = "prompts/understand.j2"
