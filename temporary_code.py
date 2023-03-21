@@ -135,6 +135,12 @@ state = select(state)
 # End.
 
 # New.
+ctx = get_dots()
+state = []
+
+# You: 
+
+# New.
 dots = get_dots()
 state = []
 
@@ -147,40 +153,6 @@ def turn(state):
             results.append(dot)
     return results
 state = turn(state)
-# End.
-
-# You: hm . do you see three in a diagonal ? top left is medium size black middle is large light grey bottom right is small black ?.
-def turn(state):
-    # New question.
-    results = []
-    for x, y, z in get3dots(all_dots):
-        if (
-            is_triangle([x,y,z], ctx)
-            and x == get_top_left([x, y, z], ctx)
-            and is_medium(x, ctx)
-            and is_dark(x, ctx)
-            and are_middle([y], [x,y,z], ctx)
-            and is_large(y, ctx)
-            and is_light(y, ctx)
-            and z == get_bottom_right([x, y, z], ctx)
-            and is_small(z, ctx)
-            and is_dark(z, ctx)
-        ):
-            results.append(np.array([x,y,z]))
-            import pdb; pdb.set_trace()
-    return results
-state = turn(state)
-# End.
-import pdb; pdb.set_trace()
-
-# Them: yes lets choose the middle one.
-def select(state):
-    # Select a dot.
-    results = [dot for dots in state for dot in dots]
-    for dot in results:
-        if are_middle(dot, results, ctx):
-            return [dot]
-state = select(state)
 
 
 #print(state)
@@ -191,5 +163,3 @@ if state:
     print(state[0].tolist())
 else:
     print("None")
-    #raise ValueError
-    #print([0])

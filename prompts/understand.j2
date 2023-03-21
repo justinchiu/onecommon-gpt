@@ -111,6 +111,21 @@ state = select(state)
 # End.
 
 # New.
+ctx = get_dots()
+state = []
+
+# You: Do you see a large black dot on the bottom left?
+def turn(state):
+    # New question.
+    results = []
+    for dot in get1dots(all_dos):
+        if is_dark(dot, ctx) and quadrant_bottom_left():
+            results.append(dots)
+    return results
+state = turn(state)
+# End.
+
+# New.
 dots = get_dots()
 state = []
 {% if past is defined and past|length > 0 %}{% for block in past %}
