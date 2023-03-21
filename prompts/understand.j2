@@ -100,7 +100,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: Yes, let's select the large one.
+# Them: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
@@ -118,12 +118,35 @@ state = []
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dos):
-        if is_dark(dot, ctx) and quadrant_bottom_left():
-            results.append(dots)
+    for dot in get1dots(all_dots):
+        # Ignore absolute spatial positions. Only use relative ones.
+        if is_large(dot, ctx) and is_dark(dot, ctx):
+            results.append(dot)
     return results
 state = turn(state)
 # End.
+ 
+# Them: I see a large black dot next to two small dots. We have different views though.
+def turn(state):
+    # New question.
+    results = []
+    for x,y,z in get3dots(all_dots):
+        if all_close(np.array([x,y,z]), ctx) and is_large(x, ctx) and is_dark(z, ctx) and is_small(y, ctx) and is_small(z, ctx):
+            results.append(np.array([x,y,z]))
+    return results
+state = turn(state)
+# End.
+
+# You: Select the large black one. <selection>.
+def select(state):
+    # Select a dot.
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if is_large(dot):
+            return [dot]
+state = select(state)
+# End.
+
 
 # New.
 dots = get_dots()

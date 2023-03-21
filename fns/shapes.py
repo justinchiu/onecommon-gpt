@@ -39,7 +39,7 @@ def is_line(x, ctx):
     width = min(edge_length)
 
     # check angle later
-    return math.fabs(math.atan(length / width)) < math.pi / 15
+    return math.fabs(math.atan(width / length)) < math.pi / 15
 
 def is_triangle(x, ctx):
     line = is_line(x, ctx)

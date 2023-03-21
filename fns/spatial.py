@@ -99,6 +99,21 @@ def get_bottom_right(x, ctx):
 def get_bottom_left(x, ctx):
     return get_direction(x, np.array([-1,-1]), ctx)
 
+def get_middle(x, ctx):
+    # x in convex hull of y
+    xy = ctx[x,:2]
+    centroid = MultiPoint(xy).centroid
+    import pdb; pdb.set_trace()
+    # very generous
+    return all([
+        shapely.contains_xy(hull, x, y)
+        or shapely.contains_xy(hull, x+0.01, y)
+        or shapely.contains_xy(hull, x-0.01, y)
+        or shapely.contains_xy(hull, x, y+0.01)
+        or shapely.contains_xy(hull, x, y-0.01)
+        for x,y in xy_a
+    ])
+
 if __name__ == "__main__":
     ctx = np.array([[1,1], [1,0], [0,0], [0,0]])
     x = [0,1]

@@ -1,5 +1,5 @@
 
-# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -9,7 +9,9 @@ from shapes import is_triangle, is_line, is_square
 from spatial import all_close, are_close, are_above, are_below, are_right, are_left
 from spatial import are_above_left, are_above_right, are_below_right, are_below_left
 from spatial import are_middle
-from spatial import get_top, get_bottom, get_right, get_left, get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from spatial import get_top, get_bottom, get_right, get_left
+from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from spatial import get_middle
 from color import is_dark, is_grey, is_light
 from size import is_large, is_small, largest, smallest, is_medium
 from iterators import get1dots, get2dots, get3dots
@@ -19,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
+    dots = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return dots
 
 
@@ -124,7 +126,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: Yes, let's select the large one.
+# Them: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
@@ -138,19 +140,51 @@ state = select(state)
 ctx = get_dots()
 state = []
 
-# You: 
+# You: Do you see a large black dot on the bottom left?
+def turn(state):
+    # New question.
+    results = []
+    for dot in get1dots(all_dots):
+        # Ignore absolute spatial positions. Only use relative ones.
+        if is_large(dot, ctx) and is_dark(dot, ctx):
+            results.append(dot)
+    return results
+state = turn(state)
+# End.
+ 
+# Them: I see a large black dot next to two small dots. We have different views though.
+def turn(state):
+    # New question.
+    results = []
+    for x,y,z in get3dots(all_dots):
+        if all_close(np.array([x,y,z]), ctx) and is_large(x, ctx) and is_dark(z, ctx) and is_small(y, ctx) and is_small(z, ctx):
+            results.append(np.array([x,y,z]))
+    return results
+state = turn(state)
+# End.
+
+# You: Select the large black one. <selection>.
+def select(state):
+    # Select a dot.
+    results = [dot for dots in state for dot in dots]
+    for dot in results:
+        if is_large(dot):
+            return [dot]
+state = select(state)
+# End.
+
 
 # New.
 dots = get_dots()
 state = []
 
-# Them: i have a larger black dot all by itself down and to the left.
+# You: i have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dots):
-        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, ctx):
-            results.append(dot)
+    for x,y in get2dots(all_dots):
+        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
+            results.append(np.array([x,y]))
     return results
 state = turn(state)
 
