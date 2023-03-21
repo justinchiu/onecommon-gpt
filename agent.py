@@ -142,7 +142,7 @@ class Agent:
         mention = np.zeros(7, dtype=bool)
         mention[result] = 1
 
-        return mention, past + [(text.strip(), out.strip())]
+        return mention, past + [(text.strip(), f"def {out.strip()}")]
 
 
     def plan(self, past, view, info=None):

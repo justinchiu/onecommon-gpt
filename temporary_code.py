@@ -187,13 +187,24 @@ dots = get_dots()
 state = []
 
 # Them: I have a small, light-grey dot next to a medium-grey, medium-sized dot.
-defdef turn(state):
+turn(state):
     # New question.
     results = []
     for x,y in get2dots(all_dots):
         if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
             results.append(np.array([x,y]))
     return results
+state = turn(state)
+# End.
+
+# You: Yes, I see that pair. Choose the small, light grey dot.
+def turn(state):
+    # Follow up question.
+    results = []
+    for dots in state:
+        for dot in dots:
+            if is_small([dot], ctx) and is_light([dot], ctx):
+                results.append(np.array([dot]))
 state = turn(state)
 
 
