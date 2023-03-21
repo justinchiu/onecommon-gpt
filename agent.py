@@ -29,8 +29,10 @@ class Agent:
         self.refres = refres
         self.gen = gen
 
-        self.reformat = Reformat(backend.OpenAIChat(
-            model = "gpt-3.5-turbo",
+        #self.reformat = Reformat(backend.OpenAIChat(
+        #    model = "gpt-3.5-turbo",
+        self.reformat = Reformat(backend.OpenAI(
+            model = "text-davinci-003",
             max_tokens = 64,
         ))
 
