@@ -28,16 +28,17 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: Nevermind. Do you see a pair of dark dots? One above and to the right of the other?
+# Them: Nevermind. Do you see a pair of dark dots? One above and to the right of the other? Same size as well.
 def turn(state):
     # New question.
     results = []
     for result in get2dots(all_dots):
         if (
             all_close(result, ctx)
-            and all(map(partial(is_dark, ctx=ctx), result)
+            and all(map(partial(is_dark, ctx=ctx), result))
             and are_right(result[0], result[1], ctx)
             and are_above(result[0], result[1], ctx)
+            and same_size(result, ctx)
         ):
             results.append(result)
     return results
