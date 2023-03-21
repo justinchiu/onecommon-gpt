@@ -12,12 +12,23 @@ def is_medium(x, ctx):
 
 
 def largest(x, ctx):
-    return np.argmax(ctx[x,-2])
+    return x[np.argmax(ctx[x,-2])]
 
 def smallest(x, ctx):
-    return np.argmin(ctx[x,-2])
+    return x[np.argmin(ctx[x,-2])]
 
 
-def all_size(dots, ctx):
+def same_size(dots, ctx):
     sizes = ctx[x,-2] 
     return np.abs(sizes[None] - sizes).max() < 0.1
+
+def different_size(dots, ctx):
+    sizes = ctx[x,-2]
+    return np.abs(sizes[None] - sizes).min() > 0.3
+
+
+def are_larger(x, y, ctx):
+    return (ctx[x,None,-1] > ctx[y,-1]).all()
+
+def are_smaller(x, y, ctx):
+    return (ctx[x,None,-1] < ctx[y,-1]).all()

@@ -1,5 +1,5 @@
 
-# ('S_kQfCI1MRe21DDsqK', 'C_27a843b6c8f94ffc86fde88cc86b0772')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -12,8 +12,8 @@ from spatial import are_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle
-from color import is_dark, is_grey, is_light
-from size import is_large, is_small, largest, smallest, is_medium
+from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, are_darker, are_lighter
+from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, are_larger, are_smaller
 from iterators import get1dots, get2dots, get3dots
 from lists import add
 import numpy as np
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_dots():
-    dots = np.array([[-0.405, 0.415, 0.0, -0.12], [0.485, -0.65, 0.0, -0.8533333333333334], [0.97, 0.06, 0.6666666666666666, 0.72], [0.3, -0.115, 1.0, 0.9066666666666666], [0.065, 0.015, 0.3333333333333333, 0.4], [-0.9, 0.05, -0.6666666666666666, -0.36], [-0.03, -0.175, 0.0, -0.48]])
+    dots = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return dots
 
 
@@ -185,52 +185,24 @@ state = select(state)
 dots = get_dots()
 state = []
 
-# You: i have a triangle of 3 dots near the center.
+# You: i have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
-    for x,y,z in get3dots(all_dots):
-        if is_triangle([x,y,z], ctx) and are_middle([x,y,z], None, ctx):
-            results.append(np.array([x,y,z]))
-    return results
-state = turn(state)
-# End.
-import pdb; pdb.set_trace()
-
-# Them: are they all of different tone.
-def turn(state):
-    # Follow up question.
-    results = []
-    for dots in state:
-        if len(set(map(partial(is_dark, ctx=ctx), dots))) == 3:
-            results.append(dots)
+    for x,y in get2dots(all_dots):
+        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
+            results.append(np.array([x,y]))
     return results
 state = turn(state)
 # End.
 
-# You: yes the black is smallest with a medium gray on top and the largest is light gray.
-def turn(state):
-    # Follow up question.
-    results = []
-    for dots in state:
-        if (
-            is_small(smallest(dots, ctx), ctx)
-            and is_dark(smallest(dots, ctx), ctx)
-            and is_medium(middle(dots, ctx), ctx)
-            and is_grey(middle(dots, ctx), ctx)
-            and is_large(largest(dots, ctx), ctx)
-            and is_light(largest(dots, ctx), ctx)
-        ):
-            results.append(dots)
-    return results
-state = turn(state)
-# End.
-
-# Them: let us select the smallest <selection>.
+# Them: yes i see that pair choose the small light grey dot <selection>.
 def select(state):
     # Select a dot.
     results = [dot for dots in state for dot in dots]
-    return [smallest(results, ctx)]
+    for dot in results:
+        if is_light(dot, ctx) and is_small(dot, ctx):
+            return [dot]
 state = select(state)
 
 
