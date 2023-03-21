@@ -117,25 +117,6 @@ def get_middle(x, ctx):
         ).argmin()
     ]
 
-# global functions
-def global_top(x, ctx):
-    return True
-def global_bottom(x, ctx):
-    return True
-def global_left(x, ctx):
-    return True
-def global_right(x, ctx):
-    return True
-def global_top_left(x, ctx):
-    return True
-def global_top_right(x, ctx):
-    return True
-def global_bottom_left(x, ctx):
-    return True
-def global_bottom_right(x, ctx):
-    return True
-def global_middle(x, ctx):
-    return True
 
 if __name__ == "__main__":
     ctx = np.array([[1,1], [1,0], [0,0], [0,0]])
