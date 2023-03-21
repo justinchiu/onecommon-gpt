@@ -3,7 +3,7 @@
 all_dots = np.arange(7)
 
 # New.
-ctx = get_dots()
+ctx = get_ctx()
 state = []
 
 # Them: got a triangle of 3 light grey dots.
@@ -118,7 +118,7 @@ state = select(state)
 # End.
 
 # New.
-ctx = get_dots()
+ctx = get_ctx()
 state = []
 
 # You: Do you see a large black dot on the bottom left?
@@ -163,7 +163,7 @@ state = select(state)
 
 
 # New.
-dots = get_dots()
+dots = get_ctx()
 state = []
 {% if past is defined and past|length > 0 %}{% for block in past %}
 # {{ block[0] }}

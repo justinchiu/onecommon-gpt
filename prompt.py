@@ -9,7 +9,7 @@ from jinja2 import (
 from minichain import TemplatePrompt as BaseTemplatePrompt
 from minichain import Output, Request, Prompt
 
-HEADER = """from dot import get_dots
+HEADER = """from context import get_ctx
 from shapes import is_triangle, is_line, is_square
 from spatial import all_close, are_close, are_above, are_below, are_right, are_left
 from spatial import are_above_left, are_above_right, are_below_right, are_below_left

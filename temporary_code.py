@@ -4,7 +4,7 @@
 import sys
 sys.path.append("fns")
 
-from dot import get_dots
+from context import get_ctx
 from shapes import is_triangle, is_line, is_square
 from spatial import all_close, are_close, are_above, are_below, are_right, are_left
 from spatial import are_above_left, are_above_right, are_below_right, are_below_left
@@ -20,9 +20,9 @@ import numpy as np
 from functools import partial
 
 
-def get_dots():
-    dots = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
-    return dots
+def get_ctx():
+    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    return ctx
 
 
 
