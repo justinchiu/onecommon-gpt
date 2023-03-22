@@ -180,7 +180,14 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: Okay. <selection>.
+# Them: Okay.
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
+# End.
+ 
+# You: Okay. <selection>.
 def select(state):
     # Select a dot.
     return state
@@ -207,7 +214,7 @@ state = turn(state)
 def turn(state):
     # New question.
     results = []
-    for x,y,z in get3dots(all_dots):
+    for x, y, z in get3dots(all_dots):
         if (
             is_line([x,y,z], ctx)
             and x == get_top_left([x, y, z], ctx)
@@ -221,18 +228,6 @@ def turn(state):
             and is_dark(z, ctx)
         ):
             results.append(np.array([x,y,z]))
-    return results
-state = turn(state)
-# End.
-
-# Them: Yes, let's choose the middle one.
-def turn(state):
-    # Follow up question.
-    results = []
-    for dots in state:
-        for dot in dots:
-            if are_middle([dot], dots, ctx):
-                results.append(np.array([dot]))
     return results
 state = turn(state)
 

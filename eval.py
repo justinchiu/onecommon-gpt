@@ -46,13 +46,18 @@ class Recall(evaluate.Metric):
                     tp += 1
         return {"recall": tp / p, "precision": tp / num_preds}
 
+
 class Eval(ABC):
     flags = dict()
 
-    def compute(self, agent, data, num_examples=None):
+    def compute(self, agent, data, num_examples=None, run_example=None):
         configs = bitutils.get_configs(128)
         preds = []
         truelabels = []
+        if run_example is not None:
+            # only run a single example
+            data = [data[run_example]]
+
         for ne, example in enumerate(data[:num_examples]):
             chatid = example["chat_id"]
             scenarioid = example["scenario_id"]
@@ -175,6 +180,7 @@ if __name__ == "__main__":
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
     parser.add_argument("--num_examples", default=1, type=int)
+    parser.add_argument("--run_example", default=None, type=int)
     args = parser.parse_args()
 
     refres = args.refres
@@ -185,12 +191,12 @@ if __name__ == "__main__":
     if args.run_refres:
         with minichain.start_chain("eval-res") as backend:
             agent = Agent(backend, refres, gen)
-            reseval = Resolution().compute(agent, valid, args.num_examples)
+            reseval = Resolution().compute(agent, valid, args.num_examples, args.run_example)
         print(reseval)
 
     if args.run_gen:
         with minichain.start_chain("eval-gen") as backend:
             agent = Agent(backend, refres, gen)
-            geneval = Generation().compute(agent, valid, args.num_examples)
+            geneval = Generation().compute(agent, valid, args.num_examples, args.run_example)
         print(geneval)
 

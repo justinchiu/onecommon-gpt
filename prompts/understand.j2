@@ -154,7 +154,14 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: Okay. <selection>.
+# Them: Okay.
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
+# End.
+ 
+# You: Okay. <selection>.
 def select(state):
     # Select a dot.
     return state
