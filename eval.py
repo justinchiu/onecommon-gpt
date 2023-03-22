@@ -51,6 +51,9 @@ class Eval(ABC):
                         print(configs[label].nonzero()[0])
                     # use this for refres
 
+        if isinstance(self, Resolution):
+            import pdb; pdb.set_trace()
+
         return self.metric.compute(predictions=preds, references=truelabels)
 
     @abstractmethod
@@ -74,7 +77,7 @@ def collapse_referents(xs):
 
 
 class Resolution(Eval):
-    metric = evaluate.load("accuracy")
+    metric = evaluate.load("recall")
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)

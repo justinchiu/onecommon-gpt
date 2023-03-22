@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
+    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -192,13 +192,55 @@ state = select(state)
 dots = get_ctx()
 state = []
 
-# You: I have a small, light-grey dot next to a medium-grey, medium-sized dot.
+# Them: I have a larger black dot, all by itself, down and to the left.
 def turn(state):
     # New question.
     results = []
-    for x,y in get2dots(all_dots):
-        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
-            results.append(np.array([x,y]))
+    for dot in get1dots(all_dots):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, None, ctx):
+            results.append(dot)
+    return results
+state = turn(state)
+# End.
+
+# You: Do you see three in a diagonal? Top left is medium-size black, middle is large light grey, bottom right is small black?
+def turn(state):
+    # New question.
+    results = []
+    for x,y,z in get3dots(all_dots):
+        if (
+            is_triangle([x,y,z], ctx)
+            and x == get_top_left([x, y, z], ctx)
+            and is_medium(x, ctx)
+            and is_dark(x, ctx)
+            and are_middle([y], [x,y,z], ctx)
+            and is_large(y, ctx)
+            and is_light(y, ctx)
+            and z == get_bottom_right([x, y, z], ctx)
+            and is_small(z, ctx)
+            and is_dark(z, ctx)
+        ):
+            results.append(np.array([x,y,z]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, let's choose the middle one.
+def turn(state):
+    # Follow up question.
+    results = []
+    for dots in state:
+        for dot in dots:
+            if are_middle([dot], dots, ctx):
+                results.append(np.array([dot]))
+    return results
+state = turn(state)
+# End.
+
+# You: Okay
+def turn(state):
+    # Follow up question.
+    results = []
     return results
 state = turn(state)
 

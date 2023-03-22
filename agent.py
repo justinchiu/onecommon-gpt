@@ -143,7 +143,6 @@ class Agent:
         mentions = np.zeros((num_preds, 7), dtype=bool)
         for i in range(num_preds):
             mentions[i, result[i]] = 1
-        import pdb; pdb.set_trace()
 
         return mentions, past + [(text.strip(), f"def {out.strip()}")]
 
