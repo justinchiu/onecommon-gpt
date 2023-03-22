@@ -230,6 +230,25 @@ def turn(state):
             results.append(np.array([x,y,z]))
     return results
 state = turn(state)
+# End.
+
+# Them: Yes, let's choose the middle one.
+def turn(state):
+    # Follow up question.
+    results = []
+    for dots in state:
+        for dot in dots:
+            if are_middle([dot], dots, ctx):
+                results.append(np.array([dot]))
+    return results
+state = turn(state)
+# End.
+
+# You: Okay
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
 
 
 print([x.tolist() for x in state])

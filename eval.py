@@ -141,7 +141,9 @@ class Resolution(Eval):
         # collapse the referents in each turn
         referents = [collapse_referents(xs) for xs in referents]
         # final turn is selection. output instead of mentions
-        referents[-1] = example["output"]
+        output = np.zeros(7, dtype=bool)
+        output[example["output"]] = 1
+        referents[-1] = int(bitutils.config_to_int(output))
         return referents
 
     def do_eval(self, turn):
