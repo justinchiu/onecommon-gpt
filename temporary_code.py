@@ -201,10 +201,11 @@ def turn(state):
             is_small(x, ctx)
             and is_small(y, ctx)
             and is_dark(x, ctx)
-            and is_grey(y, ctx)
+            and is_grey(x, ctx)
             and are_right(x, y, ctx)
             and are_above(x, y, ctx)
-            and same_size([x,y], ctx)
+            and is_light(y, ctx)
+            and same_size(np.array([x,y]), ctx)
         ):
             results.append(np.array([x,y]))
     return results
