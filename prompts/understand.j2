@@ -68,10 +68,10 @@ state = turn(state)
 def turn(state):
     # Follow up question, new dot.
     results = []
-    for prev_dots in state:
+    for result in state:
         for dot in get1dots(all_dots):
-            if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(prev_dots, dot), ctx) and not are_middle(dot, prev_dots, ctx):
-                results.append(add(prev_dots, dot))
+            if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(result, dot), ctx) and not are_middle(dot, result, ctx):
+                results.append(add(result, dot))
     return results
 state = turn(state)
 # End.
@@ -99,9 +99,9 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = []
-    for prev_dots in state:
-        if are_close([get_top(prev_dots, ctx)], [get_middle(prev_dots, ctx)], ctx):
-            results.append(prev_dots)
+    for result in state:
+        if are_close([get_top(result, ctx)], [get_middle(result, ctx)], ctx):
+            results.append(result)
     return results
 state = turn(state)
 # End.
@@ -110,8 +110,8 @@ state = turn(state)
 def select(state):
     # Select a dot.
     results = []
-    for dots in state:
-        for dot in dots:
+    for result in state:
+        for dot in result:
             if is_large([dot], ctx):
                 results.append(np.array([dot]))
 state = select(state)
@@ -147,8 +147,8 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = []
-    for dots in state:
-        for dot in dots:
+    for result in state:
+        for dot in result:
             if is_large([dot], ctx) and is_dark([dot], ctx):
                 results.append(np.array([dot]))
 state = turn(state)
