@@ -1,11 +1,54 @@
 from abc import ABC, abstractmethod
 import numpy as np
+import datasets
 import evaluate
 import bitutils
 import pdb
 
+class Recall(evaluate.Metric):
+    def _info(self):
+        return evaluate.MetricInfo(
+            description="",
+            citation="",
+            inputs_description="",
+            features=datasets.Features(
+                {
+                    "predictions": datasets.Sequence(datasets.Value("int32")),
+                    "references": datasets.Sequence(datasets.Value("int32")),
+                }
+                if self.config_name == "multilabel"
+                else {
+                    "predictions": datasets.Value("int32"),
+                    "references": datasets.Value("int32"),
+                }
+            ),
+            reference_urls=["https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html"],
+        )
+
+    def _compute(
+        self,
+        predictions,
+        references,
+        labels=None,
+        pos_label=1,
+        average="sample",
+        sample_weight=None,
+        zero_division="warn",
+    ):
+        p = 0
+        tp = 0
+        num_preds = 0
+        for preds, labels in zip(predictions, references):
+            p += len(labels)
+            num_preds += len(preds)
+            for pred in preds:
+                if pred in labels:
+                    tp += 1
+        return {"recall": tp / p, "precision": tp / num_preds}
 
 class Eval(ABC):
+    flags = dict()
+
     def compute(self, agent, data, num_examples=None):
         configs = bitutils.get_configs(128)
         preds = []
@@ -42,19 +85,17 @@ class Eval(ABC):
                 label = labels[t]
                 #import pdb; pdb.set_trace()
                 if self.do_eval(text):
-                    preds.append(pred)
-                    truelabels.append(label)
                     print("LABEL")
                     if isinstance(self, Generation):
+                        preds.append(pred)
+                        truelabels.append(label)
                         print(label)
                     elif isinstance(self, Resolution):
+                        preds.append(pred)
+                        truelabels.append([int(label)])
                         print(configs[label].nonzero()[0])
-                    # use this for refres
 
-        if isinstance(self, Resolution):
-            import pdb; pdb.set_trace()
-
-        return self.metric.compute(predictions=preds, references=truelabels)
+        return self.metric.compute(predictions=preds, references=truelabels, **self.flags)
 
     @abstractmethod
     def predict(self, x):
@@ -77,11 +118,18 @@ def collapse_referents(xs):
 
 
 class Resolution(Eval):
-    metric = evaluate.load("recall")
+    #metric = evaluate.load("recall", "multilabel")
+    metric = Recall("multilabel")
+    flags = dict(average="micro")
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)
-        return bitutils.config_to_int(pred), newpast
+        intpreds = bitutils.config_to_int(pred)
+        out = list(set(intpreds.tolist()))
+        if len(out) == 0:
+            # fill with no reference
+            out = [0]
+        return out, newpast
 
     def get_labels(self, example):
         referents = example["all_referents"]
