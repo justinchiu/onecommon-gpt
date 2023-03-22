@@ -1,5 +1,5 @@
 
-# ('S_cSjaqwqc2EXKGFEY', 'C_c836669707f4454da547d68ce5809151')
+# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.07, -0.89, -1.0, 0.76], [-0.42, 0.435, -0.3333333333333333, -0.21333333333333335], [0.96, -0.07, -0.6666666666666666, 0.8133333333333334], [-0.155, -0.265, -0.3333333333333333, 0.8933333333333333], [-0.35, -0.42, -0.3333333333333333, -0.41333333333333333], [0.205, -0.64, -0.6666666666666666, -0.4], [-0.09, 0.53, 0.0, -0.41333333333333333]])
+    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -102,7 +102,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: No. Do you see three dots in a line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
+# Them: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
 def turn(state):
     # New question.
     results = []
@@ -192,33 +192,46 @@ state = select(state)
 dots = get_ctx()
 state = []
 
-# Them: Two small dots: one dark gray, to the right and above a lighter dot, same size.
+# Them: I have a larger black dot, all by itself, down and to the left.
 def turn(state):
     # New question.
     results = []
-    for x,y in get2dots(all_dots):
-        if (
-            is_small(x, ctx)
-            and is_small(y, ctx)
-            and is_dark(x, ctx)
-            and is_grey(x, ctx)
-            and are_right(x, y, ctx)
-            and are_above(x, y, ctx)
-            and is_light(y, ctx)
-            and same_size(np.array([x,y]), ctx)
-        ):
-            results.append(np.array([x,y]))
+    for dot in get1dots(all_dots):
+        if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, None, ctx):
+            results.append(dot)
     return results
 state = turn(state)
 # End.
 
-# You: I think I see this; I'm picking the bottom-left, darker one.
+# You: Do you see three in a diagonal? Top left is medium-size black, middle is large light grey, bottom right is small black?
+def turn(state):
+    # New question.
+    results = []
+    for x,y,z in get3dots(all_dots):
+        if (
+            is_line([x,y,z], ctx)
+            and x == get_top_left([x, y, z], ctx)
+            and is_medium(x, ctx)
+            and is_dark(x, ctx)
+            and are_middle([y], [x,y,z], ctx)
+            and is_large(y, ctx)
+            and is_light(y, ctx)
+            and z == get_bottom_right([x, y, z], ctx)
+            and is_small(z, ctx)
+            and is_dark(z, ctx)
+        ):
+            results.append(np.array([x,y,z]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, let's choose the middle one.
 def turn(state):
     # Follow up question.
     results = []
     for dots in state:
         for dot in dots:
-            if is_dark([dot], ctx) and are_below_left([dot], None, ctx):
+            if are_middle([dot], dots, ctx):
                 results.append(np.array([dot]))
     return results
 state = turn(state)

@@ -92,7 +92,7 @@ class Eval(ABC):
                         print(label)
                     elif isinstance(self, Resolution):
                         preds.append(pred)
-                        truelabels.append([int(label)])
+                        truelabels.append([label])
                         print(configs[label].nonzero()[0])
 
         return self.metric.compute(predictions=preds, references=truelabels, **self.flags)
@@ -114,7 +114,7 @@ def collapse_referents(xs):
     ret = np.zeros(7, dtype=bool)
     for x in xs:
         ret |= np.array(x["target"], dtype=bool)
-    return bitutils.config_to_int(ret)
+    return int(bitutils.config_to_int(ret))
 
 
 class Resolution(Eval):
@@ -134,9 +134,14 @@ class Resolution(Eval):
     def get_labels(self, example):
         referents = example["all_referents"]
         # collapse the referents in each turn
-        return [collapse_referents(xs) for xs in referents]
+        referents = [collapse_referents(xs) for xs in referents]
+        # final turn is selection. output instead of mentions
+        referents[-1] = example["output"]
+        return referents
 
     def do_eval(self, turn):
+        #if "<selection>" in turn:
+        #    return False
         return True
 
 
