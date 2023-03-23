@@ -24,7 +24,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Could be. One on right is largest with a small gray on top??
+# You: Could be. One on right is largest with a tiny gray on top??
 def turn(state):
     # Follow up question.
     results = []
@@ -189,7 +189,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: I see a large black dot next to two smaller dots. We have different views though.
+# Them: I see a large black dot next to two smaller lighter dots. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -199,12 +199,16 @@ def turn(state):
         check_z_dark = is_dark(z, ctx)
         check_y_smaller_x = are_smaller([y], [x], ctx)
         check_z_smaller_x = are_smaller([z], [x], ctx)
+        check_y_lighter_x = are_lighter([y], [x], ctx)
+        check_z_lighter_x = are_lighter([z], [x], ctx)
         if (
             check_xyz_close
             and check_x_large
             and check_z_dark
             and check_y_smaller_x
             and check_z_smaller_x
+            and check_y_lighter_x
+            and check_z_lighter_x
         ):
             results.append([x,y,z])
     return results

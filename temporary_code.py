@@ -1,5 +1,5 @@
 
-# ('S_TUhi0vkItSXbzA3u', 'C_ca68febec47f4ae9887677b88c46160b')
+# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.99, 0.11, 0.3333333333333333, 0.6933333333333334], [0.705, -0.05, 0.6666666666666666, 0.4], [-0.63, 0.5, 0.6666666666666666, -0.06666666666666667], [0.715, -0.22, -1.0, 0.6933333333333334], [0.335, -0.265, -0.3333333333333333, 0.37333333333333335], [0.04, 0.73, -0.6666666666666666, -0.6533333333333333], [0.035, 0.98, -0.3333333333333333, -0.72]])
+    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -50,7 +50,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Could be. One on right is largest with a small gray on top??
+# You: Could be. One on right is largest with a tiny gray on top??
 def turn(state):
     # Follow up question.
     results = []
@@ -215,7 +215,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: I see a large black dot next to two smaller dots. We have different views though.
+# Them: I see a large black dot next to two smaller lighter dots. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -225,12 +225,16 @@ def turn(state):
         check_z_dark = is_dark(z, ctx)
         check_y_smaller_x = are_smaller([y], [x], ctx)
         check_z_smaller_x = are_smaller([z], [x], ctx)
+        check_y_lighter_x = are_lighter([y], [x], ctx)
+        check_z_lighter_x = are_lighter([z], [x], ctx)
         if (
             check_xyz_close
             and check_x_large
             and check_z_dark
             and check_y_smaller_x
             and check_z_smaller_x
+            and check_y_lighter_x
+            and check_z_lighter_x
         ):
             results.append([x,y,z])
     return results
@@ -266,52 +270,81 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: Dark medium above small dark dot?
+# You: Do you see a large dark dot with a tiny lighter grey dot above and to the left?
 def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
+        check_x_large = is_large(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_tiny = is_small(y, ctx)
+        check_y_lighter_grey = is_light(y, ctx) and is_grey(y, ctx)
+        check_y_above_left = are_above_left([y], [x], ctx)
+        if (
+            check_x_large
+            and check_x_dark
+            and check_y_tiny
+            and check_y_lighter_grey
+            and check_y_above_left
+        ):
+            results.append([x, y])
+    return results
+state = turn(state)
+# End.
+
+# Them: I see a medium black dot at the middle between a light grey dot and a smaller dot, making a line going down.
+def turn(state):
+    # New question.
+    results = []
+    for x, y, z in get3idxs(idxs):
+        check_xyz_line = is_line([x, y, z], ctx)
         check_x_medium = is_medium(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_y_small = is_small(y, ctx)
-        check_y_dark = is_dark(y, ctx)
-        check_x_above_y = are_above([x], [y], ctx)
+        check_y_light_grey = is_light(y, ctx) and is_grey(y, ctx)
+        check_z_smaller = is_small(z, ctx)
+        check_line_down = get_top([x, y, z], ctx) == y and get_bottom([x, y, z], ctx) == z
         if (
-            check_x_medium
+            check_xyz_line
+            and check_x_medium
             and check_x_dark
-            and check_y_small
-            and check_y_dark
-            and check_x_above_y
+            and check_y_light_grey
+            and check_z_smaller
+            and check_line_down
         ):
-            results.append([x, y])
+            results.append([x, y, z])
     return results
 state = turn(state)
 # End.
 
-# Them: I have a black dot on top of a slightly smaller black dot.
+# You: OK, I see that line.
 def turn(state):
-    # New question.
+    # No op.
+    return state
+state = turn(state)
+# End.
+
+# Them: Do you see the black dot in the middle?
+def turn(state):
+    # Follow up question.
     results = []
-    for x, y in get2idxs(idxs):
-        check_x_dark = is_dark(x, ctx)
-        check_y_dark = is_dark(y, ctx)
-        check_x_above_y = are_above([x], [y], ctx)
-        check_x_larger_y = are_larger([x], [y], ctx)
+    for a, b, c in state:
+        check_middle_black = is_dark(get_middle([a, b, c], ctx), ctx)
         if (
-            check_x_dark
-            and check_y_dark
-            and check_x_above_y
-            and check_x_larger_y
+            check_middle_black
         ):
-            results.append([x, y])
+            results.append([a, b, c])
     return results
 state = turn(state)
 # End.
 
-# You: Lol <selection>.
+# You: Yes, choose it <selection>.
 def select(state):
     # Select a dot.
-    return state
+    results = []
+    for a, b, c in state:
+        middle_dot = get_middle([a, b, c], ctx)
+        results.append([middle_dot])
+    return results
 state = select(state)
 
 
