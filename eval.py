@@ -49,7 +49,7 @@ class Recall(evaluate.Metric):
 
 class Eval(ABC):
     flags = dict()
-    logpath = "eval.json"
+    logpath = "evaluation_logs"
 
     def compute(self, agent, data, num_examples=None, run_example=None):
         configs = bitutils.get_configs(128)
@@ -148,7 +148,7 @@ class Resolution(Eval):
     #metric = evaluate.load("recall", "multilabel")
     metric = Recall("multilabel")
     flags = dict(average="micro")
-    logpath = "resolution.json"
+    logpath = "resolution_logs"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)
@@ -177,7 +177,7 @@ class Resolution(Eval):
 
 class Generation(Eval):
     metric = evaluate.load("bleu")
-    logpath = "generation.json"
+    logpath = "generation_logs"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         #plan = agent.plan(past, view, info)
