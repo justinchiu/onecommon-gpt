@@ -106,12 +106,16 @@ class Eval(ABC):
             log_entry = dict(
                 chat_id = chatid,
                 scenario_id = scenarioid,
-                view = view,
+                view = view.tolist(),
                 turns = turns,
                 referents = referents,
-                labels = np.array([configs[x] for x in labels]),
-                preds = np.array([[x for x in xs] for xs in preds]),
+                labels = [configs[x].tolist() for x in labels],
+                preds = [[configs[x].tolist() for x in xs] for xs in preds],
                 past = past,
+                agent = example["agent"],
+                dot_ids = example["real_ids"],
+                partner_dot_ids = example["partner_real_ids"],
+                output = example["output"]
             )
             self.save_log(log_entry, chatid)
 
