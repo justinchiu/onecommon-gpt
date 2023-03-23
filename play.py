@@ -1,15 +1,12 @@
 from dot import Dot, visualize_board, visualize_single_board
 
-# We will get the user's input by calling the get_text function
-def get_text():
-    input_text = st.text_input("You: ", key="input")
-    return input_text
-         
 if __name__ == "__main__":
     from pathlib import Path
     import json
     import streamlit as st
     from streamlit_chat import message
+
+    st.set_page_config(layout="wide")
 
     # Initialize chat state
     if 'generated' not in st.session_state:
@@ -43,15 +40,26 @@ if __name__ == "__main__":
 
     board = b0 if agent == 0 else b1
 
-    #visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
-    visualize_single_board(board, showlabel=False)
 
-    placeholder = st.empty()
-    user_input = get_text()
-    if user_input:
+    if 'input' not in st.session_state:
+        st.session_state.input= ''
+
+    def submit():
+        st.session_state.input = st.session_state.widget
+        st.session_state.widget = ''
+
+    col1, col2 = st.columns(2, gap="large")
+    with col1:
+        #visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
+        visualize_single_board(board, showlabel=False)
+    with col2:
+        placeholder = st.empty()
+        user_input = st.text_input("You: ", key="widget", on_change=submit)
+
+    if st.session_state.input:
         output = {"generated_text": "lol"}
 
-        st.session_state.past.append(user_input)
+        st.session_state.past.append(st.session_state.input)
         st.session_state.generated.append(output["generated_text"])
 
     with placeholder.container():
@@ -59,3 +67,5 @@ if __name__ == "__main__":
             for i in range(len(st.session_state['generated'])):
                 message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
                 message(st.session_state["generated"][i], key=str(i))
+
+

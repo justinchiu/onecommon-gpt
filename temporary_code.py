@@ -1,5 +1,5 @@
 
-# ('S_m5t0eZ17JHhXqIxB', 'C_a784d4bb34cf4b129d28e7bcbc564732')
+# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.76, 0.105, 0.0, 0.28], [-0.475, 0.36, -0.3333333333333333, -0.13333333333333333], [0.315, -0.7, -0.6666666666666666, -0.8666666666666667], [0.86, 0.42, 0.6666666666666666, -0.13333333333333333], [0.325, 0.435, 0.0, -0.52], [-0.365, 0.58, -0.3333333333333333, -0.12], [0.16, -0.785, 0.0, 0.7733333333333333]])
+    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -199,13 +199,72 @@ state = select(state)
 dots = get_ctx()
 state = []
 
-# You: Hello. Do you have one, medium-gray dot by itself?
+# You: Do you see a large, dark dot with a tiny, lighter-grey dot above and to the left?
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dots):
-        if is_medium(dot, ctx) and is_grey(dot, ctx):
-            results.append(dot)
+    for x,y in get2dots(all_dots):
+        if (
+            is_large(x, ctx)
+            and is_dark(x, ctx)
+            and is_small(y, ctx)
+            and are_above_left(y, x, ctx)
+            and are_lighter(y, x, ctx)
+        ):
+            results.append(np.array([x,y]))
+    return results
+state = turn(state)
+# End.
+
+# Them: I see a medium-sized black dot at the middle, between a light-grey dot and a smaller dot, making a line going down.
+def turn(state):
+    # New question.
+    results = []
+    for x,y,z in get3dots(all_dots):
+        if (
+            is_line([x,y,z], ctx)
+            and is_medium(y, ctx)
+            and is_dark(y, ctx)
+            and are_middle([y], [x,y,z], ctx)
+            and is_light(x, ctx)
+            and is_small(z, ctx)
+        ):
+            results.append(np.array([x,y,z]))
+    return results
+state = turn(state)
+# End.
+
+# You: Ok, I see that line.
+def turn(state):
+    # Follow up question.
+    results = []
+    for result in state:
+        if is_line(result, ctx):
+            results.append(result)
+    return results
+state = turn(state)
+# End.
+
+# Them: Do you see the dot at the middle, black?
+def turn(state):
+    # Follow up question.
+    results = []
+    for result in state:
+        for dot in result:
+            if is_dark([dot], ctx) and are_middle([dot], result, ctx):
+                results.append(np.array([dot]))
+    return results
+state = turn(state)
+# End.
+
+# You: Yes, choose it.
+def turn(state):
+    # Follow up question.
+    results = []
+    for result in state:
+        for dot in result:
+            if is_dark([dot], ctx) and are_middle([dot], result, ctx):
+                results.append(np.array([dot]))
     return results
 state = turn(state)
 
