@@ -24,8 +24,6 @@ if __name__ == "__main__":
 
     scenario_id = scenario_list[0]["uuid"]
 
-    st.write(f"### Scenario {scenario_id}")
-
     board = boards[scenario_id]
 
     b0 = [Dot(x) for x in board["kbs"][0]]
@@ -48,19 +46,27 @@ if __name__ == "__main__":
         st.session_state.input = st.session_state.widget
         st.session_state.widget = ''
 
-    col1, col2 = st.columns(2, gap="large")
-    with col1:
+    st.markdown("""
+    <style>
+        [data-testid=stSidebar] {
+            background-color: white;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    with st.sidebar:
+        st.write(f"### Scenario {scenario_id}")
         #visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
         visualize_single_board(board, showlabel=False)
-    with col2:
-        placeholder = st.empty()
-        user_input = st.text_input("You: ", key="widget", on_change=submit)
+
+    placeholder = st.empty()
+    user_input = st.text_input("You: ", key="widget", on_change=submit)
 
     if st.session_state.input:
-        output = {"generated_text": "lol"}
+        output = "lol"
 
         st.session_state.past.append(st.session_state.input)
-        st.session_state.generated.append(output["generated_text"])
+        st.session_state.generated.append(output)
 
     with placeholder.container():
         if st.session_state['generated']:
