@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_kQfCI1MRe21DDsqK', 'C_27a843b6c8f94ffc86fde88cc86b0772')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
+    ctx = np.array([[-0.405, 0.415, 0.0, -0.12], [0.485, -0.65, 0.0, -0.8533333333333334], [0.97, 0.06, 0.6666666666666666, 0.72], [0.3, -0.115, 1.0, 0.9066666666666666], [0.065, 0.015, 0.3333333333333333, 0.4], [-0.9, 0.05, -0.6666666666666666, -0.36], [-0.03, -0.175, 0.0, -0.48]])
     return ctx
 
 
@@ -199,26 +199,27 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: I have a light grey small dot next to a medium grey medium dot.
+# You: I have a triangle of three dots near the center.
 def turn(state):
     # New question.
     results = []
-    for x,y in get2idxs(idxs):
-        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
-            results.append(np.array([x,y]))
+    for x,y,z in get3idxs(idxs):
+        if is_triangle([x,y,z], ctx) and are_middle([x,y,z], None, ctx):
+            results.append(np.array([x,y,z]))
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, I see that pair. Choose the small light grey dot <selection>.
-def select(state):
-    # Select a dot.
+# Them: Are they all of different tone?
+def turn(state):
+    # New question.
     results = []
     for result in state:
-        if is_small(get_top(result, ctx), ctx) and is_light(get_top(result, ctx), ctx):
-            results.append(np.array([get_top(result, ctx)]))
+        colors = [ctx.get_color(dot) for dot in result]
+        if len(set(colors)) == 3:
+            results.append(result)
     return results
-state = select(state)
+state = turn(state)
 
 
 print([x.tolist() for x in state])
