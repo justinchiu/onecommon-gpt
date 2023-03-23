@@ -9,3 +9,6 @@ for the latest.
 
 ## Examples for creating prompts
 * `python get_prompting_examples.py` has examples for generation with features.
+
+## Visualization
+`streamlit run dot.py` visualizes one reference resolution with codegen example.

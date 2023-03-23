@@ -72,6 +72,7 @@ class Eval(ABC):
             referents = example["all_referents"]
             labels = self.get_labels(example)
             past = []
+            example_preds = []
             for t in range(len(turns)):
                 text = turns[t]
                 past_turns = turns[:t]
@@ -100,6 +101,7 @@ class Eval(ABC):
                     elif isinstance(self, Resolution):
                         preds.append(pred)
                         truelabels.append([label])
+                        example_preds.append(pred)
                         print(configs[label].nonzero()[0])
 
             # LOGGING
@@ -110,7 +112,7 @@ class Eval(ABC):
                 turns = turns,
                 referents = referents,
                 labels = [configs[x].tolist() for x in labels],
-                preds = [[configs[x].tolist() for x in xs] for xs in preds],
+                preds = [[configs[x].tolist() for x in xs] for xs in example_preds],
                 past = past,
                 agent = example["agent"],
                 dot_ids = example["real_ids"],
