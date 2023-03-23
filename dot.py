@@ -163,8 +163,10 @@ if __name__ == "__main__":
             st.write(f"### Turn {s}")
             st.write(turns[s])
             st.code(past[s][1])
-            for pred in preds[s]:
-                st.write(", ".join([dot_ids[i] for i,x in enumerate(pred) if x]))
+            st.code("\n".join([
+                f"{i}. " + ", ".join([dot_ids[i] for i,x in enumerate(pred) if x])
+                for i, pred in enumerate(preds[t])
+            ]))
 
     col1, col2 = st.columns(2)
     with col1:
