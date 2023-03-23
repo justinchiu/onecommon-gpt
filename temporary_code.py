@@ -1,5 +1,5 @@
 
-# ('S_cSjaqwqc2EXKGFEY', 'C_c836669707f4454da547d68ce5809151')
+# ('S_m5t0eZ17JHhXqIxB', 'C_a784d4bb34cf4b129d28e7bcbc564732')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.07, -0.89, -1.0, 0.76], [-0.42, 0.435, -0.3333333333333333, -0.21333333333333335], [0.96, -0.07, -0.6666666666666666, 0.8133333333333334], [-0.155, -0.265, -0.3333333333333333, 0.8933333333333333], [-0.35, -0.42, -0.3333333333333333, -0.41333333333333333], [0.205, -0.64, -0.6666666666666666, -0.4], [-0.09, 0.53, 0.0, -0.41333333333333333]])
+    ctx = np.array([[0.76, 0.105, 0.0, 0.28], [-0.475, 0.36, -0.3333333333333333, -0.13333333333333333], [0.315, -0.7, -0.6666666666666666, -0.8666666666666667], [0.86, 0.42, 0.6666666666666666, -0.13333333333333333], [0.325, 0.435, 0.0, -0.52], [-0.365, 0.58, -0.3333333333333333, -0.12], [0.16, -0.785, 0.0, 0.7733333333333333]])
     return ctx
 
 
@@ -199,33 +199,13 @@ state = select(state)
 dots = get_ctx()
 state = []
 
-# Them: Two small dots: one dark gray, to the right and above a lighter dot, same size.
+# You: Hello. Do you have one, medium-gray dot by itself?
 def turn(state):
     # New question.
     results = []
-    for x,y in get2dots(all_dots):
-        if (
-            is_small(x, ctx)
-            and is_small(y, ctx)
-            and is_dark(x, ctx)
-            and is_grey(y, ctx)
-            and are_right(x, y, ctx)
-            and are_above(x, y, ctx)
-            and same_size([x,y], ctx)
-        ):
-            results.append(np.array([x,y]))
-    return results
-state = turn(state)
-# End.
-
-# You: I think I see this; I'm picking the bottom-left, darker one.
-def turn(state):
-    # Follow up question.
-    results = []
-    for result in state:
-        for dot in result:
-            if is_dark([dot], ctx) and are_below_left(dot, None, ctx):
-                results.append(np.array([dot]))
+    for dot in get1dots(all_dots):
+        if is_medium(dot, ctx) and is_grey(dot, ctx):
+            results.append(dot)
     return results
 state = turn(state)
 

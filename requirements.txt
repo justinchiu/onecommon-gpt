@@ -3,3 +3,5 @@ evaluate
 openai
 scikit-learn
 shapely
+streamlit
+streamlit-chat

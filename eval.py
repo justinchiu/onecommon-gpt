@@ -119,7 +119,7 @@ class Eval(ABC):
                 partner_dot_ids = example["partner_real_ids"],
                 output = example["output"]
             )
-            self.save_log(log_entry, chatid)
+            self.save_log(log_entry, chatid, example["agent"])
 
         return self.metric.compute(predictions=preds, references=truelabels, **self.flags)
 
@@ -135,10 +135,10 @@ class Eval(ABC):
     def do_eval(self, x):
         pass
 
-    def save_log(self, log, id):
+    def save_log(self, log, id, agent):
         import json
         from pathlib import Path
-        path = Path(self.logpath) / f"{id}.json"
+        path = Path(self.logpath) / f"{id}-agent{agent}.json"
         with path.open("w") as f:
             json.dump(log, f)
 
