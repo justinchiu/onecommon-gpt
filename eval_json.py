@@ -17,8 +17,10 @@ for path in logfiles:
     lpreds = [[int(bitutils.config_to_int(pred)) for pred in preds] for preds in log["preds"]]
     llabels = [[int(bitutils.config_to_int(x))] for x in log["labels"]]
 
+    print(path)
+    print(recall.compute(predictions=lpreds, references=llabels, average="micro"))
     preds.extend(lpreds)
     labels.extend(llabels)
 
+print("global")
 print(recall.compute(predictions=preds, references=labels, average="micro"))
-import pdb; pdb.set_trace()
