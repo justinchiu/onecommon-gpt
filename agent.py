@@ -33,7 +33,7 @@ class Agent:
         #    model = "gpt-3.5-turbo",
         self.reformat = Reformat(backend.OpenAI(
             model = "text-davinci-003",
-            max_tokens = 64,
+            max_tokens = 128,
         ))
 
         if refres == "codegen":

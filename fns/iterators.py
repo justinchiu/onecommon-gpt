@@ -4,10 +4,12 @@ import itertools
 def getnr(x, r):
     n = len(x)
     #return x[np.stack(list(itertools.combinations(np.arange(n), r=r)))]
-    return x[np.stack(list(itertools.permutations(np.arange(n), r=r)))]
+    x = np.array(x)
+    out = x[np.stack(list(itertools.permutations(np.arange(n), r=r)))]
+    return out.tolist()
 
 def get1idxs(x):
-    return [np.array([x]) for x in x]
+    return [[x] for x in x]
 
 def get2idxs(x):
     return getnr(x, 2)

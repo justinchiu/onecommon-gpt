@@ -21,12 +21,12 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return ctx
 
 
 
-idxs = np.arange(7)
+idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
@@ -45,7 +45,7 @@ def turn(state):
             and check_xyz_light
             and check_xyz_alone
         ):
-            results.append(np.array([x,y,z]))
+            results.append([x,y,z])
     return results
 state = turn(state)
 # End.
@@ -63,7 +63,7 @@ def turn(state):
             and check_small_top
             and check_grey_top
         ):
-            results.append(np.array([a,b,c]))
+            results.append([a,b,c])
     return results
 state = turn(state)
 # End.
@@ -85,7 +85,7 @@ def turn(state):
             and check-above
             and check_size
         ):
-            results.append(np.array([x,y]))
+            results.append([x,y])
     return results
 state = turn(state)
 # End.
@@ -109,7 +109,7 @@ def turn(state):
             check_x_large
             and check_x_grey
         ):
-            results.append(np.array([x]))
+            results.append([x])
     return results
 state = turn(state)
 # End.
@@ -128,7 +128,7 @@ def turn(state):
                 and check_x_dark
                 and check_x_next_to_a
             ):
-                results.append(np.array([a, x]))
+                results.append([a, x])
     return results
 state = turn(state)
 # End.
@@ -154,7 +154,7 @@ def turn(state):
             and check_z_bottom_right
             and check_z_dark
         ):
-            results.append(np.array([x,y,z]))
+            results.append([x,y,z])
     return results
 state = turn(state)
 # End.
@@ -170,7 +170,7 @@ def turn(state):
         if (
             check_close
         ):
-            results.append(np.array([a,b,c]))
+            results.append([a,b,c])
     return results
 state = turn(state)
 # End.
@@ -181,14 +181,14 @@ def select(state):
     results = []
     for a,b,c in state:
         check_a_large = is_large(a, ctx)
-        check_b_large = not is_large(b, ctx)
-        check_c_large = not is_large(c, ctx)
+        check_b_not_large = not is_large(b, ctx)
+        check_c_not_large = not is_large(c, ctx)
         if (
             check_a_large
             and check_b_not_large
             and check_c_not_large
         ):
-            results.append(np.array([a]))
+            results.append([a])
     return results
 state = select(state)
 # End.
@@ -220,7 +220,7 @@ def turn(state):
     # New question.
     results = []
     for x,y,z in get3idxs(idxs):
-        check_xyz_close = all_close(np.array([x,y,z]), ctx)
+        check_xyz_close = all_close([x,y,z], ctx)
         check_x_large = is_large(x, ctx)
         check_z_dark = is_dark(z, ctx)
         check_y_small = is_small(y, ctx)
@@ -232,7 +232,7 @@ def turn(state):
             and check_y_small
             and check_z_small
         ):
-            results.append(np.array([x,y,z]))
+            results.append([x,y,z])
     return results
 state = turn(state)
 # End.
@@ -266,7 +266,7 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: I have a light grey small dot next to a medium grey medium dot.
+# You: I have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
@@ -283,23 +283,12 @@ def turn(state):
             and check_y_medium
             and check_y_medium_grey
         ):
-            results.append(np.array([x, y]))
+            results.append([x, y])
     return results
 state = turn(state)
-# End.
-
-# You: Yes, I see that pair. Choose the small light grey dot <selection>.
-def select(state):
-    # Select a dot.
-    results = []
-    for x, y in state:
-        if is_small(x, ctx) and is_light(x, ctx) and is_grey(x, ctx):
-            results.append(np.array([x]))
-    return results
-state = select(state)
 
 
-print([x.tolist() for x in state])
+print(state)
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
