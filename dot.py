@@ -118,7 +118,7 @@ if __name__ == "__main__":
     }
 
     logdir = Path("resolution_logs")
-    logfiles = list(logdir.iterdir())
+    logfiles = list(sorted(logdir.iterdir()))
     #print(logfiles)
 
     st.write(f"Num examples: {len(logfiles)}")
