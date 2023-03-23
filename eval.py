@@ -49,6 +49,7 @@ class Recall(evaluate.Metric):
 
 class Eval(ABC):
     flags = dict()
+    logpath = "eval.json"
 
     def compute(self, agent, data, num_examples=None, run_example=None):
         configs = bitutils.get_configs(128)
@@ -64,6 +65,7 @@ class Eval(ABC):
             print(f"Example {ne}")
             print(scenarioid)
             print(chatid)
+
 
             view = example["context"]
             turns = example["dialogue"]
@@ -100,6 +102,19 @@ class Eval(ABC):
                         truelabels.append([label])
                         print(configs[label].nonzero()[0])
 
+            # LOGGING
+            log_entry = dict(
+                chat_id = chatid,
+                scenario_id = scenarioid,
+                view = view,
+                turns = turns,
+                referents = referents,
+                labels = np.array([configs[x] for x in labels]),
+                preds = np.array([[x for x in xs] for xs in preds]),
+                past = past,
+            )
+            self.save_log(log_entry, chatid)
+
         return self.metric.compute(predictions=preds, references=truelabels, **self.flags)
 
     @abstractmethod
@@ -114,6 +129,13 @@ class Eval(ABC):
     def do_eval(self, x):
         pass
 
+    def save_log(self, log, id):
+        import json
+        from pathlib import Path
+        path = Path(self.logpath) / f"{id}.json"
+        with path.open("w") as f:
+            json.dump(log, f)
+
 
 def collapse_referents(xs):
     ret = np.zeros(7, dtype=bool)
@@ -126,6 +148,7 @@ class Resolution(Eval):
     #metric = evaluate.load("recall", "multilabel")
     metric = Recall("multilabel")
     flags = dict(average="micro")
+    logpath = "resolution.json"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)
@@ -154,6 +177,7 @@ class Resolution(Eval):
 
 class Generation(Eval):
     metric = evaluate.load("bleu")
+    logpath = "generation.json"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         #plan = agent.plan(past, view, info)
