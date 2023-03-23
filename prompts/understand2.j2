@@ -88,17 +88,17 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Is there a small black one next to it?
+# You: Is there a smaller black one next to it?
 def turn(state):
     # Follow up question, new dot.
     results = []
     for a, in state:
         for x, in get1idxs(idxs):
-            check_x_small = is_small(x, ctx)
+            check_x_smaller_a = are_smaller([x], [a], ctx)
             check_x_dark = is_dark(x, ctx)
             check_x_next_to_a = all_close([a,x], ctx) and not are_middle([x], [a], ctx)
             if(
-                check_x_small
+                check_x_smaller_a
                 and check_x_dark
                 and check_x_next_to_a
             ):
@@ -189,7 +189,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: I see a large black dot next to two small dots. We have different views though.
+# Them: I see a large black dot next to two smaller dots. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -197,14 +197,14 @@ def turn(state):
         check_xyz_close = all_close([x,y,z], ctx)
         check_x_large = is_large(x, ctx)
         check_z_dark = is_dark(z, ctx)
-        check_y_small = is_small(y, ctx)
-        check_z_small = is_small(z, ctx)
+        check_y_smaller_x = are_smaller([y], [x], ctx)
+        check_z_smaller_x = are_smaller([z], [x], ctx)
         if (
             check_xyz_close
             and check_x_large
             and check_z_dark
-            and check_y_small
-            and check_z_small
+            and check_y_smaller_x
+            and check_z_smaller_x
         ):
             results.append([x,y,z])
     return results
