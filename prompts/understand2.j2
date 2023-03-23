@@ -72,16 +72,18 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them: What about a large medium grey dot?
+# Them: What about a large medium grey dot near the center?
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_grey = is_grey(x, ctx)
+        check_x_center = are_middle([x], None, ctx)
         if (
             check_x_large
             and check_x_grey
+            and check_x_center
         ):
             results.append([x])
     return results
@@ -184,7 +186,7 @@ def turn(state):
             and check_x_dark
             and check_x_below_left
         ):
-            results.append(x)
+            results.append([x])
     return results
 state = turn(state)
 # End.
