@@ -170,7 +170,7 @@ state = select(state)
 
 
 # New.
-dots = get_ctx()
+ctx = get_ctx()
 state = []
 {% if past is defined and past|length > 0 %}{% for block in past %}
 # {{ block[0] }}

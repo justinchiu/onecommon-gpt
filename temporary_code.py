@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return ctx
 
 
@@ -196,18 +196,29 @@ state = select(state)
 
 
 # New.
-dots = get_ctx()
+ctx = get_ctx()
 state = []
 
-# Them: I have a light grey small dot next to a medium grey medium dot.
+# You: I have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
-    for x,y in get2idxs(dots):
-        if all_close(np.array([x,y]), dots) and is_light(x, dots) and is_small(x, dots) and is_medium(y, dots) and is_grey(y, dots):
+    for x,y in get2idxs(idxs):
+        if all_close(np.array([x,y]), ctx) and is_small(x, ctx) and is_light(x, ctx) and is_medium(y, ctx) and is_grey(y, ctx):
             results.append(np.array([x,y]))
     return results
 state = turn(state)
+# End.
+
+# Them: Yes, I see that pair. Choose the small light grey dot <selection>.
+def select(state):
+    # Select a dot.
+    results = []
+    for result in state:
+        if is_small(get_top(result, ctx), ctx) and is_light(get_top(result, ctx), ctx):
+            results.append(np.array([get_top(result, ctx)]))
+    return results
+state = select(state)
 
 
 print([x.tolist() for x in state])
