@@ -40,7 +40,8 @@ class Agent:
             #self.understand = Understand(backend.OpenAI(
             #    model = "code-davinci-002",
             self.understand = Understand(backend.OpenAIChat(
-                model = "gpt-3.5-turbo",
+                #model = "gpt-3.5-turbo",
+                model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
