@@ -37,8 +37,10 @@ class Agent:
         ))
 
         if refres == "codegen":
-            self.understand = Understand(backend.OpenAI(
-                model = "code-davinci-002",
+            #self.understand = Understand(backend.OpenAI(
+            #    model = "code-davinci-002",
+            self.understand = Understand(backend.OpenAIChat(
+                model = "gpt-3.5-turbo",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())

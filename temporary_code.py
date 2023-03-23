@@ -14,7 +14,7 @@ from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_le
 from spatial import get_middle
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, are_darker, are_lighter
 from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, are_larger, are_smaller
-from iterators import get1dots, get2dots, get3dots
+from iterators import get1idxs, get2idxs, get3idxs
 from lists import add
 import numpy as np
 from functools import partial
@@ -26,7 +26,7 @@ def get_ctx():
 
 
 
-all_dots = np.arange(7)
+idxs = np.arange(7)
 
 # New.
 ctx = get_ctx()
@@ -36,7 +36,7 @@ state = []
 def turn(state):
     # New question.
     results = []
-    for x,y,z in get3dots(all_dots):
+    for x,y,z in get3idxs(idxs):
         if is_triangle([x,y,z], ctx) and all(map(partial(is_light, ctx=ctx), [x,y,z])):
             results.append(np.array([x,y,z]))
     return results
@@ -58,7 +58,7 @@ state = turn(state)
 def turn(state):
     # New question.
     results = []
-    for result in get2dots(all_dots):
+    for result in get2idxs(idxs):
         if (
             all_close(result, ctx)
             and all(map(partial(is_dark, ctx=ctx), result))
@@ -83,7 +83,7 @@ state = turn(state)
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dots):
+    for dot in get1idxs(idxs):
         if is_large(dot, ctx):
             results.append(dot)
     return results
@@ -95,7 +95,7 @@ def turn(state):
     # Follow up question, new dot.
     results = []
     for result in state:
-        for dot in get1dots(all_dots):
+        for dot in get1idxs(idxs):
             if is_small(dot, ctx) and is_dark(dot, ctx) and all_close(add(result, dot), ctx) and not are_middle(dot, result, ctx):
                 results.append(add(result, dot))
     return results
@@ -106,7 +106,7 @@ state = turn(state)
 def turn(state):
     # New question.
     results = []
-    for x, y, z in get3dots(all_dots):
+    for x, y, z in get3idxs(idxs):
         if (
             is_line([x,y,z], ctx)
             and x == get_top_left([x, y, z], ctx)
@@ -140,6 +140,7 @@ def select(state):
         for dot in result:
             if is_large([dot], ctx):
                 results.append(np.array([dot]))
+    return results
 state = select(state)
 # End.
 
@@ -151,7 +152,7 @@ state = []
 def turn(state):
     # New question.
     results = []
-    for dot in get1dots(all_dots):
+    for dot in get1idxs(idxs):
         if is_large(dot, ctx) and is_dark(dot, ctx) and are_below_left(dot, None, ctx):
             results.append(dot)
     return results
@@ -162,21 +163,20 @@ state = turn(state)
 def turn(state):
     # New question.
     results = []
-    for x,y,z in get3dots(all_dots):
+    for x,y,z in get3idxs(idxs):
         if all_close(np.array([x,y,z]), ctx) and is_large(x, ctx) and is_dark(z, ctx) and is_small(y, ctx) and is_small(z, ctx):
             results.append(np.array([x,y,z]))
     return results
 state = turn(state)
 # End.
 
-# You: Select the large black one.
+# You: Select the larges one.
 def turn(state):
     # Follow up question.
     results = []
     for result in state:
-        for dot in result:
-            if is_large([dot], ctx) and is_dark([dot], ctx):
-                results.append(np.array([dot]))
+        results.append(get_largest(result, ctx))
+    return results
 state = turn(state)
 # End.
  
@@ -203,25 +203,12 @@ state = []
 def turn(state):
     # New question.
     results = []
-    for x,y in get2dots(all_dots):
-        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
+    for x,y in get2idxs(dots):
+        if all_close(np.array([x,y]), dots) and is_light(x, dots) and is_small(x, dots) and is_medium(y, dots) and is_grey(y, dots):
             results.append(np.array([x,y]))
     return results
 state = turn(state)
-# End.
 
-import pdb; pdb.set_trace()
-
-# You: Yes, I see that pair. Choose the small light grey dot <selection>.
-def select(state):
-    # Select a dot.
-    results = []
-    for result in state:
-        for dot in result:
-            if is_light([dot], ctx) and is_small([dot], ctx):
-                results.append(np.array([dot]))
-state = select(state)
-import pdb; pdb.set_trace()
 
 print([x.tolist() for x in state])
 # state: num_candidates x size x feats=4
