@@ -100,7 +100,7 @@ def turn(state):
     # Follow up question.
     results = []
     for result in state:
-        if are_close([get_top(result, ctx)], [get_middle(result, ctx)], ctx):
+        if all_close([get_top(result, ctx), get_middle(result, ctx)], ctx):
             results.append(result)
     return results
 state = turn(state)

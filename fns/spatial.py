@@ -7,6 +7,9 @@ import math
 def all_close(idxs, ctx):
     xy = ctx[idxs,:2]
 
+    # be generous
+    return np.linalg.norm(xy - xy[:,None], axis=-1).max() < 0.3
+
     rect = MultiPoint(xy).minimum_rotated_rectangle
 
     minx, miny, maxx, maxy = rect.bounds
@@ -18,8 +21,8 @@ def all_close(idxs, ctx):
     # HARD CODE, try to be a bit generous
     return diagonal < 0.3
 
-def are_close(x, y, ctx):
-    return np.linalg.norm(ctx[x,:2]-ctx[y,:2]) < 0.3
+#def are_close(x, y, ctx):
+#    return np.linalg.norm(ctx[x,:2]-ctx[y,:2]) < 0.3
 
 def are_direction(x, y, direction, ctx):
     # Relative to view: always True
