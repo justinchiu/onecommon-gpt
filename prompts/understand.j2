@@ -6,7 +6,7 @@ all_dots = np.arange(7)
 ctx = get_ctx()
 state = []
 
-# Them: got a triangle of 3 light grey dots.
+# Them: Got a triangle of 3 light grey dots.
 def turn(state):
     # New question.
     results = []
@@ -114,6 +114,7 @@ def select(state):
         for dot in result:
             if is_large([dot], ctx):
                 results.append(np.array([dot]))
+    return results
 state = select(state)
 # End.
 
@@ -151,6 +152,7 @@ def turn(state):
         for dot in result:
             if is_large([dot], ctx) and is_dark([dot], ctx):
                 results.append(np.array([dot]))
+    return results
 state = turn(state)
 # End.
  

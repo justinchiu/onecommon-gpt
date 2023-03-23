@@ -1,5 +1,5 @@
 
-# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
+    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
     return ctx
 
 
@@ -32,7 +32,7 @@ all_dots = np.arange(7)
 ctx = get_ctx()
 state = []
 
-# Them: got a triangle of 3 light grey dots.
+# Them: Got a triangle of 3 light grey dots.
 def turn(state):
     # New question.
     results = []
@@ -199,75 +199,29 @@ state = select(state)
 dots = get_ctx()
 state = []
 
-# You: Do you see a large, dark dot with a tiny, lighter-grey dot above and to the left?
+# Them: I have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
     for x,y in get2dots(all_dots):
-        if (
-            is_large(x, ctx)
-            and is_dark(x, ctx)
-            and is_small(y, ctx)
-            and are_above_left(y, x, ctx)
-            and are_lighter(y, x, ctx)
-        ):
+        if all_close(np.array([x,y]), ctx) and is_light(x, ctx) and is_small(x, ctx) and is_grey(y, ctx) and is_medium(y, ctx):
             results.append(np.array([x,y]))
     return results
 state = turn(state)
 # End.
 
-# Them: I see a medium-sized black dot at the middle, between a light-grey dot and a smaller dot, making a line going down.
-def turn(state):
-    # New question.
-    results = []
-    for x,y,z in get3dots(all_dots):
-        if (
-            is_line([x,y,z], ctx)
-            and is_medium(y, ctx)
-            and is_dark(y, ctx)
-            and are_middle([y], [x,y,z], ctx)
-            and is_light(x, ctx)
-            and is_small(z, ctx)
-        ):
-            results.append(np.array([x,y,z]))
-    return results
-state = turn(state)
-# End.
+import pdb; pdb.set_trace()
 
-# You: Ok, I see that line.
-def turn(state):
-    # Follow up question.
-    results = []
-    for result in state:
-        if is_line(result, ctx):
-            results.append(result)
-    return results
-state = turn(state)
-# End.
-
-# Them: Do you see the dot at the middle, black?
-def turn(state):
-    # Follow up question.
+# You: Yes, I see that pair. Choose the small light grey dot <selection>.
+def select(state):
+    # Select a dot.
     results = []
     for result in state:
         for dot in result:
-            if is_dark([dot], ctx) and are_middle([dot], result, ctx):
+            if is_light([dot], ctx) and is_small([dot], ctx):
                 results.append(np.array([dot]))
-    return results
-state = turn(state)
-# End.
-
-# You: Yes, choose it.
-def turn(state):
-    # Follow up question.
-    results = []
-    for result in state:
-        for dot in result:
-            if is_dark([dot], ctx) and are_middle([dot], result, ctx):
-                results.append(np.array([dot]))
-    return results
-state = turn(state)
-
+state = select(state)
+import pdb; pdb.set_trace()
 
 print([x.tolist() for x in state])
 # state: num_candidates x size x feats=4
