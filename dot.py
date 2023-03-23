@@ -156,7 +156,6 @@ if __name__ == "__main__":
     t = st.number_input("turn", 0, len(turns)-1)
 
     #visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
-    visualize_single_board(board, showlabel=True)
 
     with st.sidebar:
         st.write("# Past")
@@ -167,16 +166,28 @@ if __name__ == "__main__":
             for pred in preds[s]:
                 st.write(", ".join([dot_ids[i] for i,x in enumerate(pred) if x]))
 
-    st.write("### Turn")
-    st.write(turns[t])
+    col1, col2 = st.columns(2)
+    with col1:
+        visualize_single_board(board, showlabel=True)
 
-    st.write("### Code")
-    st.code(past[t][1])
+    with col2:
+        st.write("### Turn")
+        st.code(turns[t])
 
-    st.write("### Preds")
-    print(preds[t])
-    for i, pred in enumerate(preds[t]):
-        st.write(f"{i}. " + ", ".join([dot_ids[i] for i,x in enumerate(pred) if x]))
+        st.write("### ProcTurn")
+        st.code(past[t][0])
 
-    st.write("### Label")
-    st.write(" ".join([dot_ids[i] for i,x in enumerate(labels[t]) if x]))
+        st.write("### Code")
+        st.code(past[t][1])
+
+        st.write("### Label")
+        st.code(" ".join([dot_ids[i] for i,x in enumerate(labels[t]) if x]))
+
+    with col1:
+        st.write("### Preds")
+        print(preds[t])
+        st.code("\n".join([
+            f"{i}. " + ", ".join([dot_ids[i] for i,x in enumerate(pred) if x])
+            for i, pred in enumerate(preds[t])
+        ]))
+
