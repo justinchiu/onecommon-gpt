@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_TUhi0vkItSXbzA3u', 'C_ca68febec47f4ae9887677b88c46160b')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
+    ctx = np.array([[-0.99, 0.11, 0.3333333333333333, 0.6933333333333334], [0.705, -0.05, 0.6666666666666666, 0.4], [-0.63, 0.5, 0.6666666666666666, -0.06666666666666667], [0.715, -0.22, -1.0, 0.6933333333333334], [0.335, -0.265, -0.3333333333333333, 0.37333333333333335], [0.04, 0.73, -0.6666666666666666, -0.6533333333333333], [0.035, 0.98, -0.3333333333333333, -0.72]])
     return ctx
 
 
@@ -75,14 +75,14 @@ def turn(state):
     for x, y in get2idxs(idxs):
         check_pair = all_close([x,y], ctx)
         check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = are_right(y, x, ctx)
-        check_above = are_above(y, x, ctx)
+        check_right = are_right([y], [x], ctx)
+        check_above = are_above([y], [x], ctx)
         check_size = same_size([x,y], ctx)
         if (
             check_pair
             and check_all_dark
             and check_right
-            and check-above
+            and check_above
             and check_size
         ):
             results.append([x,y])
@@ -204,7 +204,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_below_left = are_below_left(x, None, ctx)
+        check_x_below_left = are_below_left([x], None, ctx)
         if (
             check_x_large
             and check_x_dark
@@ -266,41 +266,52 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: I have a light grey small dot next to a medium grey medium dot.
+# You: Dark medium above small dark dot?
 def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x, y], ctx)
-        check_x_small = is_small(x, ctx)
-        check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
-        check_y_medium = is_medium(y, ctx)
-        check_y_medium_grey = is_grey(y, ctx)
+        check_x_medium = is_medium(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_small = is_small(y, ctx)
+        check_y_dark = is_dark(y, ctx)
+        check_x_above_y = are_above([x], [y], ctx)
         if (
-            check_xy_close
-            and check_x_small
-            and check_x_light_grey
-            and check_y_medium
-            and check_y_medium_grey
+            check_x_medium
+            and check_x_dark
+            and check_y_small
+            and check_y_dark
+            and check_x_above_y
         ):
             results.append([x, y])
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, I see that pair. Choose the small light grey dot <selection>.
+# Them: I have a black dot on top of a slightly smaller black dot.
+def turn(state):
+    # New question.
+    results = []
+    for x, y in get2idxs(idxs):
+        check_x_dark = is_dark(x, ctx)
+        check_y_dark = is_dark(y, ctx)
+        check_x_above_y = are_above([x], [y], ctx)
+        check_x_larger_y = are_larger([x], [y], ctx)
+        if (
+            check_x_dark
+            and check_y_dark
+            and check_x_above_y
+            and check_x_larger_y
+        ):
+            results.append([x, y])
+    return results
+state = turn(state)
+# End.
+
+# You: Lol <selection>.
 def select(state):
     # Select a dot.
-    results = []
-    for x, y in state:
-        check_x_small = is_small(x, ctx)
-        check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
-        if (
-            check_x_small
-            and check_x_light_grey
-        ):
-            results.append([x])
-    return results
+    return state
 state = select(state)
 
 

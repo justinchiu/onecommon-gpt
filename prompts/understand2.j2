@@ -49,14 +49,14 @@ def turn(state):
     for x, y in get2idxs(idxs):
         check_pair = all_close([x,y], ctx)
         check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = are_right(y, x, ctx)
-        check_above = are_above(y, x, ctx)
+        check_right = are_right([y], [x], ctx)
+        check_above = are_above([y], [x], ctx)
         check_size = same_size([x,y], ctx)
         if (
             check_pair
             and check_all_dark
             and check_right
-            and check-above
+            and check_above
             and check_size
         ):
             results.append([x,y])
@@ -178,7 +178,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_below_left = are_below_left(x, None, ctx)
+        check_x_below_left = are_below_left([x], None, ctx)
         if (
             check_x_large
             and check_x_dark

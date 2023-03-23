@@ -28,7 +28,7 @@ def different_size(x, ctx):
 
 
 def are_larger(x, y, ctx):
-    return (ctx[x,None,-1] > ctx[y,-1]).all()
+    return (ctx[x,None,-2] > ctx[y,-2]).all()
 
 def are_smaller(x, y, ctx):
-    return (ctx[x,None,-1] < ctx[y,-1]).all()
+    return (ctx[x,None,-2] < ctx[y,-2]).all()
