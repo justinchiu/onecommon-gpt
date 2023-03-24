@@ -3,6 +3,8 @@ from shapely import Point, MultiPoint
 import numpy as np
 import math
 
+from iterators import get3idxs
+
 def is_nearest(x, ctx):
     raise NotImplementedError
 
@@ -58,8 +60,20 @@ def is_line(x, ctx):
 
 
 def is_triangle(x, ctx):
-    line = is_line(x, ctx)
-    return not line and len(x) == 3 and is_contiguous(x, ctx)
+    if len(x) != 3: return False
+
+    # only take most compact triangles
+    radii = []
+    dots = []
+    for idxs in get3idxs(list(range(7))):
+        if not is_line(idxs, ctx) and is_contiguous(idxs, ctx):
+            mp = MultiPoint(ctx[idxs,:2])
+            radius = shapely.minimum_bounding_radius(mp)
+            radii.append(radius)
+            dots.append((idxs))
+    # 3 smallest triangles. 6 permutations of 3 dots
+    dotset = np.array(dots)[np.argsort(radii)[:18]]
+    return (dotset == x).all(-1).any()
 
 
 def is_square(x, ctx):

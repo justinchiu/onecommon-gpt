@@ -135,7 +135,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Yes. Is the top one close to the middle one?
+# You: Yes. Is the top one close to the middle darker one?
 def turn(state):
     # Follow up question.
     results = []
@@ -143,15 +143,33 @@ def turn(state):
         top_one = get_top([a,b,c], ctx)
         middle_one = get_middle([a,b,c], ctx)
         check_close = all_close([top_one, middle_one], ctx)
+        check_darker = are_darker([middle_one], [top_one], ctx)
         if (
             check_close
+            and check_darker
         ):
             results.append([a,b,c])
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, let's select the large one. <selection>.
+# Them: Yes. And the smallest is on the bottom right.
+def turn(state):
+    # Follow up question.
+    results = []
+    for a,b,c in state:
+        smallest_one = smallest([a,b,c], ctx)
+        bottom_right = get_bottom_right([a,b,c], ctx)
+        check_smallest_bottom_right = smallest_one == bottom_right
+        if (
+            check_smallest_bottom_right
+        ):
+            results.append([a,b,c])
+    return results
+state = turn(state)
+# End.
+
+# You: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
     results = []
@@ -191,7 +209,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: I see a large black dot next to two smaller lighter dots. We have different views though.
+# Them: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -203,6 +221,8 @@ def turn(state):
         check_z_smaller_x = are_smaller([z], [x], ctx)
         check_y_lighter_x = are_lighter([y], [x], ctx)
         check_z_lighter_x = are_lighter([z], [x], ctx)
+        check_yz_same_size = same_size([y,z], ctx)
+        check_yz_same_color = same_color([y,z], ctx)
         if (
             check_xyz_close
             and check_x_large
@@ -211,6 +231,8 @@ def turn(state):
             and check_z_smaller_x
             and check_y_lighter_x
             and check_z_lighter_x
+            and check_yz_same_size
+            and check_yz_same_color
         ):
             results.append([x,y,z])
     return results

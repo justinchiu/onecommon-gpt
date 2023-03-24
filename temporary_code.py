@@ -1,5 +1,5 @@
 
-# ('S_m5t0eZ17JHhXqIxB', 'C_a784d4bb34cf4b129d28e7bcbc564732')
+# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.085, 0.11, 0.0, 0.28], [0.29, -0.36, -0.6666666666666666, -0.14666666666666667], [-0.36, -0.7, -0.6666666666666666, -0.8666666666666667], [0.185, 0.42, 0.6666666666666666, -0.13333333333333333], [-0.35, 0.435, 0.0, -0.52], [0.95, 0.06, 0.0, -0.5066666666666667], [-0.52, -0.785, 0.0, 0.7733333333333333]])
+    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -161,7 +161,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-# You: Yes. Is the top one close to the middle one?
+# You: Yes. Is the top one close to the middle darker one?
 def turn(state):
     # Follow up question.
     results = []
@@ -169,15 +169,33 @@ def turn(state):
         top_one = get_top([a,b,c], ctx)
         middle_one = get_middle([a,b,c], ctx)
         check_close = all_close([top_one, middle_one], ctx)
+        check_darker = are_darker([middle_one], [top_one], ctx)
         if (
             check_close
+            and check_darker
         ):
             results.append([a,b,c])
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, let's select the large one. <selection>.
+# Them: Yes. And the smallest is on the bottom right.
+def turn(state):
+    # Follow up question.
+    results = []
+    for a,b,c in state:
+        smallest_one = smallest([a,b,c], ctx)
+        bottom_right = get_bottom_right([a,b,c], ctx)
+        check_smallest_bottom_right = smallest_one == bottom_right
+        if (
+            check_smallest_bottom_right
+        ):
+            results.append([a,b,c])
+    return results
+state = turn(state)
+# End.
+
+# You: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
     results = []
@@ -217,7 +235,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-# Them: I see a large black dot next to two smaller lighter dots. We have different views though.
+# Them: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -229,6 +247,8 @@ def turn(state):
         check_z_smaller_x = are_smaller([z], [x], ctx)
         check_y_lighter_x = are_lighter([y], [x], ctx)
         check_z_lighter_x = are_lighter([z], [x], ctx)
+        check_yz_same_size = same_size([y,z], ctx)
+        check_yz_same_color = same_color([y,z], ctx)
         if (
             check_xyz_close
             and check_x_large
@@ -237,6 +257,8 @@ def turn(state):
             and check_z_smaller_x
             and check_y_lighter_x
             and check_z_lighter_x
+            and check_yz_same_size
+            and check_yz_same_color
         ):
             results.append([x,y,z])
     return results
@@ -272,41 +294,80 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: Hello. Do you have one medium gray dot by itself?
+# You: Do you see a large dark dot with a tiny lighter grey dot above and to the left?
 def turn(state):
     # New question.
     results = []
-    for x, in get1idxs(idxs):
-        check_x_medium = is_medium(x, ctx)
-        check_x_grey = is_grey(x, ctx)
-        check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
+    for x, y in get2idxs(idxs):
+        check_x_large = is_large(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_tiny = is_small(y, ctx)
+        check_y_lighter_grey = is_light(y, ctx) and is_grey(y, ctx)
+        check_y_above_left = are_above_left([y], [x], ctx)
         if (
-            check_x_medium
-            and check_x_grey
-            and check_x_alone
+            check_x_large
+            and check_x_dark
+            and check_y_tiny
+            and check_y_lighter_grey
+            and check_y_above_left
         ):
-            results.append([x])
+            results.append([x, y])
     return results
 state = turn(state)
 # End.
 
-# You: Kind of between two darker ones?
+# Them: I see a medium black dot in the middle between a light grey dot and a smaller dot, making a line going down.
+def turn(state):
+    # New question.
+    results = []
+    for x, y, z in get3idxs(idxs):
+        check_xyz_line = is_line([x, y, z], ctx)
+        check_x_medium = is_medium(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_light_grey = is_light(y, ctx) and is_grey(y, ctx)
+        check_z_smaller = is_small(z, ctx)
+        check_yz_middle = are_middle([x], [y, z], ctx)
+        if (
+            check_xyz_line
+            and check_x_medium
+            and check_x_dark
+            and check_y_light_grey
+            and check_z_smaller
+            and check_yz_middle
+        ):
+            results.append([x, y, z])
+    return results
+state = turn(state)
+# End.
+
+# You: OK, I see that line.
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
+# End.
+
+# Them: Do you see the black dot in the middle?
 def turn(state):
     # Follow up question.
     results = []
-    for a, in state:
-        for x, in get1idxs(idxs):
-            check_x_darker = are_darker([x], [a], ctx)
-            check_x_next_to_a = all_close([a,x], ctx) and not are_middle([x], [a], ctx)
-            check_x_between = are_between([x], [a], None, ctx)
-            if (
-                check_x_darker
-                and check_x_next_to_a
-                and check_x_between
-            ):
-                results.append([a,x])
+    for a, b, c in state:
+        check_middle_black = is_dark(get_middle([a, b, c], ctx), ctx)
+        if check_middle_black:
+            results.append([a, b, c])
     return results
 state = turn(state)
+# End.
+
+# You: Yes, choose it. <selection>
+def select(state):
+    # Select a dot.
+    results = []
+    for a, b, c in state:
+        middle_dot = get_middle([a, b, c], ctx)
+        results.append([middle_dot])
+    return results
+state = select(state)
 
 
 print(state)
