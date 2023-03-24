@@ -117,7 +117,7 @@ if __name__ == "__main__":
         for scenario in scenario_list
     }
 
-    logdir = Path("resolution_logs")
+    logdir = Path("resolution_logs/0")
     logfiles = list(sorted(logdir.iterdir()))
     #print(logfiles)
 
