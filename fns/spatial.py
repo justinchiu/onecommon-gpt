@@ -120,6 +120,9 @@ def get_middle(x, ctx):
         ).argmin()
     ]
 
+def get_distance(x, y, ctx):
+    return np.lingalg.norm(ctx[x,:2] - ctx[y,:2])
+
 
 if __name__ == "__main__":
     ctx = np.array([[1,1], [1,0], [0,0], [0,0]])

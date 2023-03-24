@@ -1,5 +1,5 @@
 
-# ('S_WKgxzCvcycMDcy1f', 'C_d9e6a1f14d8347dfa51a1c29fab3c104')
+# ('S_X9DPwxK93OjUsIUU', 'C_4840d7b61d0948298b42fa908428e5f1')
 
 import sys
 sys.path.append("fns")
@@ -12,6 +12,7 @@ from spatial import are_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle
+from spatial import get_distance
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, are_darker, are_lighter
 from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, are_larger, are_smaller
 from iterators import get1idxs, get2idxs, get3idxs
@@ -21,7 +22,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[0.0, 0.125, 0.6666666666666666, -0.21333333333333335], [0.93, -0.15, -0.6666666666666666, 0.04], [0.43, 0.235, 0.0, 0.4], [0.38, 0.8, 0.3333333333333333, 0.17333333333333334], [-0.835, -0.35, 0.6666666666666666, 0.10666666666666667], [0.52, -0.1, 0.3333333333333333, 0.7866666666666666], [0.1, -0.16, -0.6666666666666666, 0.18666666666666668]])
     return ctx
 
 
@@ -56,11 +57,11 @@ def turn(state):
     results = []
     for a,b,c in state:
         check_largest_right = largest([a,b,c], ctx) == get_right([a,b,c], ctx)
-        check_small_top = is_small(get_top([a,b,c], ctx), ctx)
+        check_tiny_top = is_small(get_top([a,b,c], ctx), ctx)
         check_grey_top = is_grey(get_top([a,b,c], ctx), ctx)
         if (
             check_largest_right
-            and check_small_top
+            and check_tiny_top
             and check_grey_top
         ):
             results.append([a,b,c])
@@ -295,47 +296,25 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You:: Hi, do you have a tiny black dot near the 1 o'clock position?
+# You: Do you see the large grey dot in the middle?
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_small = is_small(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_x_above_right = are_above_right([x], None, ctx)
+        check_x_large = is_large(x, ctx)
+        check_x_grey = is_grey(x, ctx)
+        check_x_middle = are_middle([x], None, ctx)
         if (
-            check_x_small
-            and check_x_dark
-            and check_x_above_right
+            check_x_large
+            and check_x_grey
+            and check_x_middle
         ):
             results.append([x])
     return results
 state = turn(state)
 # End.
 
-# Them:: Do you have a large dark grey dot next to a smaller black dot?
-def turn(state):
-    # New question.
-    results = []
-    for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x, y], ctx)
-        check_x_large = is_large(x, ctx)
-        check_x_dark_grey = is_dark(x, ctx) and is_grey(x, ctx)
-        check_y_smaller_x = are_smaller([y], [x], ctx)
-        check_y_dark = is_dark(y, ctx)
-        if (
-            check_xy_close
-            and check_x_large
-            and check_x_dark_grey
-            and check_y_smaller_x
-            and check_y_dark
-        ):
-            results.append([x, y])
-    return results
-state = turn(state)
-# End.
-
-# You:: No, I have two large black dots.
+# Them: I see two big dark dots.
 def turn(state):
     # New question.
     results = []
@@ -357,30 +336,74 @@ def turn(state):
 state = turn(state)
 # End.
 
-# Them:: I do have a smaller black dot at the 1 o'clock position (sorry I can't reply until you did). I also have a lone large grey dot at the 8 o'clock position.
+# You: It's by a little one.
+def turn(state):
+    # Follow up question, new dot.
+    results = []
+    for a, in state:
+        for x, in get1idxs(idxs):
+            check_x_small = is_small(x, ctx)
+            check_x_close_a = all_close([a, x], ctx)
+            if (
+                check_x_small
+                and check_x_close_a
+            ):
+                results.append([a, x])
+    return results
+state = turn(state)
+# End.
+
+# Them: I see one big dot right at the border.
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_small = is_small(x, ctx)
+        check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_above_right = are_above_right([x], None, ctx)
-        check_y_large = is_large(y, ctx)
-        check_y_grey = is_grey(y, ctx)
-        check_y_below_left = are_below_left([y], None, ctx)
-        check_y_alone = all([not all_close([x, y, dot], ctx) for dot in idxs if dot not in [x, y]])
+        check_x_border = (
+            are_left([x], None, ctx)
+            or are_right([x], None, ctx)
+            or are_top([x], None, ctx)
+            or are_bottom([x], None, ctx)
+        )
         if (
-            check_x_small
+            check_x_large
             and check_x_dark
-            and check_x_above_right
-            and check_y_large
-            and check_y_grey
-            and check_y_below_left
-            and check_y_alone
+            and check_x_border
         ):
-            results.append([x, y])
+            results.append([x])
     return results
 state = turn(state)
+# End.
+
+# You: Do I see that on the right or left?
+def turn(state):
+    # Follow up question.
+    results = []
+    for a, in state:
+        check_a_left = are_left([a], None, ctx)
+        check_a_right = are_right([a], None, ctx)
+        if (
+            check_a_left
+            or check_a_right
+        ):
+            results.append([a])
+    return results
+state = turn(state)
+# End.
+
+# Them: Top <selection>.
+def select(state):
+    # Select a dot.
+    results = []
+    for a, in state:
+        check_a_top = are_top([a], None, ctx)
+        if (
+            check_a_top
+        ):
+            results.append([a])
+    return results
+state = select(state)
 
 
 print(state)

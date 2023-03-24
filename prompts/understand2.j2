@@ -30,11 +30,11 @@ def turn(state):
     results = []
     for a,b,c in state:
         check_largest_right = largest([a,b,c], ctx) == get_right([a,b,c], ctx)
-        check_small_top = is_small(get_top([a,b,c], ctx), ctx)
+        check_tiny_top = is_small(get_top([a,b,c], ctx), ctx)
         check_grey_top = is_grey(get_top([a,b,c], ctx), ctx)
         if (
             check_largest_right
-            and check_small_top
+            and check_tiny_top
             and check_grey_top
         ):
             results.append([a,b,c])
