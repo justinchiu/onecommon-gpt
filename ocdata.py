@@ -166,11 +166,11 @@ def get_examples(raw_data):
     return examples
 
 
-def get_data():
+def get_data(split=0):
     datas = []
     for data_file in [
-        Path("data/onecommon/train_reference_0.txt"),
-        Path("data/onecommon/valid_reference_0.txt"),
+        Path(f"data/onecommon/train_reference_{split}.txt"),
+        Path(f"data/onecommon/valid_reference_{split}.txt"),
     ]:
         with data_file.open("r") as f:
             raw_data = f.readlines()

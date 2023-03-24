@@ -4,12 +4,16 @@ import bitutils
 
 from eval import Recall
 
+split = 0
+
+print(f"Evaluating split {split}")
+
 recall = Recall("multilabel")
 
 preds = []
 labels = []
 
-logdir = Path("resolution_logs")
+logdir = Path(f"resolution_logs/{split}")
 logfiles = list(sorted(logdir.iterdir()))
 for path in logfiles:
     with path.open("r") as f:

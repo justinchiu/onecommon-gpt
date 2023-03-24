@@ -243,8 +243,9 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = []
-    for result in state:
-        results.append(get_largest(result, ctx))
+    for a,b,c in state:
+        largest_one = get_largest([a,b,c], ctx)
+        results.append(largest_one)
     return results
 state = turn(state)
 # End.

@@ -81,7 +81,8 @@ class Agent:
         pass
 
     def reformat_text(self, text):
-        speaker, utt  = text.split(":")
+        speaker = "You:" if "You:" in text else "Them:"
+        utt = text.replace("You: ", "").replace("Them: ", "")
         #print(self.reformat.print(dict(source=utt.strip())))
         out = self.reformat(dict(source=utt)).strip()
         #print("Reformatted")

@@ -57,7 +57,7 @@ class Eval(ABC):
         truelabels = []
         if run_example is not None:
             # only run a single example
-            data = [data[run_example]]
+            data = [ex for ex in data if ex["chat_id"] == run_example]
 
         for ne, example in enumerate(data[:num_examples]):
             chatid = example["chat_id"]
@@ -204,6 +204,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("--split", default=0, type=int)
     parser.add_argument("--refres", choices=["codegen", "mc"], default="mc")
     parser.add_argument("--gen",
         choices=["sc", "scxy", "template", "templateonly"],
@@ -215,20 +216,25 @@ if __name__ == "__main__":
     parser.add_argument("--run_example", default=None, type=int)
     args = parser.parse_args()
 
+    split = args.split
     refres = args.refres
     gen = args.gen
 
-    train, valid = get_data()
+    train, valid = get_data(args.split)
 
     if args.run_refres:
-        with minichain.start_chain("eval-res") as backend:
+        with minichain.start_chain(f"eval-res-{split}") as backend:
             agent = Agent(backend, refres, gen)
-            reseval = Resolution().compute(agent, valid, args.num_examples, args.run_example)
+            evaluator = Resolution()
+            evaluator.logpath = f"{evaluator.logpath}/{split}"
+            reseval = evaluator.compute(agent, valid, args.num_examples, args.run_example)
         print(reseval)
 
     if args.run_gen:
-        with minichain.start_chain("eval-gen") as backend:
+        with minichain.start_chain(f"eval-gen-{split}") as backend:
             agent = Agent(backend, refres, gen)
-            geneval = Generation().compute(agent, valid, args.num_examples, args.run_example)
+            evaluator = Generation()
+            evaluator.logpath = f"{evaluator.logpath}/{split}"
+            geneval = evaluator.compute(agent, valid, args.num_examples, args.run_example, split)
         print(geneval)
 
