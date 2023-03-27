@@ -5,3 +5,5 @@ scikit-learn
 shapely
 streamlit
 streamlit-chat
+matplotlib
+tenacity
