@@ -55,8 +55,6 @@ class Execute(TemplatePrompt[list[int]]):
     template_file = "prompts/execute.j2"
 
     def parse(self, output, input) -> list[int]:
-        #print(output)
-        #import pdb; pdb.set_trace()
         return ast.literal_eval(output)
 
 

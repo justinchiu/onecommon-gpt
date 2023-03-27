@@ -40,8 +40,8 @@ class Agent:
             #self.understand = Understand(backend.OpenAI(
             #    model = "code-davinci-002",
             self.understand = Understand(backend.OpenAIChat(
-                #model = "gpt-3.5-turbo",
-                model = "gpt-4",
+                model = "gpt-3.5-turbo",
+                #model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
@@ -142,6 +142,8 @@ class Agent:
         
         result = self.execute(kw)
         print(result)
+        if result is None:
+            result = []
 
         num_preds = len(result)
         mentions = np.zeros((num_preds, 7), dtype=bool)
