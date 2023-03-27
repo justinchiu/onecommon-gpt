@@ -1,5 +1,5 @@
 
-# ('S_X9DPwxK93OjUsIUU', 'C_4840d7b61d0948298b42fa908428e5f1')
+# ('S_ql0BPL7yRo5gPOaH', 'C_1198bf294af447acaef8dddad191795a')
 
 import sys
 sys.path.append("fns")
@@ -22,7 +22,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.0, 0.125, 0.6666666666666666, -0.21333333333333335], [0.93, -0.15, -0.6666666666666666, 0.04], [0.43, 0.235, 0.0, 0.4], [0.38, 0.8, 0.3333333333333333, 0.17333333333333334], [-0.835, -0.35, 0.6666666666666666, 0.10666666666666667], [0.52, -0.1, 0.3333333333333333, 0.7866666666666666], [0.1, -0.16, -0.6666666666666666, 0.18666666666666668]])
+    ctx = np.array([[-0.255, -0.525, 0.6666666666666666, -0.92], [-0.26, -0.86, 0.6666666666666666, 0.88], [-0.11, 0.3, 0.3333333333333333, -0.56], [-0.59, -0.255, -1.0, 0.68], [0.86, -0.115, -0.3333333333333333, 0.9733333333333334], [-0.465, -0.845, -0.3333333333333333, 0.6533333333333333], [-0.035, -0.345, -0.6666666666666666, 0.10666666666666667]])
     return ctx
 
 
@@ -296,114 +296,40 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: Do you see the large grey dot in the middle?
+# Them: Big black dot in the middle of a cluster.
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
-        check_x_grey = is_grey(x, ctx)
+        check_x_dark = is_dark(x, ctx)
         check_x_middle = are_middle([x], None, ctx)
+        check_x_cluster = any([all_close([x, dot], ctx) for dot in idxs if dot != x])
         if (
             check_x_large
-            and check_x_grey
+            and check_x_dark
             and check_x_middle
+            and check_x_cluster
         ):
             results.append([x])
     return results
 state = turn(state)
 # End.
 
-# Them: I see two big dark dots.
-def turn(state):
-    # New question.
-    results = []
-    for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x, y], ctx)
-        check_x_large = is_large(x, ctx)
-        check_y_large = is_large(y, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_y_dark = is_dark(y, ctx)
-        if (
-            check_xy_close
-            and check_x_large
-            and check_y_large
-            and check_x_dark
-            and check_y_dark
-        ):
-            results.append([x, y])
-    return results
-state = turn(state)
-# End.
-
-# You: It's by a little one.
-def turn(state):
-    # Follow up question, new dot.
-    results = []
-    for a, in state:
-        for x, in get1idxs(idxs):
-            check_x_small = is_small(x, ctx)
-            check_x_close_a = all_close([a, x], ctx)
-            if (
-                check_x_small
-                and check_x_close_a
-            ):
-                results.append([a, x])
-    return results
-state = turn(state)
-# End.
-
-# Them: I see one big dot right at the border.
+# You: I see one dot larger than all others and darker than all others.
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_large = is_large(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_x_border = (
-            are_left([x], None, ctx)
-            or are_right([x], None, ctx)
-            or are_top([x], None, ctx)
-            or are_bottom([x], None, ctx)
-        )
+        check_x_larger = all([is_larger(x, dot, ctx) for dot in idxs if dot != x])
+        check_x_darker = all([is_darker(x, dot, ctx) for dot in idxs if dot != x])
         if (
-            check_x_large
-            and check_x_dark
-            and check_x_border
+            check_x_larger
+            and check_x_darker
         ):
             results.append([x])
     return results
 state = turn(state)
-# End.
-
-# You: Do I see that on the right or left?
-def turn(state):
-    # Follow up question.
-    results = []
-    for a, in state:
-        check_a_left = are_left([a], None, ctx)
-        check_a_right = are_right([a], None, ctx)
-        if (
-            check_a_left
-            or check_a_right
-        ):
-            results.append([a])
-    return results
-state = turn(state)
-# End.
-
-# Them: Top <selection>.
-def select(state):
-    # Select a dot.
-    results = []
-    for a, in state:
-        check_a_top = are_top([a], None, ctx)
-        if (
-            check_a_top
-        ):
-            results.append([a])
-    return results
-state = select(state)
 
 
 print(state)
