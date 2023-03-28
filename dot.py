@@ -106,6 +106,12 @@ if __name__ == "__main__":
     from pathlib import Path
     import json
     import streamlit as st
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--split", type=int, default=0)
+    args = parser.parse_args()
+
 
     st.set_page_config(layout="wide")
 
@@ -117,7 +123,7 @@ if __name__ == "__main__":
         for scenario in scenario_list
     }
 
-    logdir = Path("resolution_logs/0")
+    logdir = Path(f"resolution_logs/{args.split}")
     logfiles = list(sorted(logdir.iterdir()))
     #print(logfiles)
 
