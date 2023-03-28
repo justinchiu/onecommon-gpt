@@ -1,5 +1,5 @@
 
-# ('S_esMpcA49vaEQccK8', 'C_e62b691aad9c436fa35e632fa29b15f0')
+# ('S_gTOpixzKHkl6NOBd', 'C_5c85bdabf12d44128785047003a9947e')
 
 import sys
 sys.path.append("fns")
@@ -22,7 +22,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.45, -0.14, 0.6666666666666666, 0.56], [0.22, 0.02, 0.3333333333333333, -0.7066666666666667], [0.185, 0.84, -0.6666666666666666, -0.96], [-0.345, 0.515, 1.0, 0.48], [0.26, -0.725, -0.6666666666666666, 0.56], [0.81, -0.32, -0.3333333333333333, -0.30666666666666664], [-0.665, -0.535, 0.6666666666666666, -0.68]])
+    ctx = np.array([[-0.755, 0.65, -1.0, -0.8533333333333334], [0.51, -0.085, -1.0, 0.8533333333333334], [-0.025, -0.265, 1.0, 0.7333333333333333], [0.7, 0.095, -0.3333333333333333, 0.7066666666666667], [0.18, -0.585, 0.0, -0.25333333333333335], [1.0, -0.015, 0.6666666666666666, -0.8266666666666667], [0.695, 0.69, 0.0, -0.18666666666666668]])
     return ctx
 
 
@@ -296,106 +296,91 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: Do you see two fairly large dots close together? They are both pretty light grey. The one on the bottom is slightly smaller and to the right.
+# You: Huge dark dot to the right of two lighter smaller ones.
 def turn(state):
     # New question.
     results = []
-    for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x,y], ctx)
+    for x,y,z in get3idxs(idxs):
+        check_xyz_close = all_close([x,y,z], ctx)
         check_x_large = is_large(x, ctx)
-        check_y_large = is_large(y, ctx)
-        check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
-        check_y_light_grey = is_light(y, ctx) and is_grey(y, ctx)
-        check_y_smaller_right_of_x = are_smaller([y], [x], ctx) and are_right([y], [x], ctx)
+        check_z_dark = is_dark(z, ctx)
+        check_y_smaller_x = are_smaller([y], [x], ctx)
+        check_z_smaller_x = are_smaller([z], [x], ctx)
+        check_y_lighter_x = are_lighter([y], [x], ctx)
+        check_z_lighter_x = are_lighter([z], [x], ctx)
+        check_yz_same_size = same_size([y,z], ctx)
+        check_yz_same_color = same_color([y,z], ctx)
+        check_x_right = are_right([x], [y,z], ctx)
         if (
-            check_xy_close
+            check_xyz_close
             and check_x_large
-            and check_y_large
-            and check_x_light_grey
-            and check_y_light_grey
-            and check_y_smaller_right_of_x
-        ):
-            results.append([x,y])
-    return results
-state = turn(state)
-# End.
-
-# You: Hmmm, no. I have three in a line going down/to the right. The top one is dark, the next one down to the right is medium/light grey and slightly larger, and the furthest right is slightly smaller and slightly darker than the middle one but not as dark as the left one.
-def turn(state):
-    # New question.
-    results = []
-    for x, y, z in get3idxs(idxs):
-        check_xyz_line = is_line([x,y,z], ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_y_medium_light_grey = is_medium(y, ctx) and is_grey(y, ctx)
-        check_y_larger_x = are_larger([y], [x], ctx)
-        check_z_smaller_y = are_smaller([z], [y], ctx)
-        check_z_slightly_darker_y = are_darker([z], [y], ctx) and not is_dark(z, ctx)
-        check_z_slightly_lighter_y = are_lighter([z], [y], ctx) and not is_light(z, ctx)
-        check_z_slightly_smaller_y = are_smaller([z], [y], ctx)
-        check_z_slightly_darker_x = are_darker([z], [x], ctx) and not is_dark(z, ctx)
-        check_z_slightly_lighter_x = are_lighter([z], [x], ctx) and not is_light(z, ctx)
-        check_z_slightly_smaller_x = are_smaller([z], [x], ctx)
-        if (
-            check_xyz_line
-            and check_x_dark
-            and check_y_medium_light_grey
-            and check_y_larger_x
-            and check_z_smaller_y
-            and (
-                check_z_slightly_darker_y
-                or check_z_slightly_lighter_y
-                or check_z_slightly_smaller_y
-            )
-            and (
-                check_z_slightly_darker_x
-                or check_z_slightly_lighter_x
-                or check_z_slightly_smaller_x
-            )
+            and check_z_dark
+            and check_y_smaller_x
+            and check_z_smaller_x
+            and check_y_lighter_x
+            and check_z_lighter_x
+            and check_yz_same_size
+            and check_yz_same_color
+            and check_x_right
         ):
             results.append([x,y,z])
     return results
 state = turn(state)
 # End.
 
-# Them: I think I see two of the three. I see the first two you described. The one on the top is darker and slightly smaller, at about 10 o'clock?
+# Them: Don't see that. How about the smallest black dot below and to the left of the slightly larger black dot?
 def turn(state):
-    # Follow up question.
+    # New question.
     results = []
-    for a,b in state:
-        top_one = get_top([a,b], ctx)
-        check_top_dark = is_dark(top_one, ctx)
-        check_top_smaller = are_smaller([top_one], [a,b], ctx)
-        check_top_above_left = are_above_left([top_one], [a,b], ctx)
+    for x, y in get2idxs(idxs):
+        check_xy_close = all_close([x,y], ctx)
+        check_x_small = is_small(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_larger_x = are_larger([y], [x], ctx)
+        check_y_dark = is_dark(y, ctx)
+        check_y_below_left_x = are_below_left([y], [x], ctx)
         if (
-            check_top_dark
-            and check_top_smaller
-            and check_top_above_left
+            check_xy_close
+            and check_x_small
+            and check_x_dark
+            and check_y_larger_x
+            and check_y_dark
+            and check_y_below_left_x
         ):
-            results.append([a,b])
+            results.append([x,y])
     return results
 state = turn(state)
 # End.
 
-# You: Is there a small lighter/medium grey in line with that dark one, if you go straight down about 2 inches? It should be lighter than the second one.
+# You: Nope. Large light gray dot above and to the left of a smaller medium gray one.
 def turn(state):
-    # Follow up question.
+    # New question.
     results = []
-    for a,b,c in state:
-        bottom_one = get_bottom([a,b,c], ctx)
-        check_bottom_medium_light_grey = is_medium(bottom_one, ctx) and is_grey(bottom_one, ctx)
-        check_bottom_below = are_below([bottom_one], [a,b,c], ctx)
-        check_bottom_same_line = is_line([a,b,c,bottom_one], ctx)
-        check_bottom_lighter_than_middle = are_lighter([bottom_one], [b], ctx)
+    for x, y in get2idxs(idxs):
+        check_xy_close = all_close([x,y], ctx)
+        check_x_large = is_large(x, ctx)
+        check_x_light_gray = is_light(x, ctx) and is_grey(x, ctx)
+        check_y_small = is_small(y, ctx)
+        check_y_medium_gray = is_medium(y, ctx) and is_grey(y, ctx)
+        check_y_above_left_x = are_above_left([y], [x], ctx)
         if (
-            check_bottom_medium_light_grey
-            and check_bottom_below
-            and check_bottom_same_line
-            and check_bottom_lighter_than_middle
+            check_xy_close
+            and check_x_large
+            and check_x_light_gray
+            and check_y_small
+            and check_y_medium_gray
+            and check_y_above_left_x
         ):
-            results.append([a,b,c])
+            results.append([x,y])
     return results
 state = turn(state)
+# End.
+
+# Them: OK, click it. <selection>
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(state)
