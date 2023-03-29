@@ -60,6 +60,16 @@ def are_middle(x, y, ctx):
     if y is None:
         return True
 
+    if len(y) == 2:
+        # in-between a line segment
+        # ideally a cylinder, but width is subjective
+        return (
+            (are_above([y[0]], x, ctx) and are_below([y[1]], x, ctx))
+            or (are_below([y[0]], x, ctx) and are_above([y[1]], x, ctx))
+            or (are_left([y[0]], x, ctx) and are_right([y[1]], x, ctx))
+            or (are_right([y[0]], x, ctx) and are_left([y[1]], x, ctx))
+        )
+
     # x in convex hull of y
     xy_a = ctx[x,:2]
     xy_b = ctx[y,:2]
@@ -73,6 +83,22 @@ def are_middle(x, y, ctx):
         or shapely.contains_xy(hull, x, y-0.01)
         for x,y in xy_a
     ])
+
+# simplified directions
+def is_above(x, y, ctx):
+    return are_above([x], [y], ctx)
+
+def is_below(x, y, ctx):
+    return are_below([x], [y], ctx)
+
+def is_right(x, y, ctx):
+    return are_right([x], [y], ctx)
+
+def is_left(x, y, ctx):
+    return are_left([x], [y], ctx)
+
+def is_middle(x, ys, ctx):
+    return are_middle([x], ys, ctx)
 
 # getters
 def get_magnitude(x, direction, ctx):

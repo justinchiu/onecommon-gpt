@@ -49,8 +49,8 @@ def turn(state):
     for x, y in get2idxs(idxs):
         check_pair = all_close([x,y], ctx)
         check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = are_right([y], [x], ctx)
-        check_above = are_above([y], [x], ctx)
+        check_right = is_right(y, x, ctx)
+        check_above = is_above(y, x, ctx)
         check_size = same_size([x,y], ctx)
         if (
             check_pair
@@ -79,7 +79,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_grey = is_grey(x, ctx)
-        check_x_center = are_middle([x], None, ctx)
+        check_x_center = is_middle(x, None, ctx)
         if (
             check_x_large
             and check_x_grey
@@ -96,9 +96,9 @@ def turn(state):
     results = []
     for a, in state:
         for x, in get1idxs(idxs):
-            check_x_smaller_a = are_smaller([x], [a], ctx)
+            check_x_smaller_a = is_smaller(x, a, ctx)
             check_x_dark = is_dark(x, ctx)
-            check_x_next_to_a = all_close([a,x], ctx) and not are_middle([x], [a], ctx)
+            check_x_next_to_a = all_close([a,x], ctx) and not is_middle(x, a, ctx)
             if(
                 check_x_smaller_a
                 and check_x_dark
@@ -117,7 +117,7 @@ def turn(state):
         check_xyz_line = is_line([x,y,z], ctx)
         check_x_top_left = x == get_top_left([x, y, z], ctx)
         check_x_light = is_light(x, ctx)
-        check_y_middle = are_middle([y], [x,y,z], ctx)
+        check_y_middle = is_middle(y, [x,y,z], ctx)
         check_y_grey = is_grey(y, ctx)
         check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
         check_z_dark = is_dark(z, ctx)
@@ -143,7 +143,7 @@ def turn(state):
         top_one = get_top([a,b,c], ctx)
         middle_one = get_middle([a,b,c], ctx)
         check_close = all_close([top_one, middle_one], ctx)
-        check_darker = are_darker([middle_one], [top_one], ctx)
+        check_darker = is_darker(middle_one, top_one, ctx)
         if (
             check_close
             and check_darker
@@ -198,7 +198,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_below_left = are_below_left([x], None, ctx)
+        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
         if (
             check_x_large
             and check_x_dark
@@ -217,10 +217,10 @@ def turn(state):
         check_xyz_close = all_close([x,y,z], ctx)
         check_x_large = is_large(x, ctx)
         check_z_dark = is_dark(z, ctx)
-        check_y_smaller_x = are_smaller([y], [x], ctx)
-        check_z_smaller_x = are_smaller([z], [x], ctx)
-        check_y_lighter_x = are_lighter([y], [x], ctx)
-        check_z_lighter_x = are_lighter([z], [x], ctx)
+        check_y_smaller_x = is_smaller(y, x, ctx)
+        check_z_smaller_x = is_smaller(z, x, ctx)
+        check_y_lighter_x = is_lighter(y, x, ctx)
+        check_z_lighter_x = is_lighter(z, x, ctx)
         check_yz_same_size = same_size([y,z], ctx)
         check_yz_same_color = same_color([y,z], ctx)
         if (

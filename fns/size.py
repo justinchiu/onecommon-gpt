@@ -32,3 +32,10 @@ def are_larger(x, y, ctx):
 
 def are_smaller(x, y, ctx):
     return (ctx[x,None,-2] < ctx[y,-2]).all()
+
+# simplify
+def is_larger(x, y, ctx):
+    return ctx[x,-2] > ctx[y,-2]
+
+def is_smaller(x, y, ctx):
+    return ctx[x,-2] < ctx[y,-2]

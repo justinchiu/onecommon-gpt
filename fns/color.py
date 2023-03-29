@@ -41,4 +41,11 @@ def are_darker(x, y, ctx):
 def are_lighter(x, y, ctx):
     return (ctx[x,None,-1] > ctx[y,-1]).all()
 
+# simplify
+def is_darker(x, y, ctx):
+    return ctx[x,-1] < ctx[y,-1]
+
+def is_lighter(x, y, ctx):
+    return ctx[x,-1] > ctx[y,-1]
+
 
