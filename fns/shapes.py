@@ -3,7 +3,7 @@ from shapely import Point, MultiPoint
 import numpy as np
 import math
 
-from iterators import get3idxs
+from iterators import getcombs
 
 def is_nearest(x, ctx):
     raise NotImplementedError
@@ -65,7 +65,8 @@ def is_triangle(x, ctx):
     # only take most compact triangles
     radii = []
     dots = []
-    for idxs in get3idxs(list(range(7))):
+    #for idxs in get3idxs(list(range(7))):
+    for idxs in getcombs(list(range(7)), 3):
         if not is_line(idxs, ctx) and is_contiguous(idxs, ctx):
             mp = MultiPoint(ctx[idxs,:2])
             radius = shapely.minimum_bounding_radius(mp)

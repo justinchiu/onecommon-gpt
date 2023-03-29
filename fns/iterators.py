@@ -1,6 +1,13 @@
 import numpy as np
 import itertools
 
+def getcombs(x, r):
+    n = len(x)
+    x = np.array(x)
+    out = x[np.stack(list(itertools.combinations(np.arange(n), r=r)))]
+    #out = x[np.stack(list(itertools.permutations(np.arange(n), r=r)))]
+    return out.tolist()
+
 def getnr(x, r):
     n = len(x)
     #return x[np.stack(list(itertools.combinations(np.arange(n), r=r)))]
