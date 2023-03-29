@@ -210,6 +210,10 @@ if __name__ == "__main__":
         choices=["sc", "scxy", "template", "templateonly"],
         default="template",
     )
+    parser.add_argument("--parse",
+        choices=["bullet"],
+        default="bullet",
+    )
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
     parser.add_argument("--num_examples", default=1, type=int)
@@ -219,12 +223,13 @@ if __name__ == "__main__":
     split = args.split
     refres = args.refres
     gen = args.gen
+    parse = args.parse
 
     train, valid = get_data(args.split)
 
     if args.run_refres:
         with minichain.start_chain(f"eval-res-{split}") as backend:
-            agent = Agent(backend, refres, gen)
+            agent = Agent(backend, refres, gen, parse)
             evaluator = Resolution()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
             reseval = evaluator.compute(agent, valid, args.num_examples, args.run_example)
@@ -232,7 +237,7 @@ if __name__ == "__main__":
 
     if args.run_gen:
         with minichain.start_chain(f"eval-gen-{split}") as backend:
-            agent = Agent(backend, refres, gen)
+            agent = Agent(backend, refres, gen, parse)
             evaluator = Generation()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
             geneval = evaluator.compute(agent, valid, args.num_examples, args.run_example, split)

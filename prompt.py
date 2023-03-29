@@ -11,8 +11,7 @@ from minichain import Output, Request, Prompt
 
 HEADER = """from context import get_ctx
 from shapes import is_triangle, is_line, is_square
-from spatial import all_close, is_above, is_below, is_right, is_left
-from spatial import are_middle
+from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle

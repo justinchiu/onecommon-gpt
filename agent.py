@@ -101,7 +101,6 @@ class Agent:
         #print(text)
         text = f"{speaker}: {out}"
         #print(text)
-        #import pdb; pdb.set_trace()
         return text
 
     def resolve_reference(self, text, past, view, info=None):

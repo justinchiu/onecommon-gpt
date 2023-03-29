@@ -1,20 +1,18 @@
 
-# ('S_gTOpixzKHkl6NOBd', 'C_5c85bdabf12d44128785047003a9947e')
+# ('S_kQfCI1MRe21DDsqK', 'C_27a843b6c8f94ffc86fde88cc86b0772')
 
 import sys
 sys.path.append("fns")
 
 from context import get_ctx
 from shapes import is_triangle, is_line, is_square
-from spatial import all_close, are_above, are_below, are_right, are_left
-from spatial import are_above_left, are_above_right, are_below_right, are_below_left
-from spatial import are_middle
+from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle
 from spatial import get_distance
-from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, are_darker, are_lighter
-from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, are_larger, are_smaller
+from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, is_larger, is_smaller
 from iterators import get1idxs, get2idxs, get3idxs
 from lists import add
 import numpy as np
@@ -22,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.755, 0.65, -1.0, -0.8533333333333334], [0.51, -0.085, -1.0, 0.8533333333333334], [-0.025, -0.265, 1.0, 0.7333333333333333], [0.7, 0.095, -0.3333333333333333, 0.7066666666666667], [0.18, -0.585, 0.0, -0.25333333333333335], [1.0, -0.015, 0.6666666666666666, -0.8266666666666667], [0.695, 0.69, 0.0, -0.18666666666666668]])
+    ctx = np.array([[-0.07, 0.305, 0.0, -0.12], [-0.96, -0.265, 0.0, 0.6133333333333333], [-0.085, 0.99, 0.6666666666666666, 0.05333333333333334], [0.635, -0.225, 1.0, 0.9066666666666666], [0.395, -0.095, 0.3333333333333333, 0.4], [-0.57, -0.06, -0.6666666666666666, -0.36], [0.3, -0.28, 0.0, -0.48]])
     return ctx
 
 
@@ -76,8 +74,8 @@ def turn(state):
     for x, y in get2idxs(idxs):
         check_pair = all_close([x,y], ctx)
         check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = are_right([y], [x], ctx)
-        check_above = are_above([y], [x], ctx)
+        check_right = is_right(y, x, ctx)
+        check_above = is_above(y, x, ctx)
         check_size = same_size([x,y], ctx)
         if (
             check_pair
@@ -106,7 +104,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_grey = is_grey(x, ctx)
-        check_x_center = are_middle([x], None, ctx)
+        check_x_center = is_middle(x, None, ctx)
         if (
             check_x_large
             and check_x_grey
@@ -123,9 +121,9 @@ def turn(state):
     results = []
     for a, in state:
         for x, in get1idxs(idxs):
-            check_x_smaller_a = are_smaller([x], [a], ctx)
+            check_x_smaller_a = is_smaller(x, a, ctx)
             check_x_dark = is_dark(x, ctx)
-            check_x_next_to_a = all_close([a,x], ctx) and not are_middle([x], [a], ctx)
+            check_x_next_to_a = all_close([a,x], ctx)
             if(
                 check_x_smaller_a
                 and check_x_dark
@@ -144,7 +142,7 @@ def turn(state):
         check_xyz_line = is_line([x,y,z], ctx)
         check_x_top_left = x == get_top_left([x, y, z], ctx)
         check_x_light = is_light(x, ctx)
-        check_y_middle = are_middle([y], [x,y,z], ctx)
+        check_y_middle = is_middle(y, [x,y,z], ctx)
         check_y_grey = is_grey(y, ctx)
         check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
         check_z_dark = is_dark(z, ctx)
@@ -170,7 +168,7 @@ def turn(state):
         top_one = get_top([a,b,c], ctx)
         middle_one = get_middle([a,b,c], ctx)
         check_close = all_close([top_one, middle_one], ctx)
-        check_darker = are_darker([middle_one], [top_one], ctx)
+        check_darker = is_darker(middle_one, top_one, ctx)
         if (
             check_close
             and check_darker
@@ -225,7 +223,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_below_left = are_below_left([x], None, ctx)
+        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
         if (
             check_x_large
             and check_x_dark
@@ -244,10 +242,10 @@ def turn(state):
         check_xyz_close = all_close([x,y,z], ctx)
         check_x_large = is_large(x, ctx)
         check_z_dark = is_dark(z, ctx)
-        check_y_smaller_x = are_smaller([y], [x], ctx)
-        check_z_smaller_x = are_smaller([z], [x], ctx)
-        check_y_lighter_x = are_lighter([y], [x], ctx)
-        check_z_lighter_x = are_lighter([z], [x], ctx)
+        check_y_smaller_x = is_smaller(y, x, ctx)
+        check_z_smaller_x = is_smaller(z, x, ctx)
+        check_y_lighter_x = is_lighter(y, x, ctx)
+        check_z_lighter_x = is_lighter(z, x, ctx)
         check_yz_same_size = same_size([y,z], ctx)
         check_yz_same_color = same_color([y,z], ctx)
         if (
@@ -296,91 +294,54 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: Huge dark dot to the right of two lighter smaller ones.
+# Them: I have a triangle of three dots near the center.
 def turn(state):
     # New question.
     results = []
     for x,y,z in get3idxs(idxs):
-        check_xyz_close = all_close([x,y,z], ctx)
-        check_x_large = is_large(x, ctx)
-        check_z_dark = is_dark(z, ctx)
-        check_y_smaller_x = are_smaller([y], [x], ctx)
-        check_z_smaller_x = are_smaller([z], [x], ctx)
-        check_y_lighter_x = are_lighter([y], [x], ctx)
-        check_z_lighter_x = are_lighter([z], [x], ctx)
-        check_yz_same_size = same_size([y,z], ctx)
-        check_yz_same_color = same_color([y,z], ctx)
-        check_x_right = are_right([x], [y,z], ctx)
+        check_xyz_triangle = is_triangle([x,y,z], ctx)
+        check_xyz_center = all([is_middle(dot, None, ctx) for dot in [x,y,z]])
         if (
-            check_xyz_close
-            and check_x_large
-            and check_z_dark
-            and check_y_smaller_x
-            and check_z_smaller_x
-            and check_y_lighter_x
-            and check_z_lighter_x
-            and check_yz_same_size
-            and check_yz_same_color
-            and check_x_right
+            check_xyz_triangle
+            and check_xyz_center
         ):
             results.append([x,y,z])
     return results
 state = turn(state)
 # End.
 
-# Them: Don't see that. How about the smallest black dot below and to the left of the slightly larger black dot?
+# You: Are they all of different tone?
 def turn(state):
-    # New question.
+    # Follow up question.
     results = []
-    for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x,y], ctx)
-        check_x_small = is_small(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_y_larger_x = are_larger([y], [x], ctx)
-        check_y_dark = is_dark(y, ctx)
-        check_y_below_left_x = are_below_left([y], [x], ctx)
+    for a,b,c in state:
+        check_all_different_tone = len(set([is_dark(a, ctx), is_light(a, ctx), is_grey(a, ctx), is_dark(b, ctx), is_light(b, ctx), is_grey(b, ctx), is_dark(c, ctx), is_light(c, ctx), is_grey(c, ctx)])) == 3
         if (
-            check_xy_close
-            and check_x_small
-            and check_x_dark
-            and check_y_larger_x
-            and check_y_dark
-            and check_y_below_left_x
+            check_all_different_tone
         ):
-            results.append([x,y])
+            results.append([a,b,c])
     return results
 state = turn(state)
 # End.
 
-# You: Nope. Large light gray dot above and to the left of a smaller medium gray one.
+# Them: Yes, the smallest is black with a medium gray on top, and the largest is light gray.
 def turn(state):
-    # New question.
+    # Follow up question.
     results = []
-    for x, y in get2idxs(idxs):
-        check_xy_close = all_close([x,y], ctx)
-        check_x_large = is_large(x, ctx)
-        check_x_light_gray = is_light(x, ctx) and is_grey(x, ctx)
-        check_y_small = is_small(y, ctx)
-        check_y_medium_gray = is_medium(y, ctx) and is_grey(y, ctx)
-        check_y_above_left_x = are_above_left([y], [x], ctx)
+    for a,b,c in state:
+        smallest_one = smallest([a,b,c], ctx)
+        largest_one = largest([a,b,c], ctx)
+        check_smallest_black = is_dark(smallest_one, ctx)
+        check_smallest_medium_gray_top = is_grey(get_top([a,b,c], ctx), ctx) and is_smaller(get_top([a,b,c], ctx), smallest_one, ctx)
+        check_largest_light_gray = is_light(largest_one, ctx) and largest_one != get_top([a,b,c], ctx)
         if (
-            check_xy_close
-            and check_x_large
-            and check_x_light_gray
-            and check_y_small
-            and check_y_medium_gray
-            and check_y_above_left_x
+            check_smallest_black
+            and check_smallest_medium_gray_top
+            and check_largest_light_gray
         ):
-            results.append([x,y])
+            results.append([a,b,c])
     return results
 state = turn(state)
-# End.
-
-# Them: OK, click it. <selection>
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
 
 
 print(state)

@@ -98,7 +98,7 @@ def turn(state):
         for x, in get1idxs(idxs):
             check_x_smaller_a = is_smaller(x, a, ctx)
             check_x_dark = is_dark(x, ctx)
-            check_x_next_to_a = all_close([a,x], ctx) and not is_middle(x, a, ctx)
+            check_x_next_to_a = all_close([a,x], ctx)
             if(
                 check_x_smaller_a
                 and check_x_dark
