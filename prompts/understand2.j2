@@ -47,17 +47,17 @@ def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
-        check_pair = all_close([x,y], ctx)
-        check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = is_right(y, x, ctx)
-        check_above = is_above(y, x, ctx)
-        check_size = same_size([x,y], ctx)
+        check_xy_pair = all_close([x,y], ctx)
+        check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
+        check_y_right_x = is_right(y, x, ctx)
+        check_y_above_x = is_above(y, x, ctx)
+        check_xy_same_size = same_size([x,y], ctx)
         if (
-            check_pair
-            and check_all_dark
-            and check_right
-            and check_above
-            and check_size
+            check_xy_pair
+            and check_xy_dark
+            and check_y_right_x
+            and check_y_above_x
+            and check_xy_same_size
         ):
             results.append([x,y])
     return results

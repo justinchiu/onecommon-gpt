@@ -1,5 +1,5 @@
 
-# ('S_kQfCI1MRe21DDsqK', 'C_27a843b6c8f94ffc86fde88cc86b0772')
+# ('S_aOBLhbXSdGE0XpbD', 'C_927ffc379a1c4372a3fba24703186957')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.07, 0.305, 0.0, -0.12], [-0.96, -0.265, 0.0, 0.6133333333333333], [-0.085, 0.99, 0.6666666666666666, 0.05333333333333334], [0.635, -0.225, 1.0, 0.9066666666666666], [0.395, -0.095, 0.3333333333333333, 0.4], [-0.57, -0.06, -0.6666666666666666, -0.36], [0.3, -0.28, 0.0, -0.48]])
+    ctx = np.array([[0.03, -0.07, -1.0, 0.92], [-0.535, -0.645, 0.3333333333333333, 0.96], [-0.01, 0.335, 0.6666666666666666, 0.84], [-0.815, -0.225, 0.3333333333333333, -0.76], [-0.095, 0.995, 0.6666666666666666, 0.48], [0.55, -0.255, 0.0, 0.7466666666666667], [-0.19, -0.345, -0.3333333333333333, 0.3333333333333333]])
     return ctx
 
 
@@ -72,17 +72,17 @@ def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
-        check_pair = all_close([x,y], ctx)
-        check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = is_right(y, x, ctx)
-        check_above = is_above(y, x, ctx)
-        check_size = same_size([x,y], ctx)
+        check_xy_pair = all_close([x,y], ctx)
+        check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
+        check_y_right_x = is_right(y, x, ctx)
+        check_y_above_x = is_above(y, x, ctx)
+        check_xy_same_size = same_size([x,y], ctx)
         if (
-            check_pair
-            and check_all_dark
-            and check_right
-            and check_above
-            and check_size
+            check_xy_pair
+            and check_xy_dark
+            and check_y_right_x
+            and check_y_above_x
+            and check_xy_same_size
         ):
             results.append([x,y])
     return results
@@ -294,54 +294,83 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: I have a triangle of three dots near the center.
+# You: Do you see a medium black dot anywhere on yours?
+def turn(state):
+    # New question.
+    results = []
+    for x, in get1idxs(idxs):
+        check_x_medium = is_medium(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        if (
+            check_x_medium
+            and check_x_dark
+        ):
+            results.append([x])
+    return results
+state = turn(state)
+# End.
+
+# Them: I don't have any dots that I would call black, most are light to dark gray.
+def turn(state):
+    # New response.
+    results = []
+    return results
+state = turn(state)
+# End.
+
+# You: Ok... Do you have a cluster of dots in a side Y shape with one being a tiny lightest shade of gray?
 def turn(state):
     # New question.
     results = []
     for x,y,z in get3idxs(idxs):
-        check_xyz_triangle = is_triangle([x,y,z], ctx)
-        check_xyz_center = all([is_middle(dot, None, ctx) for dot in [x,y,z]])
+        check_xyz_Y = (
+            all_close([x,y], ctx)
+            and is_below(z, y, ctx)
+            and is_right(z, y, ctx)
+        ) or (
+            all_close([y,z], ctx)
+            and is_below(x, y, ctx)
+            and is_left(x, y, ctx)
+        ) or (
+            all_close([x,z], ctx)
+            and is_above(y, z, ctx)
+            and is_left(x, z, ctx)
+        )
+        check_tiny_lightest = is_small(lightest([x,y,z], ctx), ctx)
         if (
-            check_xyz_triangle
-            and check_xyz_center
+            check_xyz_Y
+            and check_tiny_lightest
         ):
             results.append([x,y,z])
     return results
 state = turn(state)
 # End.
 
-# You: Are they all of different tone?
+# Them: Yes, the smallest in the Y shape is at the "fork" in the Y.
 def turn(state):
     # Follow up question.
     results = []
     for a,b,c in state:
-        check_all_different_tone = len(set([is_dark(a, ctx), is_light(a, ctx), is_grey(a, ctx), is_dark(b, ctx), is_light(b, ctx), is_grey(b, ctx), is_dark(c, ctx), is_light(c, ctx), is_grey(c, ctx)])) == 3
+        smallest_one = smallest([a,b,c], ctx)
+        check_smallest_fork = smallest_one == get_middle([a,b,c], ctx)
         if (
-            check_all_different_tone
+            check_smallest_fork
         ):
             results.append([a,b,c])
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, the smallest is black with a medium gray on top, and the largest is light gray.
-def turn(state):
-    # Follow up question.
+# You: Yes. Pick that tiny dot. <selection>
+def select(state):
+    # Select a dot.
     results = []
     for a,b,c in state:
         smallest_one = smallest([a,b,c], ctx)
-        largest_one = largest([a,b,c], ctx)
-        check_smallest_black = is_dark(smallest_one, ctx)
-        check_smallest_medium_gray_top = is_grey(get_top([a,b,c], ctx), ctx) and is_smaller(get_top([a,b,c], ctx), smallest_one, ctx)
-        check_largest_light_gray = is_light(largest_one, ctx) and largest_one != get_top([a,b,c], ctx)
-        if (
-            check_smallest_black
-            and check_smallest_medium_gray_top
-            and check_largest_light_gray
-        ):
-            results.append([a,b,c])
+        if is_small(smallest_one, ctx):
+            results.append(smallest_one)
     return results
-state = turn(state)
+state = select(state)
 
 
 print(state)
