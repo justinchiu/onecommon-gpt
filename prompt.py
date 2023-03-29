@@ -55,6 +55,10 @@ class Understand(TemplatePrompt[str]):
     template_file = "prompts/understand2.j2"
     stop_templates = ["# End.", "# New."]
 
+class ParseUnderstand(TemplatePrompt[str]):
+    template_file = "prompts/parseunderstand.j2"
+    stop_templates = ["# End.", "# New."]
+
 class Execute(TemplatePrompt[list[int]]):
     template_file = "prompts/execute.j2"
 

@@ -37,15 +37,21 @@ class Agent:
             max_tokens = 128,
         ))
 
-        self.parse = Parse(backend.OpenAIChat(
-            model = "gpt-3.5-turbo",
-            max_tokens = 512,
-        ))
-
         if refres == "codegen":
             #self.understand = Understand(backend.OpenAI(
             #    model = "code-davinci-002",
             self.understand = Understand(backend.OpenAIChat(
+                model = "gpt-3.5-turbo",
+                #model = "gpt-4",
+                max_tokens=1024,
+            ))
+            self.execute = Execute(backend.Python())
+        elif refres == "parsecodegen":
+            self.parse = Parse(backend.OpenAIChat(
+                model = "gpt-3.5-turbo",
+                max_tokens = 512,
+            ))
+            self.understand = ParseUnderstand(backend.OpenAIChat(
                 model = "gpt-3.5-turbo",
                 #model = "gpt-4",
                 max_tokens=1024,
