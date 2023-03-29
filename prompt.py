@@ -17,7 +17,7 @@ from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_le
 from spatial import get_middle
 from spatial import get_distance
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
-from size import is_large, is_small, is_medium, largest, smallest, same_size, different_size, is_larger, is_smaller
+from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
 from iterators import get1idxs, get2idxs, get3idxs
 from lists import add
 import numpy as np

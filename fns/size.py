@@ -7,7 +7,7 @@ def is_large(x, ctx):
 def is_small(x, ctx):
     return ctx[x, -2] < -0.3
 
-def is_medium(x, ctx):
+def is_medium_size(x, ctx):
     return True
 
 
