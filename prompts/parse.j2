@@ -1,3 +1,5 @@
+Conversation start
+
 Text: Got a triangle of 3 light grey dots by itself.
 State whether this sentence confirms or denies or neither. 
 Confirmation: Neither.
@@ -89,48 +91,25 @@ Confirmation: Confirm.
 Give names to the dots and list the properties described.
 * Prev dots A B C
 * A is smallest in A B C
+* A is bottom right of A B C
+END
+
+Text: Yes, let's select the large one. <selection>.
+State whether this sentence confirms or denies or neither. 
+Confirmation: Confirm.
+END
+
+Conversation end
+
+Conversation start
+
+Text: Do you see a large black dot on the bottom left?
+State whether this sentence confirms or denies or neither. 
+Confirmation: Neither.
+Give names to the dots and list the properties described.
 * 
 END
 
-# You: Yes, let's select the large one. <selection>.
-def select(state):
-    # Select a dot.
-    results = []
-    for a,b,c in state:
-        check_a_large = is_large(a, ctx)
-        check_b_not_large = not is_large(b, ctx)
-        check_c_not_large = not is_large(c, ctx)
-        if (
-            check_a_large
-            and check_b_not_large
-            and check_c_not_large
-        ):
-            results.append([a])
-    return results
-state = select(state)
-# End.
-
-# New.
-ctx = get_ctx()
-state = []
-
-# You: Do you see a large black dot on the bottom left?
-def turn(state):
-    # New question.
-    results = []
-    for x, in get1idxs(idxs):
-        check_x_large = is_large(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_x_below_left = are_below_left([x], None, ctx)
-        if (
-            check_x_large
-            and check_x_dark
-            and check_x_below_left
-        ):
-            results.append([x])
-    return results
-state = turn(state)
-# End.
  
 # Them: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
 def turn(state):
