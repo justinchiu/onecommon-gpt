@@ -7,7 +7,7 @@ import ast
 
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import HEADER, Understand, Execute, Generate, Reformat
+from prompt import HEADER, Understand, Execute, Generate, Reformat, Parse
 from prompt import GenerateScxy, GenerateTemplate
 from prompt import UnderstandMc
 
@@ -23,17 +23,23 @@ class State:
 
 
 class Agent:
-    def __init__(self, backend, refres, gen):
+    def __init__(self, backend, refres, gen, parse):
         self.backend = backend
 
         self.refres = refres
         self.gen = gen
+        self.parse = parse
 
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
         #self.reformat = Reformat(backend.OpenAI(
         #    model = "text-davinci-003",
             max_tokens = 128,
+        ))
+
+        self.parse = Parse(backend.OpenAIChat(
+            model = "gpt-3.5-turbo",
+            max_tokens = 512,
         ))
 
         if refres == "codegen":
