@@ -52,8 +52,8 @@ class Agent:
                 max_tokens = 512,
             ))
             self.understand = ParseUnderstand(backend.OpenAIChat(
-                model = "gpt-3.5-turbo",
-                #model = "gpt-4",
+                #model = "gpt-3.5-turbo",
+                model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
