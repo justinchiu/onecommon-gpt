@@ -1,5 +1,5 @@
 
-# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
+# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
+    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -98,17 +98,15 @@ def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
-        check_pair = all_close([x,y], ctx)
-        check_all_dark = all([is_dark(dot, ctx) for dot in [x,y]])
-        check_right = is_right(y, x, ctx)
-        check_above = is_above(y, x, ctx)
-        check_size = same_size([x,y], ctx)
+        check_xy_pair = all_close([x,y], ctx)
+        check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
+        check_y_above_right_x = is_above(y, x, ctx) and is_right(y, x, ctx)
+        check_xy_same_size = same_size([x,y], ctx)
         if (
-            check_pair
-            and check_all_dark
-            and check_right
-            and check_above
-            and check_size
+            check_xy_pair
+            and check_xy_dark
+            and check_y_above_right_x
+            and check_xy_same_size
         ):
             results.append([x,y])
     return results
@@ -298,7 +296,7 @@ def turn(state):
     for x, in get1idxs(idxs):
         check_x_large = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_below_left = is_below_left(x, None, ctx)
+        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
         if (
             check_x_large
             and check_x_dark
@@ -388,33 +386,32 @@ ctx = get_ctx()
 state = []
 
 """
-Confirmation: Neither.
+Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* New dots A B
-* A light and small
-* B medium and grey
-* A next to B
+* New dot A
+* A larger and black
+* A alone
+* A down and to the left
 """
-def turn(state):
-    # New question.
-    results = []
-    for x, y in get2idxs(idxs):
-        check_pair = all_close([x, y], ctx)
-        check_x_light = is_light(x, ctx)
-        check_x_small = is_small(x, ctx)
-        check_y_medium = is_medium_size(y, ctx)
-        check_y_grey = is_grey(y, ctx)
-        if (
-            check_pair
-            and check_x_light
-            and check_x_small
-            and check_y_medium
-            and check_y_grey
-        ):
-            results.append([x, y])
-    return results
-state = turn(state)
+def 
+# End.
 
+"""
+Confirmation: Neither.
+"""
+def 
+# End.
+
+"""
+Confirmation:
+"""
+def 
+# End.
+
+"""
+Confirmation: 
+"""
+def 
 
 print(state)
 # state: num_candidates x size x feats=4

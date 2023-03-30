@@ -52,8 +52,8 @@ class Agent:
                 max_tokens = 512,
             ))
             self.understand = ParseUnderstand(backend.OpenAIChat(
-                #model = "gpt-3.5-turbo",
-                model = "gpt-4",
+                model = "gpt-3.5-turbo",
+                #model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
@@ -198,7 +198,7 @@ class Agent:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(text.strip(), f"def {codeblock.strip()}")]
+        return mentions, past + [(understand_input_text.strip(), f"def {codeblock.strip()}")]
 
 
     def plan(self, past, view, info=None):
