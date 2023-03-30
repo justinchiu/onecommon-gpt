@@ -46,7 +46,14 @@ class Reformat(TemplatePrompt[str]):
 
 class Parse(TemplatePrompt[str]):
     template_file = "prompts/parse.j2"
-    stop_templates = ["\n"]
+    stop_templates = ["\nEnd."]
+
+    def parse(self, output, input):
+        outs = output.split("\n")
+        confirmation = outs[0]
+        description = outs[2:] if len(outs) > 2 else None
+        selection = "selection" in output
+        return output, confirmation, description, selection
 
 class Understand(TemplatePrompt[str]):
     #template_file = "prompts/understand.j2"

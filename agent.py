@@ -7,7 +7,8 @@ import ast
 
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import HEADER, Understand, Execute, Generate, Reformat, Parse
+from prompt import HEADER, Understand, Execute, Generate, Reformat
+from prompt import Parse, ParseUnderstand
 from prompt import GenerateScxy, GenerateTemplate
 from prompt import UnderstandMc
 
@@ -23,12 +24,11 @@ class State:
 
 
 class Agent:
-    def __init__(self, backend, refres, gen, parse):
+    def __init__(self, backend, refres, gen):
         self.backend = backend
 
         self.refres = refres
         self.gen = gen
-        self.parse = parse
 
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
@@ -52,8 +52,8 @@ class Agent:
                 max_tokens = 512,
             ))
             self.understand = ParseUnderstand(backend.OpenAIChat(
-                model = "gpt-3.5-turbo",
-                #model = "gpt-4",
+                #model = "gpt-3.5-turbo",
+                model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
@@ -92,14 +92,14 @@ class Agent:
     def write(self):
         pass
 
-    def reformat_text(self, text):
+    def reformat_text(self, text, usespeaker=True):
         speaker = "You" if "You:" in text else "Them"
         utt = text.replace("You: ", "").replace("Them: ", "")
         #print(self.reformat.print(dict(source=utt.strip())))
         out = self.reformat(dict(source=utt)).strip()
         #print("Reformatted")
         #print(text)
-        text = f"{speaker}: {out}"
+        text = f"{speaker}: {out}" if usespeaker else out
         #print(text)
         return text
 
@@ -166,15 +166,23 @@ class Agent:
         return mentions, past + [(text.strip(), f"def {out.strip()}")]
 
     def resolve_reference_parse_codegen(self, text, past, view, info=None):
-        text = self.reformat_text(text)
+        text = self.reformat_text(text, usespeaker=False)
 
-        kwargs = dict(header=HEADER, text=text, past=past, view=view)
+        parse_prompt = self.parse.print(dict(text=text))
+        #print(parse_prompt)
+        parsed, confirmation, desc, selection = self.parse(dict(text=text))
+        #print(confirmation)
+        #print(desc)
 
-        out = self.understand(kwargs)
+        understand_input_text = f"Confirmation: {parsed}"
+
+        kwargs = dict(header=HEADER, text=understand_input_text, past=past, view=view)
+
+        codeblock = self.understand(kwargs)
 
         # new input for python execution
-        input = self.understand.print(dict(text=text, past=past, view=view))
-        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
+        input = self.understand.print(dict(text=understand_input_text, past=past, view=view))
+        kw = dict(info=info, header=HEADER, code=input + codeblock, dots=view.tolist())
 
         # debugging
         input = self.execute.print(kw)
@@ -190,7 +198,7 @@ class Agent:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(text.strip(), f"def {out.strip()}")]
+        return mentions, past + [(text.strip(), f"def {codeblock.strip()}")]
 
 
     def plan(self, past, view, info=None):

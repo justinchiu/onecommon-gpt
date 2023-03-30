@@ -141,6 +141,7 @@ class Eval(ABC):
         import json
         from pathlib import Path
         path = Path(self.logpath) / method / f"{id}-agent{agent}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w") as f:
             json.dump(log, f)
 
@@ -209,14 +210,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", default=0, type=int)
-    parser.add_argument("--refres", choices=["codegen", "mc"], default="mc")
+    parser.add_argument("--refres",
+        choices=["parsecodegen", "codegen", "mc"],
+        default="codegen",
+    )
     parser.add_argument("--gen",
         choices=["sc", "scxy", "template", "templateonly"],
         default="template",
-    )
-    parser.add_argument("--parse",
-        choices=["bullet"],
-        default="bullet",
     )
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
@@ -227,21 +227,20 @@ if __name__ == "__main__":
     split = args.split
     refres = args.refres
     gen = args.gen
-    parse = args.parse
 
     train, valid = get_data(args.split)
 
     if args.run_refres:
-        with minichain.start_chain(f"eval-res-{split}") as backend:
-            agent = Agent(backend, refres, gen, parse)
+        with minichain.start_chain(f"eval-res-{refres}-{split}") as backend:
+            agent = Agent(backend, refres, gen)
             evaluator = Resolution()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
             reseval = evaluator.compute(agent, valid, args.num_examples, args.run_example)
         print(reseval)
 
     if args.run_gen:
-        with minichain.start_chain(f"eval-gen-{split}") as backend:
-            agent = Agent(backend, refres, gen, parse)
+        with minichain.start_chain(f"eval-gen-{gen}-{split}") as backend:
+            agent = Agent(backend, refres, gen)
             evaluator = Generation()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
             geneval = evaluator.compute(agent, valid, args.num_examples, args.run_example, split)
