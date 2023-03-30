@@ -10,7 +10,7 @@ Give names to the dots and list the properties described.
 * C light
 * A B C triangle
 * A B C alone
-END
+End.
 
 Text: Could be. One on right is largest with tiny gray on top?
 State whether this sentence confirms or denies or neither. 
@@ -21,7 +21,7 @@ Give names to the dots and list the properties described.
 * B tiny
 * B grey
 * B top of A B C
-END
+End.
 
 Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 State whether this sentence confirms or denies or neither. 
@@ -33,22 +33,21 @@ Give names to the dots and list the properties described.
 * B dark
 * B above right A
 * A same size B
-END
+End.
 
 Text: No.
 State whether this sentence confirms or denies or neither. 
 Confirmation: Deny.
-END
+End.
 
 Text: What about a large medium grey dot near the center?
 State whether this sentence confirms or denies or neither. 
 Confirmation: Neither.
 Give names to the dots and list the properties described.
 * New dots A
-* A large
-* A grey
+* A large and grey
 * A near center
-END
+End.
 
 Text: Is there a smaller black one next to it?
 State whether this sentence confirms or denies or neither. 
@@ -59,7 +58,7 @@ Give names to the dots and list the properties described.
 * B black
 * B smaller than A 
 * A next to B
-END
+End.
 
 Text: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
 State whether this sentence confirms or denies or neither. 
@@ -73,31 +72,31 @@ Give names to the dots and list the properties described.
 * A is top left A B C
 * B is middle A B C
 * C is bottom right A B C
-END
+End.
 
 Text: Yes. Is the top one close to the middle darker one?
 State whether this sentence confirms or denies or neither. 
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* Prev dots A B C
+* Previous dots A B C
 * A is top of A B C
 * B is middle of A B C
 * A darker than B
-END
+End.
 
 Text: Yes. And the smallest is on the bottom right.
 State whether this sentence confirms or denies or neither. 
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* Prev dots A B C
+* Previous dots A B C
 * A is smallest in A B C
 * A is bottom right of A B C
-END
+End.
 
 Text: Yes, let's select the large one. <selection>.
 State whether this sentence confirms or denies or neither. 
 Confirmation: Confirm.
-END
+End.
 
 Conversation end
 
@@ -107,66 +106,49 @@ Text: Do you see a large black dot on the bottom left?
 State whether this sentence confirms or denies or neither. 
 Confirmation: Neither.
 Give names to the dots and list the properties described.
-* 
-END
+* New dots A
+* A large and black
+* A is bottom left
+End.
 
- 
-# Them: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
-def turn(state):
-    # New question.
-    results = []
-    for x,y,z in get3idxs(idxs):
-        check_xyz_close = all_close([x,y,z], ctx)
-        check_x_large = is_large(x, ctx)
-        check_z_dark = is_dark(z, ctx)
-        check_y_smaller_x = are_smaller([y], [x], ctx)
-        check_z_smaller_x = are_smaller([z], [x], ctx)
-        check_y_lighter_x = are_lighter([y], [x], ctx)
-        check_z_lighter_x = are_lighter([z], [x], ctx)
-        check_yz_same_size = same_size([y,z], ctx)
-        check_yz_same_color = same_color([y,z], ctx)
-        if (
-            check_xyz_close
-            and check_x_large
-            and check_z_dark
-            and check_y_smaller_x
-            and check_z_smaller_x
-            and check_y_lighter_x
-            and check_z_lighter_x
-            and check_yz_same_size
-            and check_yz_same_color
-        ):
-            results.append([x,y,z])
-    return results
-state = turn(state)
-# End.
+Text: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
+State whether this sentence confirms or denies or neither. 
+Confirmation: Neither.
+Give names to the dots and list the properties described.
+* New dots A B C
+* A large and black
+* B smaller and lighter than A
+* C smaller and lighter than A
+* B C same size and color
+End.
 
-# You: Select the largest one.
-def turn(state):
-    # Follow up question.
-    results = []
-    for a,b,c in state:
-        largest_one = get_largest([a,b,c], ctx)
-        results.append(largest_one)
-    return results
-state = turn(state)
-# End.
- 
-# Them: Okay.
-def turn(state):
-    # No op.
-    return state
-state = turn(state)
-# End.
- 
-# You: Okay. <selection>.
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
-# End.
+Text: Select the largest one.
+State whether this sentence confirms or denies or neither. 
+Confirmation: Confirm.
+Give names to the dots and list the properties described.
+* Previous dots A B C
+* A largest
+End.
 
+Text: Okay.
+State whether this sentence confirms or denies or neither. 
+Confirmation: Confirm.
+End.
 
+Text: Okay. <selection>.
+State whether this sentence confirms or denies or neither. 
+Confirmation: Confirm.
+End.
+
+Conversation end
+
+Conversation start
+{% if past is defined and past|length > 0 %}{% for block in past %}
+Text: {{ block[0] }}
+State whether this sentence confirms or denies or neither. 
+Confirmation: {{ block[1] }}
+End.
+{% endfor %}{% endif %}
 Text: {{text}}
 State whether this sentence confirms or denies or neither. 
 Confirmation:

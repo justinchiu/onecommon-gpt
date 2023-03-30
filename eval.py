@@ -50,8 +50,10 @@ class Recall(evaluate.Metric):
 class Eval(ABC):
     flags = dict()
     logpath = "evaluation_logs"
+    method = None
 
     def compute(self, agent, data, num_examples=None, run_example=None):
+        method = getattr(agent, self.method)
         configs = bitutils.get_configs(128)
         preds = []
         truelabels = []
@@ -119,7 +121,7 @@ class Eval(ABC):
                 partner_dot_ids = example["partner_real_ids"],
                 output = example["output"]
             )
-            self.save_log(log_entry, chatid, example["agent"])
+            self.save_log(log_entry, method, chatid, example["agent"])
 
         return self.metric.compute(predictions=preds, references=truelabels, **self.flags)
 
@@ -135,10 +137,10 @@ class Eval(ABC):
     def do_eval(self, x):
         pass
 
-    def save_log(self, log, id, agent):
+    def save_log(self, log, method, id, agent):
         import json
         from pathlib import Path
-        path = Path(self.logpath) / f"{id}-agent{agent}.json"
+        path = Path(self.logpath) / method / f"{id}-agent{agent}.json"
         with path.open("w") as f:
             json.dump(log, f)
 
@@ -155,6 +157,7 @@ class Resolution(Eval):
     metric = Recall("multilabel")
     flags = dict(average="micro")
     logpath = "resolution_logs"
+    method = "refres"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast = agent.resolve_reference(text, past, view, info)
@@ -184,6 +187,7 @@ class Resolution(Eval):
 class Generation(Eval):
     metric = evaluate.load("bleu")
     logpath = "generation_logs"
+    method = "gen"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         #plan = agent.plan(past, view, info)

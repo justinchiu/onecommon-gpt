@@ -107,6 +107,8 @@ class Agent:
         # dispatch
         if self.refres == "codegen":
             return self.resolve_reference_codegen(text, past, view, info=info)
+        elif self.refres == "parsecodegen":
+            return self.resolve_reference_parse_codegen(text, past, view, info=info)
         elif self.refres == "mc":
             return self.resolve_reference_mc(text, past, view, info=info)
         else:
@@ -137,6 +139,33 @@ class Agent:
         return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")]
 
     def resolve_reference_codegen(self, text, past, view, info=None):
+        text = self.reformat_text(text)
+
+        kwargs = dict(header=HEADER, text=text, past=past, view=view)
+
+        out = self.understand(kwargs)
+
+        # new input for python execution
+        input = self.understand.print(dict(text=text, past=past, view=view))
+        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
+
+        # debugging
+        input = self.execute.print(kw)
+        print(input)
+        
+        result = self.execute(kw)
+        print(result)
+        if result is None:
+            result = []
+
+        num_preds = len(result)
+        mentions = np.zeros((num_preds, 7), dtype=bool)
+        for i in range(num_preds):
+            mentions[i, result[i]] = 1
+
+        return mentions, past + [(text.strip(), f"def {out.strip()}")]
+
+    def resolve_reference_parse_codegen(self, text, past, view, info=None):
         text = self.reformat_text(text)
 
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
