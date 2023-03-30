@@ -1,5 +1,5 @@
 
-# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
+    ctx = np.array([[-0.765, -0.33, 0.6666666666666666, 0.9066666666666666], [-0.575, -0.76, 0.0, -0.24], [0.565, 0.085, -1.0, 0.9866666666666667], [-0.83, 0.405, 0.0, -0.6], [-0.365, 0.035, 0.3333333333333333, -0.88], [0.785, -0.025, 0.0, 0.30666666666666664], [0.59, 0.5, -0.6666666666666666, -0.22666666666666666]])
     return ctx
 
 
@@ -31,16 +31,7 @@ idxs = list(range(7))
 ctx = get_ctx()
 state = []
 
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A light
-* B light
-* C light
-* A B C triangle
-* A B C alone
-"""
+# Them: Got a triangle of 3 light grey dots by itself.
 def turn(state):
     # New question.
     results = []
@@ -58,15 +49,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* Previous dots A B C
-* A largest of A B C
-* B tiny
-* B grey
-* B top of A B C
-"""
+# You: Could be. One on right is largest with a tiny gray on top??
 def turn(state):
     # Follow up question.
     results = []
@@ -84,28 +67,21 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Deny.
-Give names to the dots and list the properties described.
-* New dots A B
-* A pair B
-* A dark
-* B dark
-* B above right A
-* A same size B
-"""
+# Them: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
         check_xy_pair = all_close([x,y], ctx)
         check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
-        check_y_above_right_x = is_above(y, x, ctx) and is_right(y, x, ctx)
+        check_y_right_x = is_right(y, x, ctx)
+        check_y_above_x = is_above(y, x, ctx)
         check_xy_same_size = same_size([x,y], ctx)
         if (
             check_xy_pair
             and check_xy_dark
-            and check_y_above_right_x
+            and check_y_right_x
+            and check_y_above_x
             and check_xy_same_size
         ):
             results.append([x,y])
@@ -113,23 +89,15 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Deny.
-"""
+# You: No.
 def turn(state):
-    # No op.
+    # New question.
     results = []
     return results
 state = turn(state)
 # End.
 
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A
-* A large and grey
-* A near center
-"""
+# Them: What about a large medium grey dot near the center?
 def turn(state):
     # New question.
     results = []
@@ -147,15 +115,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* Previous dots A
-* New dots B
-* B black
-* B smaller than A 
-* A next to B
-"""
+# You: Is there a smaller black one next to it?
 def turn(state):
     # Follow up question, new dot.
     results = []
@@ -174,18 +134,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Deny.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A light
-* B grey
-* C dark
-* A B C diagonal line
-* A is top left A B C
-* B is middle A B C
-* C is bottom right A B C
-"""
+# Them: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
 def turn(state):
     # New question.
     results = []
@@ -211,14 +160,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* Previous dots A B C
-* A is top of A B C
-* B is middle of A B C
-* A darker than B
-"""
+# You: Yes. Is the top one close to the middle darker one?
 def turn(state):
     # Follow up question.
     results = []
@@ -236,13 +178,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* Previous dots A B C
-* A is smallest in A B C
-* A is bottom right of A B C
-"""
+# Them: Yes. And the smallest is on the bottom right.
 def turn(state):
     # Follow up question.
     results = []
@@ -258,10 +194,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Confirm.
-Selection.
-"""
+# You: Yes, let's select the large one. <selection>.
 def select(state):
     # Select a dot.
     results = []
@@ -283,13 +216,7 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A
-* A large and black
-* A is bottom left
-"""
+# You: Do you see a large black dot on the bottom left?
 def turn(state):
     # New question.
     results = []
@@ -307,15 +234,7 @@ def turn(state):
 state = turn(state)
 # End.
  
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A large and black
-* B smaller and lighter than A
-* C smaller and lighter than A
-* B C same size and color
-"""
+# Them: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
 def turn(state):
     # New question.
     results = []
@@ -345,12 +264,7 @@ def turn(state):
 state = turn(state)
 # End.
 
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* Previous dots A B C
-* A largest
-"""
+# You: Select the largest one.
 def turn(state):
     # Follow up question.
     results = []
@@ -361,19 +275,14 @@ def turn(state):
 state = turn(state)
 # End.
  
-"""
-Confirmation: Confirm.
-"""
+# Them: Okay.
 def turn(state):
     # No op.
     return state
 state = turn(state)
 # End.
  
-"""
-Confirmation: Confirm.
-Selection.
-"""
+# You: Okay. <selection>.
 def select(state):
     # Select a dot.
     return state
@@ -385,110 +294,35 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* New dots A B
-* A large and dark
-* B tiny and lighter grey
-* B above and to the left of A
-"""
+# Them: I have a light grey small dot next to a medium grey medium dot.
 def turn(state):
     # New question.
     results = []
     for x, y in get2idxs(idxs):
-        check_xy_large_dark = is_large(x, ctx) and is_dark(x, ctx)
-        check_y_tiny_light_grey = is_small(y, ctx) and is_lighter(y, ctx) and is_grey(y, ctx)
-        check_y_above_left_x = is_above(y, x, ctx) and is_left(y, x, ctx)
+        check_xy_close = all_close([x,y], ctx)
+        check_x_light = is_light(x, ctx)
+        check_y_medium_grey = is_medium_size(y, ctx) and is_grey(y, ctx)
+        check_x_small_grey = is_small(x, ctx) and is_grey(x, ctx)
+        check_xy_next_to_each_other = any([
+            is_right(x, y, ctx) and is_above(x, y, ctx),
+            is_right(y, x, ctx) and is_above(y, x, ctx),
+            is_right(x, y, ctx) and is_below(x, y, ctx),
+            is_right(y, x, ctx) and is_below(y, x, ctx),
+            is_left(x, y, ctx) and is_above(x, y, ctx),
+            is_left(y, x, ctx) and is_above(y, x, ctx),
+            is_left(x, y, ctx) and is_below(x, y, ctx),
+            is_left(y, x, ctx) and is_below(y, x, ctx),
+        ])
         if (
-            check_xy_large_dark
-            and check_y_tiny_light_grey
-            and check_y_above_left_x
+            check_xy_close
+            and check_x_light
+            and check_y_medium_grey
+            and check_x_small_grey
+            and check_xy_next_to_each_other
         ):
             results.append([x,y])
     return results
 state = turn(state)
-# End.
-
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A medium and black
-* B light grey
-* C smaller than A and B
-* A B C line going down
-"""
-def turn(state):
-    # New question.
-    results = []
-    for x,y,z in get3idxs(idxs):
-        check_xyz_close = all_close([x,y,z], ctx)
-        check_x_medium_black = is_medium_size(x, ctx) and is_dark(x, ctx)
-        check_y_light_grey = is_lighter(y, ctx) and is_grey(y, ctx)
-        check_z_smaller_ab = is_smaller(z, x, ctx) and is_smaller(z, y, ctx)
-        check_xyz_line_down = is_line([x,y,z], ctx) and is_below(x, y, ctx) and is_below(y, z, ctx)
-        if (
-            check_xyz_close
-            and check_x_medium_black
-            and check_y_light_grey
-            and check_z_smaller_ab
-            and check_xyz_line_down
-        ):
-            results.append([x,y,z])
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A B C in a line
-"""
-def turn(state):
-    # New question.
-    results = []
-    for x,y,z in get3idxs(idxs):
-        check_xyz_line = is_line([x,y,z], ctx)
-        if (
-            check_xyz_line
-        ):
-            results.append([x,y,z])
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A
-* A black
-* A in the middle
-"""
-def turn(state):
-    # New question.
-    results = []
-    for x, in get1idxs(idxs):
-        check_x_black = is_dark(x, ctx)
-        check_x_middle = is_middle(x, None, ctx)
-        if (
-            check_x_black
-            and check_x_middle
-        ):
-            results.append([x])
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Confirm.
-Selection.
-"""
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
 
 
 print(state)

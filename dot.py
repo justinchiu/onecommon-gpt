@@ -110,6 +110,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", type=int, default=0)
+    parser.add_argument("--method",
+        choices = ["codegen", "parsecodegen"],
+        default = "codegen",
+    )
     args = parser.parse_args()
 
 
@@ -123,7 +127,7 @@ if __name__ == "__main__":
         for scenario in scenario_list
     }
 
-    logdir = Path(f"resolution_logs/{args.split}")
+    logdir = Path(f"resolution_logs/{args.split}/{args.method}")
     logfiles = list(sorted(logdir.iterdir()))
     #print(logfiles)
 
