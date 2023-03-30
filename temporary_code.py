@@ -1,5 +1,5 @@
 
-# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
+# ('S_N3atbPCA1hsEIsRn', 'C_5e57c484d8d24b788d3e13577b8617ef')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
+    ctx = np.array([[-0.025, -0.82, 0.3333333333333333, -0.4666666666666667], [-0.795, 0.275, 0.6666666666666666, 0.9066666666666666], [-0.605, -0.155, 0.0, -0.24], [0.535, 0.685, -1.0, 0.9866666666666667], [-0.395, 0.635, 0.3333333333333333, -0.88], [0.755, 0.575, 0.0, 0.30666666666666664], [-0.625, -0.5, 0.3333333333333333, 0.06666666666666667]])
     return ctx
 
 
@@ -386,28 +386,26 @@ ctx = get_ctx()
 state = []
 
 """
-Confirmation: Confirm.
+Confirmation: Neither.
 Give names to the dots and list the properties described.
-* New dot A
-* A larger and black
-* A alone
-* A down and to the left
+* New dots A B
+* A light and small
+* B medium and grey
+* A next to B
 """
 def turn(state):
     # New question.
     results = []
-    for x, in get1idxs(idxs):
-        check_x_large = is_large(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_x_alone = all([not all_close([x, dot], ctx) for dot in idxs if dot != x])
-        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
+    for x, y in get2idxs(idxs):
+        check_xy_light_small = is_light(x, ctx) and is_small(x, ctx)
+        check_y_medium_grey = is_medium_size(y, ctx) and is_grey(y, ctx)
+        check_xy_next_to = is_next_to(x, y, ctx)
         if (
-            check_x_large
-            and check_x_dark
-            and check_x_alone
-            and check_x_below_left
+            check_xy_light_small
+            and check_y_medium_grey
+            and check_xy_next_to
         ):
-            results.append([x])
+            results.append([x,y])
     return results
 state = turn(state)
 # End.
@@ -415,44 +413,29 @@ state = turn(state)
 """
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* New dots A B C
-* A medium-sized and black
-* B large and light grey
-* C small and black
-* A B C diagonal line
-* A is top left A B C
-* B is middle A B C
-* C is bottom right A B C
+* Previous dots A B
+* A pair with B
+* A small and light grey
+Selection.
 """
 def turn(state):
-    # New question.
+    # Follow up question.
     results = []
-    for x, y, z in get3idxs(idxs):
-        check_xyz_line = is_line([x,y,z], ctx)
-        check_x_top_left = x == get_top_left([x, y, z], ctx)
-        check_x_medium = is_medium_size(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_y_middle = is_middle(y, [x,y,z], ctx)
-        check_y_large = is_large(y, ctx)
-        check_y_light_grey = is_light(y, ctx) and is_grey(y, ctx)
-        check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
-        check_z_small = is_small(z, ctx)
-        check_z_dark = is_dark(z, ctx)
+    for a,b in state:
+        check_ab_pair = all_close([a,b], ctx)
+        check_a_small_light_grey = is_small(a, ctx) and is_light(a, ctx) and is_grey(a, ctx)
         if (
-            check_xyz_line
-            and check_x_top_left
-            and check_x_medium
-            and check_x_dark
-            and check_y_middle
-            and check_y_large
-            and check_y_light_grey
-            and check_z_bottom_right
-            and check_z_small
-            and check_z_dark
+            check_ab_pair
+            and check_a_small_light_grey
         ):
-            results.append([x,y,z])
+            results.append([a,b])
     return results
 state = turn(state)
+
+def select(state):
+    # Select a dot.
+    return state[0]
+selected_dot = select(state)
 
 
 print(state)
