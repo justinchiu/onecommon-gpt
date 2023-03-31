@@ -7,9 +7,15 @@ import math
 def all_close(idxs, ctx):
     xy = ctx[idxs,:2]
 
+    # use radius
+    mp = shapely.MultiPoint(xys)
+    radius = shapely.minimum_bounding_radius(mp)
+    return radius < 0.6
+
     # be generous
     return np.linalg.norm(xy - xy[:,None], axis=-1).max() < 0.3
 
+    # rectangle
     rect = MultiPoint(xy).minimum_rotated_rectangle
 
     minx, miny, maxx, maxy = rect.bounds
