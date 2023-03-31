@@ -179,28 +179,6 @@ def get_data(split=0):
 
 
 if __name__ == "__main__":
-    import bitutils
-    from collections import defaultdict
     train_data, valid_data = get_data()
 
-    def get_dists(data):
-        # get average distances of mentioned dots
-        dists = defaultdict(list)
-        for x in data:
-            ctx = x["context"]
-            all_mentions = x["all_referents"]
-            for mentions in all_mentions:
-                for mention in mentions:
-                    target = np.array(mention["target"], dtype=bool)
-                    cfg = bitutils.config_to_int(target).item()
-                    dist = np.linalg.norm(ctx[target,:2] - ctx[target,None,:2]).item()
-                    dists[target.sum().item()].append(dist)
-        avg_dists = {k: np.mean(v) for k,v in dists.items()}
-        q75_dists = {k: np.quantile(v, 0.75) for k,v in dists.items()}
-        q90_dists = {k: np.quantile(v, 0.9) for k,v in dists.items()}
-        print(avg_dists)
-        print(q75_dists)
-        print(q90_dists)
-
-    get_dists(valid_data)
     import pdb; pdb.set_trace()
