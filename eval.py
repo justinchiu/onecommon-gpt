@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from collections import defaultdict
 import numpy as np
 import datasets
 import evaluate
@@ -58,7 +59,6 @@ class Eval(ABC):
 
         preds = []
         truelabels = []
-        extras = []
 
         if run_example is not None:
             # only run a single example
@@ -78,6 +78,7 @@ class Eval(ABC):
             labels = self.get_labels(example)
             past = []
             example_preds = []
+            extras = defaultdict(list)
             for t in range(len(turns)):
                 text = turns[t]
                 past_turns = turns[:t]
@@ -108,7 +109,8 @@ class Eval(ABC):
                         truelabels.append([label])
                         example_preds.append(pred)
                         print(configs[label].nonzero()[0])
-                    extras.append(extra)
+                    for k,v in extra.items():
+                        extras[k].append(v)
 
             # LOGGING
             log_entry = dict(
@@ -124,6 +126,7 @@ class Eval(ABC):
                 dot_ids = example["real_ids"],
                 partner_dot_ids = example["partner_real_ids"],
                 output = example["output"],
+                **extras,
             )
             self.save_log(log_entry, method, chatid, example["agent"])
 

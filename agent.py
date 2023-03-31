@@ -163,7 +163,9 @@ class Agent:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(text.strip(), f"def {out.strip()}")], None
+        return mentions, past + [(text.strip(), f"def {out.strip()}")], {
+            "parsedtext": text,
+        }
 
     def resolve_reference_parse_codegen(self, text, past, view, info=None):
         text = self.reformat_text(text, usespeaker=False)
@@ -201,7 +203,10 @@ class Agent:
         return (
             mentions,
             past + [(understand_input_text.strip(), f"def {codeblock.strip()}")],
-            understand_input_text,
+            {
+                "parsedtext": text,
+                "bullet": understand_input_text,
+            },
         )
 
 
