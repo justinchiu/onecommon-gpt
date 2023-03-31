@@ -136,7 +136,7 @@ class Agent:
             print(result)
             mention[result] = 1
 
-        return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")]
+        return mention, past + [(text.strip(), f"Mentions dots: {out.strip()}")], None
 
     def resolve_reference_codegen(self, text, past, view, info=None):
         text = self.reformat_text(text)
@@ -163,7 +163,7 @@ class Agent:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(text.strip(), f"def {out.strip()}")]
+        return mentions, past + [(text.strip(), f"def {out.strip()}")], None
 
     def resolve_reference_parse_codegen(self, text, past, view, info=None):
         text = self.reformat_text(text, usespeaker=False)
@@ -198,7 +198,11 @@ class Agent:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(understand_input_text.strip(), f"def {codeblock.strip()}")]
+        return (
+            mentions,
+            past + [(understand_input_text.strip(), f"def {codeblock.strip()}")],
+            understand_input_text,
+        )
 
 
     def plan(self, past, view, info=None):

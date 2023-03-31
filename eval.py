@@ -55,8 +55,11 @@ class Eval(ABC):
     def compute(self, agent, data, num_examples=None, run_example=None):
         method = getattr(agent, self.method)
         configs = bitutils.get_configs(128)
+
         preds = []
         truelabels = []
+        extras = []
+
         if run_example is not None:
             # only run a single example
             data = [ex for ex in data if ex["chat_id"] == run_example]
@@ -90,7 +93,7 @@ class Eval(ABC):
                     info = (scenarioid, chatid),
                 )
 
-                pred, past = self.predict(**input)
+                pred, past, extra = self.predict(**input)
 
                 label = labels[t]
                 #import pdb; pdb.set_trace()
@@ -105,6 +108,7 @@ class Eval(ABC):
                         truelabels.append([label])
                         example_preds.append(pred)
                         print(configs[label].nonzero()[0])
+                    extras.append(extra)
 
             # LOGGING
             log_entry = dict(
@@ -119,7 +123,7 @@ class Eval(ABC):
                 agent = example["agent"],
                 dot_ids = example["real_ids"],
                 partner_dot_ids = example["partner_real_ids"],
-                output = example["output"]
+                output = example["output"],
             )
             self.save_log(log_entry, method, chatid, example["agent"])
 
@@ -161,13 +165,13 @@ class Resolution(Eval):
     method = "refres"
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
-        pred, newpast = agent.resolve_reference(text, past, view, info)
+        pred, newpast, extra = agent.resolve_reference(text, past, view, info)
         intpreds = bitutils.config_to_int(pred)
         out = list(set(intpreds.tolist()))
         if len(out) == 0:
             # fill with no reference
             out = [0]
-        return out, newpast
+        return out, newpast, extra
 
     def get_labels(self, example):
         referents = example["all_referents"]
@@ -231,7 +235,7 @@ if __name__ == "__main__":
     train, valid = get_data(args.split)
 
     if args.run_refres:
-        with minichain.start_chain(f"eval-res-{refres}-{split}") as backend:
+        with minichain.start_chain(f"logs/eval-res-{refres}-{split}") as backend:
             agent = Agent(backend, refres, gen)
             evaluator = Resolution()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
@@ -239,7 +243,7 @@ if __name__ == "__main__":
         print(reseval)
 
     if args.run_gen:
-        with minichain.start_chain(f"eval-gen-{gen}-{split}") as backend:
+        with minichain.start_chain(f"logs/eval-gen-{gen}-{split}") as backend:
             agent = Agent(backend, refres, gen)
             evaluator = Generation()
             evaluator.logpath = f"{evaluator.logpath}/{split}"
