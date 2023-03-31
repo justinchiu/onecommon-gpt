@@ -3,6 +3,7 @@ import bitutils
 from collections import defaultdict
 import numpy as np
 import pandas as pd
+import shapely
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -18,25 +19,39 @@ def get_dists(data):
             for mention in mentions:
                 target = np.array(mention["target"], dtype=bool)
                 cfg = bitutils.config_to_int(target).item()
+
                 dist = np.linalg.norm(ctx[target,:2] - ctx[target,None,:2]).item()
                 dists[target.sum().item()].append(dist)
+
                 length = target.sum().item()
+
+                xys = ctx[target,:2]
+                mp = shapely.MultiPoint(xys)
+                radius = shapely.minimum_bounding_radius(mp)
+
                 if length > 1:
                     df["dist"].append(dist)
                     df["len"].append(length)
+                    df["radius"].append(radius)
 
+    """
     avg_dists = {k: np.mean(v) for k,v in dists.items()}
     q75_dists = {k: np.quantile(v, 0.75) for k,v in dists.items()}
     q90_dists = {k: np.quantile(v, 0.9) for k,v in dists.items()}
     print(avg_dists)
     print(q75_dists)
     print(q90_dists)
+    """
 
     df = pd.DataFrame.from_dict(df)
 
     g = sns.FacetGrid(df, col="len")
     g.map(sns.histplot, "dist")
     g.savefig("figures/distance_histplots.png")
+
+    g = sns.FacetGrid(df, col="len")
+    g.map(sns.histplot, "radius")
+    g.savefig("figures/radius_histplots.png")
 
 
 if __name__ == "__main__":
