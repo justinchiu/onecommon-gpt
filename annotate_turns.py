@@ -8,6 +8,12 @@ from dot import Dot, visualize_board, visualize_single_board
 
 st.set_page_config(layout="wide")
 
+bullet_annotation_dir = Path("annotation/bullet")
+code_annotation_dir = Path("annotation/code")
+
+bullet_annotation_dir.mkdir(parents=True, exist_ok=True)
+code_annotation_dir.mkdir(parents=True, exist_ok=True)
+
 # visualize logging information
 with open('data/scenarios.json', "r") as f:
     scenario_list = json.load(f)
@@ -19,7 +25,7 @@ boards = {
 _, data = get_data()
 
 logdir = Path(f"resolution_logs/0/parsecodegen")
-logfiles = list(sorted(logdir.iterdir()))
+logfiles = [x for x in sorted(logdir.iterdir()) if "agent0" in str(x)]
 #print(logfiles)
 
 st.write(f"Num examples: {len(data)}")
@@ -29,12 +35,33 @@ example_idx = st.number_input("example", 0, len(data)-1)
 example = data[example_idx]
 chat_id = example["chat_id"]
 
+
+# annotation files
+bullet_annotation_file = (bullet_annotation_dir / chat_id).with_suffix(".json") 
+code_annotation_file = (code_annotation_dir / chat_id).with_suffix(".json")
+
+if bullet_annotation_file.exists():
+    with bullet_annotation_file.open("r") as f:
+        bullet_annotation = json.load(f)
+else:
+    bullet_annotation = None
+if code_annotation_file.exists():
+    with code_annotation_file.open("r") as f:
+        code_annotation = json.load(f)
+else:
+    code_annotation = None
+# / annotation files
+ 
+
+# model log files 
 matching_logfiles = [f for f in logfiles if chat_id in str(f)]
 logfile = matching_logfiles[0] if len(matching_logfiles) > 0 else None
 
 if logfile is not None:
     with logfile.open("r") as f:
         log = json.load(f)
+# / model log files
+
 
 st.write(f"### Dialogue {log['chat_id']}")
 st.write(f"### Scenario {log['scenario_id']}")
@@ -55,6 +82,10 @@ if logfile is not None:
     log_past = log["past"]
     log_agent = log["agent"]
     log_dot_ids = log["dot_ids"]
+
+    log_parsedtext = log["parsedtext"] if "parsedtext" in log else None
+    log_bullet = log["bullet"] if "bullet" in log else None
+    log_output = log["output"] if "output" in log else None
 
 turns = example["dialogue"]
 preds = None
@@ -78,27 +109,42 @@ with st.sidebar:
     st.write("# Past")
     for s in range(t):
         st.write(f"### Turn {s}")
-        st.write(past[s][0])
-        st.code(past[s][1])
-        st.code("\n".join([
-            f"{i}. " + ", ".join([dot_ids[i] for i,x in enumerate(pred) if x])
-            for i, pred in enumerate(preds[t])
-        ]))
+        if log_past is not None:
+            st.write(log_past[s][0])
+            st.code(log_past[s][1])
+            st.code("\n".join([
+                f"{i}. " + ", ".join([dot_ids[i] for i,x in enumerate(pred) if x])
+                for i, pred in enumerate(log_preds[t])
+            ]))
 
 col1, col2 = st.columns(2)
 with col1:
     visualize_single_board(board, showlabel=True)
-
-with col2:
+    st.write("### Label")
+    st.code(" ".join([dot_ids[i] for i,x in enumerate(labels[t]) if x]))
     st.write("### Turn")
     st.code(turns[t])
 
+with col2:
     if logfile is not None:
-        st.write("### ProcTurn")
-        st.code(log_past[t][0])
+        if log_parsedtext is not None:
+            st.write("### ProcTurn")
+            st.code(log_parsedtext[t])
+
+        if log_bullet is not None:
+            st.write("### Bullet")
+            st.code(log_bullet[t])
 
         st.write("### Code")
         st.code(log_past[t][1])
 
-    st.write("### Label")
-    st.code(" ".join([dot_ids[i] for i,x in enumerate(labels[t]) if x]))
+with st.form(""):
+    bullet_annotation = {}
+    code_annotation = {}
+
+    submitted = st.form_submit_button("Submit")
+    if submitted:
+        with bullet_annotation_file.open("w") as f:
+            json.load(bullet_annotation, f)
+        with code_annotation_file.open("w") as f:
+            json.load(code_annotation, f)

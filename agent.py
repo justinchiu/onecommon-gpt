@@ -242,7 +242,7 @@ class Agent:
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
-        return out, past + [out]
+        return out, past + [out], None
 
     def generate_text_scxy(self, plan, past, view, info=None):
         # process plan
@@ -265,7 +265,7 @@ class Agent:
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
-        return out, past + [out]
+        return out, past + [out], None
 
     def generate_text_template(self, plan, past, view, info=None):
         if len(plan) == 0:
@@ -283,7 +283,7 @@ class Agent:
         out = self.generate(kwargs)
         print("OUTPUT")
         print(out)
-        return out, past + [out]
+        return out, past + [out], None
 
     def generate_text_template_only(self, plan, past, view, info=None):
         if len(plan) == 0:
@@ -295,5 +295,5 @@ class Agent:
         plan = np.array(refs).any(0)
         desc = render(plan, view)
         print(desc)
-        return desc, past + [desc]
+        return desc, past + [desc], None
 
