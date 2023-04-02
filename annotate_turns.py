@@ -29,6 +29,7 @@ logfiles = [x for x in sorted(logdir.iterdir()) if "agent0" in str(x)]
 st.write(f"Num examples: {len(data)}")
 
 example_idx = st.number_input("example", 0, len(data)-1)
+example_idx = 3
 
 example = data[example_idx]
 chat_id = example["chat_id"]
@@ -82,8 +83,15 @@ if logfile is not None:
 turns = example["dialogue"]
 preds = None
 raw_labels = [[x["target"] for x in xs] for xs in example["all_referents"]]
+
 # the last turn might differ from log_labels because of selection
-labels = [np.any(x, 0) for x in raw_labels]
+labels = [
+    np.any(x, 0) if len(x) > 0 else np.zeros(7, dtype=bool)
+    for x in raw_labels
+]
+# last turn is selection
+labels[-1][example["output"]] = True
+
 agent = example["agent"]
 dot_ids = example["real_ids"]
 
