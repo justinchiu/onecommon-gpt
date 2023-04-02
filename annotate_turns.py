@@ -2,17 +2,15 @@ import json
 from pathlib import Path
 import streamlit as st
 import numpy as np
+from collections import defaultdict
 
 from ocdata import get_data
 from dot import Dot, visualize_board, visualize_single_board
 
 st.set_page_config(layout="wide")
 
-bullet_annotation_dir = Path("annotation/bullet")
-code_annotation_dir = Path("annotation/code")
-
-bullet_annotation_dir.mkdir(parents=True, exist_ok=True)
-code_annotation_dir.mkdir(parents=True, exist_ok=True)
+annotation_dir = Path("annotation")
+annotation_dir.mkdir(parents=True, exist_ok=True)
 
 # visualize logging information
 with open('data/scenarios.json', "r") as f:
@@ -36,20 +34,14 @@ example = data[example_idx]
 chat_id = example["chat_id"]
 
 
-# annotation files
-bullet_annotation_file = (bullet_annotation_dir / chat_id).with_suffix(".json") 
-code_annotation_file = (code_annotation_dir / chat_id).with_suffix(".json")
+# annotation file
+annotation_file = (annotation_dir / chat_id).with_suffix(".json") 
 
-if bullet_annotation_file.exists():
-    with bullet_annotation_file.open("r") as f:
-        bullet_annotation = json.load(f)
+if annotation_file.exists():
+    with annotation_file.open("r") as f:
+        annotation = json.load(f)
 else:
-    bullet_annotation = None
-if code_annotation_file.exists():
-    with code_annotation_file.open("r") as f:
-        code_annotation = json.load(f)
-else:
-    code_annotation = None
+    annotation = defaultdict(str)
 # / annotation files
  
 
@@ -138,13 +130,16 @@ with col2:
         st.write("### Code")
         st.code(log_past[t][1])
 
-with st.form(""):
-    bullet_annotation = {}
-    code_annotation = {}
+with st.form("annot"):
+    bullet = st.text_area("Bullet", value=annotation["bullet"])
+    code = st.text_area("Code", value=annotation["code"])
+
+    annotation = {
+        "bullet": bullet,
+        "code": code,
+    }
 
     submitted = st.form_submit_button("Submit")
     if submitted:
-        with bullet_annotation_file.open("w") as f:
-            json.load(bullet_annotation, f)
-        with code_annotation_file.open("w") as f:
-            json.load(code_annotation, f)
+        with annotation_file.open("w") as f:
+            json.dump(annotation, f)
