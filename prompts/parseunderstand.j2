@@ -38,17 +38,18 @@ Confirmation: Confirm.
 Give names to the dots and list the properties described.
 * Previous dots A B C
 * A largest of A B C
-* B tiny
-* B grey
+* A on right of A B C
+* B tiny and grey
 * B top of A B C
 """
 def turn(state):
     # Follow up question.
     results = []
     for a,b,c in state:
-        check_largest_right = largest([a,b,c], ctx) == get_right([a,b,c], ctx)
-        check_tiny_top = is_small(get_top([a,b,c], ctx), ctx)
-        check_grey_top = is_grey(get_top([a,b,c], ctx), ctx)
+        check_a_largest = a == largest([a,b,c], ctx)
+        check_a_right = a == get_right([a,b,c], ctx)
+        check_b_tiny_grey = is_small(b, ctx) and is_grey(b, ctx)
+        check_b_top = b == get_top([a,b,c], ctx)
         if (
             check_largest_right
             and check_tiny_top
@@ -193,15 +194,16 @@ Give names to the dots and list the properties described.
 * A is top of A B C
 * B is middle of A B C
 * A darker than B
+* A close B
 """
 def turn(state):
     # Follow up question.
     results = []
     for a,b,c in state:
-        top_one = get_top([a,b,c], ctx)
-        middle_one = get_middle([a,b,c], ctx)
-        check_close = all_close([top_one, middle_one], ctx)
-        check_darker = is_darker(middle_one, top_one, ctx)
+        check_a_top = a == get_top([a,b,c], ctx)
+        check_b_middle = b == get_middle([a,b,c], ctx)
+        check_darker = is_darker(a, b, ctx)
+        check_close = all_close([a, b], ctx)
         if (
             check_close
             and check_darker
@@ -222,11 +224,11 @@ def turn(state):
     # Follow up question.
     results = []
     for a,b,c in state:
-        smallest_one = smallest([a,b,c], ctx)
-        bottom_right = get_bottom_right([a,b,c], ctx)
-        check_smallest_bottom_right = smallest_one == bottom_right
+        check_a_smallest = a == smallest([a,b,c], ctx)
+        check_a_bottom_right = a == get_bottom_right([a,b,c], ctx)
         if (
-            check_smallest_bottom_right
+            check_a_smallest
+            and check_a_bottom_right
         ):
             results.append([a,b,c])
     return results
