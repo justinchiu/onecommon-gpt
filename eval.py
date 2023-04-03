@@ -217,6 +217,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--split", default=0, type=int)
+    parser.add_argument("--model",
+        choices=["gpt-3.5-turbo", "gpt-4"],
+        default="gpt-3.5-turbo",
+    )
     parser.add_argument("--refres",
         choices=["parsecodegen", "codegen", "mc"],
         default="codegen",
@@ -238,18 +242,18 @@ if __name__ == "__main__":
     train, valid = get_data(args.split)
 
     if args.run_refres:
-        with minichain.start_chain(f"logs/eval-res-{refres}-{split}") as backend:
-            agent = Agent(backend, refres, gen)
+        with minichain.start_chain(f"logs/eval-res-{refres}-{split}-{args.model}") as backend:
+            agent = Agent(backend, refres, gen, args.model)
             evaluator = Resolution()
-            evaluator.logpath = f"{evaluator.logpath}/{split}"
+            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.model}"
             reseval = evaluator.compute(agent, valid, args.num_examples, args.run_example)
         print(reseval)
 
     if args.run_gen:
-        with minichain.start_chain(f"logs/eval-gen-{gen}-{split}") as backend:
-            agent = Agent(backend, refres, gen)
+        with minichain.start_chain(f"logs/eval-gen-{gen}-{split}-{args.model}") as backend:
+            agent = Agent(backend, refres, gen, args.model)
             evaluator = Generation()
-            evaluator.logpath = f"{evaluator.logpath}/{split}"
+            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.model}"
             geneval = evaluator.compute(agent, valid, args.num_examples, args.run_example, split)
         print(geneval)
 

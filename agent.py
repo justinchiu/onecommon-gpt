@@ -24,11 +24,13 @@ class State:
 
 
 class Agent:
-    def __init__(self, backend, refres, gen):
+    def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
         self.backend = backend
 
         self.refres = refres
         self.gen = gen
+
+        self.model = model
 
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
@@ -51,8 +53,10 @@ class Agent:
                 model = "gpt-3.5-turbo",
                 max_tokens = 512,
             ))
+            print(f"RUNNING UNDERSTANDING WITH MODEL: {model}")
             self.understand = ParseUnderstand(backend.OpenAIChat(
-                model = "gpt-3.5-turbo",
+                model = model,
+                #model = "gpt-3.5-turbo",
                 #model = "gpt-4",
                 max_tokens=1024,
             ))

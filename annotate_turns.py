@@ -21,6 +21,8 @@ boards = {
 }
 
 _, data = get_data()
+# filter data to only have agent = 0
+data = [x for x in data if x["agent"] == 0]
 
 logdir = Path(f"resolution_logs/0/parsecodegen")
 logfiles = [x for x in sorted(logdir.iterdir()) if "agent0" in str(x)]
@@ -29,7 +31,6 @@ logfiles = [x for x in sorted(logdir.iterdir()) if "agent0" in str(x)]
 st.write(f"Num examples: {len(data)}")
 
 example_idx = st.number_input("example", 0, len(data)-1)
-example_idx = 3
 
 example = data[example_idx]
 chat_id = example["chat_id"]
@@ -42,7 +43,13 @@ if annotation_file.exists():
     with annotation_file.open("r") as f:
         annotation = json.load(f)
 else:
-    annotation = defaultdict(str)
+    annotation = {
+        "confirm": None,
+        "select": None,
+        "numconfigs": 0,
+        "configs": [],
+        "code": None,
+    }
 # / annotation files
  
 
@@ -139,11 +146,23 @@ with col2:
         st.code(log_past[t][1])
 
 with st.form("annot"):
-    bullet = st.text_area("Bullet", value=annotation["bullet"])
+    confirm = st.text_area("Confirmation", value=annotation["confirm"])
+    select = st.text_area("Selection", value=annotation["select"])
+    numconfigs = st.number_input("Num configs", min_value=0, max_value=3,
+        value=annotation["numconfigs"])
+    configs = []
+    for i in range(3):
+        config = st.text_area(f"Config {i} Description",
+            value=annotation["configs"][i] if i < len(annotation["configs"]) else None
+        )
+        configs.append(config)
     code = st.text_area("Code", value=annotation["code"])
 
     annotation = {
-        "bullet": bullet,
+        "confirm": confirm,
+        "select": select,
+        "numconfigs": numconfigs,
+        "configs": configs,
         "code": code,
     }
 
