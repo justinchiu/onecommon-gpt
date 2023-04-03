@@ -1,5 +1,5 @@
 
-# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
+# ('S_mQa5OGEpE3cZmIly', 'C_724e8318439a4302ac6ade104f12e101')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
+    ctx = np.array([[0.41, 0.56, 0.6666666666666666, -0.7333333333333333], [-0.335, -0.69, 0.3333333333333333, 0.8], [-0.305, -0.095, 0.6666666666666666, 0.36], [-0.525, -0.175, 0.3333333333333333, 0.8533333333333334], [0.785, -0.035, 0.0, -0.24], [0.095, 0.04, -1.0, 0.02666666666666667], [-0.09, 0.615, 0.3333333333333333, -0.05333333333333334]])
     return ctx
 
 
@@ -294,74 +294,64 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: I have a larger black dot all by itself, down and to the left.
+# Them: Hi! Do you see a tiny grey dot?
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_large = is_large(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
-        check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
+        check_x_tiny = is_small(x, ctx)
+        check_x_grey = is_grey(x, ctx)
         if (
-            check_x_large
-            and check_x_dark
-            and check_x_below_left
-            and check_x_alone
+            check_x_tiny
+            and check_x_grey
         ):
             results.append([x])
     return results
 state = turn(state)
 # End.
 
-# You: Hm. Do you see three in a diagonal? Top left is medium-sized black, middle is large light grey, bottom right is small black?
+# You: OK, do you have a very large dot that is the darkest gray in the circle?
 def turn(state):
     # New question.
     results = []
-    for x, y, z in get3idxs(idxs):
-        check_xyz_line = is_line([x,y,z], ctx)
-        check_x_top_left = x == get_top_left([x, y, z], ctx)
-        check_x_medium_size = is_medium_size(x, ctx)
-        check_x_dark = is_dark(x, ctx)
-        check_y_middle = is_middle(y, [x,y,z], ctx)
-        check_y_large = is_large(y, ctx)
-        check_y_light = is_light(y, ctx)
-        check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
-        check_z_small = is_small(z, ctx)
-        check_z_dark = is_dark(z, ctx)
+    for x, in get1idxs(idxs):
+        check_x_large = is_large(x, ctx)
+        check_x_dark_grey = is_darkest(x, ctx) and is_grey(x, ctx)
         if (
-            check_xyz_line
-            and check_x_top_left
-            and check_x_medium_size
-            and check_x_dark
-            and check_y_middle
-            and check_y_large
-            and check_y_light
-            and check_z_bottom_right
-            and check_z_small
-            and check_z_dark
+            check_x_large
+            and check_x_dark_grey
         ):
-            results.append([x,y,z])
+            results.append([x])
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, let's choose the middle one.
-def select(state):
-    # Select a dot.
+# Them: Yes, I do! Is there a slightly lighter and smaller dot to the left of it?
+def turn(state):
+    # Follow up question.
     results = []
-    for a,b,c in state:
-        middle_one = get_middle([a,b,c], ctx)
-        results.append(middle_one)
+    for a, in state:
+        left_one = get_left([a], ctx)
+        check_left_smaller = is_smaller(left_one, a, ctx)
+        check_left_lighter = is_lighter(left_one, a, ctx)
+        if (
+            check_left_smaller
+            and check_left_lighter
+        ):
+            results.append([a, left_one])
     return results
-state = select(state)
+state = turn(state)
 # End.
 
-# You: Okay. <selection>.
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
+# You: Yep! Choose the darkest?
+def turn(state):
+    # Follow up question.
+    results = []
+    for a,b in state:
+        darkest_one = darkest([a,b], ctx)
+        results.append(darkest_one)
+    return results
+state = turn(state)
 
 
 print(state)
