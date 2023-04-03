@@ -1,5 +1,5 @@
 
-# ('S_kQfCI1MRe21DDsqK', 'C_27a843b6c8f94ffc86fde88cc86b0772')
+# ('S_8CssskB0X9LJ9A51', 'C_834057f6f90b4bff9e8ddcc3a03cb88c')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.405, 0.415, 0.0, -0.12], [0.485, -0.65, 0.0, -0.8533333333333334], [0.97, 0.06, 0.6666666666666666, 0.72], [0.3, -0.115, 1.0, 0.9066666666666666], [0.065, 0.015, 0.3333333333333333, 0.4], [-0.9, 0.05, -0.6666666666666666, -0.36], [-0.03, -0.175, 0.0, -0.48]])
+    ctx = np.array([[0.83, 0.245, -0.3333333333333333, -0.44], [0.445, 0.72, 0.3333333333333333, -0.5466666666666666], [0.575, -0.39, -1.0, -0.8933333333333333], [-0.865, -0.32, -1.0, 0.9066666666666666], [0.215, 0.37, -0.3333333333333333, 0.84], [0.675, 0.39, 1.0, 0.6], [-0.57, -0.485, 0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -294,64 +294,73 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# You: I have a triangle of three dots near the center.
+# Them: I have a larger black dot all by itself, down and to the left.
 def turn(state):
     # New question.
     results = []
-    for x,y,z in get3idxs(idxs):
-        check_xyz_triangle = is_triangle([x,y,z], ctx)
-        check_xyz_center = all([is_middle(dot, None, ctx) for dot in [x,y,z]])
+    for x, in get1idxs(idxs):
+        check_x_large = is_large(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
+        check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
         if (
-            check_xyz_triangle
-            and check_xyz_center
+            check_x_large
+            and check_x_dark
+            and check_x_below_left
+            and check_x_alone
+        ):
+            results.append([x])
+    return results
+state = turn(state)
+# End.
+
+# You: Hm. Do you see three in a diagonal? Top left is medium-sized black, middle is large light grey, bottom right is small black?
+def turn(state):
+    # New question.
+    results = []
+    for x, y, z in get3idxs(idxs):
+        check_xyz_line = is_line([x,y,z], ctx)
+        check_x_top_left = x == get_top_left([x, y, z], ctx)
+        check_x_medium_size = is_medium_size(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_middle = is_middle(y, [x,y,z], ctx)
+        check_y_large = is_large(y, ctx)
+        check_y_light = is_light(y, ctx)
+        check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
+        check_z_small = is_small(z, ctx)
+        check_z_dark = is_dark(z, ctx)
+        if (
+            check_xyz_line
+            and check_x_top_left
+            and check_x_medium_size
+            and check_x_dark
+            and check_y_middle
+            and check_y_large
+            and check_y_light
+            and check_z_bottom_right
+            and check_z_small
+            and check_z_dark
         ):
             results.append([x,y,z])
     return results
 state = turn(state)
 # End.
 
-# Them: Are they all of different tone?
-def turn(state):
-    # Follow up question.
-    results = []
-    for a,b,c in state:
-        check_abc_different_tone = not same_color([a,b,c], ctx)
-        if (
-            check_abc_different_tone
-        ):
-            results.append([a,b,c])
-    return results
-state = turn(state)
-# End.
-
-# You: Yes, the smallest is black with a medium gray on top, and the largest is light gray.
-def turn(state):
-    # Follow up question.
-    results = []
-    for a,b,c in state:
-        smallest_one = smallest([a,b,c], ctx)
-        largest_one = largest([a,b,c], ctx)
-        check_smallest_black = is_dark(smallest_one, ctx)
-        check_smallest_top_grey = is_grey(get_top([a,b,c], ctx), ctx)
-        check_largest_light_grey = is_light(largest_one, ctx) and is_grey(largest_one, ctx)
-        if (
-            check_smallest_black
-            and check_smallest_top_grey
-            and check_largest_light_grey
-        ):
-            results.append([a,b,c])
-    return results
-state = turn(state)
-# End.
-
-# Them: Let us select the smallest. <selection>
+# Them: Yes, let's choose the middle one.
 def select(state):
     # Select a dot.
     results = []
     for a,b,c in state:
-        smallest_one = smallest([a,b,c], ctx)
-        results.append(smallest_one)
+        middle_one = get_middle([a,b,c], ctx)
+        results.append(middle_one)
     return results
+state = select(state)
+# End.
+
+# You: Okay. <selection>.
+def select(state):
+    # Select a dot.
+    return state
 state = select(state)
 
 
