@@ -1,5 +1,5 @@
 
-# ('S_m5t0eZ17JHhXqIxB', 'C_a784d4bb34cf4b129d28e7bcbc564732')
+# ('S_zesr8xr8W5lZo159', 'C_f875d0ff0e014d7d9d7426b40dc542f9')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.085, 0.11, 0.0, 0.28], [0.29, -0.36, -0.6666666666666666, -0.14666666666666667], [-0.36, -0.7, -0.6666666666666666, -0.8666666666666667], [0.185, 0.42, 0.6666666666666666, -0.13333333333333333], [-0.35, 0.435, 0.0, -0.52], [0.95, 0.06, 0.0, -0.5066666666666667], [-0.52, -0.785, 0.0, 0.7733333333333333]])
+    ctx = np.array([[0.275, 0.665, 0.3333333333333333, 0.04], [-0.295, 0.08, 0.0, 1.0], [0.26, -0.835, 0.3333333333333333, -0.8], [-0.865, -0.23, -1.0, 0.32], [-0.74, -0.595, 0.3333333333333333, 0.5733333333333334], [0.005, -0.77, -1.0, -0.3333333333333333], [-0.15, -0.4, -0.3333333333333333, -0.6533333333333333]])
     return ctx
 
 
@@ -390,79 +390,59 @@ state = []
 """
 Confirmation: Neither.
 Give names to the dots and list the properties described.
-* New dots A
-* A medium and grey
-* A alone
+* New dots A B
+* A large and dark
+* B tiny and lighter grey
+* B above left A
 """
 def turn(state):
     # New question.
     results = []
-    for x, in get1idxs(idxs):
-        check_x_medium = is_medium_size(x, ctx)
-        check_x_grey = is_grey(x, ctx)
-        check_x_alone = all([not all_close([x, dot], ctx) for dot in idxs if dot != x])
-        if (
-            check_x_medium
-            and check_x_grey
-            and check_x_alone
-        ):
-            results.append([x])
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A between B and C
-* B dark
-* C dark
-"""
-def turn(state):
-    # New question.
-    results = []
-    for x, y, z in get3idxs(idxs):
-        check_x_between_yz = is_middle(x, [y, z], ctx)
-        check_y_dark = is_dark(y, ctx)
-        check_z_dark = is_dark(z, ctx)
-        if (
-            check_x_between_yz
-            and check_y_dark
-            and check_z_dark
-        ):
-            results.append([x, y, z])
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* New dots A B C
-* A large
-* B dark and smaller than A
-* B left of A
-* C medium color and size
-* C under and left of A
-"""
-def turn(state):
-    # New question.
-    results = []
-    for x, y, z in get3idxs(idxs):
+    for x, y in get2idxs(idxs):
         check_x_large = is_large(x, ctx)
-        check_y_dark = is_dark(y, ctx)
-        check_y_smaller_x = is_smaller(y, x, ctx)
-        check_y_left_x = is_left(y, x, ctx)
-        check_z_medium_color_size = is_medium_size(z, ctx) and is_grey(z, ctx)
-        check_z_under_left_x = is_below(z, x, ctx) and is_left(z, x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_tiny = is_small(y, ctx)
+        check_y_lighter_grey = is_lighter(y, x, ctx) and is_grey(y, ctx)
+        check_y_above_left_x = is_above(y, x, ctx) and is_left(y, x, ctx)
         if (
             check_x_large
-            and check_y_dark
-            and check_y_smaller_x
-            and check_y_left_x
-            and check_z_medium_color_size
-            and check_z_under_left_x
+            and check_x_dark
+            and check_y_tiny
+            and check_y_lighter_grey
+            and check_y_above_left_x
+        ):
+            results.append([x, y])
+    return results
+state = turn(state)
+# End.
+
+"""
+Confirmation: Neither.
+Give names to the dots and list the properties described.
+* New dots A B C
+* A medium and black
+* B light grey
+* C smaller than A and B
+* A B C in a line going down
+* A is middle of A B C
+"""
+def turn(state):
+    # New question.
+    results = []
+    for x, y, z in get3idxs(idxs):
+        check_xyz_line = is_line([x, y, z], ctx)
+        check_x_medium = is_medium_size(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_light_grey = is_light(y, ctx) and is_grey(y, ctx)
+        check_z_smaller_ab = is_smaller(z, x, ctx) and is_smaller(z, y, ctx)
+        check_a_middle = x == get_middle([x, y, z], ctx)
+        if (
+            check_xyz_line
+            and check_x_medium
+            and check_x_dark
+            and check_y_light_grey
+            and check_z_smaller_ab
+            and check_a_middle
         ):
             results.append([x, y, z])
     return results
@@ -476,6 +456,38 @@ def turn(state):
     # No op.
     return state
 state = turn(state)
+# End.
+
+"""
+Confirmation: Neither.
+Give names to the dots and list the properties described.
+* New dots A
+* A black
+* A in middle
+"""
+def turn(state):
+    # New question.
+    results = []
+    for x, in get1idxs(idxs):
+        check_x_dark = is_dark(x, ctx)
+        check_x_middle = is_middle(x, None, ctx)
+        if (
+            check_x_dark
+            and check_x_middle
+        ):
+            results.append([x])
+    return results
+state = turn(state)
+# End.
+
+"""
+Confirmation: Confirm.
+Selection.
+"""
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(state)
