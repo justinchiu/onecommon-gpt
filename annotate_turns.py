@@ -117,6 +117,7 @@ with st.sidebar:
     for s in range(t):
         st.write(f"### Turn {s}")
         if log_past is not None:
+            st.write(turns[s])
             st.write(log_past[s][0])
             st.code(log_past[s][1])
             st.code("\n".join([
