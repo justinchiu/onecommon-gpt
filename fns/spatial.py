@@ -8,7 +8,7 @@ def all_close(idxs, ctx):
     xy = ctx[idxs,:2]
 
     # use radius
-    mp = shapely.MultiPoint(xys)
+    mp = shapely.MultiPoint(xy)
     radius = shapely.minimum_bounding_radius(mp)
     return radius < 0.6
 
