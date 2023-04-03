@@ -12,3 +12,4 @@ for the latest.
 
 ## Visualization
 `streamlit run dot.py` visualizes one reference resolution with codegen example.
+`streamlit run dot.py --split 0 --method parsecodegen --model gpt-4`

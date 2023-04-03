@@ -8,3 +8,5 @@ streamlit-chat
 matplotlib
 tenacity
 seaborn
+
+git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain
