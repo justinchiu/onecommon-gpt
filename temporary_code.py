@@ -1,5 +1,5 @@
 
-# ('S_J3FNehcaxWeY5N3B', 'C_7eb4e9c301b5430d934953b2a8159377')
+# ('S_b8XnTTApvwSEEwEV', 'C_46db4bc4f58b456ebf2a865c9220a1b0')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.865, -0.355, -1.0, 0.48], [0.295, -0.49, 0.6666666666666666, -0.64], [-0.065, -0.24, 0.0, 0.9733333333333334], [0.34, 0.045, 0.0, 0.72], [-0.56, -0.565, 0.6666666666666666, 0.96], [0.245, -0.835, 0.3333333333333333, 0.92], [0.565, -0.415, -0.6666666666666666, 0.49333333333333335]])
+    ctx = np.array([[0.555, 0.235, 0.6666666666666666, -0.56], [0.235, 0.695, 0.6666666666666666, 0.7066666666666667], [-0.225, -0.69, -0.6666666666666666, 0.9866666666666667], [-0.185, 0.17, 1.0, -0.6666666666666666], [0.78, -0.52, 0.3333333333333333, -0.4533333333333333], [-0.86, 0.445, 0.6666666666666666, 0.9866666666666667], [-0.08, 0.82, 0.0, 0.8933333333333333]])
     return ctx
 
 
@@ -391,20 +391,21 @@ state = []
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
 * New dot A
-* A much darker than others
-* A very large
+* A very pale
+* A small
+* A set apart from other dots
 """
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_dark = is_dark(x, ctx)
-        check_x_large = is_large(x, ctx)
-        check_x_darker_than_others = all([is_darker(x, dot, ctx) for dot in idxs if dot != x])
+        check_x_pale = is_light(x, ctx) and not is_white(x, ctx)
+        check_x_small = is_small(x, ctx)
+        check_x_set_apart = all([get_distance(x, dot, ctx) > 1 for dot in idxs if dot != x])
         if (
-            check_x_dark
-            and check_x_large
-            and check_x_darker_than_others
+            check_x_pale
+            and check_x_small
+            and check_x_set_apart
         ):
             results.append([x])
     return results
@@ -413,33 +414,22 @@ state = turn(state)
 
 """
 Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* New dots A B
-* A medium grey
-* B half the size of A
-* B to the right of A
-* B slightly higher than A
+Selection.
 """
-def turn(state):
-    # New question.
-    results = []
-    for x, in get1idxs(idxs):
-        for y, in get1idxs(idxs):
-            if x == y:
-                continue
-            check_x_grey = is_medium_grey(x, ctx)
-            check_y_half_size_x = is_half_size(y, x, ctx)
-            check_y_right_x = is_right(y, x, ctx)
-            check_y_slightly_above_x = is_above(y, x, ctx) and is_close(get_distance(y, x, ctx), 1, ctx)
-            if (
-                check_x_grey
-                and check_y_half_size_x
-                and check_y_right_x
-                and check_y_slightly_above_x
-            ):
-                results.append([x,y])
-    return results
-state = turn(state)
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
+# End.
+
+"""
+Confirmation: Confirm.
+Selection.
+"""
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(state)
