@@ -1,5 +1,5 @@
 
-# ('S_b8XnTTApvwSEEwEV', 'C_46db4bc4f58b456ebf2a865c9220a1b0')
+# ('S_zOuDUV5pWtvrq8Im', 'C_f433b23508a74350b38561e8737b35a2')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[0.555, 0.235, 0.6666666666666666, -0.56], [0.235, 0.695, 0.6666666666666666, 0.7066666666666667], [-0.225, -0.69, -0.6666666666666666, 0.9866666666666667], [-0.185, 0.17, 1.0, -0.6666666666666666], [0.78, -0.52, 0.3333333333333333, -0.4533333333333333], [-0.86, 0.445, 0.6666666666666666, 0.9866666666666667], [-0.08, 0.82, 0.0, 0.8933333333333333]])
+    ctx = np.array([[0.61, 0.525, 0.6666666666666666, -0.68], [0.59, 0.78, 0.6666666666666666, 0.41333333333333333], [-0.19, -0.84, 0.0, 0.32], [0.64, -0.705, -0.6666666666666666, 0.3466666666666667], [0.545, -0.135, -1.0, -0.7333333333333333], [-0.425, 0.555, -0.3333333333333333, -0.72], [-0.185, -0.13, 0.6666666666666666, -0.64]])
     return ctx
 
 
@@ -390,22 +390,93 @@ state = []
 """
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
+* New dots A B
+* A large and dark grey/black
+* B large and dark grey/black
+* A near middle
+* B at 1 o'clock
+"""
+def turn(state):
+    # New question.
+    results = []
+    for x, y in get2idxs(idxs):
+        check_xy_large_dark = is_large(x, ctx) and is_dark(x, ctx) and is_grey(x, ctx)
+        check_y_large_dark = is_large(y, ctx) and is_dark(y, ctx) and is_grey(y, ctx)
+        check_x_near_middle = is_middle(x, None, ctx)
+        check_y_at_1oclock = is_right(y, x, ctx) and is_above(y, x, ctx)
+        if (
+            check_xy_large_dark
+            and check_y_large_dark
+            and check_x_near_middle
+            and check_y_at_1oclock
+        ):
+            results.append([x,y])
+    return results
+state = turn(state)
+# End.
+
+"""
+Confirmation: Confirm.
+Give names to the dots and list the properties described.
+* New dots A B
+* A larger than B
+* A on bottom of A B
+* B larger than other dots
+* B on top of A B
+* A darker than B
+* A B vertical
+* A on bottom of A B vertical
+* B on top of A B vertical
+* B lighter than A
+"""
+def turn(state):
+    # New question.
+    results = []
+    for x, y in get2idxs(idxs):
+        check_xy_larger = is_larger(x, y, ctx)
+        check_x_bottom = x == get_bottom([x,y], ctx)
+        check_y_largest = y == largest([x,y], ctx)
+        check_y_top = y == get_top([x,y], ctx)
+        check_darker = is_darker(x, y, ctx)
+        check_vertical = is_line([x,y], ctx) and is_vertical([x,y], ctx)
+        check_x_bottom_vertical = x == get_bottom([x,y], ctx) and is_vertical([x,y], ctx)
+        check_y_top_vertical = y == get_top([x,y], ctx) and is_vertical([x,y], ctx)
+        check_lighter = is_lighter(y, x, ctx)
+        if (
+            check_xy_larger
+            and check_x_bottom
+            and check_y_largest
+            and check_y_top
+            and check_darker
+            and check_vertical
+            and check_x_bottom_vertical
+            and check_y_top_vertical
+            and check_lighter
+        ):
+            results.append([x,y])
+    return results
+state = turn(state)
+# End.
+
+"""
+Confirmation: Neither.
+Give names to the dots and list the properties described.
 * New dot A
-* A very pale
-* A small
-* A set apart from other dots
+* A small and black
+* A at around 3 o'clock
+* A to the right of center
 """
 def turn(state):
     # New question.
     results = []
     for x, in get1idxs(idxs):
-        check_x_pale = is_light(x, ctx) and not is_white(x, ctx)
-        check_x_small = is_small(x, ctx)
-        check_x_set_apart = all([get_distance(x, dot, ctx) > 1 for dot in idxs if dot != x])
+        check_x_small_black = is_small(x, ctx) and is_dark(x, ctx)
+        check_x_at_3oclock = is_right(x, None, ctx) and is_above(x, None, ctx)
+        check_x_right_of_center = is_right(x, get_middle(idxs, None, ctx), ctx)
         if (
-            check_x_pale
-            and check_x_small
-            and check_x_set_apart
+            check_x_small_black
+            and check_x_at_3oclock
+            and check_x_right_of_center
         ):
             results.append([x])
     return results
@@ -413,24 +484,73 @@ state = turn(state)
 # End.
 
 """
-Confirmation: Confirm.
-Selection.
+Confirmation: Deny.
+Give names to the dots and list the properties described.
+* None described.
 """
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
+def 
 # End.
 
 """
 Confirmation: Confirm.
-Selection.
+Give names to the dots and list the properties described.
+* New dots A
+* A big
 """
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
+def 
+# End.
 
+"""
+Confirmation: Confirm.
+Give names to the dots and list the properties described.
+* New dots A B
+* A on top
+* B on bottom
+* B darker than A
+"""
+def 
+# End.
+
+"""
+Confirmation: Deny.
+Give names to the dots and list the properties described.
+* New dots A
+* A small and grey
+* A at 4 o'clock
+"""
+def 
+# End.
+
+"""
+Confirmation: Neither.
+Give names to the dots and list the properties described.
+* New dot A
+* A small
+* A at 3
+* A in the middle
+"""
+def 
+# End.
+
+"""
+Confirmation: Neither.
+"""
+def 
+# End.
+
+"""
+Confirmation: Neither.
+Give names to the dots and list the properties described.
+* New dots A
+* A to the right of the middle
+"""
+def 
+# End.
+
+"""
+Confirmation: Neither.
+"""
+def 
 
 print(state)
 # state: num_candidates x size x feats=4
