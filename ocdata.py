@@ -175,6 +175,7 @@ def get_data(split=0, filter_agent=True):
         with data_file.open("r") as f:
             raw_data = f.readlines()
             datas.append(get_examples(raw_data))
+    # WARNING: WILL REMOVE REPEATS FROM DATA
     if filter_agent:
         datas = [x for x in datas if x["agent"] == 0]
     return datas
