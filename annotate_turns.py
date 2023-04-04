@@ -34,24 +34,6 @@ example_idx = st.number_input("example", 0, len(data)-1)
 example = data[example_idx]
 chat_id = example["chat_id"]
 
-
-# annotation file
-annotation_file = (annotation_dir / chat_id).with_suffix(".json") 
-
-if annotation_file.exists():
-    with annotation_file.open("r") as f:
-        annotation = json.load(f)
-else:
-    annotation = {
-        "confirm": None,
-        "select": None,
-        "numconfigs": 0,
-        "configs": [],
-        "code": None,
-    }
-# / annotation files
- 
-
 # model log files 
 matching_logfiles = [f for f in logfiles if chat_id in str(f)]
 logfile = matching_logfiles[0] if len(matching_logfiles) > 0 else None
@@ -108,7 +90,22 @@ board = b0 if agent == 0 else b1
 st.write(f"Num turns: {len(turns)}")
 t = st.number_input("turn", 0, len(turns)-1)
 
-#visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
+# annotation file
+annotation_file = (annotation_dir / chat_id / f"turn-{t}").with_suffix(".json")
+annotation_file.parent.mkdir(parents=True, exist_ok=True)
+
+if annotation_file.exists():
+    with annotation_file.open("r") as f:
+        annotation = json.load(f)
+else:
+    annotation = {
+        "confirm": None,
+        "select": None,
+        "numconfigs": 0,
+        "configs": [],
+        "code": None,
+    }
+# / annotation files#visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
 
 with st.sidebar:
     st.write("# Past")
