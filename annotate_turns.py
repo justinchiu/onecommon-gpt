@@ -20,11 +20,10 @@ boards = {
     for scenario in scenario_list
 }
 
-_, data = get_data()
-# filter data to only have agent = 0
-data = [x for x in data if x["agent"] == 0]
+# data already filtered to only have agent = 0
+data, _ = get_data(1)
 
-logdir = Path(f"resolution_logs/0/parsecodegen")
+logdir = Path(f"resolution_logs/1/train/gpt-3.5-turbo/parsecodegen")
 logfiles = [x for x in sorted(logdir.iterdir()) if "agent0" in str(x)]
 #print(logfiles)
 
@@ -62,11 +61,10 @@ if logfile is not None:
         log = json.load(f)
 # / model log files
 
+st.write(f"### Dialogue {chat_id}")
+st.write(f"### Scenario {example['scenario_id']}")
 
-st.write(f"### Dialogue {log['chat_id']}")
-st.write(f"### Scenario {log['scenario_id']}")
-
-board = boards[log["scenario_id"]]
+board = boards[example["scenario_id"]]
 
 b0 = [Dot(x) for x in board["kbs"][0]]
 b1 = [Dot(x) for x in board["kbs"][1]]

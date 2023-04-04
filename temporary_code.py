@@ -1,5 +1,5 @@
 
-# ('S_ql0BPL7yRo5gPOaH', 'C_1198bf294af447acaef8dddad191795a')
+# ('S_gTOpixzKHkl6NOBd', 'C_5c85bdabf12d44128785047003a9947e')
 
 import sys
 sys.path.append("fns")
@@ -20,7 +20,7 @@ from functools import partial
 
 
 def get_ctx():
-    ctx = np.array([[-0.255, -0.525, 0.6666666666666666, -0.92], [-0.26, -0.86, 0.6666666666666666, 0.88], [-0.11, 0.3, 0.3333333333333333, -0.56], [-0.59, -0.255, -1.0, 0.68], [0.86, -0.115, -0.3333333333333333, 0.9733333333333334], [-0.465, -0.845, -0.3333333333333333, 0.6533333333333333], [-0.035, -0.345, -0.6666666666666666, 0.10666666666666667]])
+    ctx = np.array([[-0.735, 0.46, -1.0, -0.8533333333333334], [0.535, -0.275, -1.0, 0.8533333333333334], [-0.005, -0.455, 1.0, 0.7333333333333333], [0.72, -0.095, -0.3333333333333333, 0.7066666666666667], [0.205, -0.775, 0.0, -0.25333333333333335], [0.72, 0.5, 0.0, -0.18666666666666668], [-0.32, 0.825, -0.3333333333333333, -0.49333333333333335]])
     return ctx
 
 
@@ -294,54 +294,91 @@ state = select(state)
 ctx = get_ctx()
 state = []
 
-# Them: Big black dot in the middle of a cluster.
+# Them: Huge dark dot to the right of two lighter smaller ones.
 def turn(state):
     # New question.
     results = []
-    for x, in get1idxs(idxs):
-        check_x_large = is_large(x, ctx)
+    for x, y, z in get3idxs(idxs):
+        check_xyz_close = all_close([x, y, z], ctx)
+        check_x_huge = is_large(x, ctx)
         check_x_dark = is_dark(x, ctx)
-        check_x_middle = is_middle(x, None, ctx)
-        check_x_cluster = any([all_close([x, dot], ctx) for dot in idxs if dot != x])
+        check_y_smaller_x = is_smaller(y, x, ctx)
+        check_z_smaller_x = is_smaller(z, x, ctx)
+        check_y_lighter_x = is_lighter(y, x, ctx)
+        check_z_lighter_x = is_lighter(z, x, ctx)
+        check_x_right_yz = is_right(x, [y, z], ctx)
         if (
-            check_x_large
+            check_xyz_close
+            and check_x_huge
             and check_x_dark
-            and check_x_middle
-            and check_x_cluster
+            and check_y_smaller_x
+            and check_z_smaller_x
+            and check_y_lighter_x
+            and check_z_lighter_x
+            and check_x_right_yz
         ):
-            results.append([x])
+            results.append([x, y, z])
     return results
 state = turn(state)
 # End.
 
-# You: I see one dot larger than all others and darker than all others.
+# You: Don't see that. How about the smallest black dot below and to the left of the slightly larger black dot?
 def turn(state):
     # New question.
     results = []
-    for x, in get1idxs(idxs):
-        check_x_larger = all([is_larger(x, dot, ctx) for dot in idxs if dot != x])
-        check_x_darker = all([is_darker(x, dot, ctx) for dot in idxs if dot != x])
+    for x, y in get2idxs(idxs):
+        check_xy_close = all_close([x, y], ctx)
+        check_x_smallest = is_small(x, ctx)
+        check_x_dark = is_dark(x, ctx)
+        check_y_larger_x = is_larger(y, x, ctx)
+        check_y_dark = is_dark(y, ctx)
+        check_x_below_y = is_below(x, y, ctx)
+        check_x_left_y = is_left(x, y, ctx)
         if (
-            check_x_larger
-            and check_x_darker
+            check_xy_close
+            and check_x_smallest
+            and check_x_dark
+            and check_y_larger_x
+            and check_y_dark
+            and check_x_below_y
+            and check_x_left_y
         ):
-            results.append([x])
+            results.append([x, y])
     return results
 state = turn(state)
 # End.
 
-# Them: Is it alone?
+# Them: Nope. Large light gray dot above and to the left of a smaller medium gray one.
 def turn(state):
-    # Follow up question.
+    # New question.
     results = []
-    for x, in state:
-        check_x_alone = all([not all_close([x, dot], ctx) for dot in idxs if dot != x])
+    for x, y in get2idxs(idxs):
+        check_xy_close = all_close([x, y], ctx)
+        check_x_large = is_large(x, ctx)
+        check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
+        check_y_smaller_x = is_smaller(y, x, ctx)
+        check_y_medium_grey = is_medium_size(y, ctx) and is_grey(y, ctx)
+        check_x_above_y = is_above(x, y, ctx)
+        check_x_left_y = is_left(x, y, ctx)
         if (
-            check_x_alone
+            check_xy_close
+            and check_x_large
+            and check_x_light_grey
+            and check_y_smaller_x
+            and check_y_medium_grey
+            and check_x_above_y
+            and check_x_left_y
         ):
-            results.append([x])
+            results.append([x, y])
     return results
 state = turn(state)
+# End.
+
+# You: OK, click it. <selection>.
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(state)

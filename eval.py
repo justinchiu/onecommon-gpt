@@ -51,10 +51,10 @@ class Recall(evaluate.Metric):
         dot_correct = 0
         dot_num = 0
 
-        predictions = np.array(predictions)
         references = np.array(references)
 
         for preds, labels in zip(predictions, references):
+            preds = np.array(preds)
             # TURN LEVEL
             p += len(labels)
             num_preds += len(preds)
