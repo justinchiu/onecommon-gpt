@@ -14,13 +14,13 @@ class Recall(evaluate.Metric):
             inputs_description="",
             features=datasets.Features(
                 {
-                    "predictions": datasets.Sequence(datasets.Value("int32")),
-                    "references": datasets.Sequence(datasets.Value("int32")),
+                    "predictions": datasets.Sequence(datasets.Sequence(datasets.Value("bool"))),
+                    "references": datasets.Sequence(datasets.Sequence(datasets.Value("bool"))),
                 }
                 if self.config_name == "multilabel"
                 else {
-                    "predictions": datasets.Value("int32"),
-                    "references": datasets.Value("int32"),
+                    "predictions": datasets.Sequence(datasets.Value("bool")),
+                    "references": datasets.Sequence(datasets.Value("bool")),
                 }
             ),
             reference_urls=["https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html"],
@@ -36,16 +36,56 @@ class Recall(evaluate.Metric):
         sample_weight=None,
         zero_division="warn",
     ):
+        # TURN LEVEL
         p = 0
         tp = 0
         num_preds = 0
+
+        collapsed_correct = 0
+        collapsed_num = 0
+
+        # DOT LEVEL
+        dot_p = 0
+        dot_tp = 0
+        dot_num_preds = 0
+        dot_correct = 0
+        dot_num = 0
+
+        predictions = np.array(predictions)
+        references = np.array(references)
+
         for preds, labels in zip(predictions, references):
+            # TURN LEVEL
             p += len(labels)
             num_preds += len(preds)
-            for pred in preds:
-                if pred in labels:
-                    tp += 1
-        return {"recall": tp / p, "precision": tp / num_preds}
+            tp += (preds == labels).all(-1).sum()
+
+            collapsed_pred = preds.any(0)
+            collapsed_label = labels.any(0)
+
+            collapsed_correct += (collapsed_pred == collapsed_label).all()
+            collapsed_num += 1
+
+            # DOT LEVEL
+            dot_p += collapsed_label.sum()
+            dot_tp += (collapsed_pred & collapsed_label).sum()
+            dot_num_preds += collapsed_pred.sum()
+            dot_correct += (collapsed_pred == collapsed_label).sum()
+            dot_num += 7
+
+        dot_recall = dot_tp / dot_p
+        dot_precision = dot_tp / dot_num_preds
+        dot_f1 = 2 * dot_recall * dot_precision / (dot_recall + dot_precision)
+
+        return {
+            "recall": tp / p,
+            "precision": tp / num_preds,
+            "collapsed_accuracy": collapsed_correct / collapsed_num,
+            "dot_recall": dot_recall,
+            "dot_precision": dot_precision,
+            "dot_f1": dot_f1,
+            "dot_accuracy": dot_correct / dot_num,
+        }
 
 
 class Eval(ABC):
@@ -103,12 +143,13 @@ class Eval(ABC):
                     if isinstance(self, Generation):
                         preds.append(pred)
                         truelabels.append(label)
+                        example_preds.append(pred)
                         print(label)
                     elif isinstance(self, Resolution):
                         preds.append(pred)
                         truelabels.append([label])
                         example_preds.append(pred)
-                        print(configs[label].nonzero()[0])
+                        print(np.array(label).nonzero()[0])
                     for k,v in extra.items():
                         extras[k].append(v)
 
@@ -119,8 +160,8 @@ class Eval(ABC):
                 view = view.tolist(),
                 turns = turns,
                 referents = referents,
-                labels = [configs[x].tolist() for x in labels],
-                preds = [[configs[x].tolist() for x in xs] for xs in example_preds],
+                labels = labels,
+                preds = example_preds,
                 past = past,
                 agent = example["agent"],
                 dot_ids = example["real_ids"],
@@ -157,8 +198,7 @@ def collapse_referents(xs):
     ret = np.zeros(7, dtype=bool)
     for x in xs:
         ret |= np.array(x["target"], dtype=bool)
-    return int(bitutils.config_to_int(ret))
-
+    return ret
 
 class Resolution(Eval):
     #metric = evaluate.load("recall", "multilabel")
@@ -169,22 +209,27 @@ class Resolution(Eval):
 
     def predict(self, agent, text, past, view, plan, past_turns, info=None):
         pred, newpast, extra = agent.resolve_reference(text, past, view, info)
+        if len(pred) == 0:
+            pred = np.zeros((1, 7), dtype=bool)
+        pred = pred.tolist()
+        return pred, newpast, extra
         intpreds = bitutils.config_to_int(pred)
         out = list(set(intpreds.tolist()))
         if len(out) == 0:
             # fill with no reference
             out = [0]
-        return out, newpast, extra
+        return pred, newpast, extra
 
     def get_labels(self, example):
         referents = example["all_referents"]
         # collapse the referents in each turn
-        referents = [collapse_referents(xs) for xs in referents]
+        referents = np.stack([collapse_referents(xs) for xs in referents])
         # final turn is selection. output instead of mentions
         output = np.zeros(7, dtype=bool)
         output[example["output"]] = 1
-        referents[-1] = int(bitutils.config_to_int(output))
-        return referents
+        #referents[-1] = int(bitutils.config_to_int(output))
+        referents[-1] = output
+        return referents.tolist()
 
     def do_eval(self, turn):
         #if "<selection>" in turn:
@@ -216,7 +261,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--split", default=0, type=int)
+    parser.add_argument("--data", choices=["valid", "train"], default="valid")
+    parser.add_argument("--split", default=1, type=int)
     parser.add_argument("--model",
         choices=["gpt-3.5-turbo", "gpt-4"],
         default="gpt-3.5-turbo",
@@ -231,7 +277,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
-    parser.add_argument("--num_examples", default=1, type=int)
+    parser.add_argument("--num_examples", default=20, type=int)
     parser.add_argument("--run_example", default=None, type=int)
     args = parser.parse_args()
 
@@ -241,19 +287,21 @@ if __name__ == "__main__":
 
     train, valid = get_data(args.split)
 
+    data = valid if args.data == "valid" else train
+
     if args.run_refres:
-        with minichain.start_chain(f"logs/eval-res-{refres}-{split}-{args.model}") as backend:
+        with minichain.start_chain(f"logs/eval-res-{refres}-{split}-{args.data}-{args.model}") as backend:
             agent = Agent(backend, refres, gen, args.model)
             evaluator = Resolution()
-            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.model}"
-            reseval = evaluator.compute(agent, valid, args.num_examples, args.run_example)
+            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.data}/{args.model}"
+            reseval = evaluator.compute(agent, data, args.num_examples, args.run_example)
         print(reseval)
 
     if args.run_gen:
-        with minichain.start_chain(f"logs/eval-gen-{gen}-{split}-{args.model}") as backend:
+        with minichain.start_chain(f"logs/eval-gen-{gen}-{split}-{args.data}-{args.model}") as backend:
             agent = Agent(backend, refres, gen, args.model)
             evaluator = Generation()
-            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.model}"
-            geneval = evaluator.compute(agent, valid, args.num_examples, args.run_example, split)
+            evaluator.logpath = f"{evaluator.logpath}/{split}/{args.data}/{args.model}"
+            geneval = evaluator.compute(agent, data, args.num_examples, args.run_example, split)
         print(geneval)
 

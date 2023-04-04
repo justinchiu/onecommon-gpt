@@ -166,7 +166,7 @@ def get_examples(raw_data):
     return examples
 
 
-def get_data(split=0, filter_agent=True):
+def get_data(split=1, filter_agent=True):
     datas = []
     for data_file in [
         Path(f"data/onecommon/train_reference_{split}.txt"),
@@ -177,11 +177,18 @@ def get_data(split=0, filter_agent=True):
             datas.append(get_examples(raw_data))
     # WARNING: WILL REMOVE REPEATS FROM DATA
     if filter_agent:
-        datas = [x for x in datas if x["agent"] == 0]
+        datas = [[x for x in data if x["agent"] == 0] for data in datas]
     return datas
 
 
 if __name__ == "__main__":
     train_data, valid_data = get_data()
 
+    # make sure no bleeding into other sets
+    _, valid_data0 = get_data(0)
+    ids0 = set(x["chat_id"] for x in valid_data0)
+    _, valid_data1 = get_data(1)
+    ids1 = set(x["chat_id"] for x in valid_data1)
+    _, valid_data2 = get_data(2)
+    ids2 = set(x["chat_id"] for x in valid_data2)
     import pdb; pdb.set_trace()
