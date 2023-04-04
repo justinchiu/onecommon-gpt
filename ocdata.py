@@ -166,7 +166,7 @@ def get_examples(raw_data):
     return examples
 
 
-def get_data(split=0):
+def get_data(split=0, filter_agent=True):
     datas = []
     for data_file in [
         Path(f"data/onecommon/train_reference_{split}.txt"),
@@ -175,6 +175,8 @@ def get_data(split=0):
         with data_file.open("r") as f:
             raw_data = f.readlines()
             datas.append(get_examples(raw_data))
+    if filter_agent:
+        datas = [x for x in datas if x["agent"] == 0]
     return datas
 
 
