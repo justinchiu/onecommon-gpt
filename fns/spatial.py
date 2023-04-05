@@ -10,7 +10,7 @@ def all_close(idxs, ctx):
     # use radius
     mp = shapely.MultiPoint(xy)
     radius = shapely.minimum_bounding_radius(mp)
-    return radius < 0.6
+    return radius < 0.3
 
     # be generous
     return np.linalg.norm(xy - xy[:,None], axis=-1).max() < 0.3
