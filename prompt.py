@@ -22,6 +22,7 @@ from iterators import get1idxs, get2idxs, get3idxs
 from lists import add
 import numpy as np
 from functools import partial
+from itertools import permutations
 """
 
 class TemplatePrompt(BaseTemplatePrompt[Output]):
@@ -57,7 +58,8 @@ class Parse(TemplatePrompt[str]):
 
 class Understand(TemplatePrompt[str]):
     #template_file = "prompts/understand.j2"
-    template_file = "prompts/understand2.j2"
+    #template_file = "prompts/understand2.j2"
+    template_file = "prompts/understand3.j2"
     stop_templates = ["# End.", "# New."]
 
 class ParseUnderstand(TemplatePrompt[str]):
