@@ -60,7 +60,7 @@ def turn(state):
                 and check_b_grey
                 and check_b_top
             ):
-                results.add(forzenset([a,b,c]))
+                results.add(frozenset([a,b,c]))
     return results
 state = turn(state)
 # End.
