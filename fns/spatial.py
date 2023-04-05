@@ -153,7 +153,7 @@ def get_middle(x, ctx):
     ]
 
 def get_distance(x, y, ctx):
-    return np.lingalg.norm(ctx[x,:2] - ctx[y,:2])
+    return np.linalg.norm(ctx[x,:2] - ctx[y,:2])
 
 
 if __name__ == "__main__":

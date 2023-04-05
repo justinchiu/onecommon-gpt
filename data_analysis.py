@@ -15,8 +15,17 @@ def get_dists(data):
     for x in data:
         ctx = x["context"]
         all_mentions = x["all_referents"]
-        for mentions in all_mentions:
+        print(len(all_mentions), len(x["dialogue"]))
+        for t, mentions in enumerate(all_mentions):
             for mention in mentions:
+                tokens = x["dialogue"][t].split()
+                span = tokens[
+                    max(0, mention["begin"] - 2)
+                    :min(len(tokens), mention["end"] + 2)
+                ]
+                if not("near" in span or "close" in span):
+                    continue
+
                 target = np.array(mention["target"], dtype=bool)
                 cfg = bitutils.config_to_int(target).item()
 

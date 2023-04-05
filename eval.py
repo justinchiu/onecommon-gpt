@@ -278,7 +278,7 @@ if __name__ == "__main__":
     parser.add_argument("--run_refres", action="store_true")
     parser.add_argument("--run_gen", action="store_true")
     parser.add_argument("--num_examples", default=20, type=int)
-    parser.add_argument("--run_example", default=None, type=int)
+    parser.add_argument("--run_example", default=None, type=str)
     args = parser.parse_args()
 
     split = args.split

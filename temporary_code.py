@@ -1,5 +1,5 @@
 
-# ('S_gTOpixzKHkl6NOBd', 'C_5c85bdabf12d44128785047003a9947e')
+# ('S_d1A25BOwQKs9ea96', 'C_4bc771a84db94b5a91f6ecca4a9c633a')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.735, 0.46, -1.0, -0.8533333333333334], [0.535, -0.275, -1.0, 0.8533333333333334], [-0.005, -0.455, 1.0, 0.7333333333333333], [0.72, -0.095, -0.3333333333333333, 0.7066666666666667], [0.205, -0.775, 0.0, -0.25333333333333335], [0.72, 0.5, 0.0, -0.18666666666666668], [-0.32, 0.825, -0.3333333333333333, -0.49333333333333335]])
+    ctx = np.array([[-0.825, -0.295, 0.0, -0.6933333333333334], [-0.98, -0.125, -0.6666666666666666, 0.09333333333333334], [-0.49, -0.515, 0.6666666666666666, -0.68], [-0.96, 0.065, 0.6666666666666666, 0.0], [0.185, -0.43, -0.3333333333333333, -0.9733333333333334], [0.515, -0.675, 0.3333333333333333, 0.08], [0.71, 0.405, 0.0, 0.5866666666666667]])
     return ctx
 
 
@@ -314,94 +314,46 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Huge dark dot to the right of two lighter smaller ones.
+# You: Hello, I have one dot off to itself.
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 1):
+        for x, in permutations(config):
+            check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
+            if check_x_alone:
+                results.add(frozenset([x]))
+    return results
+state = turn(state)
+# End.
+import pdb; pdb.set_trace()
+# Them: Nope.
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
+# End.
+
+# You: I have a line of 3 dots, one small in the middle.
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 3):
-        for x, y, z in permutations(config):
-            check_xyz_close = all_close([x, y, z], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_y_smaller_x = is_smaller(y, x, ctx)
-            check_z_smaller_x = is_smaller(z, x, ctx)
-            check_y_lighter_x = is_lighter(y, x, ctx)
-            check_z_lighter_x = is_lighter(z, x, ctx)
-            check_x_right_yz = is_right(x, [y, z], ctx)
+        for x,y,z in permutations(config):
+            check_xyz_line = is_line([x,y,z], ctx)
+            check_y_middle = y == get_middle([x,y,z], ctx)
+            check_y_small = is_small(y, ctx)
             if (
-                check_xyz_close
-                and check_x_large
-                and check_x_dark
-                and check_y_smaller_x
-                and check_z_smaller_x
-                and check_y_lighter_x
-                and check_z_lighter_x
-                and check_x_right_yz
+                check_xyz_line
+                and check_y_middle
+                and check_y_small
             ):
-                results.add(frozenset([x, y, z]))
+                results.add(frozenset([x,y,z]))
     return results
 state = turn(state)
-# End.
 
-# You: Don't see that. How about the smallest black dot below and to the left of the slightly larger black dot?
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 2):
-        for x, y in permutations(config):
-            check_xy_close = all_close([x, y], ctx)
-            check_x_small = is_small(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_y_larger_x = is_larger(y, x, ctx)
-            check_y_dark = is_dark(y, ctx)
-            check_x_below_y = is_below(x, y, ctx)
-            check_x_left_y = is_left(x, y, ctx)
-            if (
-                check_xy_close
-                and check_x_small
-                and check_x_dark
-                and check_y_larger_x
-                and check_y_dark
-                and check_x_below_y
-                and check_x_left_y
-            ):
-                results.add(frozenset([x, y]))
-    return results
-state = turn(state)
-# End.
-
-# Them: Nope. Large light gray dot above and to the left of a smaller medium gray one.
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 2):
-        for x, y in permutations(config):
-            check_xy_close = all_close([x, y], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
-            check_y_smaller_x = is_smaller(y, x, ctx)
-            check_y_medium_grey = is_medium_size(y, ctx) and is_grey(y, ctx)
-            check_x_above_y = is_above(x, y, ctx)
-            check_x_left_y = is_left(x, y, ctx)
-            if (
-                check_xy_close
-                and check_x_large
-                and check_x_light_grey
-                and check_y_smaller_x
-                and check_y_medium_grey
-                and check_x_above_y
-                and check_x_left_y
-            ):
-                results.add(frozenset([x, y]))
-    return results
-state = turn(state)
-# End.
-
-# You: OK, click it. <selection>.
-def select(state):
-    # Select a dot.
-    return state
-state = select(state)
+import pdb; pdb.set_trace()
+# [0,1,3]
 
 
 print([tuple(x) for x in state])
