@@ -109,7 +109,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--split", type=int, default=0)
+    parser.add_argument("--split", type=int, default=1)
     parser.add_argument("--method",
         choices = ["codegen", "parsecodegen"],
         default = "codegen",
