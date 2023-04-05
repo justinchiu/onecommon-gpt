@@ -18,7 +18,7 @@ from spatial import get_middle
 from spatial import get_distance
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
 from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
-from iterators import get1idxs, get2idxs, get3idxs
+from iterators import get1idxs, get2idxs, get3idxs, getsets
 from lists import add
 import numpy as np
 from functools import partial
@@ -67,7 +67,8 @@ class ParseUnderstand(TemplatePrompt[str]):
     stop_templates = ["# End.", "# New."]
 
 class Execute(TemplatePrompt[list[int]]):
-    template_file = "prompts/execute.j2"
+    #template_file = "prompts/execute.j2"
+    template_file = "prompts/execute3.j2"
 
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)

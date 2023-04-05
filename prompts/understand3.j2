@@ -230,7 +230,7 @@ def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 3):
-        for x,y,z in permutaitons(config):
+        for x,y,z in permutations(config):
             check_xyz_close = all_close([x,y,z], ctx)
             check_x_large = is_large(x, ctx)
             check_z_dark = is_dark(z, ctx)
@@ -260,7 +260,7 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = set()
-    for config in state
+    for config in state:
         for a,b,c in permutations(config):
             check_a_largest = a == get_largest([a,b,c], ctx)
             if check_a_largest:

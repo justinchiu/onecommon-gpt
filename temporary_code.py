@@ -13,7 +13,7 @@ from spatial import get_middle
 from spatial import get_distance
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
 from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
-from iterators import get1idxs, get2idxs, get3idxs
+from iterators import get1idxs, get2idxs, get3idxs, getsets
 from lists import add
 import numpy as np
 from functools import partial
@@ -256,7 +256,7 @@ def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 3):
-        for x,y,z in permutaitons(config):
+        for x,y,z in permutations(config):
             check_xyz_close = all_close([x,y,z], ctx)
             check_x_large = is_large(x, ctx)
             check_z_dark = is_dark(z, ctx)
@@ -286,7 +286,7 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = set()
-    for config in state
+    for config in state:
         for a,b,c in permutations(config):
             check_a_largest = a == get_largest([a,b,c], ctx)
             if check_a_largest:
@@ -333,9 +333,45 @@ def turn(state):
                 results.add(frozenset([x,y,z]))
     return results
 state = turn(state)
+# End.
+
+# Them: Yes, the lightest is on the right.
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a,b,c in permutations(config):
+            check_a_lightest = a == lightest([a,b,c], ctx)
+            check_a_right = a == get_right([a,b,c], ctx)
+            if (
+                check_a_lightest
+                and check_a_right
+            ):
+                results.add(frozenset([a]))
+    return results
+state = turn(state)
+# End.
+
+# You: Okay, select the lightest and biggest one on the right. <selection>
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a,b,c in permutations(config):
+            check_a_lightest = a == lightest([a,b,c], ctx)
+            check_a_biggest = a == largest([a,b,c], ctx)
+            check_a_right = a == get_right([a,b,c], ctx)
+            if (
+                check_a_lightest
+                and check_a_biggest
+                and check_a_right
+            ):
+                results.add(frozenset([a]))
+    return results
+state = turn(state)
 
 
-print(state)
+print([tuple(x) for x in state])
 # state: num_candidates x size x feats=4
 # dots: 7 x feats=4
 # heuristic: take first candidate state[0]
