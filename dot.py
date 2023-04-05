@@ -118,6 +118,10 @@ if __name__ == "__main__":
         choices = ["gpt-4", "gpt-3.5-turbo"],
         default = "gpt-4",
     )
+    parser.add_argument("--data",
+        choices = ["valid", "train"],
+        default = "valid",
+    )
     args = parser.parse_args()
 
     st.set_page_config(layout="wide")
@@ -130,7 +134,7 @@ if __name__ == "__main__":
         for scenario in scenario_list
     }
 
-    logdir = Path(f"resolution_logs/{args.split}/{args.model}/{args.method}")
+    logdir = Path(f"resolution_logs/{args.split}/{args.data}/{args.model}/{args.method}")
     logfiles = list(sorted(logdir.iterdir()))
     #print(logfiles)
 
