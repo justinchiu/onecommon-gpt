@@ -1,5 +1,5 @@
 
-# ('S_iP9DFc8ypZ1NyluX', 'C_827bc5ff79b24be9aa110c83189e04b9')
+# ('S_GKz7mFoLpUDC3dAr', 'C_3c2a8b24808f461f9b6d5ada446272e8')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.15, -0.43, 0.0, -0.48], [-0.115, 0.005, 0.3333333333333333, -0.9333333333333333], [-0.175, -0.705, 0.0, -0.9066666666666666], [0.395, 0.055, 0.0, 0.3333333333333333], [0.04, 0.43, 0.3333333333333333, 0.6266666666666667], [-0.705, 0.245, -0.6666666666666666, 0.5866666666666667], [0.31, 0.845, -1.0, -0.8533333333333334]])
+    ctx = np.array([[-0.47, 0.19, -0.6666666666666666, 0.21333333333333335], [0.54, 0.825, 0.3333333333333333, -0.16], [-0.3, 0.045, -1.0, -0.18666666666666668], [-0.195, -0.145, -0.3333333333333333, 0.48], [-0.14, -0.865, -0.3333333333333333, 0.7066666666666667], [0.465, -0.35, 0.6666666666666666, -0.76], [-0.59, 0.525, 0.6666666666666666, -0.17333333333333334]])
     return ctx
 
 
@@ -414,53 +414,28 @@ state = set()
 """
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* New dot A
-* A tiny and black
-* A by itself
-"""
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 1):
-        for x, in permutations(config):
-            check_x_tiny = is_small(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
-            if (
-                check_x_tiny
-                and check_x_dark
-                and check_x_alone
-            ):
-                results.add(frozenset([x]))
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
 * New dots A B
-* A by itself
-* A at bottom of circle
-* B large and darker grey
-* B far northwest of A
+* A large
+* B large
+* A lighter than B
+* A slightly to the right of B
 """
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x,y in permutations(config):
-            check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
-            check_x_bottom_circle = is_below(x, None, ctx) and is_middle(x, None, ctx)
+            check_xy_close = all_close([x,y], ctx)
+            check_x_large = is_large(x, ctx)
             check_y_large = is_large(y, ctx)
-            check_y_darker_grey = is_darker(y, ctx['grey'], ctx)
-            check_y_far_nw_x = get_distance(y, x, ctx) > 2
+            check_x_lighter_y = is_lighter(x, y, ctx)
+            check_x_right_y = is_right(x, y, ctx) and not all_close([x,y], ctx)
             if (
-                check_x_alone
-                and check_x_bottom_circle
+                check_xy_close
+                and check_x_large
                 and check_y_large
-                and check_y_darker_grey
-                and check_y_far_nw_x
+                and check_x_lighter_y
+                and check_x_right_y
             ):
                 results.add(frozenset([x,y]))
     return results
@@ -470,10 +445,53 @@ state = turn(state)
 """
 Confirmation: Deny.
 Give names to the dots and list the properties described.
+* New dots A
+* A darkest
+* A medium-large size
+* A at about 5 o'clock
+* A not light
+"""
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 1):
+        for x, in permutations(config):
+            check_x_darkest = is_darkest(x, ctx)
+            check_x_medium_large = is_medium_size(x, ctx)
+            check_x_below_right = is_below(x, None, ctx) and is_right(x, None, ctx)
+            check_x_not_light = not is_light(x, ctx)
+            if (
+                check_x_darkest
+                and check_x_medium_large
+                and check_x_below_right
+                and check_x_not_light
+            ):
+                results.add(frozenset([x]))
+    return results
+state = turn(state)
+# End.
+
+"""
+Confirmation: Neither.
+"""
+def turn(state):
+    # No op.
+    return state
+state = turn(state)
+# End.
+
+"""
+Confirmation: Confirm.
+Give names to the dots and list the properties described.
 * New dots A B C
-* A triangle with A B C
-* A black
-* A largest
+* A light/medium grey
+* B light/medium grey
+* C darker than A and B
+* C smaller than A and B
+* B larger than C
+* A B C almost-vertical line
+* A is top of A B C
+* B is bottom of A B C
 """
 def 
 # End.
@@ -482,10 +500,17 @@ def
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
 * Previous dots A B C
-* A light
-* B light
-* C light
-* A B C triangle
+* B middle
+* B smaller than A
+* B smaller than C
+Selection.
+"""
+def 
+# End.
+
+"""
+Confirmation: Confirm.
+Selection.
 """
 def 
 
