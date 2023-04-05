@@ -333,42 +333,6 @@ def turn(state):
                 results.add(frozenset([x,y,z]))
     return results
 state = turn(state)
-# End.
-
-# Them: Yes, the lightest is on the right.
-def turn(state):
-    # Follow up question.
-    results = set()
-    for config in state:
-        for a,b,c in permutations(config):
-            check_a_lightest = a == lightest([a,b,c], ctx)
-            check_a_right = a == get_right([a,b,c], ctx)
-            if (
-                check_a_lightest
-                and check_a_right
-            ):
-                results.add(frozenset([a]))
-    return results
-state = turn(state)
-# End.
-
-# You: Okay, select the lightest and biggest one on the right. <selection>
-def turn(state):
-    # Follow up question.
-    results = set()
-    for config in state:
-        for a,b,c in permutations(config):
-            check_a_lightest = a == lightest([a,b,c], ctx)
-            check_a_biggest = a == largest([a,b,c], ctx)
-            check_a_right = a == get_right([a,b,c], ctx)
-            if (
-                check_a_lightest
-                and check_a_biggest
-                and check_a_right
-            ):
-                results.add(frozenset([a]))
-    return results
-state = turn(state)
 
 
 print([tuple(x) for x in state])
