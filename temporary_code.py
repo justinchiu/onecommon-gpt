@@ -1,5 +1,5 @@
 
-# ('S_bmTtQ9yCU3e4ZTfH', 'C_693c201f0aac434aba64fb19111a85e6')
+# ('S_LgTdRSbeuLnQsBpI', 'C_d68b0a9157e34126980e3db47bb3b7b2')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.235, 0.405, -0.3333333333333333, 0.36], [-0.64, -0.095, -0.6666666666666666, 0.7733333333333333], [-0.625, 0.46, -0.6666666666666666, -0.84], [-0.08, -0.885, -0.6666666666666666, 0.3333333333333333], [0.3, -0.94, 1.0, -0.4666666666666667], [0.08, 0.335, -0.3333333333333333, 0.18666666666666668], [0.235, -0.385, 0.3333333333333333, -0.9733333333333334]])
+    ctx = np.array([[-0.665, -0.725, 0.0, -0.4266666666666667], [-0.14, 0.405, 0.0, 0.7466666666666667], [0.185, -0.545, 0.0, -0.04], [0.36, 0.67, -0.3333333333333333, -0.7333333333333333], [0.135, -0.315, -0.6666666666666666, -0.8133333333333334], [0.56, -0.81, 1.0, -0.3466666666666667], [0.03, -0.915, -0.3333333333333333, 0.7066666666666667]])
     return ctx
 
 
@@ -414,76 +414,29 @@ state = set()
 """
 Confirmation: Confirm.
 Give names to the dots and list the properties described.
-* New dots A B C D E F G
-* A B C D E F G seven dots
-"""
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 7):
-        check_seven_dots = len(config) == 7
-        if check_seven_dots:
-            results.add(frozenset(config))
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
 * New dots A B
-* A medium and grey
-* B medium and grey
-* A close B
+* A very little and black
+* B medium grey and a little larger than A
+* B right below A and to its right
 """
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x,y in permutations(config):
-            check_xy_medium = is_medium_size(x, ctx) and is_medium_size(y, ctx)
-            check_xy_grey = is_grey(x, ctx) and is_grey(y, ctx)
             check_xy_close = all_close([x,y], ctx)
+            check_x_tiny = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_y_larger_x = is_larger(y, x, ctx)
+            check_y_medium_grey = is_medium_size(y, ctx) and is_grey(y, ctx)
+            check_y_below_right_x = is_below(y, x, ctx) and is_right(y, x, ctx)
             if (
-                check_xy_medium
-                and check_xy_grey
-                and check_xy_close
-            ):
-                results.add(frozenset([x,y]))
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Neither.
-Give names to the dots and list the properties described.
-* No dots described.
-"""
-def turn(state):
-    # New question.
-    results = set()
-    # No dots described, so return empty set.
-    return results
-state = turn(state)
-# End.
-
-"""
-Confirmation: Confirm.
-Give names to the dots and list the properties described.
-* New dots A B
-* A and B almost on horizontal line
-* B lower than A
-"""
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 2):
-        for x,y in permutations(config):
-            check_xy_horizontal = is_line([x,y], ctx) and abs(get_distance(x,y,ctx)[1]) < 0.1
-            check_y_below_x = is_below(y, x, ctx)
-            if (
-                check_xy_horizontal
-                and check_y_below_x
+                check_xy_close
+                and check_x_tiny
+                and check_x_dark
+                and check_y_larger_x
+                and check_y_medium_grey
+                and check_y_below_right_x
             ):
                 results.add(frozenset([x,y]))
     return results
