@@ -376,6 +376,59 @@ def turn(state):
                     results.add(frozenset([a, x]))
     return results
 state = turn(state)
+# End.
+
+# Them: I do have a smaller black dot at the 1 o'clock position (sorry I can't reply until you did). I also have a lone large grey dot at the 8 o'clock position.
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
+            check_y_large = is_large(y, ctx)
+            check_y_grey = is_grey(y, ctx)
+            check_y_8_oclock = is_below(y, None, ctx) and is_left(y, None, ctx)
+            check_y_alone = all([not all_close([y, dot], ctx) for dot in idxs if dot not in [x, y]])
+            if (
+                check_x_small
+                and check_x_dark
+                and check_x_1_oclock
+                and check_y_large
+                and check_y_grey
+                and check_y_8_oclock
+                and check_y_alone
+            ):
+                results.add(frozenset([x, y]))
+    return results
+state = turn(state)
+# End.
+
+# You: I have the smaller one at 1 o'clock. Do you want to select that one?
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a, b in permutations(config):
+            check_a_small = is_small(a, ctx)
+            check_a_dark = is_dark(a, ctx)
+            check_a_1_oclock = is_above(a, None, ctx) and is_right(a, None, ctx)
+            if (
+                check_a_small
+                and check_a_dark
+                and check_a_1_oclock
+            ):
+                results.add(frozenset([a]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, that sounds like our best bet. :) <selection>
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(sorted(
