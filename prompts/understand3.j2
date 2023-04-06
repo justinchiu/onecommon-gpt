@@ -43,7 +43,7 @@ def turn(state):
                 and check_b_grey
                 and check_b_top
             ):
-                results.add(forzenset([a,b,c]))
+                results.add(frozenset([a,b,c]))
     return results
 state = turn(state)
 # End.
@@ -66,7 +66,7 @@ def turn(state):
                 and check_y_above_x
                 and check_xy_same_size
             ):
-                results.append(frozenset([x,y]))
+                results.add(frozenset([x,y]))
     return results
 state = turn(state)
 # End.
@@ -197,7 +197,7 @@ def select(state):
                 and check_b_not_large
                 and check_c_not_large
             ):
-                results.append(frozenset([a]))
+                results.add(frozenset([a]))
     return results
 state = select(state)
 # End.
