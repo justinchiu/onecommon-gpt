@@ -1,5 +1,5 @@
 
-# ('S_d1A25BOwQKs9ea96', 'C_4bc771a84db94b5a91f6ecca4a9c633a')
+# ('S_WKgxzCvcycMDcy1f', 'C_d9e6a1f14d8347dfa51a1c29fab3c104')
 
 import sys
 sys.path.append("fns")
@@ -10,7 +10,7 @@ from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
 from spatial import get_top, get_bottom, get_right, get_left
 from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
 from spatial import get_middle
-from spatial import get_distance
+from spatial import get_distance, get_minimum_radius
 from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
 from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
 from iterators import get1idxs, get2idxs, get3idxs, getsets
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.825, -0.295, 0.0, -0.6933333333333334], [-0.98, -0.125, -0.6666666666666666, 0.09333333333333334], [-0.49, -0.515, 0.6666666666666666, -0.68], [-0.96, 0.065, 0.6666666666666666, 0.0], [0.185, -0.43, -0.3333333333333333, -0.9733333333333334], [0.515, -0.675, 0.3333333333333333, 0.08], [0.71, 0.405, 0.0, 0.5866666666666667]])
+    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
     return ctx
 
 
@@ -314,55 +314,71 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# You: Hello, I have one dot off to itself.
+# You: Hi, do you have a tiny black dot near the 1 o'clock position?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 1):
         for x, in permutations(config):
-            check_x_alone = all([not all_close([x,dot], ctx) for dot in idxs if dot != x])
-            if check_x_alone:
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
+            if (
+                check_x_small
+                and check_x_dark
+                and check_x_1_oclock
+            ):
                 results.add(frozenset([x]))
     return results
 state = turn(state)
 # End.
-import pdb; pdb.set_trace()
-# Them: Nope.
-def turn(state):
-    # No op.
-    return state
-state = turn(state)
-# End.
 
-# You: I have a line of 3 dots, one small in the middle.
+# Them: Do you have a large dark grey dot next to a smaller black dot?
 def turn(state):
     # New question.
     results = set()
-    for config in getsets(idxs, 3):
-        for x,y,z in permutations(config):
-            check_xyz_line = is_line([x,y,z], ctx)
-            check_y_middle = y == get_middle([x,y,z], ctx)
-            check_y_small = is_small(y, ctx)
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            check_xy_close = all_close([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_dark_grey = is_dark(x, ctx) and is_grey(x, ctx)
+            check_y_smaller_x = is_smaller(y, x, ctx)
+            check_y_dark = is_dark(y, ctx)
             if (
-                check_xyz_line
-                and check_y_middle
-                and check_y_small
+                check_xy_close
+                and check_x_large
+                and check_x_dark_grey
+                and check_y_smaller_x
+                and check_y_dark
             ):
-                results.add(frozenset([x,y,z]))
+                results.add(frozenset([x, y]))
+    return results
+state = turn(state)
+# End.
+
+# You: No, I have two large black dots.
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a, in permutations(config):
+            for x, in get1idxs(idxs):
+                check_x_large = is_large(x, ctx)
+                check_x_dark = is_dark(x, ctx)
+                check_ax_large = is_large(a, ctx) and is_large(x, ctx)
+                check_ax_dark = is_dark(a, ctx) and is_dark(x, ctx)
+                if (
+                    check_x_large
+                    and check_x_dark
+                    and check_ax_large
+                    and check_ax_dark
+                ):
+                    results.add(frozenset([a, x]))
     return results
 state = turn(state)
 
-import pdb; pdb.set_trace()
-# [0,1,3]
 
-
-print([tuple(x) for x in state])
-# state: num_candidates x size x feats=4
-# dots: 7 x feats=4
-# heuristic: take first candidate state[0]
-"""
-if state:
-    print(state[0].tolist())
-else:
-    print("None")
-"""
+print(sorted(
+    [tuple(x) for x in state],
+    key = lambda x: get_minimum_radius(x, ctx),
+))

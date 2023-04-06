@@ -3,6 +3,12 @@ from shapely import MultiPoint, Point
 import numpy as np
 import math
 
+def get_minimum_radius(x, ctx):
+    xy = ctx[list(x),:2]
+    mp = shapely.MultiPoint(xy)
+    radius = shapely.minimum_bounding_radius(mp)
+    return radius
+
 # validate
 def all_close(idxs, ctx):
     xy = ctx[idxs,:2]

@@ -60,7 +60,8 @@ class Recall(evaluate.Metric):
             num_preds += len(preds)
             tp += (preds == labels).all(-1).sum()
 
-            collapsed_pred = preds.any(0)
+            #collapsed_pred = preds.any(0)
+            collapsed_pred = preds[0]
             collapsed_label = labels.any(0)
 
             collapsed_correct += (collapsed_pred == collapsed_label).all()
