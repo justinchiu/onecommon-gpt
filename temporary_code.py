@@ -1,5 +1,5 @@
 
-# ('S_WKgxzCvcycMDcy1f', 'C_d9e6a1f14d8347dfa51a1c29fab3c104')
+# ('S_5sEpQ2A9SzLfOIfk', 'C_1ee5b7a282f14ba59e0067c64573eca0')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[-0.155, 0.295, 0.0, -0.5333333333333333], [0.08, 0.67, -0.6666666666666666, 0.88], [0.975, -0.11, 0.3333333333333333, -0.36], [-0.485, 0.325, 1.0, 0.09333333333333334], [0.64, -0.005, 1.0, -0.88], [-0.13, -0.295, -1.0, -0.04], [-0.335, -0.275, -0.6666666666666666, -0.14666666666666667]])
     return ctx
 
 
@@ -314,117 +314,162 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# You: Hi, do you have a tiny black dot near the 1 o'clock position?
-def turn(state):
-    # New question.
-    results = set()
-    for config in getsets(idxs, 1):
-        for x, in permutations(config):
-            check_x_small = is_small(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
-            if (
-                check_x_small
-                and check_x_dark
-                and check_x_1_oclock
-            ):
-                results.add(frozenset([x]))
-    return results
-state = turn(state)
-# End.
-
-# Them: Do you have a large dark grey dot next to a smaller black dot?
+# Them: I have a pair of tiny grays.
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_close = all_close([x, y], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_dark_grey = is_dark(x, ctx) and is_grey(x, ctx)
-            check_y_smaller_x = is_smaller(y, x, ctx)
-            check_y_dark = is_dark(y, ctx)
+            check_xy_pair = all_close([x, y], ctx)
+            check_xy_tiny = is_small(x, ctx) and is_small(y, ctx)
+            check_xy_grey = is_grey(x, ctx) and is_grey(y, ctx)
             if (
-                check_xy_close
-                and check_x_large
-                and check_x_dark_grey
-                and check_y_smaller_x
-                and check_y_dark
+                check_xy_pair
+                and check_xy_tiny
+                and check_xy_grey
             ):
                 results.add(frozenset([x, y]))
     return results
 state = turn(state)
 # End.
 
-# You: No, I have two large black dots.
-def turn(state):
-    # Follow up question.
-    results = set()
-    for config in state:
-        for a, in permutations(config):
-            for x, in get1idxs(idxs):
-                check_x_large = is_large(x, ctx)
-                check_x_dark = is_dark(x, ctx)
-                check_ax_large = is_large(a, ctx) and is_large(x, ctx)
-                check_ax_dark = is_dark(a, ctx) and is_dark(x, ctx)
-                if (
-                    check_x_large
-                    and check_x_dark
-                    and check_ax_large
-                    and check_ax_dark
-                ):
-                    results.add(frozenset([a, x]))
-    return results
-state = turn(state)
-# End.
-
-# Them: I do have a smaller black dot at the 1 o'clock position (sorry I can't reply until you did). I also have a lone large grey dot at the 8 o'clock position.
+# You: I have 3 pairs of darkish dots and one little lighter dot at the top.
 def turn(state):
     # New question.
     results = set()
-    for config in getsets(idxs, 2):
-        for x, y in permutations(config):
-            check_x_small = is_small(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
-            check_y_large = is_large(y, ctx)
-            check_y_grey = is_grey(y, ctx)
-            check_y_8_oclock = is_below(y, None, ctx) and is_left(y, None, ctx)
-            check_y_alone = all([not all_close([y, dot], ctx) for dot in idxs if dot not in [x, y]])
+    for config in getsets(idxs, 7):
+        for a, b, c, d, e, f, g in permutations(config):
+            check_abcdef_pairs = (
+                all_close([a, b], ctx)
+                and all_close([c, d], ctx)
+                and all_close([e, f], ctx)
+            )
+            check_abcdef_darkish = (
+                is_dark(a, ctx)
+                and is_dark(b, ctx)
+                and is_dark(c, ctx)
+                and is_dark(d, ctx)
+                and is_dark(e, ctx)
+                and is_dark(f, ctx)
+            )
+            check_g_top = g == get_top([a, b, c, d, e, f, g], ctx)
+            check_g_lighter = (
+                is_lighter(g, a, ctx)
+                and is_lighter(g, b, ctx)
+                and is_lighter(g, c, ctx)
+                and is_lighter(g, d, ctx)
+                and is_lighter(g, e, ctx)
+                and is_lighter(g, f, ctx)
+            )
+            check_g_small = is_small(g, ctx)
             if (
-                check_x_small
-                and check_x_dark
-                and check_x_1_oclock
-                and check_y_large
-                and check_y_grey
-                and check_y_8_oclock
-                and check_y_alone
+                check_abcdef_pairs
+                and check_abcdef_darkish
+                and check_g_top
+                and check_g_lighter
+                and check_g_small
             ):
-                results.add(frozenset([x, y]))
+                results.add(frozenset([a, b, c, d, e, f, g]))
     return results
 state = turn(state)
 # End.
 
-# You: I have the smaller one at 1 o'clock. Do you want to select that one?
+# Them: I only have two pairs. In each pair, the dot on the right is slightly smaller.
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 4):
+        for a, b, c, d in permutations(config):
+            check_ab_pair = all_close([a, b], ctx)
+            check_cd_pair = all_close([c, d], ctx)
+            check_b_right_a = is_right(b, a, ctx)
+            check_d_right_c = is_right(d, c, ctx)
+            check_b_smaller_a = is_smaller(b, a, ctx)
+            check_d_smaller_c = is_smaller(d, c, ctx)
+            if (
+                check_ab_pair
+                and check_cd_pair
+                and check_b_right_a
+                and check_d_right_c
+                and check_b_smaller_a
+                and check_d_smaller_c
+            ):
+                results.add(frozenset([a, b, c, d]))
+    return results
+state = turn(state)
+# End.
+
+# You: Where are your pairs positioned? One of mine is all the way to the edge at 3 o'clock, one is toward the center at 7 o'clock, and one is halfway to the edge at about 10 o'clock.
+def turn(state):
+    # New question.
+    results = set()
+    for config in state:
+        for a, b, c, d in permutations(config):
+            check_ab_right = a == get_right([a, b, c, d], ctx) or b == get_right([a, b, c, d], ctx)
+            check_ab_3_oclock = is_right(a, None, ctx) and is_right(b, None, ctx)
+            check_cd_center = c == get_middle([a, b, c, d], ctx) or d == get_middle([a, b, c, d], ctx)
+            check_cd_7_oclock = is_below(c, None, ctx) and is_left(c, None, ctx) and is_below(d, None, ctx) and is_left(d, None, ctx)
+            check_ab_10_oclock = (
+                (is_above(a, None, ctx) and is_left(a, None, ctx) and is_above(b, None, ctx) and is_left(b, None, ctx))
+                or (is_above(c, None, ctx) and is_left(c, None, ctx) and is_above(d, None, ctx) and is_left(d, None, ctx))
+            )
+            if (
+                check_ab_right
+                and check_ab_3_oclock
+                and check_cd_center
+                and check_cd_7_oclock
+                and check_ab_10_oclock
+            ):
+                results.add(frozenset([a, b, c, d]))
+    return results
+state = turn(state)
+# End.
+
+# Them: My layout doesn't look like that. For your pairs, is there a larger pair above a smaller pair?
+def turn(state):
+    # New question.
+    results = set()
+    for config in state:
+        for a, b, c, d in permutations(config):
+            check_ab_pair = all_close([a, b], ctx)
+            check_cd_pair = all_close([c, d], ctx)
+            check_ab_larger_cd = is_larger(a, c, ctx) and is_larger(b, d, ctx)
+            check_ab_above_cd = is_above(a, c, ctx) and is_above(b, d, ctx)
+            if (
+                check_ab_pair
+                and check_cd_pair
+                and check_ab_larger_cd
+                and check_ab_above_cd
+            ):
+                results.add(frozenset([a, b, c, d]))
+    return results
+state = turn(state)
+# End.
+
+# You: I have the smaller pair, yes. Click on the smaller right-side dot of the smaller pair.
 def turn(state):
     # Follow up question.
     results = set()
     for config in state:
-        for a, b in permutations(config):
-            check_a_small = is_small(a, ctx)
-            check_a_dark = is_dark(a, ctx)
-            check_a_1_oclock = is_above(a, None, ctx) and is_right(a, None, ctx)
+        for a, b, c, d in permutations(config):
+            check_ab_pair = all_close([a, b], ctx)
+            check_cd_pair = all_close([c, d], ctx)
+            check_ab_smaller_cd = is_smaller(a, c, ctx) and is_smaller(b, d, ctx)
+            check_b_right_a = is_right(b, a, ctx)
+            check_d_right_c = is_right(d, c, ctx)
             if (
-                check_a_small
-                and check_a_dark
-                and check_a_1_oclock
+                check_ab_pair
+                and check_cd_pair
+                and check_ab_smaller_cd
+                and check_b_right_a
+                and check_d_right_c
             ):
-                results.add(frozenset([a]))
+                results.add(frozenset([b]))
     return results
 state = turn(state)
 # End.
 
-# Them: Yes, that sounds like our best bet. :) <selection>
+# Them: OK. <selection>.
 def select(state):
     # Select a dot.
     return state
