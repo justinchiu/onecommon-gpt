@@ -1,5 +1,5 @@
 
-# ('S_7IaFAblYemWnfpHL', 'C_aa1be226f29c4b8c80c0b66720f83be2')
+# ('S_EZOBugPsBBTML4LM', 'C_f119b344c1e8405e8829cb953e679791')
 
 import sys
 sys.path.append("fns")
@@ -21,7 +21,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.635, -0.685, -0.6666666666666666, 0.3466666666666667], [0.035, -0.225, -0.6666666666666666, 0.7733333333333333], [0.02, 0.085, 0.3333333333333333, 0.12], [0.81, -0.565, -0.6666666666666666, 0.6133333333333333], [0.685, 0.39, -1.0, 0.64], [0.48, 0.41, -0.6666666666666666, 0.02666666666666667], [0.015, 0.68, 0.3333333333333333, 0.25333333333333335]])
+    ctx = np.array([[0.565, -0.205, 1.0, -0.9866666666666667], [0.385, 0.225, 1.0, 0.96], [-0.09, 0.19, 0.0, -0.9333333333333333], [0.855, -0.45, -0.3333333333333333, -0.36], [-0.42, 0.46, 0.0, 0.6933333333333334], [0.195, 0.635, -0.6666666666666666, 0.05333333333333334], [0.2, -0.235, -0.3333333333333333, 0.7866666666666666]])
     return ctx
 
 
@@ -314,44 +314,111 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see two tiny different tone dots beside each other?
+# You: There is a medium grey, mid-sized dot at four o'clock on the edge.
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 1):
+        for x, in permutations(config):
+            check_x_medium_grey = is_medium_size(x, ctx) and is_grey(x, ctx)
+            check_x_four_oclock = is_right(x, None, ctx) and is_below(x, None, ctx)
+            check_x_edge = get_distance(x, None, ctx) >= get_minimum_radius(ctx)
+            if (
+                check_x_medium_grey
+                and check_x_four_oclock
+                and check_x_edge
+            ):
+                results.add(frozenset([x]))
+    return results
+state = turn(state)
+# End.
+
+# Them: I have a large black dot with a small black dot down and to the right.
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_pair = all_close([x, y], ctx)
-            check_x_tiny = is_small(x, ctx)
-            check_y_tiny = is_small(y, ctx)
-            check_xy_different_tone = different_color([x, y], ctx)
+            check_xy_close = all_close([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_y_small = is_small(y, ctx)
+            check_y_dark = is_dark(y, ctx)
+            check_y_right_x = is_right(y, x, ctx)
+            check_y_below_x = is_below(y, x, ctx)
             if (
-                check_xy_pair
-                and check_x_tiny
-                and check_y_tiny
-                and check_xy_different_tone
+                check_xy_close
+                and check_x_large
+                and check_x_dark
+                and check_y_small
+                and check_y_dark
+                and check_y_right_x
+                and check_y_below_x
             ):
                 results.add(frozenset([x, y]))
     return results
 state = turn(state)
 # End.
 
-# You: Haha, I was about to type that. If the lighter one is slightly below and to the right, click that lighter one. <selection>.
+# You: The large one may be it. Is there a large light grey above it?
+def turn(state):
+    # Follow up question, new dot.
+    results = set()
+    for config in state:
+        for a, in permutations(config):
+            for x, in get1idxs(idxs):
+                check_x_large = is_large(x, ctx)
+                check_x_light_grey = is_light(x, ctx) and is_grey(x, ctx)
+                check_x_above_a = is_above(x, a, ctx)
+                if(
+                    check_x_large
+                    and check_x_light_grey
+                    and check_x_above_a
+                ):
+                    results.add(frozenset([a, x]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, up and to the left of it.
 def turn(state):
     # Follow up question.
     results = set()
     for config in state:
         for a, b in permutations(config):
-            check_a_lighter_b = is_lighter(a, b, ctx)
-            check_a_below_b = is_below(a, b, ctx)
-            check_a_right_b = is_right(a, b, ctx)
+            check_b_left_a = is_left(b, a, ctx)
+            check_b_above_a = is_above(b, a, ctx)
             if (
-                check_a_lighter_b
-                and check_a_below_b
-                and check_a_right_b
+                check_b_left_a
+                and check_b_above_a
             ):
-                results.add(frozenset([a]))
+                results.add(frozenset([a, b]))
     return results
 state = turn(state)
+# End.
+
+# You: Do you want to choose that one, the light grey?
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a, b in permutations(config):
+            check_b_large = is_large(b, ctx)
+            check_b_light_grey = is_light(b, ctx) and is_grey(b, ctx)
+            if (
+                check_b_large
+                and check_b_light_grey
+            ):
+                results.add(frozenset([b]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Yes, let's pick <selection>.
+def select(state):
+    # Select a dot.
+    return state
+state = select(state)
 
 
 print(sorted(
