@@ -260,10 +260,12 @@ class Agent:
         descs = size_color_descriptions(dots)
         xy = view[plan,:2]
 
-
         descstring = []
         for (size, color), (x,y) in zip(descs, xy):
             descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
+
+
+        import pdb; pdb.set_trace()
 
         kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
         print("INPUT")

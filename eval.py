@@ -303,6 +303,6 @@ if __name__ == "__main__":
             agent = Agent(backend, refres, gen, args.model)
             evaluator = Generation()
             evaluator.logpath = f"{evaluator.logpath}/{split}/{args.data}/{args.model}"
-            geneval = evaluator.compute(agent, data, args.num_examples, args.run_example, split)
+            geneval = evaluator.compute(agent, data, args.num_examples, args.run_example)
         print(geneval)
 
