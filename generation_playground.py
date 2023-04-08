@@ -22,12 +22,28 @@ markable_detector = utils.load_model(detector_file, prefix_dir=None, map_locatio
 markable_detector.eval()
 
 model = utils.load_model(model_file, prefix_dir=None, map_location="cpu")
-model_args = argparse.Namespace(
-    **utils.merge_dicts(vars(args), vars(alice_model.args))
-)
+model_args = model.args
+
+# dummy args
+parser = argparse.ArgumentParser()
+RnnAgent.add_args(parser)
+agent_args = parser.parse_args()
+
+# set args
+agent_args.language_rerank = True
+agent_args.next_mention_reranking = True
+agent_args.language_beam_keep_all_finished = True
+agent_args.reranking_confidence = True
+agent_args.language_beam_size = 16
+agent_args.next_mention_reranking_k = 4
+agent_args.next_mention_reranking_max_mentions = 4
+
+merged_args = argparse.Namespace(**utils.merge_dicts(vars(agent_args), vars(model.args)))
+
+# make agent
 partner = RnnAgent(
     model,
-    model.args,
+    merged_args,
     name="Alice",
     train=False,
     markable_detector=markable_detector,
