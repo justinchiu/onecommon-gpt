@@ -1,6 +1,7 @@
 import numpy as np
 from pathlib import Path
 import sys
+import argparse
 import minichain
 
 from ocdata import get_data
@@ -10,17 +11,27 @@ from features import size_map5, color_map5, size_color_descriptions, process_ctx
 # fried arguments
 
 oc_dir = Path("../onecommon/aaai2020/experiments")
-model_file = oc_dir / "/expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
+model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
 
 # load scripts and initialize...better to make everything into libraries
 sys.path.append(str(oc_dir.resolve()))
-from belief_agent import BeliefAgent
+from agent import RnnAgent
 import utils
 markable_detector = utils.load_model(detector_file, prefix_dir=None, map_location="cpu")
 markable_detector.eval()
 
 model = utils.load_model(model_file, prefix_dir=None, map_location="cpu")
+model_args = argparse.Namespace(
+    **utils.merge_dicts(vars(args), vars(alice_model.args))
+)
+partner = RnnAgent(
+    model,
+    model.args,
+    name="Alice",
+    train=False,
+    markable_detector=markable_detector,
+)
 import pdb; pdb.set_trace()
 # on to generation
 

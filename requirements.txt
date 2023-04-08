@@ -12,3 +12,8 @@ more-itertools
 torch
 
 git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain
+
+# for fried 2021
+nltk
+einops
+wandb
