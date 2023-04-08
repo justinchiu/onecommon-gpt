@@ -298,7 +298,7 @@ class Agent:
         # process plan
         refs = [r["target"] for r in plan]
         plan = np.array(refs).any(0)
-        desc = render(plan, view)
+        desc = render(plan, view, num_buckets=3)
         print(desc)
         return desc, past + [desc], None
 

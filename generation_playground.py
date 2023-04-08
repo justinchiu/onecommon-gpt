@@ -6,7 +6,8 @@ import minichain
 
 from ocdata import get_data
 from ocagent import Agent
-from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
+from features import size_map3, color_map3, size_map5, color_map5
+from features import size_color_descriptions, process_ctx, render
 
 # fried arguments
 
@@ -48,7 +49,6 @@ partner = RnnAgent(
     train=False,
     markable_detector=markable_detector,
 )
-import pdb; pdb.set_trace()
 # on to generation
 
 num_buckets = 3
@@ -84,7 +84,7 @@ for t in range(len(turns)):
 
     size_color = process_ctx(view, num_size_buckets=num_buckets, num_color_buckets=num_buckets)
     dots = size_color[planbool]
-    descs = size_color_descriptions(dots)
+    descs = size_color_descriptions(dots, size_map=size_map3, color_map=color_map3)
     xy = view[planbool,:2]
 
     descstring = []

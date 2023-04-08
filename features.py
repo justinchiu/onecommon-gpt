@@ -59,11 +59,11 @@ def get_feats(plan, xy, size_color):
     return plan_size, plan_sc, plan_xy
 
 
-def render(plan, context, confirm=None):
+def render(plan, context, confirm=None, num_buckets=5):
     #plan = np.array([0,1,0,0,0,0,1])
     xy = context[:,:2]
-    sc = process_ctx(context)
+    sc = process_ctx(context, num_size_buckets=num_buckets, num_color_buckets=num_buckets)
     feats = get_feats(plan, xy, sc)
     ids = plan.nonzero()[0]
-    desc = template_rec.render(*feats, ids, confirm=confirm)
+    desc = template_rec.render(*feats, ids, confirm=confirm, num_buckets=num_buckets)
     return desc
