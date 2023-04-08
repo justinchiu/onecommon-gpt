@@ -256,7 +256,7 @@ class Generation(Eval):
 
 if __name__ == "__main__":
     from ocdata import get_data
-    from agent import Agent, State
+    from ocagent import Agent, State
     import minichain
 
     import argparse

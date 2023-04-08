@@ -4,7 +4,7 @@ import sys
 import minichain
 
 from ocdata import get_data
-from agent import Agent
+from ocagent import Agent
 from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
 # fried arguments
