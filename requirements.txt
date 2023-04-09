@@ -17,3 +17,4 @@ git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain
 nltk
 einops
 wandb
+git+https://github.com/justinchiu/pytorch-struct

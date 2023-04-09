@@ -3,6 +3,9 @@ from pathlib import Path
 import sys
 import argparse
 import minichain
+import torch
+
+from nltk import word_tokenize
 
 from ocdata import get_data
 from ocagent import Agent
@@ -10,13 +13,14 @@ from features import size_map3, color_map3, size_map5, color_map5
 from features import size_color_descriptions, process_ctx, render
 
 # fried arguments
-
 oc_dir = Path("../onecommon/aaai2020/experiments")
-model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
+#model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
+model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
 
 # load scripts and initialize...better to make everything into libraries
 sys.path.append(str(oc_dir.resolve()))
+from engines.beliefs import BlankBeliefConstructor
 from agent import RnnAgent
 import utils
 markable_detector = utils.load_model(detector_file, prefix_dir=None, map_location="cpu")
@@ -24,6 +28,13 @@ markable_detector.eval()
 
 model = utils.load_model(model_file, prefix_dir=None, map_location="cpu")
 model_args = model.args
+model.eval()
+
+markable_detector.cuda()
+model.cuda()
+
+model.device = "cuda"
+markable_detector.device = "cuda"
 
 # dummy args
 parser = argparse.ArgumentParser()
@@ -71,6 +82,9 @@ turns = example["dialogue"]
 referents = example["all_referents"]
 dot_ids = example["real_ids"]
 
+belief_constructor = BlankBeliefConstructor()
+partner.feed_context(view.flatten().tolist(), belief_constructor)
+
 for t in range(len(turns)):
     text = turns[t]
     past = turns[:t]
@@ -94,6 +108,20 @@ for t in range(len(turns)):
     with minichain.start_chain("tmp.txt") as backend:
         agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         out = agent.generate_text(plan, past, view)
+        utt = out[0]
+        words = word_tokenize(utt.lower().strip()) + ['<eos>']
+        partner.read(
+            words,
+            detect_markables=True,
+            dots_mentioned_num_markables = torch.tensor([0], device="cuda", dtype=torch.long),
+        )
+
+        print(planbool)
+        print(partner.partner_ref_preds)
+
+        rt_success = (planbool == partner.partner_ref_preds[-1][:,0].any(0).cpu().numpy()).all()
+
         import pdb; pdb.set_trace()
+
 
 
