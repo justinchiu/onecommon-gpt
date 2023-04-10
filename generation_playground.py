@@ -23,6 +23,8 @@ sys.path.append(str(oc_dir.resolve()))
 from engines.beliefs import BlankBeliefConstructor
 from agent import RnnAgent
 import utils
+from cog_belief import CostBelief
+
 markable_detector = utils.load_model(detector_file, prefix_dir=None, map_location="cpu")
 markable_detector.eval()
 
@@ -65,33 +67,51 @@ partner = RnnAgent(
 num_buckets = 3
 #num_buckets = 5
 
-run_example = "C_0dd19b44543141beb1737f391f2a1899"
+chat_id_list = [
+    "C_0dd19b44543141beb1737f391f2a1899",
+]
+
+use_chat_id_list = False
+num_examples = 25
 
 data, _ = get_data()
-data = [ex for ex in data if ex["chat_id"] == run_example]
+if use_chat_id_list:
+    data = [
+        ex for ex in data
+        if ex["chat_id"] in chat_id_list
+    ]
+data = data[:num_examples]
 
-example = data[0]
+for example in data:
+    example = data[0]
 
-chatid = example["chat_id"]
-scenarioid = example["scenario_id"]
-print(scenarioid)
-print(chatid)
+    chatid = example["chat_id"]
+    scenarioid = example["scenario_id"]
+    print(scenarioid)
+    print(chatid)
 
-view = example["context"]
-turns = example["dialogue"]
-referents = example["all_referents"]
-dot_ids = example["real_ids"]
+    view = example["context"]
+    turns = example["dialogue"]
+    referents = example["all_referents"]
+    dot_ids = example["real_ids"]
 
-belief_constructor = BlankBeliefConstructor()
-partner.feed_context(view.flatten().tolist(), belief_constructor)
+    belief_constructor = BlankBeliefConstructor()
+    partner.feed_context(view.flatten().tolist(), belief_constructor)
 
-for t in range(len(turns)):
-    text = turns[t]
-    past = turns[:t]
-    plan = referents[t]
+    belief = CostBelief(                           
+        7, view,                         
+        absolute = True,
+        num_size_buckets = num_buckets,
+        num_color_buckets = num_buckets,
+        use_diameter = False, 
+        use_contiguity = False,
+    )
+    prior = belief.prior
+    EdHs = belief.compute_EdHs(prior)
+    planbool = belief.configs[EdHs.argmax()].astype(bool)
+    plan = [{"target": planbool}]
 
-    refs = [r["target"] for r in plan]
-    planbool = np.array(refs).any(0)
+    past = []
 
     print("plan")
     print([id for present, id in zip(planbool, dot_ids) if present])
@@ -120,6 +140,8 @@ for t in range(len(turns)):
         print(partner.partner_ref_preds)
 
         rt_success = (planbool == partner.partner_ref_preds[-1][:,0].any(0).cpu().numpy()).all()
+
+        preds, past, extra = agent.resolve_reference(utt, past, view)
 
         import pdb; pdb.set_trace()
 
