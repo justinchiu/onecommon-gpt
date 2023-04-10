@@ -317,24 +317,22 @@ def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
-        for x, y in permutations(config):
-            check_xy_pair = all_close([x, y], ctx)
-            check_x_bottom = x == get_bottom([x, y], ctx)
-            check_x_small = is_small(x, ctx)
-            check_x_light = is_light(x, ctx)
-            check_y_top = y == get_top([x, y], ctx)
-            check_y_medium = is_medium_size(y, ctx)
-            check_y_grey = is_grey(y, ctx)
+        for x,y in permutations(config):
+            check_xy_pair = all_close([x,y], ctx)
+            check_x_medium = is_medium_size(x, ctx)
+            check_x_grey = is_grey(x, ctx)
+            check_y_small = is_small(y, ctx)
+            check_y_light = is_light(y, ctx)
+            check_y_above_x = is_above(y, x, ctx)
             if (
                 check_xy_pair
-                and check_x_bottom
-                and check_x_small
-                and check_x_light
-                and check_y_top
-                and check_y_medium
-                and check_y_grey
+                and check_x_medium
+                and check_x_grey
+                and check_y_small
+                and check_y_light
+                and check_y_above_x
             ):
-                results.add(frozenset([x, y]))
+                results.add(frozenset([x,y]))
     return results
 state = turn(state)
 

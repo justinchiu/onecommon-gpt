@@ -12,6 +12,8 @@ from ocagent import Agent
 from features import size_map3, color_map3, size_map5, color_map5
 from features import size_color_descriptions, process_ctx, render
 
+from eval import Recall
+
 # fried arguments
 oc_dir = Path("../onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
@@ -139,8 +141,8 @@ for example in data:
         descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
     with minichain.start_chain("tmp.txt") as backend:
-        #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
-        agent = Agent(backend, "codegen", "templateonly", "gpt-4")
+        agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         out = agent.generate_text(plan, past, view)
         utt = out[0]
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
@@ -166,8 +168,18 @@ for example in data:
         fried_successes += fried_rt_success
         gpt_successes += gpt_rt_success
 
+metric = Recall("multilabel")
+
+labels = [[x[0]["target"]] for x in plans]
+fried_results = metric.compute(references=labels, predictions=[x.any(0)[None] for x in fried_preds])
+gpt_results = metric.compute(references=labels, predictions=[x if len(x) > 0 else np.zeros((1,7)) for x in gpt_preds])
+
 print("Fried successes")
 print(fried_successes)
+print(fried_results)
+
 print("gpt successes")
 print(gpt_successes)
+print(gpt_results)
 import pdb; pdb.set_trace()
+
