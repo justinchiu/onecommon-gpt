@@ -32,11 +32,16 @@ model = utils.load_model(model_file, prefix_dir=None, map_location="cpu")
 model_args = model.args
 model.eval()
 
-markable_detector.cuda()
-model.cuda()
-
-model.device = "cuda"
-markable_detector.device = "cuda"
+if torch.cuda.is_available():
+    markable_detector.cuda()
+    model.cuda()
+    model.device = "cuda"
+    markable_detector.device = "cuda"
+    device = "cuda"
+else:
+    model.device = "cpu"
+    markable_detector.device = "cpu"
+    device = "cpu"
 
 # dummy args
 parser = argparse.ArgumentParser()
@@ -53,6 +58,8 @@ agent_args.next_mention_reranking_k = 4
 agent_args.next_mention_reranking_max_mentions = 4
 
 merged_args = argparse.Namespace(**utils.merge_dicts(vars(agent_args), vars(model.args)))
+
+merged_args.cuda = torch.cuda.is_available()
 
 # make agent
 partner = RnnAgent(
@@ -73,8 +80,11 @@ chat_id_list = [
 
 use_chat_id_list = False
 num_examples = 25
+#split = "train"
+split = "valid"
 
-data, _ = get_data()
+traindata, validdata = get_data()
+data = validdata if split == "valid" else traindata
 if use_chat_id_list:
     data = [
         ex for ex in data
@@ -82,9 +92,12 @@ if use_chat_id_list:
     ]
 data = data[:num_examples]
 
+plans = []
+fried_preds = []
+gpt_preds = []
+fried_successes = 0
+gpt_successes = 0
 for example in data:
-    example = data[0]
-
     chatid = example["chat_id"]
     scenarioid = example["scenario_id"]
     print(scenarioid)
@@ -126,24 +139,35 @@ for example in data:
         descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
     with minichain.start_chain("tmp.txt") as backend:
-        agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         out = agent.generate_text(plan, past, view)
         utt = out[0]
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
         partner.read(
             words,
             detect_markables=True,
-            dots_mentioned_num_markables = torch.tensor([0], device="cuda", dtype=torch.long),
+            dots_mentioned_num_markables = torch.tensor([0], device=device, dtype=torch.long),
         )
 
         print(planbool)
         print(partner.partner_ref_preds)
 
-        rt_success = (planbool == partner.partner_ref_preds[-1][:,0].any(0).cpu().numpy()).all()
+        fried_pred = partner.partner_ref_preds[-1][:,0]
+        fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
 
         preds, past, extra = agent.resolve_reference(utt, past, view)
+        gpt_rt_success = (planbool == preds).all(1).any()
 
-        import pdb; pdb.set_trace()
+        plans.append(plan)
+        fried_preds.append(fried_pred)
+        gpt_preds.append(preds)
 
+        fried_successes += fried_rt_success
+        gpt_successes += gpt_rt_success
 
-
+print("Fried successes")
+print(fried_successes)
+print("gpt successes")
+print(gpt_successes)
+import pdb; pdb.set_trace()

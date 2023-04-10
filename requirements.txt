@@ -18,3 +18,4 @@ nltk
 einops
 wandb
 git+https://github.com/justinchiu/pytorch-struct
+pyro-ppl

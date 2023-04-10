@@ -19,7 +19,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.625, 0.23, -0.6666666666666666, 0.37333333333333335], [0.85, 0.12, -0.3333333333333333, 0.7066666666666667], [-0.53, 0.25, 1.0, 0.9066666666666666], [0.73, -0.125, -0.6666666666666666, 0.10666666666666667], [0.46, -0.27, 0.6666666666666666, -0.17333333333333334], [0.71, 0.57, 0.3333333333333333, 0.9866666666666667], [-0.805, -0.47, -0.3333333333333333, 0.09333333333333334]])
+    ctx = np.array([[-0.735, 0.46, -1.0, -0.8533333333333334], [0.535, -0.275, -1.0, 0.8533333333333334], [-0.005, -0.455, 1.0, 0.7333333333333333], [0.72, -0.095, -0.3333333333333333, 0.7066666666666667], [0.205, -0.775, 0.0, -0.25333333333333335], [0.72, 0.5, 0.0, -0.18666666666666668], [-0.32, 0.825, -0.3333333333333333, -0.49333333333333335]])
     return ctx
 
 
@@ -312,27 +312,29 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top dot is small-sized and light, and the bottom dot is small-sized and grey?
+# Them: Do you see a pair of dots, where the bottom dot is small-sized and light, and the top dot is medium-sized and grey?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
-        for x,y in permutations(config):
-            check_xy_pair = all_close([x,y], ctx)
+        for x, y in permutations(config):
+            check_xy_pair = all_close([x, y], ctx)
+            check_x_bottom = x == get_bottom([x, y], ctx)
             check_x_small = is_small(x, ctx)
             check_x_light = is_light(x, ctx)
-            check_y_small = is_small(y, ctx)
+            check_y_top = y == get_top([x, y], ctx)
+            check_y_medium = is_medium_size(y, ctx)
             check_y_grey = is_grey(y, ctx)
-            check_y_below_x = is_below(y, x, ctx)
             if (
                 check_xy_pair
+                and check_x_bottom
                 and check_x_small
                 and check_x_light
-                and check_y_small
+                and check_y_top
+                and check_y_medium
                 and check_y_grey
-                and check_y_below_x
             ):
-                results.add(frozenset([x,y]))
+                results.add(frozenset([x, y]))
     return results
 state = turn(state)
 
