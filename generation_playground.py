@@ -161,16 +161,23 @@ for example in data:
         preds, past, extra = agent.resolve_reference(utt, past, view)
         gpt_rt_success = (planbool == preds).all(1).any()
 
-        plans.append(plan)
+        plans.append([planbool])
         fried_preds.append(fried_pred)
         gpt_preds.append(preds)
 
         fried_successes += fried_rt_success
         gpt_successes += gpt_rt_success
 
+        posterior = belief.posterior(prior, planbool.astype(int), 1)
+        EdHs = belief.compute_EdHs(prior)
+        planbool = belief.configs[EdHs.argmax()].astype(bool)
+        plan = [{"target": planbool}]
+
+        import pdb; pdb.set_trace()
+
 metric = Recall("multilabel")
 
-labels = [[x[0]["target"]] for x in plans]
+labels = plans
 fried_results = metric.compute(references=labels, predictions=[x.any(0)[None] for x in fried_preds])
 gpt_results = metric.compute(references=labels, predictions=[x if len(x) > 0 else np.zeros((1,7)) for x in gpt_preds])
 
