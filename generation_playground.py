@@ -163,8 +163,8 @@ for example in data:
         descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
     with minichain.start_chain("tmp.txt") as backend:
-        agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
-        #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
+        #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         out = agent.generate_text(plan, past, view)
         utt = out[0]
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
@@ -235,7 +235,8 @@ for example in data:
         dots2 = size_color[newplan]
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
-        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
+        #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
+        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
 
         words = word_tokenize(newutt.lower().strip()) + ['<eos>']
         partner.read(
