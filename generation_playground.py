@@ -12,6 +12,21 @@ from ocagent import Agent
 from features import size_map3, color_map3, size_map5, color_map5
 from features import size_color_descriptions, process_ctx, render
 
+sys.path.append(Path("./fns/").resolve())
+from fns.shapes import is_triangle, is_line, is_square
+from fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from fns.spatial import get_top, get_bottom, get_right, get_left
+from fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from fns.spatial import get_middle
+from fns.spatial import get_distance, get_minimum_radius
+from fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from fns.lists import add
+
+from functools import partial
+from itertools import permutations                        
+
 from eval import Recall
 
 # fried arguments
@@ -99,6 +114,13 @@ fried_preds = []
 gpt_preds = []
 fried_successes = 0
 gpt_successes = 0
+
+plans2 = []
+fried_preds2 = []
+gpt_preds2 = []
+fried_successes2 = 0
+gpt_successes2 = 0
+
 for example in data:
     chatid = example["chat_id"]
     scenarioid = example["scenario_id"]
@@ -169,11 +191,74 @@ for example in data:
         gpt_successes += gpt_rt_success
 
         posterior = belief.posterior(prior, planbool.astype(int), 1)
-        EdHs = belief.compute_EdHs(prior)
-        planbool = belief.configs[EdHs.argmax()].astype(bool)
-        plan = [{"target": planbool}]
+        EdHs = belief.compute_EdHs(posterior)
+        planbool2 = belief.configs[EdHs.argmax()].astype(bool)
+        plan2 = [{"target": planbool2}]
 
-        import pdb; pdb.set_trace()
+        newplan = (planbool2 & ~planbool)
+        newdots = newplan.nonzero()[0].tolist()
+        # TODO: planner kind of screw up sometimes and swaps dots around.
+        # this will affect evaluation sometimes.
+        """
+        if len(newdots) > 1:
+            import pdb; pdb.set_trace()
+        assert len(newdots) == 1, f"{len(newdots)}"
+        """
+        newdot = newdots[0]
+        olddots = planbool.nonzero()[0].tolist()
+        ctx = view
+
+        right = all(is_right(newdot, dot, ctx) for dot in olddots)
+        left = all(is_left(newdot, dot, ctx) for dot in olddots)
+        above = all(is_above(newdot, dot, ctx) for dot in olddots)
+        below = all(is_below(newdot, dot, ctx) for dot in olddots)
+
+        if right and above:
+            position_desc = "to the right and above"
+        elif right and below:
+            position_desc = "to the right and below"
+        elif right:
+            position_desc = "right of"
+        elif left and above:
+            position_desc = "to the left and above"
+        elif left and below:
+            position_desc = "to the left and below"
+        elif left:
+            position_desc = "left of"
+        elif above:
+            position_desc = "above"
+        elif below:
+            position_desc = "below"
+        else:
+            raise ValueError
+
+        dots2 = size_color[newplan]
+        descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
+
+        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
+
+        words = word_tokenize(newutt.lower().strip()) + ['<eos>']
+        partner.read(
+            words,
+            detect_markables=True,
+            dots_mentioned_num_markables = torch.tensor([0], device=device, dtype=torch.long),
+        )
+
+        print(planbool2)
+        print(partner.partner_ref_preds)
+
+        fried_pred = partner.partner_ref_preds[-1][:,0]
+        fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
+
+        preds, past, extra = agent.resolve_reference(newutt, past, view)
+        gpt_rt_success = (planbool2 == preds).all(1).any()
+
+        plans2.append([planbool2])
+        fried_preds2.append(fried_pred)
+        gpt_preds2.append(preds)
+
+        fried_successes2 += fried_rt_success
+        gpt_successes2 += gpt_rt_success
 
 metric = Recall("multilabel")
 
@@ -188,5 +273,16 @@ print(fried_results)
 print("gpt successes")
 print(gpt_successes)
 print(gpt_results)
-import pdb; pdb.set_trace()
+
+labels = plans2
+fried_results = metric.compute(references=labels, predictions=[x.any(0)[None] for x in fried_preds2])
+gpt_results = metric.compute(references=labels, predictions=[x if len(x) > 0 else np.zeros((1,7)) for x in gpt_preds2])
+
+print("Fried successes 2")
+print(fried_successes2)
+print(fried_results)
+
+print("gpt successes 2")
+print(gpt_successes2)
+print(gpt_results)
 

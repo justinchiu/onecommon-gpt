@@ -19,7 +19,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[-0.43, -0.09, 0.0, -0.56], [0.11, 0.565, 0.0, -0.6133333333333333], [-0.56, -0.57, -0.3333333333333333, 0.9333333333333333], [0.61, 0.15, 0.3333333333333333, 0.9733333333333334], [-0.635, -0.275, -0.3333333333333333, 0.28], [0.095, -0.735, 0.0, -0.24], [-0.115, 0.67, 0.3333333333333333, -0.22666666666666666]])
     return ctx
 
 
@@ -312,23 +312,41 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
+# Them: Do you see a pair of dots, where the right dot is medium-sized and dark, and the left dot is small-sized and grey?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x,y in permutations(config):
             check_xy_pair = all_close([x,y], ctx)
-            check_x_medium_dark = is_medium_size(x, ctx) and is_dark(x, ctx)
-            check_y_large_light = is_large(y, ctx) and is_light(y, ctx)
-            check_y_below_x = is_below(y, x, ctx)
+            check_x_medium_dark = is_medium_size(x, ctx) and is_dark(x, ctx) and x == get_right([x,y], ctx)
+            check_y_small_grey = is_small(y, ctx) and is_grey(y, ctx) and y == get_left([x,y], ctx)
             if (
                 check_xy_pair
                 and check_x_medium_dark
-                and check_y_large_light
-                and check_y_below_x
+                and check_y_small_grey
             ):
                 results.add(frozenset([x,y]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Is there a small, light-colored dot below that?
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for a,b in permutations(config):
+            for x, in get1idxs(idxs):
+                check_x_small = is_small(x, ctx)
+                check_x_light = is_light(x, ctx)
+                check_x_below_b = is_below(x, b, ctx)
+                if (
+                    check_x_small
+                    and check_x_light
+                    and check_x_below_b
+                ):
+                    results.add(frozenset([a,b,x]))
     return results
 state = turn(state)
 
