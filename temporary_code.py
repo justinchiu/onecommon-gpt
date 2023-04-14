@@ -19,7 +19,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.76, 0.25, 0.3333333333333333, -0.32], [0.42, 0.145, 0.0, 0.5466666666666666], [-0.65, 0.54, 0.0, 0.38666666666666666], [-0.195, 0.55, 1.0, -0.88], [0.53, 0.815, 1.0, 0.5466666666666666], [0.165, 0.72, 0.6666666666666666, 0.96], [-0.625, -0.18, 0.6666666666666666, 0.22666666666666666]])
+    ctx = np.array([[-0.735, 0.46, -1.0, -0.8533333333333334], [0.535, -0.275, -1.0, 0.8533333333333334], [-0.005, -0.455, 1.0, 0.7333333333333333], [0.72, -0.095, -0.3333333333333333, 0.7066666666666667], [0.205, -0.775, 0.0, -0.25333333333333335], [0.72, 0.5, 0.0, -0.18666666666666668], [-0.32, 0.825, -0.3333333333333333, -0.49333333333333335]])
     return ctx
 
 
@@ -312,27 +312,45 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the left dot is large-sized and dark and the right dot is large-sized and light?
+# Them: Do you see a pair of dots, where the bottom dot is small-sized and light, and the top dot is medium-sized and grey?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x,y in permutations(config):
             check_xy_pair = all_close([x,y], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_y_large = is_large(y, ctx)
+            check_x_medium = is_medium_size(x, ctx)
+            check_x_grey = is_grey(x, ctx)
+            check_y_small = is_small(y, ctx)
             check_y_light = is_light(y, ctx)
-            check_xy_left_right = is_left(x, y, ctx)
+            check_y_above_x = is_above(y, x, ctx)
             if (
                 check_xy_pair
-                and check_x_large
-                and check_x_dark
-                and check_y_large
+                and check_x_medium
+                and check_x_grey
+                and check_y_small
                 and check_y_light
-                and check_xy_left_right
+                and check_y_above_x
             ):
                 results.add(frozenset([x,y]))
+    return results
+state = turn(state)
+# End.
+
+# Them: Is there a small, light-colored dot to the right of those?
+def turn(state):
+    # Follow up question.
+    results = set()
+    for config in state:
+        for x,y in config:
+            for z in get_right([x,y], ctx):
+                check_z_small = is_small(z, ctx)
+                check_z_light = is_light(z, ctx)
+                if (
+                    check_z_small
+                    and check_z_light
+                ):
+                    results.add(frozenset([x,y,z]))
     return results
 state = turn(state)
 
