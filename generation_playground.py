@@ -260,7 +260,7 @@ for example in data:
 
         fried_successes2 += fried_rt_success
         gpt_successes2 += gpt_rt_success
-        if not gpt_rt_success:
+        if len(preds)> 0 and not gpt_rt_success:
             metric = Recall("multilabel")
             print(planbool2)
             print(preds)
