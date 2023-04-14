@@ -146,6 +146,9 @@ for example in data:
     prior = belief.prior
     EdHs = belief.compute_EdHs(prior)
     planbool = belief.configs[EdHs.argmax()].astype(bool)
+    feats = belief.get_feats(planbool)
+    plan_idxs = belief.resolve_utt(*feats)
+
     plan = [{"target": planbool}]
 
     past = []
@@ -163,8 +166,8 @@ for example in data:
         descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
     with minichain.start_chain("tmp.txt") as backend:
-        #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
-        agent = Agent(backend, "codegen", "templateonly", "gpt-4")
+        agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         out = agent.generate_text(plan, past, view)
         utt = out[0]
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
@@ -193,20 +196,33 @@ for example in data:
         posterior = belief.posterior(prior, planbool.astype(int), 1)
         EdHs = belief.compute_EdHs(posterior)
         planbool2 = belief.configs[EdHs.argmax()].astype(bool)
-        plan2 = [{"target": planbool2}]
+
+        feats2 = belief.get_feats(planbool2)
+        plan_idxs2 = belief.resolve_utt(*feats2)
 
         newplan = (planbool2 & ~planbool)
         newdots = newplan.nonzero()[0].tolist()
-        # TODO: planner kind of screw up sometimes and swaps dots around.
-        # this will affect evaluation sometimes.
-        """
-        if len(newdots) > 1:
-            import pdb; pdb.set_trace()
-        assert len(newdots) == 1, f"{len(newdots)}"
-        """
-        newdot = newdots[0]
-        olddots = planbool.nonzero()[0].tolist()
+
+        print(plan_idxs)
+        print(plan_idxs2)
+        dotsets = [set(x) for x in plan_idxs]
+        dotsets2 = [set(x) for x in plan_idxs2]
+        import itertools
+        setpairs = list(itertools.product(dotsets, dotsets2))
+        smalldiffs = [(x,y) for x,y in setpairs if len(y.difference(x)) == 1]
+        radii = [get_minimum_radius(list(y), view) for x,y in smalldiffs]
+        smallest_idx = np.argmin(radii)
+        olddotset = smalldiffs[smallest_idx][0]
+        newdotset = smalldiffs[smallest_idx][1]
+        newdot = list(newdotset.difference(olddotset))
+        olddots = list(olddotset)
+        newdots = list(newdotset)
+
+        planbool2 = np.zeros(7, dtype=bool)
+        planbool2[newdots] = 1
+
         ctx = view
+        plan2 = [{"target": planbool2}]
 
         right = all(is_right(newdot, dot, ctx) for dot in olddots)
         left = all(is_left(newdot, dot, ctx) for dot in olddots)
