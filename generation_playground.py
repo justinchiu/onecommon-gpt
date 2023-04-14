@@ -200,9 +200,6 @@ for example in data:
         feats2 = belief.get_feats(planbool2)
         plan_idxs2 = belief.resolve_utt(*feats2)
 
-        newplan = (planbool2 & ~planbool)
-        newdots = newplan.nonzero()[0].tolist()
-
         print(plan_idxs)
         print(plan_idxs2)
         dotsets = [set(x) for x in plan_idxs]
@@ -248,7 +245,7 @@ for example in data:
         else:
             raise ValueError
 
-        dots2 = size_color[newplan]
+        dots2 = size_color[newdot]
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
         #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
