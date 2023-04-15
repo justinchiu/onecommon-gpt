@@ -19,7 +19,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.82, 0.315, -0.6666666666666666, -0.5733333333333334], [0.185, 0.43, 0.6666666666666666, -0.22666666666666666], [-0.01, 0.68, 0.3333333333333333, -0.13333333333333333], [0.36, -0.39, -0.3333333333333333, 0.68], [-0.17, -0.61, -0.6666666666666666, -0.013333333333333334], [0.275, 0.17, 0.6666666666666666, -0.7333333333333333], [-0.76, -0.115, -0.6666666666666666, 0.0]])
+    ctx = np.array([[-0.46, -0.44, 1.0, -0.09333333333333334], [0.21, 0.53, 0.3333333333333333, 0.32], [0.63, -0.255, -0.3333333333333333, -0.5466666666666666], [-0.095, 0.635, 0.3333333333333333, -0.32], [-0.03, 0.9, 0.3333333333333333, 0.5733333333333334], [0.475, -0.62, -0.6666666666666666, -0.5333333333333333], [0.565, -0.0, 0.3333333333333333, -0.76]])
     return ctx
 
 
@@ -312,26 +312,26 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top dot is large-sized and grey, and the bottom dot is large-sized and dark?
+# Them: Do you see a pair of dots, where the bottom dot is small-sized and dark, and the top dot is medium-sized and dark?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             check_xy_pair = all_close([x, y], ctx)
-            check_x_top = x == get_top([x, y], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_grey = is_grey(x, ctx)
-            check_y_bottom = y == get_bottom([x, y], ctx)
-            check_y_large = is_large(y, ctx)
+            check_x_bottom = x == get_bottom([x, y], ctx)
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_y_top = y == get_top([x, y], ctx)
+            check_y_medium = is_medium_size(y, ctx)
             check_y_dark = is_dark(y, ctx)
             if (
                 check_xy_pair
-                and check_x_top
-                and check_x_large
-                and check_x_grey
-                and check_y_bottom
-                and check_y_large
+                and check_x_bottom
+                and check_x_small
+                and check_x_dark
+                and check_y_top
+                and check_y_medium
                 and check_y_dark
             ):
                 results.add(frozenset([x, y]))

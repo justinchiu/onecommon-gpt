@@ -195,6 +195,15 @@ for example in data:
 
         posterior = belief.posterior(prior, planbool.astype(int), 1)
         EdHs = belief.compute_EdHs(posterior)
+        # mask out plans that don't have the desired configs
+        EdHs_mask = [
+            any(
+                set(idxs).issubset(set(config.nonzero()[0]))
+                for idxs in plan_idxs
+            )
+            for config in belief.configs
+        ]
+        EdHs *= EdHs_mask
         planbool2 = belief.configs[EdHs.argmax()].astype(bool)
 
         feats2 = belief.get_feats(planbool2)
@@ -225,6 +234,7 @@ for example in data:
         left = all(is_left(newdot, dot, ctx) for dot in olddots)
         above = all(is_above(newdot, dot, ctx) for dot in olddots)
         below = all(is_below(newdot, dot, ctx) for dot in olddots)
+        middle = is_middle(newdot, olddots, ctx)
 
         if right and above:
             position_desc = "to the right and above"
@@ -242,7 +252,10 @@ for example in data:
             position_desc = "above"
         elif below:
             position_desc = "below"
+        elif middle:
+            position_desc = "in the middle of"
         else:
+            import pdb; pdb.set_trace()
             raise ValueError
 
         dots2 = size_color[newdot]
