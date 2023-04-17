@@ -104,7 +104,7 @@ def turn(state):
     results = set()
     for config in state:
         for a, in permutations(config):
-            for x, in get1idxs(idxs):
+            for x, in get1idxs(idxs, exclude=[a]):
                 check_x_smaller_a = is_smaller(x, a, ctx)
                 check_x_dark = is_dark(x, ctx)
                 check_x_next_to_a = all_close([a,x], ctx)
