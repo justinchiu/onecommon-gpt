@@ -34,32 +34,23 @@ class Agent:
 
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
-        #self.reformat = Reformat(backend.OpenAI(
-        #    model = "text-davinci-003",
             max_tokens = 128,
         ))
 
         if refres == "codegen":
-            #self.understand = Understand(backend.OpenAI(
-            #    model = "code-davinci-002",
             self.understand = Understand(backend.OpenAIChat(
                 model = model,
-                #model = "gpt-3.5-turbo",
-                #model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
         elif refres == "parsecodegen":
             self.parse = Parse(backend.OpenAIChat(
-                #model = "gpt-3.5-turbo",
                 model = model,
                 max_tokens = 512,
             ))
             print(f"RUNNING UNDERSTANDING WITH MODEL: {model}")
             self.understand = ParseUnderstand(backend.OpenAIChat(
                 model = model,
-                #model = "gpt-3.5-turbo",
-                #model = "gpt-4",
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
@@ -91,6 +82,9 @@ class Agent:
         else:
             raise ValueError
 
+    # necessary functions for onecommon
+    def feed_context(self, ctx):
+        pass
 
     def read(self):
         pass
@@ -98,6 +92,11 @@ class Agent:
     def write(self):
         pass
 
+    def choose(self):
+        pass
+
+
+    # helper functions
     def reformat_text(self, text, usespeaker=True):
         speaker = "You" if "You:" in text else "Them"
         utt = text.replace("You: ", "").replace("Them: ", "")
