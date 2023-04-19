@@ -1,4 +1,28 @@
-{{ header }}
+
+import sys
+sys.path.append("fns")
+
+from context import get_ctx
+from shapes import is_triangle, is_line, is_square
+from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from spatial import get_top, get_bottom, get_right, get_left
+from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from spatial import get_middle
+from spatial import get_distance, get_minimum_radius
+from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from iterators import get1idxs, get2idxs, get3idxs, getsets
+from lists import add
+import numpy as np
+from functools import partial
+from itertools import permutations
+
+
+def get_ctx():
+    ctx = np.array([[0.82, 0.315, -0.6666666666666666, -0.5733333333333334], [0.185, 0.43, 0.6666666666666666, -0.22666666666666666], [-0.01, 0.68, 0.3333333333333333, -0.13333333333333333], [0.36, -0.39, -0.3333333333333333, 0.68], [-0.17, -0.61, -0.6666666666666666, -0.013333333333333334], [0.275, 0.17, 0.6666666666666666, -0.7333333333333333], [-0.76, -0.115, -0.6666666666666666, 0.0]])
+    return ctx
+
+
 
 idxs = list(range(7))
 
@@ -187,8 +211,6 @@ state = turn(state)
 def select(state):
     # Select a dot.
     results = set()
-    orderedresults = []
-    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_large = is_large(a, ctx)
@@ -199,13 +221,9 @@ def select(state):
                 and check_b_not_large
                 and check_c_not_large
             ):
-                dots = frozenset([a])
-                if dots not in results:
-                    results.add(dots)
-                    orderedresults.append(dots)
-                    parents.append(config)
-    return orderedresults, parents
-state, parents = select(state)
+                results.add(frozenset([a]))
+    return results
+state = select(state)
 # End.
 
 # New.
@@ -293,10 +311,103 @@ state = select(state)
 # New.
 ctx = get_ctx()
 state = set()
-{% if past is defined and past|length > 0 %}{% for block in past %}
-# {{ block[0] }}
-{{ block[1] }}
+
+# Them: Do you see a pair of dots, where the top dot is large-sized and grey, and the bottom dot is large-sized and dark?
+def turn(state):
+    # New question.
+    results = set()
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            check_xy_pair = all_close([x, y], ctx)
+            check_x_top = x == get_top([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_grey = is_grey(x, ctx)
+            check_y_bottom = y == get_bottom([x, y], ctx)
+            check_y_large = is_large(y, ctx)
+            check_y_dark = is_dark(y, ctx)
+            if (
+                check_xy_pair
+                and check_x_top
+                and check_x_large
+                and check_x_grey
+                and check_y_bottom
+                and check_y_large
+                and check_y_dark
+            ):
+                results.add(frozenset([x, y]))
+    return results
+state = turn(state)
 # End.
-{% endfor %}{% endif %}
-# {{text}}
-def 
+print(state)
+print([get_minimum_radius(config, ctx) for config in state])
+
+# Them: To the right and below those, is there a small-sized and light-colored dot?
+def turn(state):
+    # Follow up question, new dot.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in state:
+        for a, b in permutations(config):
+            for x, in get1idxs(idxs, exclude=[a, b]):
+                check_x_small = is_small(x, ctx)
+                check_x_light = is_light(x, ctx)
+                check_x_right_ab = is_right(x, [a, b], ctx)
+                check_x_below_ab = is_below(x, [a, b], ctx)
+                if (
+                    check_x_small
+                    and check_x_light
+                    and check_x_right_ab
+                    and check_x_below_ab
+                ):
+                    dots = frozenset([a, b, x])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return results, orderedresults, parents
+state, orderedstate, parents = turn(state)
+# End.
+print(state)
+print(orderedstate)
+radii = [get_minimum_radius(config, ctx) for config in orderedstate]
+print(radii)
+
+# Them: Let's select the small size and light color one on the right and below.
+def select(state):
+    # Select a dot.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in state:
+        for a, b, c in permutations(config):
+            check_c_small = is_small(c, ctx)
+            check_c_light = is_light(c, ctx)
+            check_c_right_ab = is_right(c, [a, b], ctx)
+            check_c_below_ab = is_below(c, [a, b], ctx)
+            if (
+                check_c_small
+                and check_c_light
+                and check_c_right_ab
+                and check_c_below_ab
+            ):
+                dots = frozenset([c])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return results, orderedresults, parents
+state, orderedstate, parents = select(orderedstate)
+
+radii = [get_minimum_radius(config, ctx) for config in orderedstate]
+import pdb; pdb.set_trace()
+
+print([tuple(x) for x in state])
+print([get_minimum_radius(config, ctx) for config in state])
+
+
+
+#print(sorted(
+#    [tuple(x) for x in state],
+#    key = lambda x: get_minimum_radius(x, ctx),
+#))

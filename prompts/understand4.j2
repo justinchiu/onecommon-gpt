@@ -10,6 +10,7 @@ state = set()
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
     for config in getsets(idxs, 3):
         for x,y,z in permutations(config):
             check_xyz_triangle = is_triangle([x,y,z], ctx)
@@ -21,7 +22,7 @@ def turn(state):
                 and check_xyz_alone
             ):
                 results.add(frozenset([x,y,z]))
-    return results
+    return orderedresults
 state = turn(state)
 # End.
 
@@ -187,8 +188,6 @@ state = turn(state)
 def select(state):
     # Select a dot.
     results = set()
-    orderedresults = []
-    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_large = is_large(a, ctx)
@@ -199,13 +198,9 @@ def select(state):
                 and check_b_not_large
                 and check_c_not_large
             ):
-                dots = frozenset([a])
-                if dots not in results:
-                    results.add(dots)
-                    orderedresults.append(dots)
-                    parents.append(config)
-    return orderedresults, parents
-state, parents = select(state)
+                results.add(frozenset([a]))
+    return results
+state = select(state)
 # End.
 
 # New.
