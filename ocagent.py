@@ -301,3 +301,11 @@ class Agent:
         print(desc)
         return desc, past + [desc], None
 
+    def generate_new_config(self, plan, past, view, info=None):
+        pass
+
+    def generate_followup(self, plan, past, view, info=None):
+        pass
+
+    def generate_select(self, pan, past, view, info=None):
+        pass

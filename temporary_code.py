@@ -19,7 +19,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.735, 0.46, -1.0, -0.8533333333333334], [0.535, -0.275, -1.0, 0.8533333333333334], [-0.005, -0.455, 1.0, 0.7333333333333333], [0.72, -0.095, -0.3333333333333333, 0.7066666666666667], [0.205, -0.775, 0.0, -0.25333333333333335], [0.72, 0.5, 0.0, -0.18666666666666668], [-0.32, 0.825, -0.3333333333333333, -0.49333333333333335]])
+    ctx = np.array([[0.82, 0.315, -0.6666666666666666, -0.5733333333333334], [0.185, 0.43, 0.6666666666666666, -0.22666666666666666], [-0.01, 0.68, 0.3333333333333333, -0.13333333333333333], [0.36, -0.39, -0.3333333333333333, 0.68], [-0.17, -0.61, -0.6666666666666666, -0.013333333333333334], [0.275, 0.17, 0.6666666666666666, -0.7333333333333333], [-0.76, -0.115, -0.6666666666666666, 0.0]])
     return ctx
 
 
@@ -312,34 +312,34 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the bottom dot is small-sized and light, and the top dot is medium-sized and grey?
+# Them: Do you see a pair of dots, where the top dot is large-sized and grey, and the bottom dot is large-sized and dark?
 def turn(state):
     # New question.
     results = set()
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             check_xy_pair = all_close([x, y], ctx)
-            check_x_bottom = x == get_bottom([x, y], ctx)
-            check_x_small = is_small(x, ctx)
-            check_x_light = is_light(x, ctx)
-            check_y_top = y == get_top([x, y], ctx)
-            check_y_medium = is_medium_size(y, ctx)
-            check_y_grey = is_grey(y, ctx)
+            check_x_top = x == get_top([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_grey = is_grey(x, ctx)
+            check_y_bottom = y == get_bottom([x, y], ctx)
+            check_y_large = is_large(y, ctx)
+            check_y_dark = is_dark(y, ctx)
             if (
                 check_xy_pair
-                and check_x_bottom
-                and check_x_small
-                and check_x_light
-                and check_y_top
-                and check_y_medium
-                and check_y_grey
+                and check_x_top
+                and check_x_large
+                and check_x_grey
+                and check_y_bottom
+                and check_y_large
+                and check_y_dark
             ):
                 results.add(frozenset([x, y]))
     return results
 state = turn(state)
 # End.
 
-# Them: Is there a small, light-colored dot to the right of those?
+# Them: To the right and below those, is there a small-sized and light-colored dot?
 def turn(state):
     # Follow up question, new dot.
     results = set()
@@ -349,17 +349,42 @@ def turn(state):
                 check_x_small = is_small(x, ctx)
                 check_x_light = is_light(x, ctx)
                 check_x_right_ab = is_right(x, [a, b], ctx)
+                check_x_below_ab = is_below(x, [a, b], ctx)
                 if (
                     check_x_small
                     and check_x_light
                     and check_x_right_ab
+                    and check_x_below_ab
                 ):
                     results.add(frozenset([a, b, x]))
     return results
 state = turn(state)
+# End.
+
+# Them: Let's select the small size and light color one on the right and below.
+def select(state):
+    # Select a dot.
+    results = set()
+    for config in state:
+        for a, b, c in permutations(config):
+            check_c_small = is_small(c, ctx)
+            check_c_light = is_light(c, ctx)
+            check_c_right_ab = is_right(c, [a, b], ctx)
+            check_c_below_ab = is_below(c, [a, b], ctx)
+            if (
+                check_c_small
+                and check_c_light
+                and check_c_right_ab
+                and check_c_below_ab
+            ):
+                results.add(frozenset([c]))
+    return results
+state = select(state)
 
 
-print(sorted(
-    [tuple(x) for x in state],
-    key = lambda x: get_minimum_radius(x, ctx),
-))
+print([tuple(x) for x in state])
+
+#print(sorted(
+#    [tuple(x) for x in state],
+#    key = lambda x: get_minimum_radius(x, ctx),
+#))

@@ -12,7 +12,9 @@ def get_ctx():
 
 {{ code }}
 
-print(sorted(
-    [tuple(x) for x in state],
-    key = lambda x: get_minimum_radius(x, ctx),
-))
+print([tuple(x) for x in state])
+
+#print(sorted(
+#    [tuple(x) for x in state],
+#    key = lambda x: get_minimum_radius(x, ctx),
+#))

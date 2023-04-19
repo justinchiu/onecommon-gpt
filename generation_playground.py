@@ -121,6 +121,8 @@ gpt_preds2 = []
 fried_successes2 = 0
 gpt_successes2 = 0
 
+gpt_successes3 = 0
+
 for example in data:
     chatid = example["chat_id"]
     scenarioid = example["scenario_id"]
@@ -184,11 +186,14 @@ for example in data:
         fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
 
         preds, past, extra = agent.resolve_reference(utt, past, view)
+        radii = [get_minimum_radius(pred.nonzero()[0], view) for pred in preds]
+        # sort by radii
+        sorted_preds = preds[np.argsort(radii)]
         gpt_rt_success = (planbool == preds).all(1).any()
 
         plans.append([planbool])
         fried_preds.append(fried_pred)
-        gpt_preds.append(preds)
+        gpt_preds.append(sorted_preds)
 
         fried_successes += fried_rt_success
         gpt_successes += gpt_rt_success
@@ -278,11 +283,14 @@ for example in data:
         fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
 
         preds, past, extra = agent.resolve_reference(newutt, past, view)
+        radii = [get_minimum_radius(pred.nonzero()[0], ctx) for pred in preds]
+        # sort by radii
+        sorted_preds = preds[np.argsort(radii)]
         gpt_rt_success = (planbool2 == preds).all(1).any()
 
         plans2.append([planbool2])
         fried_preds2.append(fried_pred)
-        gpt_preds2.append(preds)
+        gpt_preds2.append(sorted_preds)
 
         fried_successes2 += fried_rt_success
         gpt_successes2 += gpt_rt_success
@@ -292,6 +300,21 @@ for example in data:
             print(preds)
             #print(metric.compute(references=[[planbool2]], predictions=preds))
             import pdb; pdb.set_trace()
+
+        # selection prompt
+        posterior2 = belief.posterior(posterior, planbool2.astype(int), 1)
+
+        # just select the new last one mentioned
+
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
+        sel_preds, past, extra = agent.resolve_reference(selectutt, past, view)
+        # sort sel_preds by minimum radius of PREVIOUS plans
+        if len(sel_preds) > 0:
+            gpt_sel_rt_success = sel_preds[np.argmin(radii)].nonzero()[0].item() == newdot[0]
+            gpt_successes3 += gpt_sel_rt_success
+            if gpt_rt_success and not gpt_sel_rt_success:
+                import pdb; pdb.set_trace()
+
 
 metric = Recall("multilabel")
 
@@ -319,3 +342,5 @@ print("gpt successes 2")
 print(gpt_successes2)
 print(gpt_results)
 
+print("gpt_successes 3")
+print(gpt_successes3)
