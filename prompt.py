@@ -20,6 +20,7 @@ from color import is_dark, is_grey, is_light, lightest, darkest, same_color, dif
 from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
 from iterators import get1idxs, get2idxs, get3idxs, getsets
 from lists import add
+from lists import sort_state
 import numpy as np
 from functools import partial
 from itertools import permutations
@@ -59,7 +60,8 @@ class Parse(TemplatePrompt[str]):
 class Understand(TemplatePrompt[str]):
     #template_file = "prompts/understand.j2"
     #template_file = "prompts/understand2.j2"
-    template_file = "prompts/understand3.j2"
+    #template_file = "prompts/understand3.j2"
+    template_file = "prompts/understand4.j2"
     stop_templates = ["# End.", "# New."]
 
 class ParseUnderstand(TemplatePrompt[str]):

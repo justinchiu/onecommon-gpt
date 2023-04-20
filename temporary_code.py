@@ -13,13 +13,14 @@ from color import is_dark, is_grey, is_light, lightest, darkest, same_color, dif
 from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
 from iterators import get1idxs, get2idxs, get3idxs, getsets
 from lists import add
+from lists import sort_state
 import numpy as np
 from functools import partial
 from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.82, 0.315, -0.6666666666666666, -0.5733333333333334], [0.185, 0.43, 0.6666666666666666, -0.22666666666666666], [-0.01, 0.68, 0.3333333333333333, -0.13333333333333333], [0.36, -0.39, -0.3333333333333333, 0.68], [-0.17, -0.61, -0.6666666666666666, -0.013333333333333334], [0.275, 0.17, 0.6666666666666666, -0.7333333333333333], [-0.76, -0.115, -0.6666666666666666, 0.0]])
+    ctx = np.array([[0.185, -0.78, 1.0, -0.29333333333333333], [-0.64, -0.265, -0.3333333333333333, -0.96], [0.64, -0.38, 0.6666666666666666, 0.05333333333333334], [-0.545, -0.705, 0.3333333333333333, 0.9333333333333333], [0.775, -0.495, -0.6666666666666666, -0.04], [-0.43, -0.475, -0.6666666666666666, 0.48], [-0.16, 0.46, -0.6666666666666666, 0.22666666666666666]])
     return ctx
 
 
@@ -34,6 +35,8 @@ state = set()
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 3):
         for x,y,z in permutations(config):
             check_xyz_triangle = is_triangle([x,y,z], ctx)
@@ -44,8 +47,12 @@ def turn(state):
                 and check_xyz_light
                 and check_xyz_alone
             ):
-                results.add(frozenset([x,y,z]))
-    return results
+                dots = frozenset([x,y,z])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -53,6 +60,8 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_right = a == get_right([a,b,c], ctx)
@@ -67,8 +76,12 @@ def turn(state):
                 and check_b_grey
                 and check_b_top
             ):
-                results.add(frozenset([a,b,c]))
-    return results
+                dots = frozenset([a,b,c])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -76,6 +89,8 @@ state = turn(state)
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             check_xy_pair = all_close([x,y], ctx)
@@ -90,16 +105,19 @@ def turn(state):
                 and check_y_above_x
                 and check_xy_same_size
             ):
-                results.add(frozenset([x,y]))
-    return results
+                dots = frozenset([x,y])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
 # You: No.
 def turn(state):
     # New question.
-    results = set()
-    return results
+    return []
 state = turn(state)
 # End.
 
@@ -107,6 +125,8 @@ state = turn(state)
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 1):
         for x, in permutations(config):
             check_x_large = is_large(x, ctx)
@@ -117,8 +137,12 @@ def turn(state):
                 and check_x_grey
                 and check_x_center
             ):
-                results.add(frozenset([x]))
-    return results
+                dots = frozenset([x])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -126,6 +150,8 @@ state = turn(state)
 def turn(state):
     # Follow up question, new dot.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a, in permutations(config):
             for x, in get1idxs(idxs, exclude=[a]):
@@ -137,8 +163,12 @@ def turn(state):
                     and check_x_dark
                     and check_x_next_to_a
                 ):
-                    results.add(frozenset([a, x]))
-    return results
+                    dots = frozenset([a,x])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -146,6 +176,8 @@ state = turn(state)
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 3):
         for x,y,z in permutations(config):
             check_xyz_line = is_line([x,y,z], ctx)
@@ -164,8 +196,12 @@ def turn(state):
                 and check_z_bottom_right
                 and check_z_dark
             ):
-                results.add(frozenset([x,y,z]))
-    return results
+                dots = frozenset([x,y,z])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -173,6 +209,8 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_top = a == get_top([a,b,c], ctx)
@@ -186,7 +224,7 @@ def turn(state):
                 and check_b_darker_a
             ):
                 results.add(frozenset([a,b,c]))
-    return results
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -194,6 +232,8 @@ state = turn(state)
 def turn(state):
     # Follow up question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_smallest = a == smallest([a,b,c], ctx)
@@ -202,8 +242,12 @@ def turn(state):
                 check_a_smallest
                 and check_a_bottom_right
             ):
-                results.add(frozenset([a,b,c]))
-    return results
+                dots = frozenset([a,b,c])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
@@ -211,6 +255,8 @@ state = turn(state)
 def select(state):
     # Select a dot.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_large = is_large(a, ctx)
@@ -221,8 +267,12 @@ def select(state):
                 and check_b_not_large
                 and check_c_not_large
             ):
-                results.add(frozenset([a]))
-    return results
+                dots = frozenset([a])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=True)
 state = select(state)
 # End.
 
@@ -234,6 +284,8 @@ state = []
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 1):
         for x, in permutations(config):
             check_x_large = is_large(x, ctx)
@@ -244,8 +296,12 @@ def turn(state):
                 and check_x_dark
                 and check_x_below_left
             ):
-                results.add(frozenset([x]))
-    return results
+                dots = frozenset([x])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
  
@@ -253,6 +309,8 @@ state = turn(state)
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 3):
         for x,y,z in permutations(config):
             check_xyz_close = all_close([x,y,z], ctx)
@@ -275,36 +333,48 @@ def turn(state):
                 and check_yz_same_size
                 and check_yz_same_color
             ):
-                results.add(frozenset([x,y,z]))
-    return results
+                dots = frozenset([x,y,z])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 # End.
 
 # You: Select the largest one.
-def turn(state):
-    # Follow up question.
+def select(state):
+    # Select a dot.
     results = set()
+    orderedresults = []
+    parents = []
     for config in state:
         for a,b,c in permutations(config):
             check_a_largest = a == get_largest([a,b,c], ctx)
-            if check_a_largest:
-                results.add(frozenset([a]))
-    return results
-state = turn(state)
+            if (
+                check_a_largest
+            ):
+                dots = frozenset([a])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=True)
+state = select(state)
 # End.
  
 # Them: Okay.
-def turn(state):
+def noop(state):
     # No op.
     return state
-state = turn(state)
+state = noop(state)
 # End.
  
 # You: Okay. <selection>.
-def select(state):
-    # Select a dot.
+def noop(state):
+    # No op.
     return state
-state = select(state)
+state = noop(state)
 # End.
 
 
@@ -312,74 +382,37 @@ state = select(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top dot is large-sized and grey, and the bottom dot is large-sized and dark?
+# Them: Do you see a pair of dots, where the top left dot is small-sized and dark and the bottom right dot is small-sized and light?
 def turn(state):
     # New question.
     results = set()
+    orderedresults = []
+    parents = []
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_pair = all_close([x, y], ctx)
-            check_x_top = x == get_top([x, y], ctx)
-            check_x_large = is_large(x, ctx)
-            check_x_grey = is_grey(x, ctx)
-            check_y_bottom = y == get_bottom([x, y], ctx)
-            check_y_large = is_large(y, ctx)
-            check_y_dark = is_dark(y, ctx)
+            check_xy_pair = all_close([x,y], ctx)
+            check_x_top_left = x == get_top_left([x, y], ctx)
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_y_bottom_right = y == get_bottom_right([x, y], ctx)
+            check_y_small = is_small(y, ctx)
+            check_y_light = is_light(y, ctx)
             if (
                 check_xy_pair
-                and check_x_top
-                and check_x_large
-                and check_x_grey
-                and check_y_bottom
-                and check_y_large
-                and check_y_dark
+                and check_x_top_left
+                and check_x_small
+                and check_x_dark
+                and check_y_bottom_right
+                and check_y_small
+                and check_y_light
             ):
-                results.add(frozenset([x, y]))
-    return results
+                dots = frozenset([x,y])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
-# End.
-
-# Them: To the right and below those, is there a small-sized and light-colored dot?
-def turn(state):
-    # Follow up question, new dot.
-    results = set()
-    for config in state:
-        for a, b in permutations(config):
-            for x, in get1idxs(idxs, exclude=[a, b]):
-                check_x_small = is_small(x, ctx)
-                check_x_light = is_light(x, ctx)
-                check_x_right_ab = is_right(x, [a, b], ctx)
-                check_x_below_ab = is_below(x, [a, b], ctx)
-                if (
-                    check_x_small
-                    and check_x_light
-                    and check_x_right_ab
-                    and check_x_below_ab
-                ):
-                    results.add(frozenset([a, b, x]))
-    return results
-state = turn(state)
-# End.
-
-# Them: Let's select the small size and light color one on the right and below.
-def select(state):
-    # Select a dot.
-    results = set()
-    for config in state:
-        for a, b, c in permutations(config):
-            check_c_small = is_small(c, ctx)
-            check_c_light = is_light(c, ctx)
-            check_c_right_ab = is_right(c, [a, b], ctx)
-            check_c_below_ab = is_below(c, [a, b], ctx)
-            if (
-                check_c_small
-                and check_c_light
-                and check_c_right_ab
-                and check_c_below_ab
-            ):
-                results.add(frozenset([c]))
-    return results
-state = select(state)
 
 
 print([tuple(x) for x in state])
