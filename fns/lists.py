@@ -15,5 +15,5 @@ def sort_state(configs, parents, ctx, select):
         return list(sorted(configs, key=lambda x: get_minimum_radius(x, ctx)))
     else:
         radii = [get_minimum_radius(x, ctx) for x in parents]
-        idxs = np.aargsort(radii)
+        idxs = np.argsort(radii)
         return [configs[x] for x in idxs]

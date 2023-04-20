@@ -20,7 +20,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.185, -0.78, 1.0, -0.29333333333333333], [-0.64, -0.265, -0.3333333333333333, -0.96], [0.64, -0.38, 0.6666666666666666, 0.05333333333333334], [-0.545, -0.705, 0.3333333333333333, 0.9333333333333333], [0.775, -0.495, -0.6666666666666666, -0.04], [-0.43, -0.475, -0.6666666666666666, 0.48], [-0.16, 0.46, -0.6666666666666666, 0.22666666666666666]])
+    ctx = np.array([[-0.365, -0.02, 0.0, 0.9066666666666666], [0.475, -0.46, 0.6666666666666666, 0.25333333333333335], [0.105, 0.56, -0.3333333333333333, -0.09333333333333334], [0.505, 0.605, 0.3333333333333333, -0.4], [-0.275, -0.59, 0.0, -0.8266666666666667], [-0.745, -0.17, -0.6666666666666666, -0.4], [0.66, 0.215, 0.0, -0.76]])
     return ctx
 
 
@@ -382,7 +382,7 @@ state = noop(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top left dot is small-sized and dark and the bottom right dot is small-sized and light?
+# Them: Do you see a pair of dots, where the bottom dot is large-sized and grey, and the top dot is medium-sized and dark?
 def turn(state):
     # New question.
     results = set()
@@ -390,23 +390,23 @@ def turn(state):
     parents = []
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_pair = all_close([x,y], ctx)
-            check_x_top_left = x == get_top_left([x, y], ctx)
-            check_x_small = is_small(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_y_bottom_right = y == get_bottom_right([x, y], ctx)
-            check_y_small = is_small(y, ctx)
-            check_y_light = is_light(y, ctx)
+            check_xy_pair = all_close([x, y], ctx)
+            check_x_bottom = x == get_bottom([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_grey = is_grey(x, ctx)
+            check_y_top = y == get_top([x, y], ctx)
+            check_y_medium = is_medium_size(y, ctx)
+            check_y_dark = is_dark(y, ctx)
             if (
                 check_xy_pair
-                and check_x_top_left
-                and check_x_small
-                and check_x_dark
-                and check_y_bottom_right
-                and check_y_small
-                and check_y_light
+                and check_x_bottom
+                and check_x_large
+                and check_x_grey
+                and check_y_top
+                and check_y_medium
+                and check_y_dark
             ):
-                dots = frozenset([x,y])
+                dots = frozenset([x, y])
                 if dots not in results:
                     results.add(dots)
                     orderedresults.append(dots)
