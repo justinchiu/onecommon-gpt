@@ -13,16 +13,6 @@ from prompt import GenerateScxy, GenerateTemplate
 from prompt import UnderstandMc
 
 
-@dataclass
-class State:
-    memory: list[tuple[str, str]]
-    human_input: str = ""
-
-    def push(self, response: str) -> "State":
-        memory = self.memory if len(self.memory) < MEMORY else self.memory[1:]
-        return State(memory + [(self.human_input, response)])
-
-
 class Agent:
     def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
         self.backend = backend
