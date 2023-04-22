@@ -5,12 +5,12 @@ import re
 import openai
 import ast
 
-from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
+from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import HEADER, Understand, Execute, Generate, Reformat
-from prompt import Parse, ParseUnderstand
-from prompt import GenerateScxy, GenerateTemplate
-from prompt import UnderstandMc
+from oc.prompt import HEADER, Understand, Execute, Generate, Reformat
+from oc.prompt import Parse, ParseUnderstand
+from oc.prompt import GenerateScxy, GenerateTemplate
+from oc.prompt import UnderstandMc
 
 
 class Agent:
@@ -98,6 +98,7 @@ class Agent:
         #print(text)
         return text
 
+    # RESOLUTION
     def resolve_reference(self, text, past, view, info=None):
         # dispatch
         if self.refres == "codegen":
@@ -205,10 +206,13 @@ class Agent:
         )
 
 
+    # PLANNING
     def plan(self, past, view, info=None):
         import pdb; pdb.set_trace()
         raise NotImplementedError
 
+
+    # GENERATION
     def generate_text(self, plan, past, view, info=None):
         if self.gen == "sc":
             return self.generate_text_sc(plan, past, view, info)

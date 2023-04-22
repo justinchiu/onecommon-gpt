@@ -3,10 +3,10 @@ import pdb
 import features
 from itertools import combinations
 
-from ocdata import get_data
-from features import render, size_color_descriptions
-from code.shapes import is_triangle, is_line, is_contiguous
-from code.spatial import is_close
+from oc.ocdata import get_data
+from oc.features import render, size_color_descriptions
+from oc.fns.shapes import is_triangle, is_line, is_contiguous
+from oc.fns.spatial import is_close
 
 def get_generation_feature_prompt_examples():
     train, valid = get_data()
