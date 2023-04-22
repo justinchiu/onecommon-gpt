@@ -9,6 +9,10 @@ from jinja2 import (
 from minichain import TemplatePrompt as BaseTemplatePrompt
 from minichain import Output, Request, Prompt
 
+import oc.prompts
+from importlib.resources import files
+PROMPT_DIR = files(oc.prompts)._paths[0]
+
 HEADER = """from context import get_ctx
 from shapes import is_triangle, is_line, is_square
 from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
@@ -44,11 +48,11 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
 
 class Reformat(TemplatePrompt[str]):
     #template_file = "prompts/reformat.j2"
-    template_file = "oc/prompts/reformat.j2"
+    template_file = PROMPT_DIR / "reformat.j2"
     stop_templates = ["\n"]
 
 class Parse(TemplatePrompt[str]):
-    template_file = "oc/prompts/parse.j2"
+    template_file = PROMPT_DIR / "parse.j2"
     stop_templates = ["\nEnd."]
 
     def parse(self, output, input):
@@ -62,35 +66,35 @@ class Understand(TemplatePrompt[str]):
     #template_file = "prompts/understand.j2"
     #template_file = "prompts/understand2.j2"
     #template_file = "prompts/understand3.j2"
-    template_file = "oc/prompts/understand4.j2"
+    template_file = PROMPT_DIR / "understand4.j2"
     stop_templates = ["# End.", "# New."]
 
 class ParseUnderstand(TemplatePrompt[str]):
     #template_file = "prompts/parseunderstand.j2"
-    template_file = "oc/prompts/parseunderstand3.j2"
+    template_file = PROMPT_DIR / "parseunderstand3.j2"
     stop_templates = ["# End.", "# New."]
 
 class Execute(TemplatePrompt[list[int]]):
     #template_file = "prompts/execute.j2"
-    template_file = "oc/prompts/execute3.j2"
+    template_file = PROMPT_DIR / "execute3.j2"
 
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
 
 
 class Generate(TemplatePrompt[str]):
-    template_file = "oc/prompts/generate.j2"
+    template_file = PROMPT_DIR / "generate.j2"
 
 class GenerateScxy(TemplatePrompt[str]):
-    template_file = "oc/prompts/generate_scxy.j2"
+    template_file = PROMPT_DIR / "generate_scxy.j2"
 
 
 class UnderstandMc(TemplatePrompt[str]):
-    template_file = "oc/prompts/understand_mc.j2"
+    template_file = PROMPT_DIR / "understand_mc.j2"
     stop_template = '\n'
 
 class GenerateTemplate(TemplatePrompt[str]):
-    template_file = "oc/prompts/generate_template.j2"
+    template_file = PROMPT_DIR / "generate_template.j2"
 
 class GenerateMentions(TemplatePrompt[str]):
-    tempalte_file = "oc/prompts/generate_mention.j2"
+    tempalte_file = PROMPT_DIR / "generate_mention.j2"

@@ -2,6 +2,7 @@ import datasets
 from pathlib import Path
 import numpy as np
 
+
 EOS_TOKEN = "<eos>"
 SELECTION_TOKEN = "<selection>"
 YOU_TOKEN = "YOU:"
@@ -167,11 +168,16 @@ def get_examples(raw_data):
 
 
 def get_data(split=1, filter_agent=True):
+    from importlib.resources import files
+    import oc.data
+    data_dir = files(oc.data)._paths[0] / "onecommon"
+    data_files = [
+        data_dir / f"train_reference_{split}.txt",
+        data_dir / f"valid_reference_{split}.txt",
+    ]
+
     datas = []
-    for data_file in [
-        Path(f"data/onecommon/train_reference_{split}.txt"),
-        Path(f"data/onecommon/valid_reference_{split}.txt"),
-    ]:
+    for data_file in data_files:
         with data_file.open("r") as f:
             raw_data = f.readlines()
             datas.append(get_examples(raw_data))
