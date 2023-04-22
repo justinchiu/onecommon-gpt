@@ -1,7 +1,7 @@
 from jinja2 import Template
 import numpy as np
 
-import oc.gen.template_rec
+import oc.gen.template_rec as template_rec
 
 RADIUS = .2
 size_map3 = ["small", "medium", "large"]
