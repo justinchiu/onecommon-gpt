@@ -13,18 +13,18 @@ import oc.prompts
 from importlib.resources import files
 PROMPT_DIR = files(oc.prompts)._paths[0]
 
-HEADER = """from context import get_ctx
-from shapes import is_triangle, is_line, is_square
-from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
-from spatial import get_top, get_bottom, get_right, get_left
-from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
-from spatial import get_middle
-from spatial import get_distance, get_minimum_radius
-from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
-from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
-from iterators import get1idxs, get2idxs, get3idxs, getsets
-from lists import add
-from lists import sort_state
+HEADER = """from oc.fns.context import get_ctx
+from oc.fns.shapes import is_triangle, is_line, is_square
+from oc.fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from oc.fns.spatial import get_top, get_bottom, get_right, get_left
+from oc.fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from oc.fns.spatial import get_middle
+from oc.fns.spatial import get_distance, get_minimum_radius
+from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from oc.fns.lists import add
+from oc.fns.lists import sort_state
 import numpy as np
 from functools import partial
 from itertools import permutations

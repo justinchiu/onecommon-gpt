@@ -2,25 +2,25 @@
 import sys
 sys.path.append("fns")
 
-from context import get_ctx
-from shapes import is_triangle, is_line, is_square
-from spatial import all_close, is_above, is_below, is_right, is_left, is_middle
-from spatial import get_top, get_bottom, get_right, get_left
-from spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
-from spatial import get_middle
-from spatial import get_distance, get_minimum_radius
-from color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
-from size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
-from iterators import get1idxs, get2idxs, get3idxs, getsets
-from lists import add
-from lists import sort_state
+from oc.fns.context import get_ctx
+from oc.fns.shapes import is_triangle, is_line, is_square
+from oc.fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from oc.fns.spatial import get_top, get_bottom, get_right, get_left
+from oc.fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from oc.fns.spatial import get_middle
+from oc.fns.spatial import get_distance, get_minimum_radius
+from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from oc.fns.lists import add
+from oc.fns.lists import sort_state
 import numpy as np
 from functools import partial
 from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.645, -0.33, 0.3333333333333333, -0.88], [0.5, 0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, -0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, -0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, -0.585, -1.0, -0.3466666666666667], [-0.59, -0.04, 0.0, -0.013333333333333334], [-0.245, 0.855, -0.6666666666666666, -0.37333333333333335]])
+    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
     return ctx
 
 
@@ -382,7 +382,7 @@ state = noop(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the right dot is medium-sized and dark, and the left dot is small-sized and dark?
+# Them: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
 def turn(state):
     # New question.
     results = set()
@@ -390,23 +390,23 @@ def turn(state):
     parents = []
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_pair = all_close([x,y], ctx)
-            check_x_left = is_left(x, y, ctx)
-            check_x_small = is_small(x, ctx)
+            check_xy_pair = all_close([x, y], ctx)
+            check_x_top = x == get_top([x, y], ctx)
+            check_x_medium = is_medium_size(x, ctx)
             check_x_dark = is_dark(x, ctx)
-            check_y_right = is_right(y, x, ctx)
-            check_y_medium = is_medium_size(y, ctx)
-            check_y_dark = is_dark(y, ctx)
+            check_y_bottom = y == get_bottom([x, y], ctx)
+            check_y_large = is_large(y, ctx)
+            check_y_light = is_light(y, ctx)
             if (
                 check_xy_pair
-                and check_x_left
-                and check_x_small
+                and check_x_top
+                and check_x_medium
                 and check_x_dark
-                and check_y_right
-                and check_y_medium
-                and check_y_dark
+                and check_y_bottom
+                and check_y_large
+                and check_y_light
             ):
-                dots = frozenset([x,y])
+                dots = frozenset([x, y])
                 if dots not in results:
                     results.add(dots)
                     orderedresults.append(dots)

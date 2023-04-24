@@ -1,3 +1,9 @@
+import numpy as np
+
+from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
+
+from oc.prompt import Generate
+from oc.prompt import GenerateScxy, GenerateTemplate
 
 
 class WriterMixin:

@@ -8,7 +8,7 @@ import torch
 from nltk import word_tokenize
 
 from oc.ocdata import get_data
-from oc.ocagent import Agent
+from oc.agent.agent import Agent
 from oc.gen.features import size_map3, color_map3, size_map5, color_map5
 from oc.gen.features import size_color_descriptions, process_ctx, render
 
@@ -26,16 +26,18 @@ from oc.fns.lists import add
 from functools import partial
 from itertools import permutations                        
 
-from oc.eval import Recall
+from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
 
 # load scripts and initialize...better to make everything into libraries
 sys.path.append(str(oc_dir.resolve()))
+print(oc_dir.resolve())
 from engines.beliefs import BlankBeliefConstructor
 from agent import RnnAgent
 import utils

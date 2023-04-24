@@ -1,7 +1,7 @@
+import numpy as np
 
-from oc.prompt import HEADER, Understand, Execute, Generate, Reformat
+from oc.prompt import HEADER, Understand, Execute, Reformat
 from oc.prompt import Parse, ParseUnderstand
-from oc.prompt import GenerateScxy, GenerateTemplate
 from oc.prompt import UnderstandMc
 
 
