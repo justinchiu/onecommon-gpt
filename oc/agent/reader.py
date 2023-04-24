@@ -1,11 +1,3 @@
-from dataclasses import dataclass
-import numpy as np
-from pathlib import Path
-import re
-import openai
-import ast
-
-from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
 from oc.prompt import HEADER, Understand, Execute, Generate, Reformat
 from oc.prompt import Parse, ParseUnderstand
@@ -13,14 +5,9 @@ from oc.prompt import GenerateScxy, GenerateTemplate
 from oc.prompt import UnderstandMc
 
 
-class Agent:
-    def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
-        self.backend = backend
-
+class ReaderMixin:
+    def __init__(self, backend, refres, gen, model):
         self.refres = refres
-        self.gen = gen
-
-        self.model = model
 
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
@@ -52,32 +39,9 @@ class Agent:
         else:
             raise ValueError
 
-        if gen == "sc":
-            self.generate = Generate(backend.OpenAI(
-                model = "text-davinci-003",
-                max_tokens=512,
-            ))
-        elif gen == "scxy":
-            self.generate = GenerateScxy(backend.OpenAI(
-                model = "text-davinci-003",
-                max_tokens=512,
-            ))
-        elif gen == "template":
-            self.generate = GenerateTemplate(backend.OpenAI(
-                model = "text-davinci-003",
-                max_tokens=1024,
-            ))
-        elif gen == "templateonly":
-            pass
-        else:
-            raise ValueError
+        super(ReaderMixin, self).__init__(backend, refres, gen, model)
 
-    # necessary functions for onecommon
-    def feed_context(self, ctx):
-        self.ctx = ctx
-        self.past = []
-
-    def read(self, input_words):
+    def read(self, input_words): 
         # process input
         text = " ".join(input_words)
         past = self.past
@@ -87,13 +51,7 @@ class Agent:
         # should only keep around past if within line of questioning, eg same dots
         # update state
         self.past = past
-
-    def write(self):
-        pass
-
-    def choose(self):
-        pass
-
+        import pdb; pdb.set_trace()
 
     # helper functions
     def reformat_text(self, text, usespeaker=True):
@@ -214,101 +172,3 @@ class Agent:
             },
         )
 
-
-    # PLANNING
-    def plan(self, past, view, info=None):
-        import pdb; pdb.set_trace()
-        raise NotImplementedError
-
-
-    # GENERATION
-    def generate_text(self, plan, past, view, info=None):
-        if self.gen == "sc":
-            return self.generate_text_sc(plan, past, view, info)
-        if self.gen == "scxy":
-            return self.generate_text_scxy(plan, past, view, info)
-        elif self.gen == "template":
-            return self.generate_text_template(plan, past, view, info)
-        elif self.gen == "templateonly":
-            return self.generate_text_template_only(plan, past, view, info)
-        else:
-            raise ValueError
-
-    def generate_text_sc(self, plan, past, view, info=None):
-        # process plan
-        refs = [r["target"] for r in plan]
-        size_color = process_ctx(view)
-        dots = size_color[np.array(refs).any(0)]
-        descs = size_color_descriptions(dots)
-        descstring = []
-        for size, color in descs:
-            descstring.append(f"* A {size} and {color} dot")
-
-        kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
-        #print("INPUT")
-        #print(self.generate.print(kwargs))
-        out = self.generate(kwargs)
-        print("OUTPUT")
-        print(out)
-        return out, past + [out], None
-
-    def generate_text_scxy(self, plan, past, view, info=None):
-        # process plan
-        refs = [r["target"] for r in plan]
-        plan = np.array(refs).any(0)
-
-        size_color = process_ctx(view)
-        dots = size_color[plan]
-        descs = size_color_descriptions(dots)
-        xy = view[plan,:2]
-
-        descstring = []
-        for (size, color), (x,y) in zip(descs, xy):
-            descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
-
-        kwargs = dict(plan="\n".join(descstring), past="\n".join(past))
-        print("INPUT")
-        print(self.generate.print(kwargs))
-        out = self.generate(kwargs)
-        print("OUTPUT")
-        print(out)
-        return out, past + [out], None
-
-    def generate_text_template(self, plan, past, view, info=None):
-        if len(plan) == 0:
-            # no references...
-            return "okay", past + ["okay"]
-
-        # process plan
-        refs = [r["target"] for r in plan]
-        plan = np.array(refs).any(0)
-        desc = render(plan, view)
-
-        kwargs = dict(plan=desc, past="\n".join(past))
-        #print("INPUT")
-        #print(self.generate.print(kwargs))
-        out = self.generate(kwargs)
-        print("OUTPUT")
-        print(out)
-        return out, past + [out], None
-
-    def generate_text_template_only(self, plan, past, view, info=None):
-        if len(plan) == 0:
-            # no references...
-            return "okay", past + ["okay"]
-
-        # process plan
-        refs = [r["target"] for r in plan]
-        plan = np.array(refs).any(0)
-        desc = render(plan, view, num_buckets=3)
-        print(desc)
-        return desc, past + [desc], None
-
-    def generate_new_config(self, plan, past, view, info=None):
-        pass
-
-    def generate_followup(self, plan, past, view, info=None):
-        pass
-
-    def generate_select(self, pan, past, view, info=None):
-        pass
