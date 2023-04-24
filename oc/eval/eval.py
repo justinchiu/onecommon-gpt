@@ -3,7 +3,7 @@ from collections import defaultdict
 import numpy as np
 import datasets
 import evaluate
-import oc.bitutils
+import oc.bitutils as bitutils
 import pdb
 
 class Recall(evaluate.Metric):
@@ -256,7 +256,7 @@ class Generation(Eval):
 
 if __name__ == "__main__":
     from oc.ocdata import get_data
-    from oc.ocagent import Agent, State
+    from oc.agent.agent import Agent
     import minichain
 
     import argparse

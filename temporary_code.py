@@ -1,4 +1,6 @@
 
+# ('S_WKgxzCvcycMDcy1f', 'C_d9e6a1f14d8347dfa51a1c29fab3c104')
+
 import sys
 sys.path.append("fns")
 
@@ -382,7 +384,32 @@ state = noop(state)
 ctx = get_ctx()
 state = set()
 
-# Them: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
+# You: Hi, do you have a tiny black dot near the 1 o'clock position?
+def turn(state):
+    # New question.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in getsets(idxs, 1):
+        for x, in permutations(config):
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
+            if (
+                check_x_small
+                and check_x_dark
+                and check_x_1_oclock
+            ):
+                dots = frozenset([x])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = turn(state)
+# End.
+
+# Them: Do you have a large dark grey dot next to a smaller black dot?
 def turn(state):
     # New question.
     results = set()
@@ -390,21 +417,73 @@ def turn(state):
     parents = []
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
-            check_xy_pair = all_close([x, y], ctx)
-            check_x_top = x == get_top([x, y], ctx)
-            check_x_medium = is_medium_size(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_y_bottom = y == get_bottom([x, y], ctx)
-            check_y_large = is_large(y, ctx)
-            check_y_light = is_light(y, ctx)
+            check_xy_close = all_close([x, y], ctx)
+            check_x_large = is_large(x, ctx)
+            check_x_dark_grey = is_dark(x, ctx) and is_grey(x, ctx)
+            check_y_smaller_x = is_smaller(y, x, ctx)
+            check_y_dark = is_dark(y, ctx)
             if (
-                check_xy_pair
-                and check_x_top
-                and check_x_medium
+                check_xy_close
+                and check_x_large
+                and check_x_dark_grey
+                and check_y_smaller_x
+                and check_y_dark
+            ):
+                dots = frozenset([x, y])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = turn(state)
+# End.
+
+# You: No, I have two large black dots.
+def turn(state):
+    # New question.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            check_xy_large = is_large(x, ctx) and is_large(y, ctx)
+            check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
+            if (
+                check_xy_large
+                and check_xy_dark
+            ):
+                dots = frozenset([x, y])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = turn(state)
+# End.
+
+# Them: I do have a smaller black dot at the 1 o'clock position (sorry I can't reply until you did). I also have a lone large grey dot at the 8 o'clock position.
+def turn(state):
+    # New question.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            check_x_small = is_small(x, ctx)
+            check_x_dark = is_dark(x, ctx)
+            check_x_1_oclock = is_above(x, None, ctx) and is_right(x, None, ctx)
+            check_y_large = is_large(y, ctx)
+            check_y_grey = is_grey(y, ctx)
+            check_y_8_oclock = is_below(y, None, ctx) and is_left(y, None, ctx)
+            check_y_alone = all([not all_close([x, y, dot], ctx) for dot in idxs if dot not in [x, y]])
+            if (
+                check_x_small
                 and check_x_dark
-                and check_y_bottom
+                and check_x_1_oclock
                 and check_y_large
-                and check_y_light
+                and check_y_grey
+                and check_y_8_oclock
+                and check_y_alone
             ):
                 dots = frozenset([x, y])
                 if dots not in results:
