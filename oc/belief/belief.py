@@ -12,8 +12,8 @@ from scipy.special import comb
 
 from scipy.spatial import ConvexHull, Delaunay
 
-from belief_utils import comb_index, entropy, marginal_entropy
-from structured_prior import ising_prior, mst_prior
+from oc.belief.belief_utils import comb_index, entropy, marginal_entropy
+from oc.belief.structured_prior import ising_prior, mst_prior
 
 
 class Label(Enum):
