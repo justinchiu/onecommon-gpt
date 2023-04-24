@@ -136,8 +136,8 @@ for example in data:
     belief_constructor = BlankBeliefConstructor()
     partner.feed_context(view.flatten().tolist(), belief_constructor)
 
-    belief = CostBelief(                           
-        7, view,                         
+    belief = CostBelief(
+        7, view,
         absolute = True,
         num_size_buckets = num_buckets,
         num_color_buckets = num_buckets,
