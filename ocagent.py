@@ -84,10 +84,19 @@ class Agent:
 
     # necessary functions for onecommon
     def feed_context(self, ctx):
-        pass
+        self.ctx = ctx
+        self.past = []
 
-    def read(self):
-        pass
+    def read(self, input_words):
+        # process input
+        text = " ".join(input_words)
+        past = self.past
+        ctx = self.ctx
+        preds, past, extra = self.resolve_reference(text, past, ctx)
+        # TODO: management of past stack
+        # should only keep around past if within line of questioning, eg same dots
+        # update state
+        self.past = past
 
     def write(self):
         pass
