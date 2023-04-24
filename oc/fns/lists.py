@@ -1,5 +1,5 @@
 import numpy as np
-from fns.spatial import get_minimum_radius
+from oc.fns.spatial import get_minimum_radius
 
 def add(x, y):
     if isinstance(x, np.ndarray) and isinstance(y, np.ndarray):

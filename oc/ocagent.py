@@ -5,22 +5,12 @@ import re
 import openai
 import ast
 
-from features import size_map5, color_map5, size_color_descriptions, process_ctx, render
+from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
-from prompt import HEADER, Understand, Execute, Generate, Reformat
-from prompt import Parse, ParseUnderstand
-from prompt import GenerateScxy, GenerateTemplate
-from prompt import UnderstandMc
-
-
-@dataclass
-class State:
-    memory: list[tuple[str, str]]
-    human_input: str = ""
-
-    def push(self, response: str) -> "State":
-        memory = self.memory if len(self.memory) < MEMORY else self.memory[1:]
-        return State(memory + [(self.human_input, response)])
+from oc.prompt import HEADER, Understand, Execute, Generate, Reformat
+from oc.prompt import Parse, ParseUnderstand
+from oc.prompt import GenerateScxy, GenerateTemplate
+from oc.prompt import UnderstandMc
 
 
 class Agent:
@@ -117,6 +107,7 @@ class Agent:
         #print(text)
         return text
 
+    # RESOLUTION
     def resolve_reference(self, text, past, view, info=None):
         # dispatch
         if self.refres == "codegen":
@@ -224,10 +215,13 @@ class Agent:
         )
 
 
+    # PLANNING
     def plan(self, past, view, info=None):
         import pdb; pdb.set_trace()
         raise NotImplementedError
 
+
+    # GENERATION
     def generate_text(self, plan, past, view, info=None):
         if self.gen == "sc":
             return self.generate_text_sc(plan, past, view, info)

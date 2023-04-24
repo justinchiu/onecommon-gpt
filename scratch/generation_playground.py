@@ -7,30 +7,29 @@ import torch
 
 from nltk import word_tokenize
 
-from ocdata import get_data
-from ocagent import Agent
-from features import size_map3, color_map3, size_map5, color_map5
-from features import size_color_descriptions, process_ctx, render
+from oc.ocdata import get_data
+from oc.ocagent import Agent
+from oc.gen.features import size_map3, color_map3, size_map5, color_map5
+from oc.gen.features import size_color_descriptions, process_ctx, render
 
-sys.path.append(Path("./fns/").resolve())
-from fns.shapes import is_triangle, is_line, is_square
-from fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
-from fns.spatial import get_top, get_bottom, get_right, get_left
-from fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
-from fns.spatial import get_middle
-from fns.spatial import get_distance, get_minimum_radius
-from fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
-from fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
-from fns.iterators import get1idxs, get2idxs, get3idxs, getsets
-from fns.lists import add
+from oc.fns.shapes import is_triangle, is_line, is_square
+from oc.fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from oc.fns.spatial import get_top, get_bottom, get_right, get_left
+from oc.fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from oc.fns.spatial import get_middle
+from oc.fns.spatial import get_distance, get_minimum_radius
+from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from oc.fns.lists import add
 
 from functools import partial
 from itertools import permutations                        
 
-from eval import Recall
+from oc.eval import Recall
 
 # fried arguments
-oc_dir = Path("../onecommon/aaai2020/experiments")
+oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"

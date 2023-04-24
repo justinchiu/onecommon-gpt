@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.patches as patches
 import matplotlib.lines as lines
 
-from template import (
+from oc.gen.template import (
     mention_1,
     mention_2,
     mention_2a,

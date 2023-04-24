@@ -3,7 +3,7 @@ from shapely import Point, MultiPoint
 import numpy as np
 import math
 
-from fns.iterators import getcombs
+from oc.fns.iterators import getcombs
 
 def is_nearest(x, ctx):
     raise NotImplementedError
