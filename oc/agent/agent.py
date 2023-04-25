@@ -35,16 +35,10 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
             use_diameter = False,
             use_contiguity = False,
         )
+        self.belief_dist = self.belief.prior
 
 
     def choose(self):
         import pdb; pdb.set_trace()
         pass
-
-
-
-    # PLANNING
-    def plan(self, past, view, info=None):
-        import pdb; pdb.set_trace()
-        raise NotImplementedError
 

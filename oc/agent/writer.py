@@ -1,9 +1,23 @@
 import numpy as np
+import itertools
 
 from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
 
 from oc.prompt import Generate
 from oc.prompt import GenerateScxy, GenerateTemplate
+
+from oc.fns.shapes import is_triangle, is_line, is_square
+from oc.fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from oc.fns.spatial import get_top, get_bottom, get_right, get_left
+from oc.fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from oc.fns.spatial import get_middle
+from oc.fns.spatial import get_distance, get_minimum_radius
+from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from oc.fns.lists import add
+
+
 
 
 class WriterMixin:
@@ -118,11 +132,49 @@ class WriterMixin:
         print(desc)
         return desc, past + [desc], None
 
+    # for rule-based generation with simple coref
     def generate_new_config(self, plan, past, view, info=None):
-        pass
+        return self.generate_text_template_only(plan, past, view, info)
 
     def generate_followup(self, plan, past, view, info=None):
-        pass
+        newdot = 1
+        olddots = 2
+
+        right = all(is_right(newdot, dot, ctx) for dot in olddots)
+        left = all(is_left(newdot, dot, ctx) for dot in olddots)
+        above = all(is_above(newdot, dot, ctx) for dot in olddots)
+        below = all(is_below(newdot, dot, ctx) for dot in olddots)
+        middle = is_middle(newdot, olddots, ctx)
+
+        if right and above:
+            position_desc = "to the right and above"
+        elif right and below:
+            position_desc = "to the right and below"
+        elif right:
+            position_desc = "right of"
+        elif left and above:
+            position_desc = "to the left and above"
+        elif left and below:
+            position_desc = "to the left and below"
+        elif left:
+            position_desc = "left of"
+        elif above:
+            position_desc = "above"
+        elif below:
+            position_desc = "below"
+        elif middle:
+            position_desc = "in the middle of"
+        else:
+            import pdb; pdb.set_trace()
+            raise ValueError
+
+        dots2 = size_color[newdot]
+        descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
+
+        #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
+        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
+
 
     def generate_select(self, pan, past, view, info=None):
         pass
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
