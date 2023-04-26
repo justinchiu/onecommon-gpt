@@ -186,7 +186,11 @@ class WriterMixin:
             import pdb; pdb.set_trace()
             raise ValueError
 
-        size_color = process_ctx(ctx)
+        size_color = process_ctx(
+            self.ctx,
+            num_size_buckets=self.num_buckets,
+            num_color_buckets=self.num_buckets,
+        )
         dots2 = size_color[newdot]
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
