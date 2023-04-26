@@ -52,10 +52,6 @@ class ReaderMixin:
         past = self.past
         ctx = self.ctx
         preds, past, extra = self.resolve_reference(text, past, ctx)
-        # TODO: management of past stack
-        # should only keep around past if within line of questioning, eg same dots
-        # update state
-        self.past = past
 
         parsed_text = extra["parsedtext"]
         # confirmation / deny / none
@@ -67,6 +63,15 @@ class ReaderMixin:
             self.update_belief(0)
         elif confirmation is None:
             pass
+
+        # TODO: wrap state update in function
+        # TODO: management of past stack
+        # should only keep around past if within line of questioning, eg same dots
+        # update state??
+        self.past = past
+        self.preds.append(preds)
+        self.confirmations.append(confirmation)
+
 
     # helper functions
     def reformat_text(self, text, usespeaker=True):

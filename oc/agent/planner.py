@@ -1,20 +1,35 @@
 import numpy as np
+import itertools
 
 from oc.agent.utils import Plan
 
+from oc.fns.spatial import get_minimum_radius
+
 def new_and_old_dots(plan, history):
     if len(history) > 0:
-        import pdb; pdb.set_trace()
         plans = [x.plan for x in history]
     else:
-        return plan, np.zeros(7, dtype=bool)
+        return plan, None
+
+def idxs_to_dots(plan_idxs, plan_idxs2, view):
+    dotsets = [set(x) for x in plan_idxs]
+    dotsets2 = [set(x) for x in plan_idxs2]
+    setpairs = list(itertools.product(dotsets, dotsets2))
+    smalldiffs = [(x,y) for x,y in setpairs if len(y.difference(x)) == 1]
+    radii = [get_minimum_radius(list(y), view) for x,y in smalldiffs]
+    smallest_idx = np.argmin(radii)
+    olddotset = smalldiffs[smallest_idx][0]
+    newdotset = smalldiffs[smallest_idx][1]
+    newdot = list(newdotset.difference(olddotset))
+    olddots = list(olddotset)
+    newdots = list(newdotset)
+    return newdots, olddots
 
 class PlannerMixin:
 
     def update_belief(self, response):
-        import pdb; pdb.set_trace()
-        plan = self.plans[-1]
-        self.belief_dist = belief.posterior(
+        plan = self.plans[-1].dots
+        self.belief_dist = self.belief.posterior(
             self.belief_dist,
             plan.astype(int),
             response,
@@ -22,41 +37,64 @@ class PlannerMixin:
 
     def plan(self):
         # was the previous plan confirmed or denied?
-        previous_plan_confirmed = True
+        if len(self.confirmations) == 0:
+            previous_plan_confirmed = False
+        else:
+            previous_plan_confirmed = self.confirmations[-1]
+
         plan = (
-            self.plan_followup(past, view, info)
-            if previous_plan_confirmed
-            else self.plan_start(past, view, info)
+            self.plan_followup(self.belief_dist, self.plans)
+            if previous_plan_confirmed is True or previous_plan_confirmed is None
+            else self.plan_start(self.belief_dist, self.plans)
         )
         self.plans.append(plan)
         return plan
 
-    def plan_start(self):
-        EdHs = self.belief.compute_EdHs(self.belief_dist)
+    def plan_start(self, belief_dist, plans):
+        EdHs = self.belief.compute_EdHs(belief_dist)
         planbool = self.belief.configs[EdHs.argmax()].astype(bool)
+
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
-        new, old = new_and_old_dots(planbool, self.plans)
+
+        new, old = new_and_old_dots(planbool, plans)
+
         plan = Plan(
             dots = planbool,
             newdots = new,
             olddots = old,
+            plan_idxs = plan_idxs,
         )
         return plan
 
-    def plan_followup(self):
-        EdHs = self.belief.compute_EdHs(self.belief_dist)
+    def plan_followup(self, belief_dist, plans):
+        EdHs = self.belief.compute_EdHs(belief_dist)
+
+        # TODO:assume a 1st order chain for now
+        dots = plans[-1].dots
         # mask out plans that don't have the desired configs
-        EdHs_mask = [
-            any(
-                set(idxs).issubset(set(config.nonzero()[0]))
-                for idxs in plan_idxs
-            )
-            for config in belief.configs
-        ]
+        EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         EdHs *= EdHs_mask
-        planbool2 = belief.configs[EdHs.argmax()].astype(bool)
+        planbool = self.belief.configs[EdHs.argmax()].astype(bool)
 
-        feats2 = belief.get_feats(planbool2)
-        plan_idxs2 = belief.resolve_utt(*feats2)
+        feats = self.belief.get_feats(planbool)
+        plan_idxs = self.belief.resolve_utt(*feats)
 
+        new_idxs, old_idxs = idxs_to_dots(self.plans[-1].plan_idxs, plan_idxs, self.ctx)
+
+        # disambiguated
+        planbool2 = np.zeros(7, dtype=bool)
+        planbool2[new_idxs] = 1
+
+        old = np.zeros(7, dtype=bool)
+        old[old_idxs] = 1
+
+        new = planbool2 & ~old
+
+        plan = Plan(
+            dots = planbool2,
+            newdots = new,
+            olddots = old,
+            plan_idxs = plan_idxs,
+        )
+        return plan

@@ -6,5 +6,4 @@ class Plan:
     dots: np.ndarray
     newdots: np.ndarray
     olddots: np.ndarray
-
-
+    plan_idxs: np.ndarray

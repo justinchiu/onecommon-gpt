@@ -150,7 +150,7 @@ for example in data:
         #utt = out[0]
 
         utt = agent.write()
-        import pdb; pdb.set_trace()
+        plan1 = agent.plans[-1]
 
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
         partner.read(
@@ -165,7 +165,7 @@ for example in data:
         fried_pred = partner.partner_ref_preds[-1][:,0]
         fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()
 
-        preds, past, extra = agent.resolve_reference(utt, past, view)
+        preds = agent.preds[-1]
         radii = [get_minimum_radius(pred.nonzero()[0], view) for pred in preds]
         # sort by radii
         sorted_preds = preds[np.argsort(radii)]
@@ -181,83 +181,12 @@ for example in data:
         gpt_successes += gpt_rt_success
 
         agent.read(["Them:", "Yes"])
-        import pdb; pdb.set_trace()
-        plan2 = agent.plan_followup(agent.plans, view)
 
-        posterior = belief.posterior(prior, planbool.astype(int), 1)
-        EdHs = belief.compute_EdHs(posterior)
-        # mask out plans that don't have the desired configs
-        EdHs_mask = [
-            any(
-                set(idxs).issubset(set(config.nonzero()[0]))
-                for idxs in plan_idxs
-            )
-            for config in belief.configs
-        ]
-        EdHs *= EdHs_mask
-        planbool2 = belief.configs[EdHs.argmax()].astype(bool)
-
-        feats2 = belief.get_feats(planbool2)
-        plan_idxs2 = belief.resolve_utt(*feats2)
-
-        print(plan_idxs)
-        print(plan_idxs2)
-        dotsets = [set(x) for x in plan_idxs]
-        dotsets2 = [set(x) for x in plan_idxs2]
-        import itertools
-        setpairs = list(itertools.product(dotsets, dotsets2))
-        smalldiffs = [(x,y) for x,y in setpairs if len(y.difference(x)) == 1]
-        radii = [get_minimum_radius(list(y), view) for x,y in smalldiffs]
-        smallest_idx = np.argmin(radii)
-        olddotset = smalldiffs[smallest_idx][0]
-        newdotset = smalldiffs[smallest_idx][1]
-        newdot = list(newdotset.difference(olddotset))
-        olddots = list(olddotset)
-        newdots = list(newdotset)
-
+        utt2 = agent.write()
+        plan2 = agent.plans[-1]
         import pdb; pdb.set_trace()
 
-        planbool2 = np.zeros(7, dtype=bool)
-        planbool2[newdots] = 1
-
-        ctx = view
-        plan2 = [{"target": planbool2}]
-
-        right = all(is_right(newdot, dot, ctx) for dot in olddots)
-        left = all(is_left(newdot, dot, ctx) for dot in olddots)
-        above = all(is_above(newdot, dot, ctx) for dot in olddots)
-        below = all(is_below(newdot, dot, ctx) for dot in olddots)
-        middle = is_middle(newdot, olddots, ctx)
-
-        if right and above:
-            position_desc = "to the right and above"
-        elif right and below:
-            position_desc = "to the right and below"
-        elif right:
-            position_desc = "right of"
-        elif left and above:
-            position_desc = "to the left and above"
-        elif left and below:
-            position_desc = "to the left and below"
-        elif left:
-            position_desc = "left of"
-        elif above:
-            position_desc = "above"
-        elif below:
-            position_desc = "below"
-        elif middle:
-            position_desc = "in the middle of"
-        else:
-            import pdb; pdb.set_trace()
-            raise ValueError
-
-        dots2 = size_color[newdot]
-        descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
-
-        #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
-        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
-
-        words = word_tokenize(newutt.lower().strip()) + ['<eos>']
+        words = word_tokenize(utt2.lower().strip()) + ['<eos>']
         partner.read(
             words,
             detect_markables=True,
@@ -270,7 +199,7 @@ for example in data:
         fried_pred = partner.partner_ref_preds[-1][:,0]
         fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
 
-        preds, past, extra = agent.resolve_reference(newutt, past, view)
+        preds = agent.preds[-1]
         radii = [get_minimum_radius(pred.nonzero()[0], ctx) for pred in preds]
         # sort by radii
         sorted_preds = preds[np.argsort(radii)]
@@ -288,6 +217,8 @@ for example in data:
             print(preds)
             #print(metric.compute(references=[[planbool2]], predictions=preds))
             import pdb; pdb.set_trace()
+
+        agent.read(["Them:", "Yes"])
 
         # selection prompt
         posterior2 = belief.posterior(posterior, planbool2.astype(int), 1)

@@ -1,7 +1,8 @@
 import numpy as np
 import itertools
 
-from oc.gen.features import size_map5, color_map5, size_color_descriptions, process_ctx, render
+from oc.gen.features import size_map3, color_map3, size_map5, color_map5
+from oc.gen.features import size_color_descriptions, process_ctx, render
 
 from oc.prompt import Generate
 from oc.prompt import GenerateScxy, GenerateTemplate
@@ -45,7 +46,16 @@ class WriterMixin:
 
     def write(self):
         plan = self.plan()
-        text, past, extra = self.generate_text(plan, self.past, self.ctx)
+        text, _, _ = self.generate_text(plan, self.past, self.ctx)
+
+        youtext = f"You: {text}"
+        preds, past, extra = self.resolve_reference(youtext, self.past, self.ctx)
+
+        # TODO: wrap state update in function
+        self.past = past
+        self.preds.append(preds)
+        self.confirmations.append(None)
+
         return text
 
     # GENERATION
@@ -57,7 +67,11 @@ class WriterMixin:
         elif self.gen == "template":
             return self.generate_text_template(plan, past, view, info)
         elif self.gen == "templateonly":
-            return self.generate_text_template_only(plan, past, view, info)
+            if plan.olddots is None:
+                return self.generate_new_config(plan, past, view, info)
+            else:
+                return self.generate_followup(plan, past, view, info)
+            #return self.generate_text_template_only(plan, past, view, info)
         else:
             raise ValueError
 
@@ -139,8 +153,10 @@ class WriterMixin:
         return self.generate_text_template_only(plan, past, view, info)
 
     def generate_followup(self, plan, past, view, info=None):
-        newdot = 1
-        olddots = 2
+        ctx = self.ctx
+
+        newdot = plan.newdots.nonzero()[0].item()
+        olddots = list(plan.olddots.nonzero()[0])
 
         right = all(is_right(newdot, dot, ctx) for dot in olddots)
         left = all(is_left(newdot, dot, ctx) for dot in olddots)
@@ -170,6 +186,7 @@ class WriterMixin:
             import pdb; pdb.set_trace()
             raise ValueError
 
+        size_color = process_ctx(ctx)
         dots2 = size_color[newdot]
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
