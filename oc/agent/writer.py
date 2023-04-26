@@ -191,13 +191,12 @@ class WriterMixin:
             num_size_buckets=self.num_buckets,
             num_color_buckets=self.num_buckets,
         )
-        dots2 = size_color[newdot]
+        dots2 = size_color[[newdot]]
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
-        #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
-        newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
+        out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
 
-        return newutt
+        return out, past + [out], None
 
 
     def generate_select(self, pan, past, view, info=None):
