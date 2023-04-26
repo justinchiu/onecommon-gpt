@@ -48,8 +48,3 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         )
         self.belief_dist = self.belief.prior
 
-
-    def choose(self):
-        import pdb; pdb.set_trace()
-        pass
-
