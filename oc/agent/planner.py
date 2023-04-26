@@ -98,3 +98,7 @@ class PlannerMixin:
             plan_idxs = plan_idxs,
         )
         return plan
+
+    def choose(self):
+        pass
+
