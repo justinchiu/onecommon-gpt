@@ -46,15 +46,17 @@ class WriterMixin:
 
     def write(self):
         plan = self.plan()
-        text, _, _ = self.generate_text(plan, self.past, self.ctx)
+        text, _, write_extra = self.generate_text(plan, self.past, self.ctx)
 
         youtext = f"You: {text}"
-        preds, past, extra = self.resolve_reference(youtext, self.past, self.ctx)
+        preds, past, read_extra = self.resolve_reference(youtext, self.past, self.ctx)
 
         # TODO: wrap state update in function
         self.past = past
         self.preds.append(preds)
         self.confirmations.append(None)
+        self.write_extras.append(write_extra)
+        self.read_extras.append(read_extra)
 
         return text
 
@@ -196,9 +198,12 @@ class WriterMixin:
 
         out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
 
-        return out, past + [out], None
+        return out, past + [out], {"desc": descs, "position_desc": position_desc}
 
 
-    def generate_select(self, pan, past, view, info=None):
-        pass
+    def generate_select(self, plan, past, view, info=None):
+        # TODO: this is probably going to fail. worry about it later
+        descs = agent.write_extras[-2]["desc"]
+        position_desc = agent.write_extras[-2]["position_desc"]
         selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
+        return selectutt, past + [selectutt], None

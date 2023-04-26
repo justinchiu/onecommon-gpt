@@ -30,10 +30,13 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
     def feed_context(self, ctx, belief_constructor):
         self.ctx = np.array(ctx).reshape((7,4))
 
+        # dialogue state
         self.past = []
         self.plans = []
         self.preds = []
         self.confirmations = []
+        self.write_extras = []
+        self.read_extras = []
 
         self.belief = CostBelief(
             7, ctx,

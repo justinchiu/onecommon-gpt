@@ -31,7 +31,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -173,7 +173,7 @@ for example in data:
 
         plans.append([plan1.dots])
         fried_preds.append(fried_pred)
-        gpt_preds.append(sorted_preds)
+        gpt_preds.append(preds)
 
         assert (preds == sorted_preds).all()
 
@@ -184,7 +184,6 @@ for example in data:
 
         utt2 = agent.write()
         plan2 = agent.plans[-1]
-        import pdb; pdb.set_trace()
 
         words = word_tokenize(utt2.lower().strip()) + ['<eos>']
         partner.read(
@@ -193,27 +192,29 @@ for example in data:
             dots_mentioned_num_markables = torch.tensor([0], device=device, dtype=torch.long),
         )
 
-        print(planbool2)
+        print(plan2.dots)
         print(partner.partner_ref_preds)
 
         fried_pred = partner.partner_ref_preds[-1][:,0]
-        fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
+        fried_rt_success = (plan2.dots == fried_pred.any(0).cpu().numpy()).all()
 
         preds = agent.preds[-1]
-        radii = [get_minimum_radius(pred.nonzero()[0], ctx) for pred in preds]
+        radii = [get_minimum_radius(pred.nonzero()[0], view) for pred in preds]
         # sort by radii
         sorted_preds = preds[np.argsort(radii)]
-        gpt_rt_success = (planbool2 == preds).all(1).any()
+        gpt_rt_success = (plan2.dots == preds).all(1).any()
 
-        plans2.append([planbool2])
+        assert (preds == sorted_preds).all()
+
+        plans2.append([plan2.dots])
         fried_preds2.append(fried_pred)
-        gpt_preds2.append(sorted_preds)
+        gpt_preds2.append(preds)
 
         fried_successes2 += fried_rt_success
         gpt_successes2 += gpt_rt_success
-        if len(preds)> 0 and not gpt_rt_success:
+        if len(preds) > 0 and not gpt_rt_success:
             metric = Recall("multilabel")
-            print(planbool2)
+            print(plan2.dots)
             print(preds)
             #print(metric.compute(references=[[planbool2]], predictions=preds))
             import pdb; pdb.set_trace()
@@ -221,15 +222,14 @@ for example in data:
         agent.read(["Them:", "Yes"])
 
         # selection prompt
-        posterior2 = belief.posterior(posterior, planbool2.astype(int), 1)
-
         # just select the new last one mentioned
-
+        descs = agent.write_extras[-2]["desc"]
+        position_desc = agent.write_extras[-2]["position_desc"]
         selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
-        sel_preds, past, extra = agent.resolve_reference(selectutt, past, view)
+        sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
         # sort sel_preds by minimum radius of PREVIOUS plans
         if len(sel_preds) > 0:
-            gpt_sel_rt_success = sel_preds[np.argmin(radii)].nonzero()[0].item() == newdot[0]
+            gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == plan2.newdots.nonzero()[0].item()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()

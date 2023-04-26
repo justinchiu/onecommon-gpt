@@ -71,6 +71,8 @@ class ReaderMixin:
         self.past = past
         self.preds.append(preds)
         self.confirmations.append(confirmation)
+        self.write_extras.append(None)
+        self.read_extras.append(extra)
 
 
     # helper functions
