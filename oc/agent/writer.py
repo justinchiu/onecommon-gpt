@@ -18,8 +18,6 @@ from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
 from oc.fns.lists import add
 
 
-
-
 class WriterMixin:
     def __init__(self, backend, refres, gen, model):
         self.gen = gen
@@ -46,8 +44,9 @@ class WriterMixin:
         super(WriterMixin, self).__init__()
 
     def write(self):
-        import pdb; pdb.set_trace()
-        pass
+        plan = self.plan()
+        text, past, extra = self.generate_text(plan, self.past, self.ctx)
+        return text
 
     # GENERATION
     def generate_text(self, plan, past, view, info=None):
@@ -63,6 +62,7 @@ class WriterMixin:
             raise ValueError
 
     def generate_text_sc(self, plan, past, view, info=None):
+        raise NotImplementedError
         # process plan
         refs = [r["target"] for r in plan]
         size_color = process_ctx(view)
@@ -81,6 +81,7 @@ class WriterMixin:
         return out, past + [out], None
 
     def generate_text_scxy(self, plan, past, view, info=None):
+        raise NotImplementedError
         # process plan
         refs = [r["target"] for r in plan]
         plan = np.array(refs).any(0)
@@ -103,6 +104,7 @@ class WriterMixin:
         return out, past + [out], None
 
     def generate_text_template(self, plan, past, view, info=None):
+        raise NotImplementedError
         if len(plan) == 0:
             # no references...
             return "okay", past + ["okay"]
@@ -121,15 +123,15 @@ class WriterMixin:
         return out, past + [out], None
 
     def generate_text_template_only(self, plan, past, view, info=None):
-        if len(plan) == 0:
+        if plan.dots.sum() == 0:
             # no references...
             return "okay", past + ["okay"]
 
         # process plan
-        refs = [r["target"] for r in plan]
-        plan = np.array(refs).any(0)
-        desc = render(plan, view, num_buckets=3)
+        desc = render(plan.dots, view, num_buckets=3)
         print(desc)
+        # not sure if those last two are needed
+        # TODO: only return desc, since plan history is stored in agent.plan
         return desc, past + [desc], None
 
     # for rule-based generation with simple coref
@@ -173,6 +175,8 @@ class WriterMixin:
 
         #newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} that?"
         newutt = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
+
+        return newutt
 
 
     def generate_select(self, pan, past, view, info=None):

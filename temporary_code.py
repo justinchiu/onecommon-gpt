@@ -1,6 +1,4 @@
 
-# ('S_4nr2PP0TgWa60n6W', 'C_643703029c0c4c1d9a5005ad8639a328')
-
 import sys
 sys.path.append("fns")
 
@@ -22,7 +20,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.645, -0.33, 0.3333333333333333, -0.88], [0.5, 0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, -0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, -0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, -0.585, -1.0, -0.3466666666666667], [-0.59, -0.04, 0.0, -0.013333333333333334], [-0.245, 0.855, -0.6666666666666666, -0.37333333333333335]])
+    ctx = np.array([[0.125, -0.815, -1.0, -0.8933333333333333], [-0.21, 0.585, 0.3333333333333333, -0.9733333333333334], [0.645, 0.185, -1.0, -0.96], [0.305, 0.645, -1.0, -0.9733333333333334], [-0.705, 0.015, 0.0, 0.84], [0.345, -0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, 0.165, 0.6666666666666666, 0.8]])
     return ctx
 
 
@@ -384,31 +382,11 @@ state = noop(state)
 ctx = get_ctx()
 state = set()
 
-# You: Do you have a large black dot upper right to most of the others?
-def turn(state):
-    # New question.
-    results = set()
-    orderedresults = []
-    parents = []
-    for config in getsets(idxs, 1):
-        for x, in permutations(config):
-            check_x_large = is_large(x, ctx)
-            check_x_dark = is_dark(x, ctx)
-            check_x_upper_right = is_above(x, None, ctx) and is_right(x, None, ctx)
-            check_x_far_from_others = all([not all_close([x, dot], ctx) for dot in idxs if dot != x])
-            if (
-                check_x_large
-                and check_x_dark
-                and check_x_upper_right
-                and check_x_far_from_others
-            ):
-                dots = frozenset([x])
-                if dots not in results:
-                    results.add(dots)
-                    orderedresults.append(dots)
-                    parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
-state = turn(state)
+# Them: Yes.
+def noop(state):
+    # No op.
+    return state
+state = noop(state)
 
 
 print([tuple(x) for x in state])

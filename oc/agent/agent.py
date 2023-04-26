@@ -14,6 +14,9 @@ from oc.agent.reader import ReaderMixin
 from oc.agent.planner import PlannerMixin
 from oc.agent.writer import WriterMixin
 
+from oc.belief.belief import CostBelief
+
+
 class Agent(ReaderMixin, PlannerMixin, WriterMixin):
     def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
         # number of buckets for size and color
@@ -24,9 +27,10 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         super().__init__(backend, refres, gen, model)
 
     # necessary functions for onecommon
-    def feed_context(self, ctx):
-        self.ctx = ctx
+    def feed_context(self, ctx, belief_constructor):
+        self.ctx = np.array(ctx).reshape((7,4))
         self.past = []
+        self.plans = []
         self.belief = CostBelief(
             7, ctx,
             absolute = True,

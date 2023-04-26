@@ -1,6 +1,6 @@
 import numpy as np
 
-from oc.prompt import HEADER, Understand, Execute, Reformat
+from oc.prompt import HEADER, Understand, Execute, Reformat, Confirm
 from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import UnderstandMc
 
@@ -12,6 +12,11 @@ class ReaderMixin:
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo",
             max_tokens = 128,
+        ))
+
+        self.confirm = Confirm(backend.OpenAIChat(
+            model = "gpt-3.5-turbo",
+            max_tokens = 5,
         ))
 
         if refres == "codegen":
@@ -51,7 +56,17 @@ class ReaderMixin:
         # should only keep around past if within line of questioning, eg same dots
         # update state
         self.past = past
-        import pdb; pdb.set_trace()
+
+        parsed_text = extra["parsedtext"]
+        # confirmation / deny / none
+        confirmation = self.confirm(dict(text=parsed_text))
+
+        if confirmation is True:
+            self.update_belief(1)
+        elif confirmation is False:
+            self.update_belief(0)
+        elif confirmation is None:
+            pass
 
     # helper functions
     def reformat_text(self, text, usespeaker=True):

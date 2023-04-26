@@ -9,6 +9,7 @@ from nltk import word_tokenize
 
 from oc.ocdata import get_data
 from oc.agent.agent import Agent
+from oc.belief.belief import CostBelief
 from oc.gen.features import size_map3, color_map3, size_map5, color_map5
 from oc.gen.features import size_color_descriptions, process_ctx, render
 
@@ -30,7 +31,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -41,7 +42,6 @@ print(oc_dir.resolve())
 from engines.beliefs import BlankBeliefConstructor
 from agent import RnnAgent
 import utils
-from cog_belief import CostBelief
 
 markable_detector = utils.load_model(detector_file, prefix_dir=None, map_location="cpu")
 markable_detector.eval()
@@ -137,42 +137,21 @@ for example in data:
 
     belief_constructor = BlankBeliefConstructor()
     partner.feed_context(view.flatten().tolist(), belief_constructor)
-
-    belief = CostBelief(
-        7, view,
-        absolute = True,
-        num_size_buckets = num_buckets,
-        num_color_buckets = num_buckets,
-        use_diameter = False, 
-        use_contiguity = False,
-    )
-    prior = belief.prior
-    EdHs = belief.compute_EdHs(prior)
-    planbool = belief.configs[EdHs.argmax()].astype(bool)
-    feats = belief.get_feats(planbool)
-    plan_idxs = belief.resolve_utt(*feats)
-
-    plan = [{"target": planbool}]
-
     past = []
-
-    print("plan")
-    print([id for present, id in zip(planbool, dot_ids) if present])
-
-    size_color = process_ctx(view, num_size_buckets=num_buckets, num_color_buckets=num_buckets)
-    dots = size_color[planbool]
-    descs = size_color_descriptions(dots, size_map=size_map3, color_map=color_map3)
-    xy = view[planbool,:2]
-
-    descstring = []
-    for (size, color), (x,y) in zip(descs, xy):
-        descstring.append(f"* A {size} and {color} dot (x={x:.2f},y={y:.2f})")
 
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         agent = Agent(backend, "codegen", "templateonly", "gpt-4")
-        out = agent.generate_text(plan, past, view)
-        utt = out[0]
+
+        agent.feed_context(view.flatten().tolist(), belief_constructor)
+
+        #plan1 = agent.plan_start(agent.plans, view)
+        #out = agent.generate_text(plan1, past, view)
+        #utt = out[0]
+
+        utt = agent.write()
+        import pdb; pdb.set_trace()
+
         words = word_tokenize(utt.lower().strip()) + ['<eos>']
         partner.read(
             words,
@@ -180,24 +159,30 @@ for example in data:
             dots_mentioned_num_markables = torch.tensor([0], device=device, dtype=torch.long),
         )
 
-        print(planbool)
+        print(plan1)
         print(partner.partner_ref_preds)
 
         fried_pred = partner.partner_ref_preds[-1][:,0]
-        fried_rt_success = (planbool == fried_pred.any(0).cpu().numpy()).all()
+        fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()
 
         preds, past, extra = agent.resolve_reference(utt, past, view)
         radii = [get_minimum_radius(pred.nonzero()[0], view) for pred in preds]
         # sort by radii
         sorted_preds = preds[np.argsort(radii)]
-        gpt_rt_success = (planbool == preds).all(1).any()
+        gpt_rt_success = (plan1.dots == preds).all(1).any()
 
-        plans.append([planbool])
+        plans.append([plan1.dots])
         fried_preds.append(fried_pred)
         gpt_preds.append(sorted_preds)
 
+        assert (preds == sorted_preds).all()
+
         fried_successes += fried_rt_success
         gpt_successes += gpt_rt_success
+
+        agent.read(["Them:", "Yes"])
+        import pdb; pdb.set_trace()
+        plan2 = agent.plan_followup(agent.plans, view)
 
         posterior = belief.posterior(prior, planbool.astype(int), 1)
         EdHs = belief.compute_EdHs(posterior)
@@ -229,6 +214,8 @@ for example in data:
         newdot = list(newdotset.difference(olddotset))
         olddots = list(olddotset)
         newdots = list(newdotset)
+
+        import pdb; pdb.set_trace()
 
         planbool2 = np.zeros(7, dtype=bool)
         planbool2[newdots] = 1

@@ -884,24 +884,6 @@ class OrBelief(OrAndBelief):
         return np.array((p_r0, p_r1))
 
 
-import math
-
-from enum import Enum
-
-import itertools
-import numpy as np
-from scipy.special import logsumexp as lse
-
-from itertools import combinations, chain
-from scipy.special import comb
-
-from scipy.spatial import ConvexHull, Delaunay
-
-from belief_utils import comb_index, entropy, marginal_entropy
-
-from belief import process_ctx, Belief, OrBelief, PriorType
-
-
 class CostBelief(OrBelief):
     """
     Or model for response modeling.

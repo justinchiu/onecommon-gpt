@@ -69,6 +69,21 @@ class Understand(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "understand4.j2")
     stop_templates = ["# End.", "# New."]
 
+class Confirm(TemplatePrompt[str]):
+    template_file = str(PROMPT_DIR / "confirm.j2")
+    stop_templates = ["# End."]
+
+    def parse(self, output, input):
+        word = output.strip()
+        if word == "Yes":
+            return True
+        elif word == "No":
+            return False
+        elif word == "None":
+            return None
+        else:
+            raise ValueError
+
 class ParseUnderstand(TemplatePrompt[str]):
     #template_file = "prompts/parseunderstand.j2"
     template_file = str(PROMPT_DIR / "parseunderstand3.j2")
@@ -98,3 +113,4 @@ class GenerateTemplate(TemplatePrompt[str]):
 
 class GenerateMentions(TemplatePrompt[str]):
     tempalte_file = str(PROMPT_DIR / "generate_mention.j2")
+
