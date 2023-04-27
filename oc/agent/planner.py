@@ -27,12 +27,12 @@ def idxs_to_dots(plan_idxs, plan_idxs2, view):
 
 class PlannerMixin:
 
-    def update_belief(self, response):
+    def update_belief(self, dots, response):
         #plan = self.plans[-1].dots
-        plan = self.preds[-1][0]
+        #plan = self.preds[-1][0]
         self.belief_dist = self.belief.posterior(
             self.belief_dist,
-            plan.astype(int),
+            dots.astype(int),
             response,
         )
 
@@ -89,7 +89,10 @@ class PlannerMixin:
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        new_idxs, old_idxs = idxs_to_dots(self.plans[-1].plan_idxs, plan_idxs, self.ctx)
+        prev_feats = self.belief.get_feats(self.preds[-1][0])
+        prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
+
+        new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
 
         # disambiguated
         planbool2 = np.zeros(7, dtype=bool)
@@ -103,7 +106,7 @@ class PlannerMixin:
         if len(self.plans) == 0:
             confirmation = None
         else:
-            confirmation = self.plans[-1].sum() > 0
+            confirmation = self.preds[-1].sum() > 0
 
         plan = Plan(
             dots = planbool2,

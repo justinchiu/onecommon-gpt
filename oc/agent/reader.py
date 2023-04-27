@@ -54,15 +54,23 @@ class ReaderMixin:
         preds, past, extra = self.resolve_reference(text, past, ctx)
 
         parsed_text = extra["parsedtext"]
+
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
 
-        if confirmation is True:
-            self.update_belief(1)
-        elif confirmation is False:
-            self.update_belief(0)
-        elif confirmation is None:
-            pass
+        if len(self.plans) > 0:
+            prev_plan = self.plans[-1]
+            if confirmation is True:
+                self.update_belief(prev_plan, 1)
+            elif confirmation is False:
+                self.update_belief(prev_plan, 0)
+            elif confirmation is None:
+                pass
+
+        # if they asked a question and your answer is yes, update belief
+        # your answer is yes if preds is not empty
+        if preds.sum() > 0:
+            self.update_belief(preds[0], 1)
 
         # TODO: wrap state update in function
         # TODO: management of past stack
@@ -70,6 +78,7 @@ class ReaderMixin:
         # update state??
         self.past = past
         self.preds.append(preds)
+        self.plans.append(None)
         self.confirmations.append(confirmation)
         self.write_extras.append(None)
         self.read_extras.append(extra)
