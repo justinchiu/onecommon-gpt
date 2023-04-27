@@ -64,6 +64,7 @@ class PlannerMixin:
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
+            should_select = self.should_select(),
         )
         return plan
 
@@ -96,9 +97,15 @@ class PlannerMixin:
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
+            should_select = self.should_select(),
         )
         return plan
 
     def choose(self):
-        pass
+        import pdb; pdb.set_trace()
+        return self.preds[-1]
 
+    def should_select(self):
+        max_belief = self.belief.marginals(self.belief_dist).max()
+        select = max_belief > self.belief_threshold
+        return select

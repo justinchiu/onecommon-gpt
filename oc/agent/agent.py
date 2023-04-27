@@ -21,6 +21,7 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
     def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
         # number of buckets for size and color
         self.num_buckets = 3
+        self.belief_threshold = 0.8
         self.backend = backend
         self.model = model
 

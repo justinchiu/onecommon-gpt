@@ -7,3 +7,4 @@ class Plan:
     newdots: np.ndarray
     olddots: np.ndarray
     plan_idxs: np.ndarray
+    should_select: bool

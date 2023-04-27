@@ -69,6 +69,8 @@ class WriterMixin:
         elif self.gen == "template":
             return self.generate_text_template(plan, past, view, info)
         elif self.gen == "templateonly":
+            if plan.should_select:
+                return self.generate_select(plan, past, view, info)
             if plan.olddots is None:
                 return self.generate_new_config(plan, past, view, info)
             else:
@@ -205,5 +207,5 @@ class WriterMixin:
         # TODO: this is probably going to fail. worry about it later
         descs = agent.write_extras[-2]["desc"]
         position_desc = agent.write_extras[-2]["position_desc"]
-        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those."
         return selectutt, past + [selectutt], None
