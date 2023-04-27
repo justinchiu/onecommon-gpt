@@ -28,7 +28,8 @@ def idxs_to_dots(plan_idxs, plan_idxs2, view):
 class PlannerMixin:
 
     def update_belief(self, response):
-        plan = self.plans[-1].dots
+        #plan = self.plans[-1].dots
+        plan = self.preds[-1][0]
         self.belief_dist = self.belief.posterior(
             self.belief_dist,
             plan.astype(int),
