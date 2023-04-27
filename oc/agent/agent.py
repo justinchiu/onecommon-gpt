@@ -29,7 +29,7 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
 
     # necessary functions for onecommon
     def feed_context(self, ctx, belief_constructor):
-        self.ctx = np.array(ctx).reshape((7,4))
+        self.ctx = np.array(ctx, dtype=float).reshape((7,4))
 
         # dialogue state
         self.past = []
