@@ -79,7 +79,8 @@ class PlannerMixin:
         EdHs = self.belief.compute_EdHs(belief_dist)
 
         # TODO:assume a 1st order chain for now
-        dots = plans[-1].dots
+        #dots = plans[-1].dots
+        dots = self.preds[-1][0]
         # mask out plans that don't have the desired configs
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         EdHs *= EdHs_mask
