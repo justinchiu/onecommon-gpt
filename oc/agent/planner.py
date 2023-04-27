@@ -59,12 +59,18 @@ class PlannerMixin:
 
         new, old = new_and_old_dots(planbool, plans)
 
+        if len(self.plans) == 0:
+            confirmation = None
+        else:
+            confirmation = self.plans[-1].sum() > 0
+
         plan = Plan(
             dots = planbool,
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
             should_select = self.should_select(),
+            confirmation = confirmation,
         )
         return plan
 
@@ -92,12 +98,18 @@ class PlannerMixin:
 
         new = planbool2 & ~old
 
+        if len(self.plans) == 0:
+            confirmation = None
+        else:
+            confirmation = self.plans[-1].sum() > 0
+
         plan = Plan(
             dots = planbool2,
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
             should_select = self.should_select(),
+            confirmation = confirmation,
         )
         return plan
 

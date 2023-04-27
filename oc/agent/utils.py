@@ -8,3 +8,4 @@ class Plan:
     olddots: np.ndarray
     plan_idxs: np.ndarray
     should_select: bool
+    confirmation: bool | None

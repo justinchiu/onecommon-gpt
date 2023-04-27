@@ -150,6 +150,11 @@ class WriterMixin:
         print(desc)
         # not sure if those last two are needed
         # TODO: only return desc, since plan history is stored in agent.plan
+        
+        # insert confirmation
+        if plan.confirmation is False:
+            desc = f"No. {desc}"
+        
         return desc, past + [desc], None
 
     # for rule-based generation with simple coref
@@ -199,6 +204,8 @@ class WriterMixin:
         descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
         out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
+        if plan.confirmation is True:
+            out = f"Yes. {out}"
 
         return out, past + [out], {"desc": descs, "position_desc": position_desc}
 
