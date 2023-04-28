@@ -7,7 +7,11 @@ from oc.fns.spatial import get_minimum_radius
 
 def new_and_old_dots(plan, history):
     if len(history) > 0:
-        plans = [x.plan for x in history]
+        plans = [x.dots for x in history if x is not None]
+        if len(plans) == 0:
+            return plan, None
+        plans = np.any(plans, axis=0)
+        return plan & ~plans, plans
     else:
         return plan, None
 
@@ -41,11 +45,12 @@ class PlannerMixin:
         if len(self.confirmations) == 0:
             previous_plan_confirmed = False
         else:
-            previous_plan_confirmed = self.confirmations[-1]
+            #previous_plan_confirmed = self.confirmations[-1]
+            previous_plan_confirmed = self.preds[-1].sum() > 0
 
         if self.should_select():
             plan = self.plan_select(self.belief_dist, self.plans)
-        elif previous_plan_confirmed is True or previous_plan_confirmed is None:
+        elif previous_plan_confirmed == True or previous_plan_confirmed == None:
             plan = self.plan_followup(self.belief_dist, self.plans)
         else:
             plan = self.plan_start(self.belief_dist, self.plans)
@@ -64,7 +69,7 @@ class PlannerMixin:
         if len(self.plans) == 0:
             confirmation = None
         else:
-            confirmation = self.plans[-1].sum() > 0
+            confirmation = self.preds[-1].sum() > 0
 
         plan = Plan(
             dots = planbool,
