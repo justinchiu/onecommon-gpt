@@ -43,11 +43,12 @@ class PlannerMixin:
         else:
             previous_plan_confirmed = self.confirmations[-1]
 
-        plan = (
-            self.plan_followup(self.belief_dist, self.plans)
-            if previous_plan_confirmed is True or previous_plan_confirmed is None
-            else self.plan_start(self.belief_dist, self.plans)
-        )
+        if self.should_select():
+            plan = self.plan_select(self.belief_dist, self.plans)
+        elif previous_plan_confirmed is True or previous_plan_confirmed is None:
+            plan = self.plan_followup(self.belief_dist, self.plans)
+        else:
+            plan = self.plan_start(self.belief_dist, self.plans)
         self.plans.append(plan)
         return plan
 
@@ -70,7 +71,7 @@ class PlannerMixin:
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
-            should_select = self.should_select(),
+            should_select = False,
             confirmation = confirmation,
         )
         return plan
@@ -113,14 +114,46 @@ class PlannerMixin:
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
-            should_select = self.should_select(),
+            should_select = False,
+            confirmation = confirmation,
+        )
+        return plan
+
+    def plan_select(self, belief_dist, plans):
+        feats = self.belief.get_feats(self.preds[-1][0])
+        plan_idxs = self.belief.resolve_utt(*feats)
+
+        prev_feats = self.belief.get_feats(self.preds[-2][0])
+        prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
+
+        new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
+
+        # disambiguated
+        planbool = np.zeros(7, dtype=bool)
+        planbool[new_idxs] = 1
+
+        old = np.zeros(7, dtype=bool)
+        old[old_idxs] = 1
+
+        new = planbool & ~old
+
+        if len(self.plans) == 0:
+            confirmation = None
+        else:
+            confirmation = self.preds[-1].sum() > 0
+
+        plan = Plan(
+            dots = planbool,
+            newdots = new,
+            olddots = old,
+            plan_idxs = new_idxs,
+            should_select = True,
             confirmation = confirmation,
         )
         return plan
 
     def choose(self):
-        import pdb; pdb.set_trace()
-        return self.preds[-1]
+        return self.preds[-1][0].nonzero()[0].item()
 
     def should_select(self):
         max_belief = self.belief.marginals(self.belief_dist).max()

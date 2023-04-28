@@ -12,7 +12,9 @@ from oc.fns.spatial import get_distance, get_minimum_radius
 from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
 from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
 from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
-from oc.fns.lists import addRADIUS = .2
+from oc.fns.lists import add
+
+RADIUS = .2
 
 size_map3 = ["small", "medium", "large"]
 color_map3 = ["dark", "grey", "light"]

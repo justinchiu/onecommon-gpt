@@ -61,9 +61,9 @@ class ReaderMixin:
         if len(self.plans) > 0:
             prev_plan = self.plans[-1]
             if confirmation is True:
-                self.update_belief(prev_plan, 1)
+                self.update_belief(prev_plan.dots, 1)
             elif confirmation is False:
-                self.update_belief(prev_plan, 0)
+                self.update_belief(prev_plan.dots, 0)
             elif confirmation is None:
                 pass
 

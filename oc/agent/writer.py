@@ -3,6 +3,7 @@ import itertools
 
 from oc.gen.features import size_map3, color_map3, size_map5, color_map5
 from oc.gen.features import size_color_descriptions, process_ctx, render
+from oc.gen.features import new_vs_old_desc
 
 from oc.prompt import Generate
 from oc.prompt import GenerateScxy, GenerateTemplate
@@ -141,7 +142,7 @@ class WriterMixin:
         # TODO: only return desc, since plan history is stored in agent.plan
         
         # insert confirmation
-        if plan.confirmation is False:
+        if plan.confirmation == False:
             desc = f"No. {desc}"
         
         return desc, past + [desc], None
@@ -157,17 +158,16 @@ class WriterMixin:
         descs, position_desc = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
 
         out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
-        if plan.confirmation is True:
+        if plan.confirmation == True:
             out = f"Yes. {out}"
 
         return out, past + [out], {"desc": descs, "position_desc": position_desc}
 
 
     def generate_select(self, plan, past, view, info=None):
-        # TODO: this is probably going to fail. worry about it later
-        descs = agent.write_extras[-2]["desc"]
-        position_desc = agent.write_extras[-2]["position_desc"]
+        newdot = plan.newdots.nonzero()[0].item()
+        olddots = plan.olddots.nonzero()[0].tolist()
         descs, position_desc = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
 
-        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those."
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those. <selection>"
         return selectutt, past + [selectutt], None
