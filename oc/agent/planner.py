@@ -126,13 +126,20 @@ class PlannerMixin:
 
     def plan_select(self, belief_dist, plans):
         #import pdb; pdb.set_trace()
-        # find the last confirmed plan
-        ridx = list(reversed(self.confirmations)).index(True)
-        idx = len(self.confirmations) - ridx - 1
+        pred_successes = [x.sum() > 0 for x in self.preds]
 
-        lastplan = self.plans[idx-1]
-        dots = lastplan.dots
-        olddots = lastplan.olddots
+        if True in pred_successes:
+            # find the last partner plan we see
+            ridx = list(reversed(pred_successes)).index(True)
+            idx = len(self.confirmations) - ridx - 1
+            import pdb; pdb.set_trace()
+        else:
+            # otherwise find the last confirmed plan
+            ridx = list(reversed(self.confirmations)).index(True)
+            idx = len(self.confirmations) - ridx - 1
+            lastplan = self.plans[idx-1]
+            dots = lastplan.dots
+            olddots = lastplan.olddots
 
         feats = self.belief.get_feats(dots)
         plan_idxs = self.belief.resolve_utt(*feats)
