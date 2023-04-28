@@ -13,6 +13,9 @@ torch
 
 git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain
 
+# testing
+pytest
+
 # for fried 2021
 nltk
 einops

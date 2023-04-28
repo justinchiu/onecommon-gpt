@@ -41,17 +41,15 @@ class PlannerMixin:
         )
 
     def plan(self):
-        # was the previous plan confirmed or denied?
-        if len(self.confirmations) == 0:
-            previous_plan_confirmed = False
-        else:
-            #previous_plan_confirmed = self.confirmations[-1]
-            previous_plan_confirmed = self.preds[-1].sum() > 0
-
         if self.should_select():
             plan = self.plan_select(self.belief_dist, self.plans)
-        elif previous_plan_confirmed == True or previous_plan_confirmed == None:
-            plan = self.plan_followup(self.belief_dist, self.plans)
+        elif len(self.preds) > 0 and self.preds[-1].sum() > 0:
+            # first check if we see partner's plan
+            dots = self.preds[-1][0]
+            plan = self.plan_followup(self.belief_dist, dots)
+        elif len(self.confirmations) > 0 and self.confirmations[-1]:
+            dots = self.plans[-1].dots
+            plan = self.plan_followup(self.belief_dist, dots)
         else:
             plan = self.plan_start(self.belief_dist, self.plans)
         self.plans.append(plan)
@@ -64,7 +62,8 @@ class PlannerMixin:
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        new, old = new_and_old_dots(planbool, plans)
+        # forget about this.
+        #new, old = new_and_old_dots(planbool, plans)
 
         if len(self.plans) == 0:
             confirmation = None
@@ -73,8 +72,8 @@ class PlannerMixin:
 
         plan = Plan(
             dots = planbool,
-            newdots = new,
-            olddots = old,
+            newdots = planbool,
+            olddots = None,
             plan_idxs = plan_idxs,
             should_select = False,
             confirmation = confirmation,
@@ -89,7 +88,8 @@ class PlannerMixin:
         dots = self.preds[-1][0]
         # mask out plans that don't have the desired configs
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
-        EdHs *= EdHs_mask
+        newdot_mask = self.belief.configs.sum(-1) == dots.sum() + 1
+        EdHs *= EdHs_mask * newdot_mask
         planbool = self.belief.configs[EdHs.argmax()].astype(bool)
 
         feats = self.belief.get_feats(planbool)
@@ -125,10 +125,20 @@ class PlannerMixin:
         return plan
 
     def plan_select(self, belief_dist, plans):
-        feats = self.belief.get_feats(self.preds[-1][0])
+        #import pdb; pdb.set_trace()
+        # find the last confirmed plan
+        ridx = list(reversed(self.confirmations)).index(True)
+        idx = len(self.confirmations) - ridx - 1
+
+        lastplan = self.plans[idx-1]
+        dots = lastplan.dots
+        olddots = lastplan.olddots
+
+        feats = self.belief.get_feats(dots)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        prev_feats = self.belief.get_feats(self.preds[-2][0])
+        # choose the second last confirmed dot
+        prev_feats = self.belief.get_feats(olddots)
         prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
 
         new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
@@ -158,6 +168,9 @@ class PlannerMixin:
         return plan
 
     def choose(self):
+        # TODO: REMOVE HACK
+        if self.preds[-1].sum() == 0:
+            return 0
         return self.preds[-1][0].nonzero()[0].item()
 
     def should_select(self):

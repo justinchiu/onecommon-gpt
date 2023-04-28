@@ -6,4 +6,3 @@ with minichain.start_chain("test_long") as backend:
         prompt("a " * 8000)
     except:
         print("There was an error in the request. Moving on.")
-    import pdb; pdb.set_trace()
