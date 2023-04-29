@@ -143,7 +143,7 @@ class PlannerMixin:
         pred_successes = [x.sum() > 0 for x in self.preds]
         revsuc = list(reversed(pred_successes)) 
         ridx1 = revsuc.index(True)
-        ridx2 = revsuc[ridx1+1:].index(True)
+        ridx2 = revsuc[ridx1+1:].index(True) + ridx1 + 1
 
         idx1 = len(self.preds) - ridx1 - 1
         idx2 = len(self.preds) - ridx2 - 1
