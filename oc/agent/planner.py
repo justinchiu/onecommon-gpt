@@ -143,7 +143,7 @@ class PlannerMixin:
         pred_successes = [x.sum() > 0 for x in self.preds]
         revsuc = list(reversed(pred_successes)) 
         ridx1 = revsuc.index(True)
-        ridx2 = revsuc[idx1+1:].index(True)
+        ridx2 = revsuc[ridx1+1:].index(True)
 
         idx1 = len(self.preds) - ridx1 - 1
         idx2 = len(self.preds) - ridx2 - 1
@@ -157,7 +157,6 @@ class PlannerMixin:
         prev_feats = self.belief.get_feats(olddots)
         prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
 
-        import pdb; pdb.set_trace()
         new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
 
         # disambiguated
