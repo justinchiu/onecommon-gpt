@@ -48,7 +48,7 @@ class PlannerMixin:
             dots = self.preds[-1][0]
             plan = self.plan_followup(self.belief_dist, dots)
         elif len(self.confirmations) > 0 and self.confirmations[-1]:
-            dots = self.plans[-1].dots
+            dots = self.plans[-2].dots
             plan = self.plan_followup(self.belief_dist, dots)
         else:
             plan = self.plan_start(self.belief_dist, self.plans)
@@ -80,12 +80,12 @@ class PlannerMixin:
         )
         return plan
 
-    def plan_followup(self, belief_dist, plans):
+    def plan_followup(self, belief_dist, dots):
         EdHs = self.belief.compute_EdHs(belief_dist)
 
         # TODO:assume a 1st order chain for now
         #dots = plans[-1].dots
-        dots = self.preds[-1][0]
+        #dots = self.preds[-1][0]
         # mask out plans that don't have the desired configs
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         newdot_mask = self.belief.configs.sum(-1) == dots.sum() + 1
@@ -95,7 +95,7 @@ class PlannerMixin:
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        prev_feats = self.belief.get_feats(self.preds[-1][0])
+        prev_feats = self.belief.get_feats(dots)
         prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
 
         new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
@@ -140,33 +140,49 @@ class PlannerMixin:
             olddots = lastplan.olddots
         """
 
-        pred_successes = [x.sum() > 0 for x in self.preds]
-        revsuc = list(reversed(pred_successes)) 
-        ridx1 = revsuc.index(True)
-        ridx2 = revsuc[ridx1+1:].index(True) + ridx1 + 1
+        planbool, new, old, new_idxs = None, None, None, None
+        if len(self.preds) < 2:
+            marginals = self.belief.marginals(belief_dist)
+            assert self.preds[0].sum() > 0
+            selectdot = marginals.argmax()
 
-        idx1 = len(self.preds) - ridx1 - 1
-        idx2 = len(self.preds) - ridx2 - 1
-        dots = self.preds[idx1][0]
-        olddots = self.preds[idx2][0]
+            new = np.zeros(7, dtype=bool)
+            new[selectdot] = True
 
-        feats = self.belief.get_feats(dots)
-        plan_idxs = self.belief.resolve_utt(*feats)
+            planbool = self.preds[0][0]
+            old = planbool.copy()
+            old[selectdot] = False
 
-        # choose the second last confirmed dot
-        prev_feats = self.belief.get_feats(olddots)
-        prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
+            feats = self.belief.get_feats(planbool)
+            new_idxs = self.belief.resolve_utt(*feats)
+        else:
+            pred_successes = [x.sum() > 0 for x in self.preds]
+            revsuc = list(reversed(pred_successes)) 
+            ridx1 = revsuc.index(True)
+            ridx2 = revsuc[ridx1+1:].index(True) + ridx1 + 1
 
-        new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
+            idx1 = len(self.preds) - ridx1 - 1
+            idx2 = len(self.preds) - ridx2 - 1
+            dots = self.preds[idx1][0]
+            olddots = self.preds[idx2][0]
 
-        # disambiguated
-        planbool = np.zeros(7, dtype=bool)
-        planbool[new_idxs] = 1
+            feats = self.belief.get_feats(dots)
+            plan_idxs = self.belief.resolve_utt(*feats)
 
-        old = np.zeros(7, dtype=bool)
-        old[old_idxs] = 1
+            # choose the second last confirmed dot
+            prev_feats = self.belief.get_feats(olddots)
+            prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
 
-        new = planbool & ~old
+            new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
+
+            # disambiguated
+            planbool = np.zeros(7, dtype=bool)
+            planbool[new_idxs] = 1
+
+            old = np.zeros(7, dtype=bool)
+            old[old_idxs] = 1
+
+            new = planbool & ~old
 
         if len(self.plans) == 0:
             confirmation = None
