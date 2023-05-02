@@ -15,7 +15,7 @@ setup(
     package_data = {
         "oc.data": [
             "oc/data/onecommon/train_reference_1.txt",
-            "data/onecommon/train_reference_1.txt",
+            "oc/data/onecommon/valid_reference_1.txt",
         ],
         "oc.prompts": ["oc/prompts/*.j2"],
     },
