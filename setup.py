@@ -2,8 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name = "oc",
-    #packages = ["oc", "tests"],
-    packages = find_packages(),
+    packages = [
+        "oc",
+        "oc.agent",
+        "oc.belief",
+        "oc.eval",
+        "oc.fns",
+        "oc.gen",
+        "tests",
+    ],
     include_package_data = True,
     package_data = {
         "oc.data": [
