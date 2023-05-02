@@ -1,8 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name = "oc",
-    packages = ["oc", "tests"],
+    #packages = ["oc", "tests"],
+    packages = find_packages(),
     include_package_data = True,
     package_data = {
         "oc.data": [
