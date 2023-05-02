@@ -28,7 +28,7 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         super().__init__(backend, refres, gen, model)
 
     # necessary functions for onecommon
-    def feed_context(self, ctx, belief_constructor):
+    def feed_context(self, ctx, belief_constructor=None):
         self.ctx = np.array(ctx, dtype=float).reshape((7,4))
 
         # dialogue state
