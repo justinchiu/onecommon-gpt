@@ -69,6 +69,7 @@ class Understand(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "understand4.j2")
     stop_templates = ["# End.", "# New."]
 
+
 class Confirm(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "confirm.j2")
     stop_templates = ["# End."]
@@ -114,3 +115,13 @@ class GenerateTemplate(TemplatePrompt[str]):
 class GenerateMentions(TemplatePrompt[str]):
     tempalte_file = str(PROMPT_DIR / "generate_mention.j2")
 
+
+class UnderstandShort(TemplatePrompt[str]):
+    template_file = str(PROMPT_DIR / "understandshort.j2")
+    stop_templates = ["# End.", "# New."]
+
+class ExecuteShort(TemplatePrompt[list[int]]):
+    template_file = str(PROMPT_DIR / "executeshort.j2")
+
+    def parse(self, output, input) -> list[int]:
+        return ast.literal_eval(output)

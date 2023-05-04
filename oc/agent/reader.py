@@ -4,6 +4,7 @@ from oc.prompt import HEADER, Understand, Execute, Reformat, Confirm
 from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import UnderstandMc
 
+from oc.prompt import UnderstandShort, ExecuteShort
 
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
@@ -25,6 +26,12 @@ class ReaderMixin:
                 max_tokens=1024,
             ))
             self.execute = Execute(backend.Python())
+        elif refres == "shortcodegen":
+            self.understand = UnderstandShort(backend.OpenAIChat(
+                model = model,
+                max_tokens=64,
+            ))
+            self.execute = ExecuteShort(backend.Python())
         elif refres == "parsecodegen":
             self.parse = Parse(backend.OpenAIChat(
                 model = model,

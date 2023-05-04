@@ -1,0 +1,18 @@
+{% if info is not none %}
+# {{ info }}
+{% endif %}
+import sys
+sys.path.append("fns")
+
+{{ header }}
+
+def get_ctx():
+    ctx = np.array({{dots}})
+    return ctx
+
+{% for block in blocks %}
+{{ block }}
+{% endfor %}
+
+print([tuple(x) for x in state])
+
