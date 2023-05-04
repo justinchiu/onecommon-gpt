@@ -1,3 +1,4 @@
 oc/prompts/*.j2
+oc/promptdata/*
 oc/data/onecommon/train_reference_1.txt
 oc/data/onecommon/valid_reference_1.txt
