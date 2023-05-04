@@ -349,16 +349,5 @@
             return state
         state = noop(state)
         # End.
-    },
-
-
-# New.
-ctx = get_ctx()
-state = set()
-{% if past is defined and past|length > 0 %}{% for block in past %}
-# {{ block[0] }}
-{{ block[1] }}
-# End.
-{% endfor %}{% endif %}
-# {{text}}
-def 
+    }
+]

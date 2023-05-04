@@ -127,7 +127,7 @@ if __name__ == "__main__":
     st.set_page_config(layout="wide")
 
     # visualize logging information
-    with open('data/scenarios.json', "r") as f:
+    with open('oc/data/scenarios.json', "r") as f:
         scenario_list = json.load(f)
     boards = {
         scenario['uuid']: scenario
