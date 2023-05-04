@@ -18,5 +18,6 @@ setup(
             "oc/data/onecommon/valid_reference_1.txt",
         ],
         "oc.prompts": ["oc/prompts/*.j2"],
+        "oc.promptdata": ["oc/promptdata/*"],
     },
 )
