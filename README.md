@@ -1,11 +1,16 @@
 # onecommon-gpt
 
-## Dependencies
-* justinchiu/MiniChain fork, chatgpt branch
+## Installation
+```
+pip install -e .
+```
 
 ## Evaluation
-Run `python eval.py --run_gen --run_refres --refres codegen --gen feat`
-for the latest.
+Run `python oc/eval/eval.py --run_refres --model gpt-4 --num_examples 25`
+for the reference resolution evaluation.
+
+Generation evaluation has been deprecated, as we covering the empirical distribution
+of utterances is not necessary for success.
 
 ## Examples for creating prompts
 * `python get_prompting_examples.py` has examples for generation with features.

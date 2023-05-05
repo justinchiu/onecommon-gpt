@@ -20,4 +20,16 @@ setup(
         "oc.prompts": ["oc/prompts/*.j2"],
         "oc.promptdata": ["oc/promptdata/*"],
     },
+    install_requires = [
+        "datasets",
+        "evaluate",
+        "openai",
+        "scikit-learn",
+        "shapely",
+        "tenacity",
+        "seaborn",
+        "more-itertools",
+        "torch",
+        "MiniChain @ git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain",
+    ],
 )
