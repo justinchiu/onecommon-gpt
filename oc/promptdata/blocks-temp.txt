@@ -7,9 +7,9 @@
     "newconfigs": "[]",
     "newdots": "_",
     "constraints": [
-        {{"name": "check_xyz_triangle", "code": "is_triangle([x,y,z], ctx)"}},
-        {{"name": "check_xyz_light", "code": "all([is_light(dot, ctx) for dot in [x,y,z]])"}},
-        {{"name": "check_xyz_alone", "code": "all([not all_close([x,y,z,dot], ctx) for dot in idxs if dot not in [x,y,z]])"}}
+        {"name": "check_xyz_triangle", "code": "is_triangle([x,y,z], ctx)"},
+        {"name": "check_xyz_light", "code": "all([is_light(dot, ctx) for dot in [x,y,z]])"},
+        {"name": "check_xyz_alone", "code": "all([not all_close([x,y,z,dot], ctx) for dot in idxs if dot not in [x,y,z]])"}
     ],
     "dots": "x,y,z",
     "select": "False"
@@ -35,7 +35,7 @@
     "text": "Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.",
     "type": "New question.",
     "configs": "getsets(idxs, 2)",
-    "configdots": "x, y",
+    "configdots": "x,y",
     "newconfigs": "[]",
     "newdots": "_",
     "constraints": [
@@ -45,25 +45,19 @@
         {"name": "check_y_above_x", "code": "is_above(y, x, ctx)"},
         {"name": "check_xy_same_size", "code": "same_size([x,y], ctx)"}
     ],
-    "dots": "x, y",
+    "dots": "x,y",
     "select": "False"
 },{
     "speaker": "You",
     "text": "No.",
     "type": "New question.",
-    "configs": "_",
-    "configdots": "_",
-    "newconfigs": "[]",
-    "newdots": "_",
-    "constraints": "_",
-    "dots": "_",
-    "select": "_"
+    "select": "False"
 },{
     "speaker": "Them",
     "text": "What about a large medium grey dot near the center?",
     "type": "New question.",
     "configs": "getsets(idxs, 1)",
-    "configdots": "x,",
+    "configdots": "x",
     "newconfigs": "[]",
     "newdots": "_",
     "constraints": [
@@ -79,7 +73,7 @@
     "type": "Follow up question, new dot.",
     "configs": "state",
     "configdots": "a",
-    "newconfigs": "[]",
+    "newconfigs": "get1idxs(idxs, exclude=[a])",
     "newdots": "x",
     "constraints": [
         {"name": "check_x_smaller_a", "code": "is_smaller(x, a, ctx)"},
@@ -95,7 +89,7 @@
     "configs": "getsets(idxs, 3)",
     "configdots": "x,y,z",
     "newconfigs": "[]",
-    "newdots": "",
+    "newdots": "_",
     "constraints": [
         {"name": "check_xyz_line", "code": "is_line([x,y,z], ctx)"},
         {"name": "check_x_top_left", "code": "x == get_top_left([x, y, z], ctx)"},
@@ -140,25 +134,24 @@
 },{
     "speaker": "You",
     "text": "Yes, let's select the large one. <selection>.",
-    "function": {
-        "name": "select",
-        "code": "for config in state:\n    for a,b,c in permutations(config):\n        check_a_large = is_large(a, ctx)\n        check_b_not_large = not is_large(b, ctx)\n        check_c_not_large = not is_large(c, ctx)\n        if (\n            check_a_large\n            and check_b_not_large\n            and check_c_not_large\n        ):\n            dots = frozenset([a])\n            if dots not in results:\n                results.add(dots)\n                orderedresults.append(dots)\n                parents.append(config)\n    return sort_state(orderedresults, parents, ctx, select=True)",
-        "params": "state"
-    },
-    "results": "[]",
-    "dots": "a,b,c",
+    "type": "Select a dot.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[]",
+    "newdots": "_",
     "constraints": [
         {"name": "check_a_large", "code": "is_large(a, ctx)"},
         {"name": "check_b_not_large", "code": "not is_large(b, ctx)"},
         {"name": "check_c_not_large", "code": "not is_large(c, ctx)"}
     ],
+    "dots": "a",
     "select": "True"
 },{
     "speaker": "You",
     "text": "Do you see a large black dot on the bottom left?",
     "type": "New question.",
     "configs": "getsets(idxs, 1)",
-    "configdots": "x,",
+    "configdots": "x",
     "newconfigs": "[]",
     "newdots": "_",
     "constraints": [
@@ -166,7 +159,7 @@
         {"name": "check_x_dark", "code": "is_dark(x, ctx)"},
         {"name": "check_x_below_left", "code": "is_below(x, None, ctx) and is_left(x, None, ctx)"}
     ],
-    "dots": "x,",
+    "dots": "x",
     "select": "False"
 },{
     "speaker": "Them",
@@ -192,11 +185,11 @@
 },{
     "speaker": "You",
     "text": "Select the largest one.",
-    "type": "Select",
+    "type": "Select a dot.",
     "configs": "state",
     "configdots": "a,b,c",
     "newconfigs": "[]",
-    "newdots": "a",
+    "newdots": "_",
     "constraints": [
         {"name": "check_a_largest", "code": "a == get_largest([a,b,c], ctx)"}
     ],
@@ -205,27 +198,23 @@
 },{
     "speaker": "Them",
     "text": "Okay.",
-    "type": "",
-    "configs": "",
-    "configdots": "",
-    "newconfigs": "[]",
-    "newdots": "",
-    "constraints": [],
-    "dots": "",
-    "select": "",
-    "function": {
-        "name": "noop",
-        "code": "return state;"
-    }
+    "type": "No op.",
+    "select": "False"
 },{
     "speaker": "You",
     "text": "Okay. <selection>.",
-    "type": "User input",
-    "configs": "_",
-    "configdots": "_",
-    "newconfigs": "[]",
-    "newdots": "_",
-    "constraints": "[]",
-    "dots": "_",
-    "select": "_"
+    "type": "No op.",
+    "code": [
+        {
+            "function": "noop",
+            "parameters": ["state"],
+            "actions": [{"name": "return", "code": "state"}],
+            "returns": "state"
+        },
+        {
+            "function_call": "noop",
+            "parameters": ["state"],
+            "returns": "state"
+        }
+    ]
 }]

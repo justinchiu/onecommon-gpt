@@ -354,14 +354,45 @@ Convert the above into JSON.
     "select": "False"
 }}
 
+
+You: Okay. <selection>.
+def noop(state):
+        # No op.
+        #     return state
+        #     state = noop(state)
+        #     # End.
+Convert the above into JSON.
+{{
+    "speaker": "You",
+    "text": "Okay. <selection>.",
+    "type": "No op.",
+    "select": "False"
+}}
+
 {code}
 Convert the above into JSON."""
 
-blocks = []
+blocks = ["""{
+    "speaker": "Them",
+    "text": "Got a triangle of 3 light grey dots by itself.",
+    "type": "New question.",
+    "configs": "getsets(idxs, 3)",
+    "configdots": "x,y,z",
+    "newconfigs": "[]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_xyz_triangle", "code": "is_triangle([x,y,z], ctx)"},
+        {"name": "check_xyz_light", "code": "all([is_light(dot, ctx) for dot in [x,y,z]])"},
+        {"name": "check_xyz_alone", "code": "all([not all_close([x,y,z,dot], ctx) for dot in idxs if dot not in [x,y,z]])"}
+    ],
+    "dots": "x,y,z",
+    "select": "False"
+}"""]
 for code in codes:
     prompt = construct_prompt(code)
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        #model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "user", "content": prompt}
         ],
