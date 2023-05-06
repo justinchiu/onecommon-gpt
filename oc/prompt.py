@@ -46,6 +46,7 @@ class TemplatePrompt(BaseTemplatePrompt[Output]):
             x = tmp.render(**asdict(kwargs))
         return x
 
+
 class Reformat(TemplatePrompt[str]):
     #template_file = "prompts/reformat.j2"
     template_file = str(PROMPT_DIR / "reformat.j2")
@@ -85,11 +86,6 @@ class Confirm(TemplatePrompt[str]):
         else:
             raise ValueError
 
-class ParseUnderstand(TemplatePrompt[str]):
-    #template_file = "prompts/parseunderstand.j2"
-    template_file = str(PROMPT_DIR / "parseunderstand3.j2")
-    stop_templates = ["# End.", "# New."]
-
 class Execute(TemplatePrompt[list[int]]):
     #template_file = "prompts/execute.j2"
     template_file = str(PROMPT_DIR / "execute3.j2")
@@ -97,6 +93,27 @@ class Execute(TemplatePrompt[list[int]]):
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
 
+# Shortened prompts
+class UnderstandShort(TemplatePrompt[str]):
+    # input:
+    #   * header: str
+    #   * blocks: List[block]
+    #   * speaker: str
+    #   * text: str
+    template_file = str(PROMPT_DIR / "understandshort.j2")
+    stop_templates = ["# End."]
+
+class ExecuteShort(TemplatePrompt[list[int]]):
+    template_file = str(PROMPT_DIR / "executeshort.j2")
+
+    def parse(self, output, input) -> list[int]:
+        return ast.literal_eval(output)
+
+# Deprecated
+class ParseUnderstand(TemplatePrompt[str]):
+    #template_file = "prompts/parseunderstand.j2"
+    template_file = str(PROMPT_DIR / "parseunderstand3.j2")
+    stop_templates = ["# End.", "# New."]
 
 class Generate(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "generate.j2")
@@ -116,12 +133,3 @@ class GenerateMentions(TemplatePrompt[str]):
     tempalte_file = str(PROMPT_DIR / "generate_mention.j2")
 
 
-class UnderstandShort(TemplatePrompt[str]):
-    template_file = str(PROMPT_DIR / "understandshort.j2")
-    stop_templates = ["# End.", "# New."]
-
-class ExecuteShort(TemplatePrompt[list[int]]):
-    template_file = str(PROMPT_DIR / "executeshort.j2")
-
-    def parse(self, output, input) -> list[int]:
-        return ast.literal_eval(output)

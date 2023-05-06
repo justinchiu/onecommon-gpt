@@ -8,6 +8,11 @@ PROMPT_DATA_DIR = str(files(oc.promptdata)._paths[0])
 import oc.prompts
 PROMPT_DIR = str(files(oc.prompts)._paths[0])
 
+dir = Path(PROMPT_DATA_DIR)
+blockfile = dir / "blocks-temp.json"
+with blockfile.open("r") as f:
+    BLOCKS = json.load(f)
+
 
 def codeblock(kwargs):
     environment = jinja2.Environment(loader=jinja2.FileSystemLoader(PROMPT_DIR))
@@ -15,11 +20,8 @@ def codeblock(kwargs):
     return template.render(**kwargs)
 
 def codeblocks():
-    dir = Path(PROMPT_DATA_DIR)
-    blockfile = dir / "blocks-temp.json"
-    with blockfile.open("r") as f:
-        blocks = json.load(f)
-        return [codeblock(block) for block in blocks]
+    return [codeblock(block) for block in BLOCKS]
+
 
 if __name__ == "__main__":
     blocks = codeblocks()
