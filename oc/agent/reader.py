@@ -6,6 +6,8 @@ from oc.prompt import UnderstandMc
 
 from oc.prompt import UnderstandShort, ExecuteShort
 
+from oc.dynamic_prompting.blocks import BLOCKS
+
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
         self.refres = refres
@@ -29,7 +31,7 @@ class ReaderMixin:
         elif refres == "shortcodegen":
             self.understand = UnderstandShort(backend.OpenAIChat(
                 model = model,
-                max_tokens=64,
+                max_tokens=128,
             ))
             self.execute = ExecuteShort(backend.Python())
         elif refres == "parsecodegen":
@@ -108,6 +110,8 @@ class ReaderMixin:
         # dispatch
         if self.refres == "codegen":
             return self.resolve_reference_codegen(text, past, view, info=info)
+        elif self.refres == "shortcodegen":
+            return self.resolve_reference_short_codegen(text, past, view, info=info)
         elif self.refres == "parsecodegen":
             return self.resolve_reference_parse_codegen(text, past, view, info=info)
         elif self.refres == "mc":
@@ -143,6 +147,44 @@ class ReaderMixin:
         text = self.reformat_text(text)
 
         kwargs = dict(header=HEADER, text=text, past=past, view=view)
+
+        out = self.understand(kwargs)
+
+        # new input for python execution
+        input = self.understand.print(dict(text=text, past=past, view=view))
+        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
+
+        # debugging
+        input = self.execute.print(kw)
+        print(input)
+        
+        result = self.execute(kw)
+        print(result)
+        if result is None:
+            result = []
+
+        num_preds = len(result)
+        mentions = np.zeros((num_preds, 7), dtype=bool)
+        for i in range(num_preds):
+            mentions[i, result[i]] = 1
+
+        return mentions, past + [(text.strip(), f"def {out.strip()}")], {
+            "parsedtext": text,
+        }
+
+    def resolve_reference_short_codegen(self, text, past, view, info=None):
+        speaker = "You" if "You:" in text else "Them"
+        text = self.reformat_text(text, usespeaker=False)
+
+        kwargs = dict(
+            header=HEADER,
+            blocks = BLOCKS,
+            speaker = speaker,
+            text=text,
+            past=past,
+            view=view,
+        )
+        import pdb; pdb.set_trace()
 
         out = self.understand(kwargs)
 

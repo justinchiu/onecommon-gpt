@@ -8,7 +8,7 @@ state = []
 
 {% for block in blocks %}
 # {{ block.speaker }}: {{ block.text }}
-    for config in {{ clobk.config }}:
+    for config in {{ block.config }}:
         for {{ block.configdots }} in permutations(config):
             for {{ block.newdots }} in {{ block.newconfigs }}:
                 {%- for constraint in block.constraints %}
