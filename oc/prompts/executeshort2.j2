@@ -1,0 +1,38 @@
+{% if info is not none %}
+# {{ info }}
+{% endif %}
+
+{{ header }}
+
+def get_ctx():
+    ctx = np.array({{dots}})
+    return ctx
+
+idxs = list(range(7))
+
+# New.
+ctx = get_ctx()
+state = []
+
+{% for block in blocks %}
+# {{ block.speaker }}: {{ block.text }}
+{% if block.noop %}def turn(state): return state{% else %}def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+{{ block.code }}
+                if (
+                    True 
+                    {% for constraint in block.constraints %}and {{ constraint.name }}
+                    {% endfor %}
+                ):
+                    dots = frozenset([{{ block.dots }}])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select={{ block.selection }}){% endif %}
+state = turn(state)
+{% endfor %}
+
+print([tuple(x) for x in state])

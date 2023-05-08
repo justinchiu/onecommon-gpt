@@ -135,6 +135,45 @@ class ExecuteShort(TemplatePrompt[list[int]]):
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
 
+class UnderstandShort2(TemplatePrompt[str]):
+    # input:
+    #   * header: str
+    #   * blocks: List[block]
+    #   * speaker: str
+    #   * text: str
+    template_file = str(PROMPT_DIR / "understandshort2.j2")
+    stop_templates = ["# End."]
+
+    def parse(self, output, input) -> UnderstandShortOutput | None:
+        if "No op." in output:
+            return None
+
+        code, dots, selection = output.split("\n#")
+
+        #code = code.strip()
+        dots = dots.replace("Dots:", "").strip()
+        selection = selection.replace("Selection:", "").strip()
+
+        # separate constraint names and assignment code
+        constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
+        constraint_pairs = [x.split(" = ") for x in constraint_lines]
+        constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
+
+        return UnderstandShortOutput(
+            code = code,
+            constraints = constraints,
+            dots = dots,
+            selection = selection,
+            speaker = input["speaker"],
+            text = input["text"],
+        )
+
+class ExecuteShort2(TemplatePrompt[list[int]]):
+    template_file = str(PROMPT_DIR / "executeshort2.j2")
+
+    def parse(self, output, input) -> list[int]:
+        return ast.literal_eval(output)
+
 # JSON shortened prompts
 class UnderstandJson(TemplatePrompt[str]):
     # input:

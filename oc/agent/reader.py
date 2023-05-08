@@ -6,6 +6,7 @@ from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import UnderstandMc
 
 from oc.prompt import UnderstandShort, ExecuteShort
+from oc.prompt import UnderstandShort2, ExecuteShort2
 from oc.prompt import UnderstandJson, ExecuteJson
 
 from oc.dynamic_prompting.blocks import BLOCKS
@@ -37,6 +38,12 @@ class ReaderMixin:
                 max_tokens=128,
             ))
             self.execute = ExecuteShort(backend.Python())
+        elif refres == "shortcodegen2":
+            self.understand = UnderstandShort2(backend.OpenAIChat(
+                model = model,
+                max_tokens=128,
+            ))
+            self.execute = ExecuteShort2(backend.Python())
         elif refres == "jsoncodegen":
             self.understand = UnderstandJson(backend.OpenAIChat(
                 model = model,
@@ -121,6 +128,8 @@ class ReaderMixin:
             return self.resolve_reference_codegen(text, past, view, info=info)
         elif self.refres == "shortcodegen":
             return self.resolve_reference_short_codegen(text, past, view, info=info)
+        elif self.refres == "shortcodegen2":
+            return self.resolve_reference_short_codegen2(text, past, view, info=info)
         elif self.refres == "jsoncodegen":
             return self.resolve_reference_json_codegen(text, past, view, info=info)
         elif self.refres == "parsecodegen":
