@@ -105,7 +105,10 @@ class UnderstandShort(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "understandshort.j2")
     stop_templates = ["# End."]
 
-    def parse(self, output, input):
+    def parse(self, output, input) -> UnderstandShortOutput | None:
+        if "No op." in output:
+            return None
+
         code, dots, selection = output.split("\n#")
 
         #code = code.strip()

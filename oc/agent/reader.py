@@ -201,14 +201,23 @@ class ReaderMixin:
 
         codeblock = self.understand(kwargs)
 
-        codeblock_dict = dict(
-            code = codeblock.code,
-            constraints = codeblock.constraints,
-            dots = codeblock.dots,
-            selection = codeblock.selection,
-            speaker = codeblock.speaker,
-            text = codeblock.text,
-        )
+        codeblock_dict = None
+        if codeblock is None:
+            codeblock_dict = dict(
+                noop = True,
+                speaker = speaker,
+                text = text,
+            )
+        else:
+            codeblock_dict = dict(
+                noop = False,
+                code = codeblock.code,
+                constraints = codeblock.constraints,
+                dots = codeblock.dots,
+                selection = codeblock.selection,
+                speaker = codeblock.speaker,
+                text = codeblock.text,
+            )
 
         # new input for python execution
         kw = dict(

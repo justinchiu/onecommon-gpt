@@ -60,5 +60,9 @@ def turn(state):
     return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 
+# Them: Yes.
+def turn(state): return state
+state = turn(state)
+
 
 print([tuple(x) for x in state])

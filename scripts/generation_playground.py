@@ -141,10 +141,10 @@ for example in data:
         utt = agent.write()
         end_time = time.perf_counter()
         print(f"WRITE TIME: {end_time-start_time:0.4f} seconds for write")
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         plan1 = agent.plans[-1]
 
-        words = word_tokenize(utt.lower().strip()) + ['<eos>']
+        words = word_tokenize(" ".join(utt).lower().strip()) + ['<eos>']
         partner.read(
             words,
             detect_markables=True,
@@ -172,7 +172,7 @@ for example in data:
         utt2 = agent.write()
         plan2 = agent.plans[-1]
 
-        words = word_tokenize(utt2.lower().strip()) + ['<eos>']
+        words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']
         partner.read(
             words,
             detect_markables=True,

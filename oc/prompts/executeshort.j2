@@ -16,7 +16,7 @@ state = []
 
 {% for block in blocks %}
 # {{ block.speaker }}: {{ block.text }}
-def turn(state):
+{% if block.noop %}def turn(state): return state{% else %}def turn(state):
     results = set()
     orderedresults = []
     parents = []
@@ -31,7 +31,7 @@ def turn(state):
                         results.add(dots)
                         orderedresults.append(dots)
                         parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select={{ block.selection }})
+    return sort_state(orderedresults, parents, ctx, select={{ block.selection }}){% endif %}
 state = turn(state)
 {% endfor %}
 
