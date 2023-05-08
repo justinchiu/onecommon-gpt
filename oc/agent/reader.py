@@ -1,12 +1,15 @@
 import numpy as np
+import pprint
 
 from oc.prompt import HEADER, Understand, Execute, Reformat, Confirm
 from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import UnderstandMc
 
 from oc.prompt import UnderstandShort, ExecuteShort
+from oc.prompt import UnderstandJson, ExecuteJson
 
 from oc.dynamic_prompting.blocks import BLOCKS
+
 
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
@@ -34,6 +37,12 @@ class ReaderMixin:
                 max_tokens=128,
             ))
             self.execute = ExecuteShort(backend.Python())
+        elif refres == "jsoncodegen":
+            self.understand = UnderstandJson(backend.OpenAIChat(
+                model = model,
+                max_tokens=128,
+            ))
+            self.execute = ExecuteJson(backend.Python())
         elif refres == "parsecodegen":
             self.parse = Parse(backend.OpenAIChat(
                 model = model,
@@ -112,6 +121,8 @@ class ReaderMixin:
             return self.resolve_reference_codegen(text, past, view, info=info)
         elif self.refres == "shortcodegen":
             return self.resolve_reference_short_codegen(text, past, view, info=info)
+        elif self.refres == "jsoncodegen":
+            return self.resolve_reference_json_codegen(text, past, view, info=info)
         elif self.refres == "parsecodegen":
             return self.resolve_reference_parse_codegen(text, past, view, info=info)
         elif self.refres == "mc":
@@ -187,6 +198,54 @@ class ReaderMixin:
 
         understand_prompt = self.understand.print(kwargs)
         print(understand_prompt)
+
+        code, dots, selection = self.understand(kwargs)
+        import pdb; pdb.set_trace()
+
+        # new input for python execution
+        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
+
+        # debugging
+        input = self.execute.print(kw)
+        print(input)
+        
+        result = self.execute(kw)
+        print(result)
+        if result is None:
+            result = []
+
+        num_preds = len(result)
+        mentions = np.zeros((num_preds, 7), dtype=bool)
+        for i in range(num_preds):
+            mentions[i, result[i]] = 1
+
+        return mentions, past + [(text.strip(), f"def {out.strip()}")], {
+            "parsedtext": text,
+        }
+
+    def resolve_reference_json_codegen(self, text, past, view, info=None):
+        speaker = "You" if "You:" in text else "Them"
+        text = self.reformat_text(text, usespeaker=False)
+
+        kwargs = dict(
+            header=HEADER,
+            blocks = [
+                {
+                    "json": pprint.pformat(block),
+                    "speaker": block["speaker"],
+                    "text": block["text"],
+                }
+                for block in BLOCKS
+            ],
+            speaker = speaker,
+            text = text,
+            past=past,
+            view=view,
+        )
+
+        understand_prompt = self.understand.print(kwargs)
+        print(understand_prompt)
+        import pdb; pdb.set_trace()
 
         out = self.understand(kwargs)
         import pdb; pdb.set_trace()

@@ -21,7 +21,6 @@ def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    {{ code }}
     for config in {{block.configs}}:
         for {{block.olddots}} in permutations(config):
             for {{block.newdots}} in {{block.newconfigs}}:

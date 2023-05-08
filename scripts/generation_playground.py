@@ -132,7 +132,8 @@ for example in data:
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
-        agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+        #agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+        agent = Agent(backend, "jsoncodegen", "templateonly", "gpt-4")
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
 

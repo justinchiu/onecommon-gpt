@@ -1,0 +1,20 @@
+{{ header }}
+
+idxs = list(range(7))
+
+# New.
+ctx = get_ctx()
+state = []
+
+{% for block in blocks %}
+{{ block.speaker }}: {{ block.text }}
+Translate this to JSON:
+{{ block.json }}
+{% endfor %}{% if past | length > 0 %}
+{% for block in past %}
+{{ block.speaker }}: {{ block.text }}
+Translate this to JSON:
+{{ block.json }}
+{% endfor %}{% endif %}
+{{speaker}}: {{ text }}
+Translate this to JSON:

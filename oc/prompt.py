@@ -103,8 +103,39 @@ class UnderstandShort(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "understandshort.j2")
     stop_templates = ["# End."]
 
+    def parse(self, output, input):
+        code, dots, selection = output.split("\n#")
+        #code = code.strip()
+        dots = dots.replace("Dots:", "").strip()
+        selection = selection.replace("Selection:", "").strip()
+        return code, dots, selection
+
 class ExecuteShort(TemplatePrompt[list[int]]):
     template_file = str(PROMPT_DIR / "executeshort.j2")
+
+    def parse(self, output, input) -> list[int]:
+        return ast.literal_eval(output)
+
+# JSON shortened prompts
+class UnderstandJson(TemplatePrompt[str]):
+    # input:
+    #   * header: str
+    #   * blocks: List[block]
+    #   * speaker: str
+    #   * text: str
+    template_file = str(PROMPT_DIR / "understandjson.j2")
+    stop_templates = ["# End."]
+
+    def parse(self, output, input):
+        import pdb; pdb.set_trace()
+        code, dots, selection = output.split("\n#")
+        #code = code.strip()
+        dots = dots.replace("Dots:", "").strip()
+        selection = selection.replace("Selection:", "").strip()
+        return code, dots, selection
+
+class ExecuteJson(TemplatePrompt[list[int]]):
+    template_file = str(PROMPT_DIR / "executejson.j2")
 
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
