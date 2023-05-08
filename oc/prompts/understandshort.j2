@@ -7,13 +7,16 @@ ctx = get_ctx()
 state = []
 
 {% for block in blocks %}
-# {{ block.speaker }}: {{ block.text }}
+# {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
     for config in {{ block.config }}:
         for {{ block.configdots }} in permutations(config):
             for {{ block.newdots }} in {{ block.newconfigs }}:
                 {%- for constraint in block.constraints %}
                 {{ constraint.name }} = {{ constraint.code}}
                 {%- endfor %}
+# Dots: {{ block.dots }}
+# Selection: {{ block.select }}{% else %}
+# No op.{% endif %}
 # End.
 {% endfor %}
 

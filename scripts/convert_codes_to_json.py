@@ -341,6 +341,7 @@ Convert the above into JSON.
     "speaker": "Them",
     "text": "Got a triangle of 3 light grey dots by itself.",
     "type": "New question.",
+    "noop": "False",
     "configs": "getsets(idxs, 3)",
     "configdots": "x,y,z",
     "newconfigs": "[]",
@@ -366,6 +367,7 @@ Convert the above into JSON.
     "speaker": "You",
     "text": "Okay. <selection>.",
     "type": "No op.",
+    "noop": "True",
     "select": "False"
 }}
 

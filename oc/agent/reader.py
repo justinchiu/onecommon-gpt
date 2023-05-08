@@ -184,12 +184,14 @@ class ReaderMixin:
             past=past,
             view=view,
         )
-        import pdb; pdb.set_trace()
+
+        understand_prompt = self.understand.print(kwargs)
+        print(understand_prompt)
 
         out = self.understand(kwargs)
+        import pdb; pdb.set_trace()
 
         # new input for python execution
-        input = self.understand.print(dict(text=text, past=past, view=view))
         kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
 
         # debugging
