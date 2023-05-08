@@ -222,8 +222,6 @@ class ReaderMixin:
         input = self.execute.print(kw)
         print(input)
 
-        import pdb; pdb.set_trace()
-        
         result = self.execute(kw)
         print(result)
         if result is None:
@@ -234,9 +232,14 @@ class ReaderMixin:
         for i in range(num_preds):
             mentions[i, result[i]] = 1
 
-        return mentions, past + [(text.strip(), f"def {out.strip()}")], {
-            "parsedtext": text,
-        }
+        return (
+            mentions,
+            past + [codeblock_dict],
+            {
+                "parsedtext": text,
+                "speaker": speaker,
+            },
+        )
 
     def resolve_reference_json_codegen(self, text, past, view, info=None):
         speaker = "You" if "You:" in text else "Them"

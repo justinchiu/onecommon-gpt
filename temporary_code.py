@@ -1,6 +1,4 @@
 
-import sys
-sys.path.append("fns")
 
 from oc.fns.context import get_ctx
 from oc.fns.shapes import is_triangle, is_line, is_square
@@ -29,6 +27,38 @@ idxs = list(range(7))
 ctx = get_ctx()
 state = []
 
+
+# You: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
+def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in getsets(idxs, 2):
+        for x, y in permutations(config):
+            for _ in [0]:
+                check_x_top = is_above(x, y, ctx)
+                check_x_medium = is_medium_size(x, ctx)
+                check_x_dark = is_dark(x, ctx)
+                check_y_bottom = is_below(y, x, ctx)
+                check_y_large = is_large(y, ctx)
+                check_y_light = is_light(y, ctx)
+                if (
+                    True 
+                    and check_x_top
+                    and check_x_medium
+                    and check_x_dark
+                    and check_y_bottom
+                    and check_y_large
+                    and check_y_light
+                    
+                ):
+                    dots = frozenset([x, y])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = turn(state)
 
 
 print([tuple(x) for x in state])

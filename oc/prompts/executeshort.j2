@@ -20,19 +20,18 @@ def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    {{ block.code }}
+{{ block.code }}
                 if (
                     True 
-                    {% for constraint in block.constraints -%}
-                    and {{ constraint.name }}
-                    {% -endfor %}
+                    {% for constraint in block.constraints %}and {{ constraint.name }}
+                    {% endfor %}
                 ):
                     dots = frozenset([{{ block.dots }}])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)
                         parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select={{ block.select }})
+    return sort_state(orderedresults, parents, ctx, select={{ block.selection }})
 state = turn(state)
 {% endfor %}
 
