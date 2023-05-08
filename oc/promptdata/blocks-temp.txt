@@ -4,7 +4,22 @@
     "type": "New question.",
     "configs": "getsets(idxs, 3)",
     "configdots": "x,y,z",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_xyz_triangle", "code": "is_triangle([x,y,z], ctx)"},
+        {"name": "check_xyz_light", "code": "all([is_light(dot, ctx) for dot in [x,y,z]])"},
+        {"name": "check_xyz_alone", "code": "all([not all_close([x,y,z,dot], ctx) for dot in idxs if dot not in [x,y,z]])"}
+    ],
+    "dots": "x,y,z",
+    "select": "False"
+},{
+    "speaker": "Them",
+    "text": "Got a triangle of 3 light grey dots by itself.",
+    "type": "New question.",
+    "configs": "getsets(idxs, 3)",
+    "configdots": "x,y,z",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_xyz_triangle", "code": "is_triangle([x,y,z], ctx)"},
@@ -19,7 +34,7 @@
     "type": "Follow up question.",
     "configs": "state",
     "configdots": "a,b,c",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_a_right", "code": "a == get_right([a,b,c], ctx)"},
@@ -35,8 +50,8 @@
     "text": "Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.",
     "type": "New question.",
     "configs": "getsets(idxs, 2)",
-    "configdots": "x,y",
-    "newconfigs": "[]",
+    "configdots": "x, y",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_xy_pair", "code": "all_close([x,y], ctx)"},
@@ -45,7 +60,7 @@
         {"name": "check_y_above_x", "code": "is_above(y, x, ctx)"},
         {"name": "check_xy_same_size", "code": "same_size([x,y], ctx)"}
     ],
-    "dots": "x,y",
+    "dots": "x, y",
     "select": "False"
 },{
     "speaker": "You",
@@ -57,8 +72,8 @@
     "text": "What about a large medium grey dot near the center?",
     "type": "New question.",
     "configs": "getsets(idxs, 1)",
-    "configdots": "x",
-    "newconfigs": "[]",
+    "configdots": "x,",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_x_large", "code": "is_large(x, ctx)"},
@@ -72,9 +87,9 @@
     "text": "Is there a smaller black one next to it?",
     "type": "Follow up question, new dot.",
     "configs": "state",
-    "configdots": "a",
+    "configdots": "a,",
     "newconfigs": "get1idxs(idxs, exclude=[a])",
-    "newdots": "x",
+    "newdots": "x,",
     "constraints": [
         {"name": "check_x_smaller_a", "code": "is_smaller(x, a, ctx)"},
         {"name": "check_x_dark", "code": "is_dark(x, ctx)"},
@@ -88,7 +103,7 @@
     "type": "New question.",
     "configs": "getsets(idxs, 3)",
     "configdots": "x,y,z",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_xyz_line", "code": "is_line([x,y,z], ctx)"},
@@ -107,7 +122,7 @@
     "type": "Follow up question.",
     "configs": "state",
     "configdots": "a,b,c",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_a_top", "code": "a == get_top([a,b,c], ctx)"},
@@ -123,7 +138,7 @@
     "type": "Follow up question.",
     "configs": "state",
     "configdots": "a,b,c",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_a_smallest", "code": "a == smallest([a,b,c], ctx)"},
@@ -137,7 +152,7 @@
     "type": "Select a dot.",
     "configs": "state",
     "configdots": "a,b,c",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_a_large", "code": "is_large(a, ctx)"},
@@ -151,8 +166,8 @@
     "text": "Do you see a large black dot on the bottom left?",
     "type": "New question.",
     "configs": "getsets(idxs, 1)",
-    "configdots": "x",
-    "newconfigs": "[]",
+    "configdots": "x,",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_x_large", "code": "is_large(x, ctx)"},
@@ -167,7 +182,7 @@
     "type": "New question.",
     "configs": "getsets(idxs, 3)",
     "configdots": "x,y,z",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_xyz_close", "code": "all_close([x,y,z], ctx)"},
@@ -188,7 +203,7 @@
     "type": "Select a dot.",
     "configs": "state",
     "configdots": "a,b,c",
-    "newconfigs": "[]",
+    "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
         {"name": "check_a_largest", "code": "a == get_largest([a,b,c], ctx)"}
@@ -204,17 +219,5 @@
     "speaker": "You",
     "text": "Okay. <selection>.",
     "type": "No op.",
-    "code": [
-        {
-            "function": "noop",
-            "parameters": ["state"],
-            "actions": [{"name": "return", "code": "state"}],
-            "returns": "state"
-        },
-        {
-            "function_call": "noop",
-            "parameters": ["state"],
-            "returns": "state"
-        }
-    ]
+    "select": "False"
 }]
