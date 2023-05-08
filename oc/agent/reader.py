@@ -199,15 +199,30 @@ class ReaderMixin:
         understand_prompt = self.understand.print(kwargs)
         print(understand_prompt)
 
-        code, dots, selection = self.understand(kwargs)
-        import pdb; pdb.set_trace()
+        codeblock = self.understand(kwargs)
+
+        codeblock_dict = dict(
+            code = codeblock.code,
+            constraints = codeblock.constraints,
+            dots = codeblock.dots,
+            selection = codeblock.selection,
+            speaker = codeblock.speaker,
+            text = codeblock.text,
+        )
 
         # new input for python execution
-        kw = dict(info=info, header=HEADER, code=input + out, dots=view.tolist())
+        kw = dict(
+            info=info,
+            header=HEADER,
+            blocks=past + [codeblock_dict],
+            dots=view.tolist(),
+        )
 
-        # debugging
+        # debugging execution input
         input = self.execute.print(kw)
         print(input)
+
+        import pdb; pdb.set_trace()
         
         result = self.execute(kw)
         print(result)

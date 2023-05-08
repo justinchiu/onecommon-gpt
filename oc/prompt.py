@@ -9,6 +9,8 @@ from jinja2 import (
 from minichain import TemplatePrompt as BaseTemplatePrompt
 from minichain import Output, Request, Prompt
 
+from oc.outputs import UnderstandShortOutput
+
 import oc.prompts
 from importlib.resources import files
 PROMPT_DIR = files(oc.prompts)._paths[0]
@@ -105,10 +107,24 @@ class UnderstandShort(TemplatePrompt[str]):
 
     def parse(self, output, input):
         code, dots, selection = output.split("\n#")
+
         #code = code.strip()
         dots = dots.replace("Dots:", "").strip()
         selection = selection.replace("Selection:", "").strip()
-        return code, dots, selection
+
+        # separate constraint names and assignment code
+        constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
+        constraint_pairs = [x.split(" = ") for x in constraint_lines]
+        constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
+
+        return UnderstandShortOutput(
+            code = code,
+            constraints = constraints,
+            dots = dots,
+            selection = selection,
+            speaker = input["speaker"],
+            text = input["text"],
+        )
 
 class ExecuteShort(TemplatePrompt[list[int]]):
     template_file = str(PROMPT_DIR / "executeshort.j2")
