@@ -12,11 +12,12 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = []
+states = []
 
 {% for block in blocks %}
+# Turn {{ loop.index0 }}
 # {{ block.speaker }}: {{ block.text }}
-{% if block.noop %}def turn(state): return state{% else %}def turn(state):
+{% if block.noop %}def turn(state): return None{% else %}def turn(state):
     results = set()
     orderedresults = []
     parents = []
@@ -32,7 +33,7 @@ state = []
                         orderedresults.append(dots)
                         parents.append(config)
     return sort_state(orderedresults, parents, ctx, select={{ block.selection }}){% endif %}
-state = turn(state)
+states.append(turn(state))
 {% endfor %}
 
 print([tuple(x) for x in state])

@@ -7,6 +7,7 @@ ctx = get_ctx()
 state = []
 
 {% for block in blocks %}
+# Turn {{ loop.index0 }}
 # {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
     for config in {{ block.configs }}:
         for {{ block.configdots }} in permutations(config):

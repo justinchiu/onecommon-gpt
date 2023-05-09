@@ -15,6 +15,7 @@ git+https://github.com/justinchiu/MiniChain@chatgpt#egg=minichain
 
 # testing
 pytest
+tiktoken
 
 # for fried 2021
 nltk
