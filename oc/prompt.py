@@ -72,6 +72,15 @@ class Understand(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "understand4.j2")
     stop_templates = ["# End.", "# New."]
 
+    def parse(self, output, input):
+        # debug
+        import tiktoken
+        encoding = tiktoken.encoding_for_model("gpt-4")
+        print(len(encoding.encode(output)))
+        import pdb; pdb.set_trace()
+        # /debug
+        return output
+
 
 class Confirm(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "confirm.j2")
@@ -108,6 +117,13 @@ class UnderstandShort(TemplatePrompt[str]):
     def parse(self, output, input) -> UnderstandShortOutput | None:
         if "No op." in output:
             return None
+
+        # debug
+        import tiktoken
+        encoding = tiktoken.encoding_for_model("gpt-4")
+        print(len(encoding.encode(output)))
+        import pdb; pdb.set_trace()
+        # /debug
 
         code, dots, selection = output.split("\n#")
 
@@ -148,6 +164,12 @@ class UnderstandShort2(TemplatePrompt[str]):
         if "No op." in output:
             return None
 
+        # debug
+        import tiktoken
+        encoding = tiktoken.encoding_for_model("gpt-4")
+        print(len(encoding.encode(output)))
+        # /debug
+        import pdb; pdb.set_trace()
         code, dots, selection = output.split("\n#")
 
         #code = code.strip()

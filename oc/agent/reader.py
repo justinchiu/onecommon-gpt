@@ -259,6 +259,73 @@ class ReaderMixin:
             },
         )
 
+    def resolve_reference_short_codegen2(self, text, past, view, info=None):
+        speaker = "You" if "You:" in text else "Them"
+        text = self.reformat_text(text, usespeaker=False)
+
+        kwargs = dict(
+            header=HEADER,
+            blocks = BLOCKS,
+            speaker = speaker,
+            text=text,
+            past=past,
+            view=view,
+        )
+
+        understand_prompt = self.understand.print(kwargs)
+        print(understand_prompt)
+
+        codeblock = self.understand(kwargs)
+
+        codeblock_dict = None
+        if codeblock is None:
+            codeblock_dict = dict(
+                noop = True,
+                speaker = speaker,
+                text = text,
+            )
+        else:
+            codeblock_dict = dict(
+                noop = False,
+                code = codeblock.code,
+                constraints = codeblock.constraints,
+                dots = codeblock.dots,
+                selection = codeblock.selection,
+                speaker = codeblock.speaker,
+                text = codeblock.text,
+            )
+
+        # new input for python execution
+        kw = dict(
+            info=info,
+            header=HEADER,
+            blocks=past + [codeblock_dict],
+            dots=view.tolist(),
+        )
+
+        # debugging execution input
+        input = self.execute.print(kw)
+        print(input)
+
+        result = self.execute(kw)
+        print(result)
+        if result is None:
+            result = []
+
+        num_preds = len(result)
+        mentions = np.zeros((num_preds, 7), dtype=bool)
+        for i in range(num_preds):
+            mentions[i, result[i]] = 1
+
+        return (
+            mentions,
+            past + [codeblock_dict],
+            {
+                "parsedtext": text,
+                "speaker": speaker,
+            },
+        )
+
     def resolve_reference_json_codegen(self, text, past, view, info=None):
         speaker = "You" if "You:" in text else "Them"
         text = self.reformat_text(text, usespeaker=False)
