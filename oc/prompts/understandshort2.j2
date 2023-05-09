@@ -8,12 +8,12 @@ state = []
 
 {% for block in blocks %}
 # {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
-    for config in {{ block.configs }}:
-        for {{ block.configdots }} in permutations(config):
-            for {{ block.newdots }} in {{ block.newconfigs }}:
-                {%- for constraint in block.constraints %}
-                {{ constraint.code}}
-                {%- endfor %}
+for config in {{ block.configs }}:
+for {{ block.configdots }} in permutations(config):
+for {{ block.newdots }} in {{ block.newconfigs }}:
+{%- for constraint in block.constraints %}
+{{ constraint.code}}
+{%- endfor %}
 # Dots: {{ block.dots }}
 # Selection: {{ block.select }}{% else %}
 # No op.{% endif %}
