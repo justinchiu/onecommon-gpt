@@ -15,3 +15,6 @@ split-window -h -c "oc/prompts" -p 50
 new-window -c "oc/promptdata" -n "promptdata"
 split-window -h -c "oc/promptdata" -p 50
 
+new-window -c "../onecommon-gpt-writing" -n "writing"
+split-window -h -c "../onecommon-gpt-writing" -p 50
+
