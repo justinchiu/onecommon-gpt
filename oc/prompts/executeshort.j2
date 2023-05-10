@@ -33,6 +33,7 @@ states = []
                         orderedresults.append(dots)
                         parents.append(config)
     return sort_state(orderedresults, parents, ctx, select={{ block.selection }}){% endif %}
+state = states[{{block.}}]
 states.append(turn(state))
 {% endfor %}
 
