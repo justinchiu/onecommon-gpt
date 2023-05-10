@@ -1,0 +1,17 @@
+new-window -n "root"
+send-keys "ocenv" Enter
+split-window -h -p 50
+send-keys "ocenv" Enter
+
+new-window -c "oc" -n "oc"
+split-window -h -c "oc" -p 50
+
+new-window -c "oc/agent" -n "agent"
+split-window -h -c "oc/agent" -p 50
+
+new-window -c "oc/prompts" -n "prompts"
+split-window -h -c "oc/prompts" -p 50
+
+new-window -c "oc/promptdata" -n "promptdata"
+split-window -h -c "oc/promptdata" -p 50
+
