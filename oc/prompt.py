@@ -121,6 +121,7 @@ class UnderstandShort(TemplatePrompt[str]):
             return None
 
         # debug
+        print(output)
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
         print(len(encoding.encode(output)))

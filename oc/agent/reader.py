@@ -83,8 +83,8 @@ class ReaderMixin:
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
 
-        if confirmation:
-            import pdb; pdb.set_trace()
+        #if confirmation:
+        #    import pdb; pdb.set_trace()
 
         if len(self.plans) > 0:
             prev_plan = self.plans[-1]

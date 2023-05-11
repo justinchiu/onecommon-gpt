@@ -170,11 +170,9 @@ for example in data:
         gpt_successes += gpt_rt_success
 
         agent.read(["Them:", "Yes"])
-        import pdb; pdb.set_trace()
 
         utt2 = agent.write()
         plan2 = agent.plans[-1]
-        import pdb; pdb.set_trace()
 
         words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']
         partner.read(

@@ -26,7 +26,7 @@ ctx = get_ctx()
 states = []
 
 {% for block in past %}
-# {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
+# {{ block.speaker }}: {{ block.text }}{% if block.noop == false %}
 def turn(state):
 {{ block.code }}
 # Dots: {{ block.dots }}
