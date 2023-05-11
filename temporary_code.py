@@ -83,7 +83,7 @@ def turn(state):
                     orderedresults.append(dots)
                     parents.append(config)
     return sort_state(orderedresults, parents, ctx, select=False)
-state = states[1]
+state = states[0]
 states.append(turn(state))
 # End.
 
@@ -410,6 +410,7 @@ states.append(turn(state))
 ctx = get_ctx()
 states = []
 
+# Turn 0
 # You: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
 def turn(state):
     # New question.
@@ -419,20 +420,20 @@ def turn(state):
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             check_xy_pair = all_close([x, y], ctx)
-            check_x_top = x == get_top([x, y], ctx)
             check_x_medium = is_medium_size(x, ctx)
             check_x_dark = is_dark(x, ctx)
-            check_y_bottom = y == get_bottom([x, y], ctx)
+            check_x_top = is_above(x, y, ctx)
             check_y_large = is_large(y, ctx)
             check_y_light = is_light(y, ctx)
+            check_y_bottom = is_below(y, x, ctx)
             if (
                 check_xy_pair
-                and check_x_top
                 and check_x_medium
                 and check_x_dark
-                and check_y_bottom
+                and check_x_top
                 and check_y_large
                 and check_y_light
+                and check_y_bottom
             ):
                 dots = frozenset([x, y])
                 if dots not in results:
@@ -444,6 +445,7 @@ state = None
 states.append(turn(state))
 # End.
 
+# Turn 1
 # Them: Yes.
 def turn(state):
     # No op.
