@@ -1,0 +1,14 @@
+{% if info is not none %}
+# {{ info }}
+{% endif %}
+
+{{ header }}
+
+def get_ctx():
+    ctx = np.array({{dots}})
+    return ctx
+
+{{ code }}
+
+print([tuple(x) for x in states[-1]])
+

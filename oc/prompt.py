@@ -70,7 +70,8 @@ class Understand(TemplatePrompt[str]):
     #template_file = "prompts/understand.j2"
     #template_file = "prompts/understand2.j2"
     #template_file = "prompts/understand3.j2"
-    template_file = str(PROMPT_DIR / "understand4.j2")
+    #template_file = str(PROMPT_DIR / "understand4.j2")
+    template_file = str(PROMPT_DIR / "understand5.j2")
     stop_templates = ["# End.", "# New."]
 
     def parse(self, output, input):
@@ -78,7 +79,6 @@ class Understand(TemplatePrompt[str]):
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
         print(len(encoding.encode(output)))
-        import pdb; pdb.set_trace()
         # /debug
         return output
 
@@ -100,7 +100,8 @@ class Confirm(TemplatePrompt[str]):
 
 class Execute(TemplatePrompt[list[int]]):
     #template_file = "prompts/execute.j2"
-    template_file = str(PROMPT_DIR / "execute3.j2")
+    #template_file = str(PROMPT_DIR / "execute3.j2")
+    template_file = str(PROMPT_DIR / "execute5.j2")
 
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
