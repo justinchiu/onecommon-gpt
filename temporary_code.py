@@ -34,9 +34,11 @@ def turn(state):
     results = set()
     orderedresults = []
     parents = []
+    New question.
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
+                check_xy_pair = all_close([x,y], ctx)
                 check_x_top = is_above(x, y, ctx)
                 check_x_medium = is_medium_size(x, ctx)
                 check_x_dark = is_dark(x, ctx)
@@ -45,6 +47,7 @@ def turn(state):
                 check_y_light = is_light(y, ctx)
                 if (
                     True 
+                    and check_xy_pair
                     and check_x_top
                     and check_x_medium
                     and check_x_dark
@@ -53,7 +56,7 @@ def turn(state):
                     and check_y_light
                     
                 ):
-                    dots = frozenset([x, y])
+                    dots = frozenset([config,x, y])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)
@@ -65,72 +68,6 @@ states.append(turn(state))
 # Turn 1
 # Them: Yes.
 def turn(state): return [None]
-state = states[0] if len(states) > 0 else None
-states.append(turn(state))
-
-# Turn 2
-# You: To the right and above those, is there a small, dark-colored dot?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    for config in state:
-        for a, b in permutations(config):
-            for x, in get1idxs(idxs, exclude=[a, b]):
-                check_x_right_a = is_right(x, a, ctx)
-                check_x_above_b = is_above(x, b, ctx)
-                check_x_small = is_small(x, ctx)
-                check_x_dark = is_dark(x, ctx)
-                if (
-                    True 
-                    and check_x_right_a
-                    and check_x_above_b
-                    and check_x_small
-                    and check_x_dark
-                    
-                ):
-                    dots = frozenset([a, b,x,])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
-state = states[0] if len(states) > 0 else None
-states.append(turn(state))
-
-# Turn 3
-# Them: Yes.
-def turn(state): return [None]
-state = states[0] if len(states) > 0 else None
-states.append(turn(state))
-
-# Turn 4
-# Them: Let's select the small size and dark color one on the right and above.
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    for config in state:
-        for a, b in permutations(config):
-            for x, in get1idxs(idxs, exclude=[a, b]):
-                check_x_right_a = is_right(x, a, ctx)
-                check_x_above_b = is_above(x, b, ctx)
-                check_x_small = is_small(x, ctx)
-                check_x_dark = is_dark(x, ctx)
-                if (
-                    True 
-                    and check_x_right_a
-                    and check_x_above_b
-                    and check_x_small
-                    and check_x_dark
-                    
-                ):
-                    dots = frozenset([x])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=True)
 state = states[0] if len(states) > 0 else None
 states.append(turn(state))
 

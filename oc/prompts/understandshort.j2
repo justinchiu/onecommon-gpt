@@ -9,6 +9,7 @@ states = []
 {% for block in blocks %}
 # {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
 def turn(state):
+    {{ block.type }}
     for config in {{ block.configs }}:
         for {{ block.configdots }} in permutations(config):
             for {{ block.newdots }} in {{ block.newconfigs }}:

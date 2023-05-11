@@ -129,8 +129,9 @@ class UnderstandShort(TemplatePrompt[str]):
         print(len(encoding.encode(output)))
         # /debug
 
-        code, dots, select = output.split("\n#")
+        code_start, code_body, dots, select = output.split("\n#")
 
+        code = "\n#".join([code_start, code_body])
         #code = code.strip()
         dots = dots.replace("Dots:", "").strip()
         select = select.replace("Selection:", "").strip()
