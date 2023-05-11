@@ -115,8 +115,8 @@ class UnderstandShort(TemplatePrompt[str]):
     stop_templates = ["# End."]
 
     def parse(self, output, input) -> UnderstandShortOutput | None:
-        print(output)
-        import pdb; pdb.set_trace()
+        #print(output)
+        #import pdb; pdb.set_trace()
         if "No op." in output:
             return None
 
