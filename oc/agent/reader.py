@@ -35,19 +35,19 @@ class ReaderMixin:
         elif refres == "shortcodegen":
             self.understand = UnderstandShort(backend.OpenAIChat(
                 model = model,
-                max_tokens=128,
+                max_tokens=256,
             ))
             self.execute = ExecuteShort(backend.Python())
         elif refres == "shortcodegen2":
             self.understand = UnderstandShort2(backend.OpenAIChat(
                 model = model,
-                max_tokens=128,
+                max_tokens=256,
             ))
             self.execute = ExecuteShort2(backend.Python())
         elif refres == "jsoncodegen":
             self.understand = UnderstandJson(backend.OpenAIChat(
                 model = model,
-                max_tokens=128,
+                max_tokens=256,
             ))
             self.execute = ExecuteJson(backend.Python())
         elif refres == "parsecodegen":
