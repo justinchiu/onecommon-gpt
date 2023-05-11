@@ -37,14 +37,16 @@ def turn(state):
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
-                check_x_top = x == get_top([x, y], ctx)
+                check_xy_pair = all_close([x,y], ctx)
+                check_x_top = x == get_top([x,y], ctx)
                 check_x_medium = is_medium_size(x, ctx)
                 check_x_dark = is_dark(x, ctx)
-                check_y_bottom = y == get_bottom([x, y], ctx)
+                check_y_bottom = y == get_bottom([x,y], ctx)
                 check_y_large = is_large(y, ctx)
                 check_y_light = is_light(y, ctx)
                 if (
                     True 
+                    and check_xy_pair
                     and check_x_top
                     and check_x_medium
                     and check_x_dark
@@ -89,7 +91,7 @@ def turn(state):
                     and check_x_above_ab
                     
                 ):
-                    dots = frozenset([x])
+                    dots = frozenset([a, b,x,])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)

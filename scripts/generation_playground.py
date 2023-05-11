@@ -21,7 +21,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -114,7 +114,7 @@ gpt_successes2 = 0
 
 gpt_successes3 = 0
 
-for example in data:
+for example_idx, example in enumerate(data):
     chatid = example["chat_id"]
     scenarioid = example["scenario_id"]
     print(scenarioid)
@@ -217,6 +217,9 @@ for example in data:
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()
+        print(f"1 succeses {gpt_successes} / {example_idx+1}")
+        print(f"2 succeses {gpt_successes2} / {example_idx+1}")
+        print(f"3 succeses {gpt_successes3} / {example_idx+1}")
 
 
 metric = Recall("multilabel")

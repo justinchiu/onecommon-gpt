@@ -1,4 +1,5 @@
 import ast
+import re
 from jinja2 import (
     Environment,
     FileSystemLoader,
@@ -132,6 +133,13 @@ class UnderstandShort(TemplatePrompt[str]):
         #code = code.strip()
         dots = dots.replace("Dots:", "").strip()
         select = select.replace("Selection:", "").strip()
+
+        if select == "False":
+            # sometimes dots is incorrect, parse out the dots from the for loop
+            for1, for2 = code.split("\n")[2:4]
+            statedots = re.findall("for (.*?) in", for1)[0]
+            followupdots = re.findall("for (.*?) in", for2)[0]
+            dots = statedots if "_" in followupdots else ",".join([statedots, followupdots])
 
         # separate constraint names and assignment code
         constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
