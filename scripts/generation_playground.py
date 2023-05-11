@@ -116,7 +116,7 @@ gpt_successes3 = 0
 
 for example_idx, example in enumerate(data):
     # debug
-    if example_idx != 1: continue
+    #if example_idx != 1: continue
     # /debug
 
     chatid = example["chat_id"]

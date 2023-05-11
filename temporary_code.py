@@ -482,13 +482,40 @@ state = states[0]
 states.append(turn(state))
 # End.
 
-# Turn 1
+# Turn 3
 # Them: Yes.
 def turn(state):
     # No op.
     return [None]
 state = None
 states.append(turn(state))
+# End.
+
+# Turn 1
+# Them: Let's select the medium size and grey color one above.
+def select(state):
+    # Select a dot.
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in state:
+        for a, b, c in permutations(config):
+            check_c_medium = is_medium_size(c, ctx)
+            check_c_grey = is_grey(c, ctx)
+            check_c_above_ab = is_above(c, [a, b], ctx)
+            if (
+                check_c_medium
+                and check_c_grey
+                and check_c_above_ab
+            ):
+                dots = frozenset([c])
+                if dots not in results:
+                    results.add(dots)
+                    orderedresults.append(dots)
+                    parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=True)
+state = states[2]
+states.append(select(state))
 
 
 print([tuple(x) for x in states[-1]])
