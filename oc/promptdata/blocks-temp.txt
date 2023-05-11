@@ -65,7 +65,7 @@
 },{
     "speaker": "You",
     "text": "No.",
-    "type": "New question.",
+    "type": "No op.",
     "select": "False"
 },{
     "speaker": "Them",
@@ -212,7 +212,7 @@
     "select": "True"
 },{
     "speaker": "Them",
-    "text": "Okay.",
+    "text": "Yes.",
     "type": "No op.",
     "select": "False"
 },{

@@ -83,6 +83,9 @@ class ReaderMixin:
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
 
+        if confirmation:
+            import pdb; pdb.set_trace()
+
         if len(self.plans) > 0:
             prev_plan = self.plans[-1]
             if confirmation is True:
@@ -216,6 +219,7 @@ class ReaderMixin:
                 noop = True,
                 speaker = speaker,
                 text = text,
+                idx = 0,
             )
         else:
             codeblock_dict = dict(
@@ -223,9 +227,10 @@ class ReaderMixin:
                 code = codeblock.code,
                 constraints = codeblock.constraints,
                 dots = codeblock.dots,
-                selection = codeblock.selection,
+                select = codeblock.select,
                 speaker = codeblock.speaker,
                 text = codeblock.text,
+                idx = 0,
             )
 
         # new input for python execution

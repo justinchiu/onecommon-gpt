@@ -6,6 +6,6 @@ class UnderstandShortOutput:
     code: str
     constraints: Iterable[Mapping[str, str]]
     dots: str
-    selection: str
+    select: str
     speaker: str
     text: str

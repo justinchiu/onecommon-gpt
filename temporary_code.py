@@ -25,29 +25,18 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = []
+states = []
 
 
+# Turn 0
 # You: Do you see a pair of dots, where the top dot is medium-sized and dark and the bottom dot is large-sized and light?
 def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    # config is either state or getsets
-    # state for followup
-    # getsets for new question
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
-                # dummy loop for new question
-                # dummy loop for follow up question w/ no new dots
-                #     ex: 1: do you see triangle
-                #         2: are they all small?
-                # for x, in getsets(idxs, 1, exclude=[x,y])
-                # for follow up question w/ new dots
-                #     ex: 1: do you see a tirnalge?
-                #         2: is there another dot to the right of the triangle?
-                import pdb; pdb.set_trace()
                 check_x_top = x == get_top([x, y], ctx)
                 check_x_medium = is_medium_size(x, ctx)
                 check_x_dark = is_dark(x, ctx)
@@ -70,12 +59,14 @@ def turn(state):
                         orderedresults.append(dots)
                         parents.append(config)
     return sort_state(orderedresults, parents, ctx, select=False)
-state = turn(state)
-import pdb; pdb.set_trace()
+state = states[0] if len(states) > 0 else None
+states.append(turn(state))
 
+# Turn 1
 # Them: Yes.
 def turn(state): return None
-state = turn(state)
+state = states[] if len(states) > 0 else None
+states.append(turn(state))
 
 
-print([tuple(x) for x in state])
+print([tuple(x) for x in states[-1]])

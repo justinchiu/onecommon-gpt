@@ -21,7 +21,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -132,8 +132,8 @@ for example in data:
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
-        #agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
-        agent = Agent(backend, "shortcodegen2", "templateonly", "gpt-4")
+        agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+        #agent = Agent(backend, "shortcodegen2", "templateonly", "gpt-4")
         #agent = Agent(backend, "jsoncodegen", "templateonly", "gpt-4")
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
@@ -142,7 +142,7 @@ for example in data:
         utt = agent.write()
         end_time = time.perf_counter()
         print(f"WRITE TIME: {end_time-start_time:0.4f} seconds for write")
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
         plan1 = agent.plans[-1]
 
 
@@ -170,6 +170,7 @@ for example in data:
         gpt_successes += gpt_rt_success
 
         agent.read(["Them:", "Yes"])
+        import pdb; pdb.set_trace()
 
         utt2 = agent.write()
         plan2 = agent.plans[-1]

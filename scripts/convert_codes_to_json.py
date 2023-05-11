@@ -90,8 +90,8 @@ state = turn(state)
 # End.""",
     """# You: No.
 def turn(state):
-    # New question.
-    return []
+    # No op.
+    return None
 state = turn(state)
 # End.""",
     """# Them: What about a large medium grey dot near the center?
@@ -462,7 +462,7 @@ Convert the above into JSON.
 # You: Okay. <selection>.
 def noop(state):
     # No op.
-    return state
+    return None
 state = noop(state)
 # End.
 Convert the above into JSON.

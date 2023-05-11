@@ -4,11 +4,11 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = []
+states = []
 
 {% for block in blocks %}
-# Turn {{ loop.index0 }}
 # {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
+def turn(state):
     for config in {{ block.configs }}:
         for {{ block.configdots }} in permutations(config):
             for {{ block.newdots }} in {{ block.newconfigs }}:
@@ -21,4 +21,17 @@ state = []
 # End.
 {% endfor %}
 
+# New.
+ctx = get_ctx()
+states = []
+
+{% for block in past %}
+# {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
+def turn(state):
+{{ block.code }}
+# Dots: {{ block.dots }}
+# Selection: {{ block.select }}{% else %}
+# No op.{% endif %}
+# End.
+{% endfor %}
 # {{speaker}}: {{ text }}

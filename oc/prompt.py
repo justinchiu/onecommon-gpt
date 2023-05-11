@@ -115,6 +115,8 @@ class UnderstandShort(TemplatePrompt[str]):
     stop_templates = ["# End."]
 
     def parse(self, output, input) -> UnderstandShortOutput | None:
+        print(output)
+        import pdb; pdb.set_trace()
         if "No op." in output:
             return None
 
@@ -122,14 +124,13 @@ class UnderstandShort(TemplatePrompt[str]):
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
         print(len(encoding.encode(output)))
-        import pdb; pdb.set_trace()
         # /debug
 
-        code, dots, selection = output.split("\n#")
+        code, dots, select = output.split("\n#")
 
         #code = code.strip()
         dots = dots.replace("Dots:", "").strip()
-        selection = selection.replace("Selection:", "").strip()
+        select = select.replace("Selection:", "").strip()
 
         # separate constraint names and assignment code
         constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
@@ -137,10 +138,11 @@ class UnderstandShort(TemplatePrompt[str]):
         constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
 
         return UnderstandShortOutput(
-            code = code,
+            # skip the first line of code, which is the fn def
+            code = "\n".join(code.split("\n")[1:]),
             constraints = constraints,
             dots = dots,
-            selection = selection,
+            select = select,
             speaker = input["speaker"],
             text = input["text"],
         )

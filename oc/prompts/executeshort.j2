@@ -32,9 +32,9 @@ states = []
                         results.add(dots)
                         orderedresults.append(dots)
                         parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select={{ block.selection }}){% endif %}
-state = states[{{block.}}]
+    return sort_state(orderedresults, parents, ctx, select={{ block.select }}){% endif %}
+state = states[{{block.idx}}] if len(states) > 0 else None
 states.append(turn(state))
 {% endfor %}
 
-print([tuple(x) for x in state])
+print([tuple(x) for x in states[-1]])
