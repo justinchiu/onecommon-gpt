@@ -72,6 +72,7 @@ class ReaderMixin:
         super(ReaderMixin, self).__init__(backend, refres, gen, model)
 
     def read(self, input_words): 
+        print("IN READ")
         # process input
         text = " ".join(input_words)
         past = self.past
@@ -90,8 +91,10 @@ class ReaderMixin:
             prev_plan = self.plans[-1]
             if confirmation is True:
                 self.update_belief(prev_plan.dots, 1)
+                print("UPDATED BELIEF confirmed")
             elif confirmation is False:
                 self.update_belief(prev_plan.dots, 0)
+                print("UPDATED BELIEF denied")
             elif confirmation is None:
                 pass
 
@@ -99,6 +102,7 @@ class ReaderMixin:
         # your answer is yes if preds is not empty
         if preds.sum() > 0:
             self.update_belief(preds[0], 1)
+            print("UPDATED BELIEF we see")
 
         # TODO: wrap state update in function
         # TODO: management of past stack

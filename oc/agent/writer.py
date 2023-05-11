@@ -34,8 +34,8 @@ class WriterMixin:
 
         super(WriterMixin, self).__init__()
 
-    def write(self):
-        plan = self.plan()
+    def write(self, force_no_select=False):
+        plan = self.plan(force_no_select=force_no_select)
         text, _, write_extra = self.generate_text(plan, self.past, self.ctx)
 
         youtext = f"You: {text}"

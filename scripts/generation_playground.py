@@ -115,6 +115,10 @@ gpt_successes2 = 0
 gpt_successes3 = 0
 
 for example_idx, example in enumerate(data):
+    # debug
+    if example_idx != 1: continue
+    # /debug
+
     chatid = example["chat_id"]
     scenarioid = example["scenario_id"]
     print(scenarioid)
@@ -171,7 +175,7 @@ for example_idx, example in enumerate(data):
 
         agent.read(["Them:", "Yes"])
 
-        utt2 = agent.write()
+        utt2 = agent.write(force_no_select=True)
         plan2 = agent.plans[-1]
 
         words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']

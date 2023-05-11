@@ -40,8 +40,8 @@ class PlannerMixin:
             response,
         )
 
-    def plan(self):
-        if self.should_select():
+    def plan(self, force_no_select=False):
+        if not force_no_select and self.should_select():
             plan = self.plan_select(self.belief_dist, self.plans)
         elif len(self.preds) > 0 and self.preds[-1].sum() > 0:
             # first check if we see partner's plan
