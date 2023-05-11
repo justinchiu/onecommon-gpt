@@ -17,7 +17,9 @@ def turn(state):
                 {%- endfor %}
 # Dots: {{ block.dots }}
 # Selection: {{ block.select }}{% else %}
-# No op.{% endif %}
+def turn(state):
+    # No op.
+    return [None]{% endif %}
 # End.
 {% endfor %}
 
@@ -31,7 +33,9 @@ def turn(state):
 {{ block.code }}
 # Dots: {{ block.dots }}
 # Selection: {{ block.select }}{% else %}
-# No op.{% endif %}
+def turn(state):
+    # No op.
+    return [None]{% endif %}
 # End.
 {% endfor %}
 # {{speaker}}: {{ text }}
