@@ -9,6 +9,7 @@ setup(
         "oc.eval",
         "oc.fns",
         "oc.gen",
+        "oc.dynamic_prompting",
         "tests",
     ],
     include_package_data = True,
