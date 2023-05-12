@@ -137,7 +137,7 @@ class UnderstandShort(TemplatePrompt[str]):
 
         if select == "False":
             # sometimes dots is incorrect, parse out the dots from the for loop
-            for1, for2 = code.split("\n")[2:4]
+            for1, for2 = code.split("\n")[3:5]
             statedots = re.findall("for (.*?) in", for1)[0]
             followupdots = re.findall("for (.*?) in", for2)[0]
             dots = statedots if "_" in followupdots else ",".join([statedots, followupdots])
