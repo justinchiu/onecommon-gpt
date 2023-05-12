@@ -48,7 +48,7 @@ class WriterMixin:
         self.write_extras.append(write_extra)
         self.read_extras.append(read_extra)
 
-        return text.split()
+        return text.split() + ["<eos>"]
 
     # GENERATION
     def generate_text(self, plan, past, view, info=None):
