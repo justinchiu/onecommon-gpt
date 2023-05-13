@@ -135,8 +135,10 @@ for example_idx, example in enumerate(data):
 
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
+        
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+
         #agent = Agent(backend, "shortcodegen2", "templateonly", "gpt-4")
         #agent = Agent(backend, "jsoncodegen", "templateonly", "gpt-4")
 
