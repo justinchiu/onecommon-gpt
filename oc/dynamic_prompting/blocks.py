@@ -9,7 +9,8 @@ import oc.prompts
 PROMPT_DIR = str(files(oc.prompts)._paths[0])
 
 dir = Path(PROMPT_DATA_DIR)
-blockfile = dir / "blocks-temp.json"
+#blockfile = dir / "blocks-temp.txt"
+blockfile = dir / "blocks.txt"
 with blockfile.open("r") as f:
     BLOCKS = json.load(f)
 

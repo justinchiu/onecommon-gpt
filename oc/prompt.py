@@ -129,11 +129,12 @@ class UnderstandShort(TemplatePrompt[str]):
         print(len(encoding.encode(output)))
         # /debug
 
-        code, dots, select = output.split("\n#")
+        code, dots, select, state = output.split("\n#")
 
         #code = code.strip()
         dots = dots.replace("Dots:", "").strip()
         select = select.replace("Selection:", "").strip()
+        state = state.replace("State:", "").strip()
 
         if select == "False":
             # sometimes dots is incorrect, parse out the dots from the for loop
@@ -153,6 +154,7 @@ class UnderstandShort(TemplatePrompt[str]):
             constraints = constraints,
             dots = dots,
             select = select,
+            state = state,
             speaker = input["speaker"],
             text = input["text"],
         )

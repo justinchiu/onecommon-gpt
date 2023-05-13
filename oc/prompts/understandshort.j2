@@ -7,6 +7,7 @@ ctx = get_ctx()
 states = []
 
 {% for block in blocks %}
+# Turn: {{block.turn}}
 # {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
 def turn(state):
     # {{ block.type }}
@@ -17,7 +18,8 @@ def turn(state):
                 {{ constraint.name }} = {{ constraint.code}}
                 {%- endfor %}
 # Dots: {{ block.dots }}
-# Selection: {{ block.select }}{% else %}
+# Selection: {{ block.select }}
+# State: {{ block.state }}{% else %}
 def turn(state):
     # No op.
     return [None]{% endif %}
@@ -28,15 +30,18 @@ def turn(state):
 ctx = get_ctx()
 states = []
 
-{% for block in past %}
+{% set turn_num = -1 %}{% for block in past %}
+# Turn: {{loop.index0}}
 # {{ block.speaker }}: {{ block.text }}{% if block.noop == false %}
 def turn(state):
 {{ block.code }}
 # Dots: {{ block.dots }}
-# Selection: {{ block.select }}{% else %}
+# Selection: {{ block.select }}
+# State: {{ block.state }}{% else %}
 def turn(state):
     # No op.
     return [None]{% endif %}
-# End.
+# End.{% set turn_num = loop.index0 %}
 {% endfor %}
+# Turn: {{ turn_num+1 }}
 # {{speaker}}: {{ text }}

@@ -223,7 +223,7 @@ class ReaderMixin:
                 noop = True,
                 speaker = speaker,
                 text = text,
-                idx = 0,
+                state = None,
             )
         else:
             codeblock_dict = dict(
@@ -234,7 +234,7 @@ class ReaderMixin:
                 select = codeblock.select,
                 speaker = codeblock.speaker,
                 text = codeblock.text,
-                idx = 0,
+                state = codeblock.state,
             )
 
         # new input for python execution
