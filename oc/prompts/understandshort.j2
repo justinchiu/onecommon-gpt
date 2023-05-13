@@ -30,8 +30,8 @@ def turn(state):
 ctx = get_ctx()
 states = []
 
-{% set turn_num = -1 %}{% for block in past %}
-# Turn: {{loop.index0}}
+{% set ns= namespace(turn_num=-1) %}{% for block in past %}
+# Turn: {{ loop.index0 }}
 # {{ block.speaker }}: {{ block.text }}{% if block.noop == false %}
 def turn(state):
 {{ block.code }}
@@ -41,7 +41,7 @@ def turn(state):
 def turn(state):
     # No op.
     return [None]{% endif %}
-# End.{% set turn_num = loop.index0 %}
+# End.{% set ns.turn_num = loop.index0 %}
 {% endfor %}
-# Turn: {{ turn_num+1 }}
+# Turn: {{ ns.turn_num+1 }}
 # {{speaker}}: {{ text }}

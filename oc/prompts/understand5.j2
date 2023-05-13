@@ -385,13 +385,13 @@ states.append(turn(state))
 
 # New.
 ctx = get_ctx()
-states = []{% set turn_num = -1 %}
-{% if past is defined and past|length > 0 %}{% for block in past %}{% set turn_num = loop.index0 %}
+states = []{% set ns = namespace(turn_num=-1) %}
+{% if past is defined and past|length > 0 %}{% for block in past %}{% set ns.turn_num = loop.index0 %}
 # Turn {{loop.index0}}
 # {{ block[0] }}
 {{ block[1] }}
 # End.
 {% endfor %}{% endif %}
-# Turn {{ turn_num+1 }}
+# Turn {{ ns.turn_num+1 }}
 # {{text}}
 def 
