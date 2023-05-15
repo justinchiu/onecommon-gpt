@@ -38,10 +38,10 @@ def turn(state):
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
-                check_x_top = x == get_top([x, y], ctx)
+                check_x_top = is_above(x, y, ctx)
                 check_x_medium = is_medium_size(x, ctx)
                 check_x_dark = is_dark(x, ctx)
-                check_y_bottom = y == get_bottom([x, y], ctx)
+                check_y_bottom = is_below(y, x, ctx)
                 check_y_large = is_large(y, ctx)
                 check_y_light = is_light(y, ctx)
                 if (
@@ -70,4 +70,7 @@ state = None if len(states) > 0 else None
 states.append(turn(state))
 
 
-print([tuple(x) for x in states[-1]])
+if states[-1] is not None:
+    print([tuple(x) for x in states[-1]])
+else:
+    print("None")

@@ -17,7 +17,7 @@ states = []
 {% for block in blocks %}
 # Turn {{ loop.index0 }}
 # {{ block.speaker }}: {{ block.text }}
-{% if block.noop is true %}def turn(state): return [None]{% else %}def turn(state):
+{% if block.noop is true %}def turn(state): return None{% else %}def turn(state):
     results = set()
     orderedresults = []
     parents = []
@@ -37,4 +37,7 @@ state = {{block.state}} if len(states) > 0 else None
 states.append(turn(state))
 {% endfor %}
 
-print([tuple(x) for x in states[-1]])
+if states[-1] is not None:
+    print([tuple(x) for x in states[-1]])
+else:
+    print("None")
