@@ -34,8 +34,8 @@ class WriterMixin:
 
         super(WriterMixin, self).__init__()
 
-    def write(self, force_no_select=False):
-        plan = self.plan(force_no_select=force_no_select)
+    def write(self, force_action=None):
+        plan = self.plan(force_action=force_action)
         text, _, write_extra = self.generate_text(plan, self.past, self.ctx)
 
         youtext = f"You: {text}"
@@ -155,7 +155,7 @@ class WriterMixin:
         newdot = plan.newdots.nonzero()[0].item()
         olddots = list(plan.olddots.nonzero()[0])
 
-        descs, position_desc = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
+        descs, position_desc, olddescs = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
 
         out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
         if plan.confirmation == True:
@@ -167,7 +167,7 @@ class WriterMixin:
     def generate_select(self, plan, past, view, info=None):
         newdot = plan.newdots.nonzero()[0].item()
         olddots = plan.olddots.nonzero()[0].tolist()
-        descs, position_desc = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
+        descs, position_desc, olddescs = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
 
-        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those. <selection>"
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
         return selectutt, past + [selectutt], None

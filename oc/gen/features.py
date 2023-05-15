@@ -117,5 +117,7 @@ def new_vs_old_desc(newdot, olddots, ctx, num_buckets=3):
     dots2 = size_color[[newdot]]
     descs = size_color_descriptions(dots2, size_map=size_map3, color_map=color_map3)
 
-    return descs, position_desc
+    sc_old = size_color[olddots]
+    old_descs = size_color_descriptions(sc_old, size_map=size_map3, color_map=color_map3)
 
+    return descs, position_desc, old_descs

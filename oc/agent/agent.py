@@ -39,6 +39,9 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         self.write_extras = []
         self.read_extras = []
 
+        # not turn-aligned
+        self.plans_confirmations = []
+
         self.belief = CostBelief(
             7, ctx,
             absolute = True,

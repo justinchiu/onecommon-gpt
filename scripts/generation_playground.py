@@ -10,6 +10,8 @@ from nltk import word_tokenize
 
 from oc.ocdata import get_data
 from oc.agent.agent import Agent
+from oc.agent.utils import Action
+
 from oc.belief.belief import CostBelief
 from oc.gen.features import size_map3, color_map3, size_map5, color_map5
 from oc.gen.features import size_color_descriptions, process_ctx, render
@@ -21,7 +23,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -177,7 +179,7 @@ for example_idx, example in enumerate(data):
 
         agent.read(["Them:", "Yes"])
 
-        utt2 = agent.write(force_no_select=True)
+        utt2 = agent.write(force_action=Action.FOLLOWUP)
         plan2 = agent.plans[-1]
 
         words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']
@@ -213,10 +215,12 @@ for example_idx, example in enumerate(data):
 
         # selection prompt
         # just select the new last one mentioned
-        descs = agent.write_extras[-2]["desc"]
-        position_desc = agent.write_extras[-2]["position_desc"]
-        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
-        sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
+        select_utt = agent.write(force_action=Action.SELECT)
+        sel_preds = agent.plans[-1]
+        #descs = agent.write_extras[-2]["desc"]
+        #position_desc = agent.write_extras[-2]["position_desc"]
+        #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
+        #sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
         # sort sel_preds by minimum radius of PREVIOUS plans
         if len(sel_preds) > 0:
             gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == plan2.newdots.nonzero()[0].item()

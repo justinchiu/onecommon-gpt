@@ -1,7 +1,7 @@
 import numpy as np
 import itertools
 
-from oc.agent.utils import Plan
+from oc.agent.utils import Plan, Action
 
 from oc.fns.spatial import get_minimum_radius
 
@@ -31,7 +31,7 @@ def idxs_to_dots(plan_idxs, plan_idxs2, view):
 
 class PlannerMixin:
 
-    def update_belief(self, dots, response):
+    def update_belief(self, dots, response) -> None:
         #plan = self.plans[-1].dots
         #plan = self.preds[-1][0]
         self.belief_dist = self.belief.posterior(
@@ -40,35 +40,43 @@ class PlannerMixin:
             response,
         )
 
-    def plan(self, force_no_select=False):
-        if not force_no_select and self.should_select():
-            plan = self.plan_select(self.belief_dist, self.plans)
-        elif len(self.preds) > 0 and self.preds[-1].sum() > 0:
-            # first check if we see partner's plan
-            dots = self.preds[-1][0]
-            plan = self.plan_followup(self.belief_dist, dots)
-        elif len(self.confirmations) > 0 and self.confirmations[-1]:
-            dots = self.plans[-2].dots
-            plan = self.plan_followup(self.belief_dist, dots)
+    def plan(self, force_action=None):
+        select_plan = self.plan_select(self.belief_dist, self.preds)
+        followup_plan = self.plan_followup(self.belief_dist, self.preds)
+        start_plan = self.plan_start(self.belief_dist, self.preds)
+
+        plan = None
+        if force_action == Action.SELECT:
+            plan = select_plan
+        elif force_action == Action.FOLLOWUP:
+            plan = followup_plan
+        elif force_action == Action.START:
+            plan = start_plan
+            # end forced 
+        elif select_plan is not None:
+            plan = select_plan
+        elif followup_plan is not None and followup_plan.info_gain > start_plan.info_gain:
+            plan = followup_plan
         else:
-            plan = self.plan_start(self.belief_dist, self.plans)
+            plan = start_plan
         self.plans.append(plan)
         return plan
 
     def plan_start(self, belief_dist, plans):
         EdHs = self.belief.compute_EdHs(belief_dist)
-        planbool = self.belief.configs[EdHs.argmax()].astype(bool)
+
+        # TODO: maybe mask out all configs that arent size 2?
+        EdHs_mask = self.belief.configs.sum(-1) == 2
+        EdHs *= EdHs_mask
+
+        idx = EdHs.argmax()
+        info_gain = EdHs[idx]
+        planbool = self.belief.configs[idx].astype(bool)
 
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        # forget about this.
-        #new, old = new_and_old_dots(planbool, plans)
-
-        if len(self.plans) == 0:
-            confirmation = None
-        else:
-            confirmation = self.preds[-1].sum() > 0
+        confirmation = self.should_confirm()
 
         plan = Plan(
             dots = planbool,
@@ -77,20 +85,33 @@ class PlannerMixin:
             plan_idxs = plan_idxs,
             should_select = False,
             confirmation = confirmation,
+            info_gain = info_gain,
         )
         return plan
 
-    def plan_followup(self, belief_dist, dots):
+    def plan_followup(self, belief_dist, plans):
+        if len(plans) == 0:
+            return None
+
         EdHs = self.belief.compute_EdHs(belief_dist)
 
-        # TODO:assume a 1st order chain for now
-        #dots = plans[-1].dots
-        #dots = self.preds[-1][0]
-        # mask out plans that don't have the desired configs
+        # choose plan to follow up on
+        dots = [
+            x.dots for x in reversed(self.plans_confirmations)
+            if x.confirmed
+        ][0]
+
+        config_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
+        inclusion_prob = (belief_dist * config_mask).sum()
+        print(f"Followup config inclusion prob: {inclusion_prob}")
+
+        # mask out plans that aren't dots + 1 new
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         newdot_mask = self.belief.configs.sum(-1) == dots.sum() + 1
         EdHs *= EdHs_mask * newdot_mask
-        planbool = self.belief.configs[EdHs.argmax()].astype(bool)
+        idx = EdHs.argmax()
+        info_gain = EdHs[idx]
+        planbool = self.belief.configs[idx].astype(bool)
 
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
@@ -109,10 +130,7 @@ class PlannerMixin:
 
         new = planbool2 & ~old
 
-        if len(self.plans) == 0:
-            confirmation = None
-        else:
-            confirmation = self.preds[-1].sum() > 0
+        confirmation = self.should_confirm
 
         plan = Plan(
             dots = planbool2,
@@ -121,83 +139,54 @@ class PlannerMixin:
             plan_idxs = plan_idxs,
             should_select = False,
             confirmation = confirmation,
+            info_gain = info_gain,
         )
         return plan
 
     def plan_select(self, belief_dist, plans):
-        """
-        if True in pred_successes:
-            # find the last partner plan we see
-            ridx = list(reversed(pred_successes)).index(True)
-            idx = len(self.confirmations) - ridx - 1
-            import pdb; pdb.set_trace()
-        else:
-            # otherwise find the last confirmed plan
-            ridx = list(reversed(self.confirmations)).index(True)
-            idx = len(self.confirmations) - ridx - 1
-            lastplan = self.plans[idx-1]
-            dots = lastplan.dots
-            olddots = lastplan.olddots
-        """
+        marginals = self.belief.marginals(belief_dist)
 
-        planbool, new, old, new_idxs = None, None, None, None
-        if len(self.preds) < 2:
-            marginals = self.belief.marginals(belief_dist)
-            assert self.preds[0].sum() > 0
-            selectdot = marginals.argmax()
+        threshold = self.belief_threshold
+        mask = marginals > threshold
 
-            new = np.zeros(7, dtype=bool)
-            new[selectdot] = True
+        num_sure_dots = mask.sum()
+        if num_sure_dots < 2:
+            # Do not select if there are less than 2 we are sure about
+            return None
 
-            planbool = self.preds[0][0]
-            old = planbool.copy()
-            old[selectdot] = False
+        # maybe need saliency prior instead of highest prob?
+        #import pdb; pdb.set_trace()
 
-            feats = self.belief.get_feats(planbool)
-            new_idxs = self.belief.resolve_utt(*feats)
-        else:
-            pred_successes = [x.sum() > 0 for x in self.preds]
-            revsuc = list(reversed(pred_successes)) 
-            ridx1 = revsuc.index(True)
-            ridx2 = revsuc[ridx1+1:].index(True) + ridx1 + 1
+        dot_order = np.argsort(marginals)[::-1]
+        anchor_dot = dot_order[0]
 
-            idx1 = len(self.preds) - ridx1 - 1
-            idx2 = len(self.preds) - ridx2 - 1
-            dots = self.preds[idx1][0]
-            olddots = self.preds[idx2][0]
+        # talk about at most 2 other dots
+        num_sure_dots = min(num_sure_dots, 2)
+        aux_dots = dot_order[1:num_sure_dots+1]
 
-            feats = self.belief.get_feats(dots)
-            plan_idxs = self.belief.resolve_utt(*feats)
+        # just one other dot
+        aux_dots = dot_order[1]
 
-            # choose the second last confirmed dot
-            prev_feats = self.belief.get_feats(olddots)
-            prev_plan_idxs = self.belief.resolve_utt(*prev_feats)
+        newdots = np.zeros(7, dtype=bool)
+        newdots[anchor_dot] = True
+        olddots = np.zeros(7, dtype=bool)
+        olddots[aux_dots] = True
 
-            new_idxs, old_idxs = idxs_to_dots(prev_plan_idxs, plan_idxs, self.ctx)
+        planbool = newdots + olddots
 
-            # disambiguated
-            planbool = np.zeros(7, dtype=bool)
-            planbool[new_idxs] = 1
-
-            old = np.zeros(7, dtype=bool)
-            old[old_idxs] = 1
-
-            new = planbool & ~old
-
-        if len(self.plans) == 0:
-            confirmation = None
-        else:
-            confirmation = self.preds[-1].sum() > 0
+        confirmation = self.should_confirm()
 
         plan = Plan(
             dots = planbool,
-            newdots = new,
-            olddots = old,
-            plan_idxs = new_idxs,
+            newdots = newdots,
+            olddots = olddots,
+            plan_idxs = planbool,
             should_select = True,
             confirmation = confirmation,
+            info_gain = None,
         )
         return plan
+
 
     def choose(self):
         # TODO: REMOVE HACK
@@ -209,3 +198,14 @@ class PlannerMixin:
         max_belief = self.belief.marginals(self.belief_dist).max()
         select = max_belief > self.belief_threshold
         return select
+
+    def should_confirm(self):
+        if len(self.preds) == 0:
+            # first turn
+            confirmation = None
+        elif self.preds[-1] is None:
+            # no op
+            confirmation = None
+        else:
+            confirmation = self.preds[-1].sum() > 0
+        return confirmation

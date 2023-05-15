@@ -11,6 +11,8 @@ from oc.prompt import UnderstandJson, ExecuteJson
 
 from oc.dynamic_prompting.blocks import BLOCKS
 
+from oc.agent.utils import PlanConfirmation, Speaker
+
 
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
@@ -81,28 +83,42 @@ class ReaderMixin:
 
         parsed_text = extra["parsedtext"]
 
+        # process our previous plan + their confirmation
+
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
-
-        #if confirmation:
-        #    import pdb; pdb.set_trace()
 
         if len(self.plans) > 0:
             prev_plan = self.plans[-1]
             if confirmation is True:
                 self.update_belief(prev_plan.dots, 1)
                 print("UPDATED BELIEF confirmed")
+                self.plans_confirmations.append(PlanConfirmation(
+                    dots = prev_plan.dots,
+                    confirmed = True,
+                    speaker = Speaker.YOU,
+                ))
             elif confirmation is False:
                 self.update_belief(prev_plan.dots, 0)
                 print("UPDATED BELIEF denied")
+                self.plans_confirmations.append(PlanConfirmation(
+                    dots = prev_plan.dots,
+                    confirmed = False,
+                    speaker = Speaker.YOU,
+                ))
             elif confirmation is None:
                 pass
 
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
-        if preds.sum() > 0:
+        if preds is not None and preds.sum() > 0:
             self.update_belief(preds[0], 1)
             print("UPDATED BELIEF we see")
+            self.plans_confirmations.append(PlanConfirmation(
+                dots = preds[0],
+                confirmed = True,
+                speaker = Speaker.THEM,
+            ))
 
         # TODO: wrap state update in function
         # TODO: management of past stack
@@ -187,13 +203,13 @@ class ReaderMixin:
         
         result = self.execute(kw)
         print(result)
-        if result is None:
-            result = []
 
-        num_preds = len(result)
-        mentions = np.zeros((num_preds, 7), dtype=bool)
-        for i in range(num_preds):
-            mentions[i, result[i]] = 1
+        mentions = None
+        if results is not None:
+            num_preds = len(result)
+            mentions = np.zeros((num_preds, 7), dtype=bool)
+            for i in range(num_preds):
+                mentions[i, result[i]] = 1
 
         return mentions, past + [(text.strip(), f"def {out.strip()}")], {
             "parsedtext": text,
@@ -251,13 +267,13 @@ class ReaderMixin:
 
         result = self.execute(kw)
         print(result)
-        if result is None:
-            result = []
 
-        num_preds = len(result)
-        mentions = np.zeros((num_preds, 7), dtype=bool)
-        for i in range(num_preds):
-            mentions[i, result[i]] = 1
+        mentions = None
+        if result is not None:
+            num_preds = len(result)
+            mentions = np.zeros((num_preds, 7), dtype=bool)
+            for i in range(num_preds):
+                mentions[i, result[i]] = 1
 
         return (
             mentions,

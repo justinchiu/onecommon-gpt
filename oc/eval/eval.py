@@ -269,7 +269,7 @@ if __name__ == "__main__":
         default="gpt-3.5-turbo",
     )
     parser.add_argument("--refres",
-        choices=["parsecodegen", "codegen", "mc"],
+        choices=["parsecodegen", "mc", "codegen", "shortcodegen"],
         default="codegen",
     )
     parser.add_argument("--gen",
