@@ -216,7 +216,7 @@ for example_idx, example in enumerate(data):
         # selection prompt
         # just select the new last one mentioned
         select_utt = agent.write(force_action=Action.SELECT)
-        sel_preds = agent.plans[-1]
+        sel_preds = agent.preds[-1]
         #descs = agent.write_extras[-2]["desc"]
         #position_desc = agent.write_extras[-2]["position_desc"]
         #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
