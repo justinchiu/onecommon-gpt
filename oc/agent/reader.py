@@ -13,6 +13,8 @@ from oc.dynamic_prompting.blocks import BLOCKS
 
 from oc.agent.utils import PlanConfirmation, Speaker
 
+from oc.belief.belief_utils import get_config_idx
+
 
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
@@ -95,6 +97,7 @@ class ReaderMixin:
                 print("UPDATED BELIEF confirmed")
                 self.plans_confirmations.append(PlanConfirmation(
                     dots = prev_plan.dots,
+                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                     confirmed = True,
                     speaker = Speaker.YOU,
                 ))
@@ -103,6 +106,7 @@ class ReaderMixin:
                 print("UPDATED BELIEF denied")
                 self.plans_confirmations.append(PlanConfirmation(
                     dots = prev_plan.dots,
+                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                     confirmed = False,
                     speaker = Speaker.YOU,
                 ))
@@ -116,6 +120,7 @@ class ReaderMixin:
             print("UPDATED BELIEF we see")
             self.plans_confirmations.append(PlanConfirmation(
                 dots = preds[0],
+                config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                 confirmed = True,
                 speaker = Speaker.THEM,
             ))

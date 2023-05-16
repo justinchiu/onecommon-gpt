@@ -67,7 +67,8 @@ class PlannerMixin:
 
         # TODO: maybe mask out all configs that arent size 2?
         EdHs_mask = self.belief.configs.sum(-1) == 2
-        EdHs *= EdHs_mask
+        repeat_mask = self.get_repeat_mask()
+        EdHs *= EdHs_mask * repeat_mask
 
         idx = EdHs.argmax()
         info_gain = EdHs[idx]
@@ -96,10 +97,7 @@ class PlannerMixin:
         EdHs = self.belief.compute_EdHs(belief_dist)
 
         # choose plan to follow up on
-        dots = [
-            x.dots for x in reversed(self.plans_confirmations)
-            if x.confirmed
-        ][0]
+        dots = self.get_last_confirmed_dots()
 
         config_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         inclusion_prob = (belief_dist * config_mask).sum()
@@ -107,8 +105,9 @@ class PlannerMixin:
 
         # mask out plans that aren't dots + 1 new
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
+        repeat_mask = self.get_repeat_mask()
         newdot_mask = self.belief.configs.sum(-1) == dots.sum() + 1
-        EdHs *= EdHs_mask * newdot_mask
+        EdHs *= EdHs_mask * repeat_mask * newdot_mask
         idx = EdHs.argmax()
         info_gain = EdHs[idx]
         planbool = self.belief.configs[idx].astype(bool)
@@ -144,7 +143,15 @@ class PlannerMixin:
         return plan
 
     def plan_select(self, belief_dist, plans):
-        marginals = self.belief.marginals(belief_dist)
+        if len(plans) == 0: return None
+
+        dots = self.get_last_confirmed_dots()
+        if dots is None: return None
+
+        config_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
+        inclusion_prob = (belief_dist * config_mask).sum()
+
+        marginals = self.belief.marginals(belief_dist) * dots
 
         threshold = self.belief_threshold
         mask = marginals > threshold
@@ -161,8 +168,8 @@ class PlannerMixin:
         anchor_dot = dot_order[0]
 
         # talk about at most 2 other dots
-        num_sure_dots = min(num_sure_dots, 2)
-        aux_dots = dot_order[1:num_sure_dots+1]
+        #num_sure_dots = min(num_sure_dots, 2)
+        #aux_dots = dot_order[1:num_sure_dots+1]
 
         # just one other dot
         aux_dots = dot_order[1]
@@ -209,3 +216,17 @@ class PlannerMixin:
         else:
             confirmation = self.preds[-1].sum() > 0
         return confirmation
+
+    def get_last_confirmed_dots(self):
+        confirmed = [
+            x.dots for x in reversed(self.plans_confirmations)
+            if x.confirmed
+        ]
+        return confirmed[0] if confirmed else None
+
+    def get_repeat_mask(self):
+        # kill any configs that have already been asked
+        mask = np.ones(self.belief.configs.shape[0], dtype=float)
+        for x in self.plans_confirmations:
+            mask[x.config_idx] = 0
+        return mask

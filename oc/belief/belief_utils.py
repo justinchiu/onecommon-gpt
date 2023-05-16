@@ -12,6 +12,9 @@ from scipy.special import comb
 
 from scipy.spatial import ConvexHull, Delaunay
 
+def get_config_idx(dots, configs):
+    return (configs == dots).all(-1).nonzero()[0].item()
+
 def comb_index(n, k):
     count = comb(n, k, exact=True)
     index = np.fromiter(

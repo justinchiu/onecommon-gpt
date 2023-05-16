@@ -38,10 +38,10 @@ def turn(state):
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
-                check_x_top = is_above(x, y, ctx)
+                check_x_top = x == get_top([x, y], ctx)
                 check_x_medium = is_medium_size(x, ctx)
                 check_x_dark = is_dark(x, ctx)
-                check_y_bottom = is_below(y, x, ctx)
+                check_y_bottom = y == get_bottom([x, y], ctx)
                 check_y_large = is_large(y, ctx)
                 check_y_light = is_light(y, ctx)
                 if (
@@ -65,7 +65,44 @@ states.append(turn(state))
 
 # Turn 1
 # Them: Yes.
-def turn(state): return [None]
+def turn(state): return None
+state = None if len(states) > 0 else None
+states.append(turn(state))
+
+# Turn 2
+# You: To the right and above those, is there a small, dark-colored dot?
+def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+    # Follow up question, new dot.
+    for config in state:
+        for a, b in permutations(config):
+            for x, in get1idxs(idxs, exclude=[a, b]):
+                check_x_small = is_small(x, ctx)
+                check_x_dark = is_dark(x, ctx)
+                check_x_right_ab = is_right(x, [a, b], ctx)
+                check_x_above_ab = is_above(x, [a, b], ctx)
+                if (
+                    True 
+                    and check_x_small
+                    and check_x_dark
+                    and check_x_right_ab
+                    and check_x_above_ab
+                    
+                ):
+                    dots = frozenset([a,b,x,])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = states[0] if len(states) > 0 else None
+states.append(turn(state))
+
+# Turn 3
+# Them: Yes.
+def turn(state): return None
 state = None if len(states) > 0 else None
 states.append(turn(state))
 
