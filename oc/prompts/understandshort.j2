@@ -17,6 +17,7 @@ def turn(state):
                 {%- for constraint in block.constraints %}
                 {{ constraint.name }} = {{ constraint.code}}
                 {%- endfor %}
+    return True
 # Dots: {{ block.dots }}
 # Selection: {{ block.select }}
 # State: {{ block.state }}{% else %}
@@ -35,6 +36,7 @@ states = []
 # {{ block.speaker }}: {{ block.text }}{% if block.noop == false %}
 def turn(state):
 {{ block.code }}
+    return True
 # Dots: {{ block.dots }}
 # Selection: {{ block.select }}
 # State: {{ block.state }}{% else %}
