@@ -96,7 +96,7 @@ class Confirm(TemplatePrompt[str]):
         elif word == "None":
             return None
         else:
-            raise ValueError
+            raise ValueError(f"Confirmation prompt returned: {word}")
 
 class Execute(TemplatePrompt[list[int]]):
     #template_file = "prompts/execute.j2"
