@@ -222,7 +222,7 @@ for example_idx, example in enumerate(data):
         #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
         #sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
         # sort sel_preds by minimum radius of PREVIOUS plans
-        if len(sel_preds) > 0:
+        if sel_preds is not None and len(sel_preds) > 0:
             gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == agent.plans[-1].dots.nonzero()[0].item()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
