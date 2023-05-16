@@ -41,7 +41,7 @@ class PlannerMixin:
         )
 
     def plan(self, force_action=None):
-        select_plan = self.plan_select(self.belief_dist, self.preds)
+        select_plan = self.plan_select(self.belief_dist, self.preds, force=force_action == Action.SELECT)
         followup_plan = self.plan_followup(self.belief_dist, self.preds)
         start_plan = self.plan_start(self.belief_dist, self.preds)
 
@@ -142,7 +142,7 @@ class PlannerMixin:
         )
         return plan
 
-    def plan_select(self, belief_dist, plans):
+    def plan_select(self, belief_dist, plans, force=False):
         if len(plans) == 0: return None
 
         dots = self.get_last_confirmed_dots()
@@ -157,7 +157,7 @@ class PlannerMixin:
         mask = marginals > threshold
 
         num_sure_dots = mask.sum()
-        if num_sure_dots < 2:
+        if not force and num_sure_dots < 2:
             # Do not select if there are less than 2 we are sure about
             return None
 
@@ -177,7 +177,7 @@ class PlannerMixin:
         newdots = np.zeros(7, dtype=bool)
         newdots[anchor_dot] = True
         olddots = np.zeros(7, dtype=bool)
-        olddots[aux_dots] = True
+        #olddots[aux_dots] = True
 
         planbool = newdots + olddots
 

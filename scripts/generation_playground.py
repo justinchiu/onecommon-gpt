@@ -23,7 +23,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -223,7 +223,7 @@ for example_idx, example in enumerate(data):
         #sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
         # sort sel_preds by minimum radius of PREVIOUS plans
         if len(sel_preds) > 0:
-            gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == plan2.newdots.nonzero()[0].item()
+            gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == agent.plans[-1].dots.nonzero()[0].item()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()

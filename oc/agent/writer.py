@@ -169,5 +169,6 @@ class WriterMixin:
         olddots = plan.olddots.nonzero()[0].tolist()
         descs, position_desc, olddescs = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
 
-        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
+        #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"
         return selectutt, past + [selectutt], None
