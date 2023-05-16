@@ -99,6 +99,9 @@ class PlannerMixin:
         # choose plan to follow up on
         dots = self.get_last_confirmed_dots()
 
+        if dots is None:
+            return None
+
         config_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
         inclusion_prob = (belief_dist * config_mask).sum()
         print(f"Followup config inclusion prob: {inclusion_prob}")
