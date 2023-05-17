@@ -182,4 +182,6 @@ class WriterMixin:
 
         #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
         selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"
+        if plan.confirmation == True:
+            selectutt = f"Yes. {selectutt}"
         return selectutt, past + [selectutt], None
