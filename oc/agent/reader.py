@@ -99,6 +99,7 @@ class ReaderMixin:
                     dots = prev_plan.dots,
                     config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                     confirmed = True,
+                    selection = False,
                     speaker = Speaker.YOU,
                 ))
             elif confirmation is False:
@@ -108,6 +109,7 @@ class ReaderMixin:
                     dots = prev_plan.dots,
                     config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                     confirmed = False,
+                    selection = False,
                     speaker = Speaker.YOU,
                 ))
             elif confirmation is None:
@@ -122,6 +124,7 @@ class ReaderMixin:
                 dots = preds[0],
                 config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
                 confirmed = True,
+                selection = False,
                 speaker = Speaker.THEM,
             ))
 
