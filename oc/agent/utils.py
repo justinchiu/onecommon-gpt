@@ -25,6 +25,7 @@ class Plan:
 class PlanConfirmation:
     dots: np.ndarray
     confirmed: bool
+    selection: bool
     speaker: Speaker
     config_idx: int
 

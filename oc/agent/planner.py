@@ -199,6 +199,14 @@ class PlannerMixin:
 
 
     def choose(self):
+        confirmed_or_select = [
+            x.dots for x in reversed(self.plans_confirmations)
+            if (x.confirmed or x.selection) and x.dots.sum() == 1
+        ]
+        return (
+            confirmed_or_select[0].nonzero()[0].item()
+            if confirmed_or_select else 0
+        )
         # TODO: REMOVE HACK
         if self.preds[-1].sum() == 0:
             return 0

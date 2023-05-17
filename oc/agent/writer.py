@@ -8,6 +8,8 @@ from oc.gen.features import new_vs_old_desc
 from oc.prompt import Generate
 from oc.prompt import GenerateScxy, GenerateTemplate
 
+from oc.agent.utils import PlanConfirmation, Speaker
+from oc.belief.belief_utils import get_config_idx
 
 class WriterMixin:
     def __init__(self, backend, refres, gen, model):
@@ -47,6 +49,15 @@ class WriterMixin:
         self.confirmations.append(None)
         self.write_extras.append(write_extra)
         self.read_extras.append(read_extra)
+
+        if plan.should_select:
+            self.plans_confirmations.append(PlanConfirmation(
+                dots = plan.dots,
+                config_idx = get_config_idx(plant.dots, self.belief.configs),
+                confirmed = False,
+                selection = True,
+                speaker = Speaker.YOU,
+            ))
 
         return text.split() + ["<eos>"]
 

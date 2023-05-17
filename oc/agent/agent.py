@@ -28,8 +28,10 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         super().__init__(backend, refres, gen, model)
 
     # necessary functions for onecommon
-    def feed_context(self, ctx, belief_constructor=None):
+    def feed_context(self, ctx, flip_y=False, belief_constructor=None):
         self.ctx = np.array(ctx, dtype=float).reshape((7,4))
+        if flip_y:
+            self.ctx[:,1] = -self.ctx[:,1]
 
         # dialogue state
         self.past = []
