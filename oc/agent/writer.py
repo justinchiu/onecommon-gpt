@@ -53,7 +53,7 @@ class WriterMixin:
         if plan.should_select:
             self.plans_confirmations.append(PlanConfirmation(
                 dots = plan.dots,
-                config_idx = get_config_idx(plant.dots, self.belief.configs),
+                config_idx = get_config_idx(plan.dots, self.belief.configs),
                 confirmed = False,
                 selection = True,
                 speaker = Speaker.YOU,

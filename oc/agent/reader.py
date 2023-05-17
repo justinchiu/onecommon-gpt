@@ -113,7 +113,13 @@ class ReaderMixin:
                     speaker = Speaker.YOU,
                 ))
             elif confirmation is None:
-                pass
+                self.plans_confirmations.append(PlanConfirmation(
+                    dots = prev_plan.dots,
+                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
+                    confirmed = None,
+                    selection = False,
+                    speaker = Speaker.YOU,
+                ))
 
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
