@@ -132,7 +132,7 @@ class PlannerMixin:
 
         new = planbool2 & ~old
 
-        confirmation = self.should_confirm
+        confirmation = self.should_confirm()
 
         plan = Plan(
             dots = planbool2,
