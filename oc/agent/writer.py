@@ -155,6 +155,8 @@ class WriterMixin:
         # insert confirmation
         if plan.confirmation == False:
             desc = f"No. {desc}"
+        elif plan.confirmation == True:
+            desc = f"Yes. {desc}"
         
         return desc, past + [desc], None
 
@@ -171,6 +173,8 @@ class WriterMixin:
         out = f"Is there a {descs[0][0]} size and {descs[0][1]} color dot {position_desc} those?"
         if plan.confirmation == True:
             out = f"Yes. {out}"
+        elif plan.confirmation == False:
+            out = f"No. {out}"
 
         return out, past + [out], {"desc": descs, "position_desc": position_desc}
 
@@ -184,4 +188,6 @@ class WriterMixin:
         selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"
         if plan.confirmation == True:
             selectutt = f"Yes. {selectutt}"
+        elif plan.confirmation == False:
+            selectutt = f"No. {selectutt}"
         return selectutt, past + [selectutt], None
