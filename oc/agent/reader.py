@@ -128,7 +128,7 @@ class ReaderMixin:
             print("UPDATED BELIEF we see")
             self.plans_confirmations.append(PlanConfirmation(
                 dots = preds[0],
-                config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
+                config_idx = get_config_idx(preds[0], self.belief.configs),
                 confirmed = True,
                 selection = False,
                 speaker = Speaker.THEM,
