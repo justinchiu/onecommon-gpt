@@ -9,6 +9,9 @@ split-window -h -c "oc" -p 50
 new-window -c "oc/agent" -n "agent"
 split-window -h -c "oc/agent" -p 50
 
+new-window -c "oc/agent2" -n "agent2"
+split-window -h -c "oc/agent2" -p 50
+
 new-window -c "oc/prompts" -n "prompts"
 split-window -h -c "oc/prompts" -p 50
 

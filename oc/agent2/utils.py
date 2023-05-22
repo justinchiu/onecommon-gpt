@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 import numpy as np
+from typing import Any
 
 
 class Speaker(Enum):
@@ -15,26 +16,37 @@ class Action(Enum):
 @dataclass
 class Plan:
     dots: np.ndarray
+    plan_idxs: np.ndarray
+    turn: int
+    id: int
+
+@dataclass
+class OurPlan(Plan):
+    info_gain: float | None
+    # do we give them a confirmation
+    confirmation: bool | None
+
+@dataclass
+class StartPlan(OurPlan):
+    pass
+
+@dataclass
+class FollowupPlan(OurPlan):
     newdots: np.ndarray
     olddots: np.ndarray
-    plan_idxs: np.ndarray
-    should_select: bool
-    confirmation: bool | None
-    info_gain: float | None
-    turn: int
+    reference_id: int
+    pass
 
 @dataclass
-class PlanConfirmation:
-    dots: np.ndarray
+class SelectPlan(OurPlan):
+    reference_id: int
+    pass
+
+@dataclass
+class ConfirmedPlan:
+    plan: Plan
     confirmed: bool | None
-    selection: bool
-    speaker: Speaker
-    config_idx: int
-    turn: int
 
-@dataclass
-class PartnerPlan:
-    preds: np.ndarray
 
 @dataclass
 class State:
@@ -43,3 +55,4 @@ class State:
     our_plans: list[Plan]
     their_plans: list[PartnerPlan]
     turn: int
+    past: Any

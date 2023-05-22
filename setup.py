@@ -5,6 +5,7 @@ setup(
     packages = [
         "oc",
         "oc.agent",
+        "oc.agent2",
         "oc.belief",
         "oc.eval",
         "oc.fns",

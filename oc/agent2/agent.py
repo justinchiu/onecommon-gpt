@@ -10,9 +10,9 @@ from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import GenerateScxy, GenerateTemplate
 from oc.prompt import UnderstandMc
 
-from oc.agent.reader import ReaderMixin
-from oc.agent.planner import PlannerMixin
-from oc.agent.writer import WriterMixin
+from oc.agent2.reader import ReaderMixin
+from oc.agent2.planner import PlannerMixin
+from oc.agent2.writer import WriterMixin
 
 from oc.belief.belief import CostBelief
 
