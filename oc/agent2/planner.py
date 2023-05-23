@@ -59,6 +59,10 @@ class PlannerMixin:
             plan = followup_plan
         else:
             plan = start_plan
+        # DBG
+        #if followup_plan is not None:
+        #    import pdb; pdb.set_trace()
+        # /DBG
         return plan
 
     def plan_start(self, states):

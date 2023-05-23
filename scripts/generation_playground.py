@@ -24,7 +24,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -142,7 +142,6 @@ for example_idx, example in enumerate(data):
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
         #agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
-
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
 

@@ -21,7 +21,6 @@ class Plan:
     should_select: bool
     confirmation: bool | None
     info_gain: float | None
-    turn: int
 
 @dataclass
 class PlanConfirmation:
@@ -30,16 +29,8 @@ class PlanConfirmation:
     selection: bool
     speaker: Speaker
     config_idx: int
-    turn: int
 
 @dataclass
 class PartnerPlan:
     preds: np.ndarray
 
-@dataclass
-class State:
-    belief_dists: list[np.ndarray]
-    plans_confirmations: list[PlanConfirmation]
-    our_plans: list[Plan]
-    their_plans: list[PartnerPlan]
-    turn: int

@@ -18,7 +18,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]])
+    ctx = np.array([[0.645, 0.33, 0.3333333333333333, -0.88], [0.5, -0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, 0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, 0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, 0.585, -1.0, -0.3466666666666667], [-0.59, 0.04, 0.0, -0.013333333333333334], [-0.245, -0.855, -0.6666666666666666, -0.37333333333333335]])
     return ctx
 
 idxs = list(range(7))
@@ -29,7 +29,7 @@ states = []
 
 
 # Turn 0
-# Them: Do you see a pair of dots, where the left dot is large-sized and grey and the right dot is small-sized and light?
+# You: Do you see a pair of dots, where the right dot is medium-sized and dark and the left dot is small-sized and dark?
 def turn(state):
     results = set()
     orderedresults = []
@@ -38,20 +38,22 @@ def turn(state):
     for config in getsets(idxs, 2):
         for x, y in permutations(config):
             for _ in [0]:
+                check_xy_pair = all_close([x, y], ctx)
                 check_x_left = is_left(x, y, ctx)
-                check_x_large = is_large(x, ctx)
-                check_x_grey = is_grey(x, ctx)
+                check_x_small = is_small(x, ctx)
+                check_x_dark = is_dark(x, ctx)
                 check_y_right = is_right(y, x, ctx)
-                check_y_small = is_small(y, ctx)
-                check_y_light = is_light(y, ctx)
+                check_y_medium = is_medium_size(y, ctx)
+                check_y_dark = is_dark(y, ctx)
                 if (
                     True 
+                    and check_xy_pair
                     and check_x_left
-                    and check_x_large
-                    and check_x_grey
+                    and check_x_small
+                    and check_x_dark
                     and check_y_right
-                    and check_y_small
-                    and check_y_light
+                    and check_y_medium
+                    and check_y_dark
                     
                 ):
                     dots = frozenset([x,y])
@@ -64,37 +66,8 @@ state = None if len(states) > 0 else None
 states.append(turn(state))
 
 # Turn 1
-# Them: Do you see a pair of dots, where the bottom left dot is large-sized and grey and the top right dot is large-sized and grey?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    # New question.
-    for config in getsets(idxs, 2):
-        for x, y in permutations(config):
-            for _ in [0]:
-                check_x_bottom_left = is_below(x, y, ctx) and is_left(x, y, ctx)
-                check_x_large = is_large(x, ctx)
-                check_x_grey = is_grey(x, ctx)
-                check_y_top_right = is_above(y, x, ctx) and is_right(y, x, ctx)
-                check_y_large = is_large(y, ctx)
-                check_y_grey = is_grey(y, ctx)
-                if (
-                    True 
-                    and check_x_bottom_left
-                    and check_x_large
-                    and check_x_grey
-                    and check_y_top_right
-                    and check_y_large
-                    and check_y_grey
-                    
-                ):
-                    dots = frozenset([x,y])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
+# Them: Yes.
+def turn(state): return None
 state = None if len(states) > 0 else None
 states.append(turn(state))
 
