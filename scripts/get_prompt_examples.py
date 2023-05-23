@@ -14,7 +14,7 @@ for block in BLOCKS:
         newdots = block["newdots"]
 
         string = f"""Turn {turn}: {text}
-Type: {type}
+Type: Follow up question, new dots.
 Newdots: {newdots}"""
     elif type == "Follow up question.":
         state = block["state"]
@@ -23,7 +23,7 @@ Newdots: {newdots}"""
         newdots = block["newdots"]
 
         string = f"""Turn {turn}: {text}
-Type: {type}"""
+Type: Follow up question, no new dots."""
     elif type == "New question.":
         state = block["state"]
 
