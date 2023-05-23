@@ -132,6 +132,7 @@ class UnderstandShort(TemplatePrompt[str]):
         code, dots, select, state = output.split("\n#")
 
         # remove last line from code
+        code = code.strip()
         code = "\n".join(code.split("\n")[:-1])
         dots = dots.replace("Dots:", "").strip()
         select = select.replace("Selection:", "").strip()

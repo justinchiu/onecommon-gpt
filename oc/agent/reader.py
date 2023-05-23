@@ -38,6 +38,7 @@ class ReaderMixin:
             self.execute = Execute(backend.Python())
         elif refres == "shortcodegen":
             self.understand = UnderstandShort(backend.OpenAIChat(
+            #self.understand = UnderstandShort(backend.Palm(
                 model = model,
                 max_tokens=256,
             ))
