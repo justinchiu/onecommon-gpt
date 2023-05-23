@@ -12,10 +12,11 @@ for block in BLOCKS:
         refturns = re.findall(r"\d+", state)
         olddots = block["dots"]
         newdots = block["newdots"]
+        numnew = len(re.sub(",$", "", newdots).split(","))
 
         string = f"""Turn {turn}: {text}
 Type: Follow up question, new dots.
-Newdots: {newdots}"""
+Newdots: {numnew}"""
     elif type == "Follow up question.":
         state = block["state"]
         refturns = re.findall(r"\d+", state)
