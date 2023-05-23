@@ -31,11 +31,11 @@ class ReaderMixin:
         ))
 
         if refres == "shortcodegen2":
-            self.understand = UnderstandShort(backend.OpenAIChat(
+            self.understand = UnderstandShort2(backend.OpenAIChat(
                 model = model,
                 max_tokens=1024,
             ))
-            self.execute = ExecuteShort(backend.Python())
+            self.execute = ExecuteShort2(backend.Python())
         else:
             raise ValueError
 

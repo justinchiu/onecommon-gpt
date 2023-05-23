@@ -179,20 +179,35 @@ class UnderstandShort2(TemplatePrompt[str]):
     stop_templates = ["# End."]
 
     def parse(self, output, input) -> UnderstandShortOutput | None:
+        #print(output)
+        #import pdb; pdb.set_trace()
         if "No op." in output:
             return None
 
         # debug
+        print(output)
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
         print(len(encoding.encode(output)))
         # /debug
-        import pdb; pdb.set_trace()
-        code, dots, selection = output.split("\n#")
 
-        #code = code.strip()
+        code, dots, select, state = output.split("\n#")
+
+        # remove last line from code
+        code = "\n".join(code.split("\n")[:-1])
         dots = dots.replace("Dots:", "").strip()
-        selection = selection.replace("Selection:", "").strip()
+        select = select.replace("Selection:", "").strip()
+        state = state.replace("State:", "").strip()
+
+        if select == "False":
+            # sometimes dots is incorrect, parse out the dots from the for loop
+            for1, for2 = code.split("\n")[3:5]
+
+            statedots = re.findall("for (.*?) in", for1)[0].replace(" ","").split(",")
+
+            followupdots = re.findall("for (.*?) in", for2)[0].replace(" ","").split(",")
+            #dots = statedots if "_" in followupdots else ",".join([statedots, followupdots])
+            dots = ",".join(statedots + followupdots if "_" not in followupdots else statedots)
 
         # separate constraint names and assignment code
         constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
@@ -200,10 +215,12 @@ class UnderstandShort2(TemplatePrompt[str]):
         constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
 
         return UnderstandShortOutput(
-            code = code,
+            # skip the first line of code, which is the fn def
+            code = "\n".join(code.split("\n")[1:]),
             constraints = constraints,
             dots = dots,
-            select = selection,
+            select = select,
+            state = state,
             speaker = input["speaker"],
             text = input["text"],
         )
