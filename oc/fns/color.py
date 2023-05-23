@@ -15,8 +15,9 @@ def is_light(x, ctx):
     return ctx[x,-1] > 0.2
 
 def is_grey(x, ctx):
-    return True
-    return not is_dark(dot) and not is_light(dot)
+    #return True
+    return ctx[x,-1] < 0.4 and ctx[x,-1] > -0.4
+    return not is_dark(dot, ctx) and not is_light(dot, ctx)
 
 
 def darkest(x, ctx):

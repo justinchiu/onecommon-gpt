@@ -8,7 +8,9 @@ def is_small(x, ctx):
     return ctx[x, -2] < -0.3
 
 def is_medium_size(x, ctx):
-    return True
+    #return True
+    return ctx[x, -2] > -0.4 and ctx[x, -2] < 0.4
+    return not is_large(x, ctx) and not is_small(x, ctx)
 
 
 def largest(x, ctx):

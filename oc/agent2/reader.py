@@ -81,18 +81,22 @@ class ReaderMixin:
         config_idx = None
         confirmed = None
         if preds is not None:
-            feats = self.belief.get_feats(preds[0]) # pull out into fn
-            plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
-            config_idx = get_config_idx(preds[0], self.belief.configs)
+            # None => they didnt mention anything
             confirmed = preds.sum() > 0
+            # sum == 0 => we dont see their plan
+            if confirmed:
+                feats = self.belief.get_feats(preds[0]) # pull out into fn
+                plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
+                config_idx = get_config_idx(preds[0], self.belief.configs)
         plan = Plan(
-            dots = preds[0] if preds is not None else None,
+            dots = preds[0] if preds is not None and confirmed else None,
             config_idx = config_idx,
             feats = feats,
             plan_idxs = plan_idxs,
             confirmation = confirmation,
             confirmed = confirmed,
         )
+
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
         last_belief_dist = updated_belief_dist
