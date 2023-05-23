@@ -1,0 +1,80 @@
+Turn 0: Got a triangle of 3 light grey dots by itself.
+Type: New question.
+Reference turn: None
+Dots: x,y,z
+Newdots: _
+
+Turn 1: Could be. One on right is largest with a tiny gray on top??
+Type: Follow up question.
+Reference turn: 0
+Dots: a,b,c
+Newdots: _
+
+Turn 2: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
+Type: New question.
+Reference turn: None
+Dots: x, y
+Newdots: _
+
+Turn 3: No.
+Type: No op.
+
+Turn 4: What about a large medium grey dot near the center?
+Type: New question.
+Reference turn: None
+Dots: x
+Newdots: _
+
+Turn 5: Is there a smaller black one next to it?
+Type: Follow up question, new dot.
+Reference turn: 4
+Dots: a,x
+Newdots: x,
+
+Turn 6: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
+Type: New question.
+Reference turn: None
+Dots: x,y,z
+Newdots: _
+
+Turn 7: Yes. Is the top one close to the middle darker one?
+Type: Follow up question.
+Reference turn: 6
+Dots: a,b,c
+Newdots: _
+
+Turn 8: Yes. And the smallest is on the bottom right.
+Type: Follow up question.
+Reference turn: 7
+Dots: a,b,c
+Newdots: _
+
+Turn 9: Yes, let's select the large one. <selection>.
+Type: Select a dot.
+Reference turn: 8
+Dots: a
+Newdots: _
+
+Turn 0: Do you see a large black dot on the bottom left?
+Type: New question.
+Reference turn: None
+Dots: x
+Newdots: _
+
+Turn 1: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
+Type: New question.
+Reference turn: None
+Dots: x,y,z
+Newdots: _
+
+Turn 2: Select the largest one.
+Type: Select a dot.
+Reference turn: 1
+Dots: a
+Newdots: _
+
+Turn 3: Yes.
+Type: No op.
+
+Turn 4: Okay. <selection>.
+Type: No op.
