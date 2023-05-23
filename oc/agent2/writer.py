@@ -8,7 +8,7 @@ from oc.gen.features import new_vs_old_desc
 from oc.prompt import Generate
 from oc.prompt import GenerateScxy, GenerateTemplate
 
-from oc.agent.utils import PlanConfirmation, Speaker
+from oc.agent2.utils import StartPlan, FollowupPlan, SelectPlan, Speaker, State 
 from oc.belief.belief_utils import get_config_idx
 
 class WriterMixin:
@@ -22,27 +22,20 @@ class WriterMixin:
         super(WriterMixin, self).__init__()
 
     def write(self, force_action=None):
+        state = self.states[-1]
+
         plan = self.plan(force_action=force_action)
-        text, _, write_extra = self.generate_text(plan, self.past, self.ctx)
+        past = state.past
+        text, _, write_extra = self.generate_text(plan, past, self.ctx)
 
-        youtext = f"You: {text}"
-        preds, past, read_extra = self.resolve_reference(youtext, self.past, self.ctx)
-
-        # TODO: wrap state update in function
-        self.past = past
-        self.preds.append(preds)
-        self.confirmations.append(None)
-        self.write_extras.append(write_extra)
-        self.read_extras.append(read_extra)
-
-        if isinstance(plan, SelectPlan):
-            self.plans_confirmations.append(PlanConfirmation(
-                dots = plan.dots,
-                config_idx = get_config_idx(plan.dots, self.belief.configs),
-                confirmed = False,
-                selection = True,
-                speaker = Speaker.YOU,
-            ))
+        self.states.append(State(
+            belief_dist = state.belief_dist,
+            plan = plan,
+            past = past,
+            speaker = Speaker.YOU,
+            write_extra = write_extra,
+            turn = state.turn+1,
+        ))
 
         return text.split() + ["<eos>"]
 

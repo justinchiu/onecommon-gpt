@@ -16,15 +16,16 @@ class Action(Enum):
 @dataclass
 class Plan:
     dots: np.ndarray
+    config_idx: int
+    feats: Any
     plan_idxs: np.ndarray
-    turn: int
-    id: int
+    # did the turn have a confirmation
+    confirmation: bool | None
+    confirmed: bool
 
 @dataclass
 class OurPlan(Plan):
     info_gain: float | None
-    # do we give them a confirmation
-    confirmation: bool | None
 
 @dataclass
 class StartPlan(OurPlan):
@@ -34,25 +35,20 @@ class StartPlan(OurPlan):
 class FollowupPlan(OurPlan):
     newdots: np.ndarray
     olddots: np.ndarray
-    reference_id: int
+    reference_turn: int
     pass
 
 @dataclass
-class SelectPlan(OurPlan):
-    reference_id: int
+class SelectPlan(Plan):
+    reference_turn: int
     pass
-
-@dataclass
-class ConfirmedPlan:
-    plan: Plan
-    confirmed: bool | None
-
 
 @dataclass
 class State:
-    belief_dists: list[np.ndarray]
-    plans_confirmations: list[PlanConfirmation]
-    our_plans: list[Plan]
-    their_plans: list[PartnerPlan]
+    belief_dist: np.ndarray
+    plan: Plan | None
+    speaker: Speaker | None
     turn: int
     past: Any
+    write_extra: Any = None
+    read_extra: Any = None

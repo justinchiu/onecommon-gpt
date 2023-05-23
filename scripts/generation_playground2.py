@@ -140,18 +140,23 @@ for example_idx, example in enumerate(data):
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
-        agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
-        #agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
-
+        #agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+        agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+        reader = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
+        reader.feed_context(view.flatten().tolist(), belief_constructor)
 
         start_time = time.perf_counter()
         utt = agent.write()
         end_time = time.perf_counter()
         print(f"WRITE TIME: {end_time-start_time:0.4f} seconds for write")
-        #import pdb; pdb.set_trace()
-        plan1 = agent.plans[-1]
+        start_time = time.perf_counter()
+        reader.read(utt)
+        end_time = time.perf_counter()
+        print(f"READ TIME: {end_time-start_time:0.4f} seconds for read")
+        plan1 = reader.states[-1].dots
+        import pdb; pdb.set_trace()
 
 
         words = word_tokenize(" ".join(utt).lower().strip()) + ['<eos>']

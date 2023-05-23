@@ -11,7 +11,7 @@ from oc.prompt import UnderstandJson, ExecuteJson
 
 from oc.dynamic_prompting.blocks import BLOCKS
 
-from oc.agent2.utils import PlanConfirmation, Speaker
+from oc.agent2.utils import Speaker, Plan, State
 
 from oc.belief.belief_utils import get_config_idx
 
@@ -31,23 +31,26 @@ class ReaderMixin:
         ))
 
         if refres == "shortcodegen2":
-            self.understand = UnderstandShort2(backend.OpenAIChat(
+            self.understand = UnderstandShort(backend.OpenAIChat(
                 model = model,
-                max_tokens=256,
+                max_tokens=1024,
             ))
-            self.execute = ExecuteShort2(backend.Python())
+            self.execute = ExecuteShort(backend.Python())
         else:
             raise ValueError
 
         super(ReaderMixin, self).__init__(backend, refres, gen, model)
 
-    def read(self, input_words): 
+    def read(self, input_words):
+        state = self.states[-1]
+
         print("IN READ")
         # process input
         text = " ".join(input_words)
-        past = self.past
+        past = self.states[-1].past
         ctx = self.ctx
         preds, past, extra = self.resolve_reference(text, past, ctx)
+        # maybe should rank preds by probability?
 
         parsed_text = extra["parsedtext"]
 
@@ -56,61 +59,47 @@ class ReaderMixin:
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
 
-        if len(self.plans) > 0:
-            prev_plan = self.plans[-1]
+        # update belief
+        belief_dist = state.belief_dist
+        if len(self.states) > 1 and state.plan is not None:
+            prev_plan = state.plan
             if confirmation is True:
-                self.update_belief(prev_plan.dots, 1)
+                belief_dist = self.update_belief(belief_dist, prev_plan.dots, 1)
                 print("UPDATED BELIEF confirmed")
-                self.plans_confirmations.append(PlanConfirmation(
-                    dots = prev_plan.dots,
-                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
-                    confirmed = True,
-                    selection = False,
-                    speaker = Speaker.YOU,
-                ))
+                state.confirmed = True
+                import pdb; pdb.set_trace()
             elif confirmation is False:
-                self.update_belief(prev_plan.dots, 0)
+                belief_dist = self.update_belief(belief_dist, prev_plan.dots, 0)
                 print("UPDATED BELIEF denied")
-                self.plans_confirmations.append(PlanConfirmation(
-                    dots = prev_plan.dots,
-                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
-                    confirmed = False,
-                    selection = False,
-                    speaker = Speaker.YOU,
-                ))
+                state.confirmed = False
+                import pdb; pdb.set_trace()
             elif confirmation is None:
-                self.plans_confirmations.append(PlanConfirmation(
-                    dots = prev_plan.dots,
-                    config_idx = get_config_idx(prev_plan.dots, self.belief.configs),
-                    confirmed = None,
-                    selection = False,
-                    speaker = Speaker.YOU,
-                ))
+                pass
 
+        # construct plan for what they said
+        feats = self.belief.get_feats(preds[0]) # pull out into fn
+        plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
+        plan = Plan(
+            dots = preds[0],
+            config_idx = get_config_idx(preds[0], self.belief.configs),
+            feats = feats,
+            plan_idxs = plan_idxs,
+            confirmation = confirmation,
+            confirmed = preds is not None and preds.sum() > 0,
+        )
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
-        if preds is not None and preds.sum() > 0:
-            self.update_belief(preds[0], 1)
+        if plan.confirmed:
+            belief_dist = self.update_belief(belief_dist, preds[0], 1)
             print("UPDATED BELIEF we see")
-            self.plans_confirmations.append(PlanConfirmation(
-                dots = preds[0],
-                config_idx = get_config_idx(preds[0], self.belief.configs),
-                confirmed = True,
-                selection = False,
-                speaker = Speaker.THEM,
-            ))
 
-        # TODO: wrap state update in function
-        # TODO: management of past stack
-        # should only keep around past if within line of questioning, eg same dots
-        # update state??
-        self.past = past
-        self.preds.append(preds)
-        self.plans.append(None)
-        self.confirmations.append(confirmation)
-        self.write_extras.append(None)
-        self.read_extras.append(extra)
-
+        self.states.append(State(
+            belief_dist = belief_dist,
+            plan = plan,
+            speaker = Speaker.THEM,
+            turn = state.turn+1,
+            read_extra = extra,
+        ))
 
     # helper functions
     def reformat_text(self, text, usespeaker=True):

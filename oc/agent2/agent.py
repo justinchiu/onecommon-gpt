@@ -10,6 +10,7 @@ from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import GenerateScxy, GenerateTemplate
 from oc.prompt import UnderstandMc
 
+from oc.agent2.utils import State
 from oc.agent2.reader import ReaderMixin
 from oc.agent2.planner import PlannerMixin
 from oc.agent2.writer import WriterMixin
@@ -43,15 +44,11 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         )
 
         # dialogue state
-        self.past = []
-        self.plans = []
-        self.preds = []
-        self.confirmations = []
-        self.write_extras = []
-        self.read_extras = []
-
-        # not turn-aligned
-        self.plans_confirmations = []
-
-        self.belief_dist = self.belief.prior
+        self.states = [State(
+            belief_dist = self.belief.prior,
+            plan = None,
+            speaker = None,
+            turn = -1,
+            past = [],
+        )]
 

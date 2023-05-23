@@ -1,8 +1,8 @@
 import numpy as np
 import itertools
 
-from oc.agent.utils import Plan, Action
-
+from oc.agent2.utils import Plan, StartPlan, FollowupPlan, SelectPlan, Action
+from oc.belief.belief_utils import get_config_idx
 from oc.fns.spatial import get_minimum_radius
 
 def new_and_old_dots(plan, history):
@@ -31,19 +31,19 @@ def idxs_to_dots(plan_idxs, plan_idxs2, view):
 
 class PlannerMixin:
 
-    def update_belief(self, dots, response) -> None:
-        #plan = self.plans[-1].dots
-        #plan = self.preds[-1][0]
-        self.belief_dist = self.belief.posterior(
-            self.belief_dist,
+    def update_belief(self, belief_dist, dots, response) -> None:
+        return self.belief.posterior(
+            belief_dist,
             dots.astype(int),
             response,
         )
 
     def plan(self, force_action=None):
-        select_plan = self.plan_select(self.belief_dist, self.preds, force=force_action == Action.SELECT)
-        followup_plan = self.plan_followup(self.belief_dist, self.preds)
-        start_plan = self.plan_start(self.belief_dist, self.preds)
+        state = self.states[-1]
+
+        select_plan = self.plan_select(self.states, force=force_action == Action.SELECT)
+        followup_plan = self.plan_followup(self.states)
+        start_plan = self.plan_start(self.states)
 
         plan = None
         if force_action == Action.SELECT:
@@ -59,15 +59,16 @@ class PlannerMixin:
             plan = followup_plan
         else:
             plan = start_plan
-        self.plans.append(plan)
         return plan
 
-    def plan_start(self, belief_dist, plans):
+    def plan_start(self, states):
+        belief_dist = states[-1].belief_dist
+
         EdHs = self.belief.compute_EdHs(belief_dist)
 
         # TODO: maybe mask out all configs that arent size 2?
         EdHs_mask = self.belief.configs.sum(-1) == 2
-        repeat_mask = self.get_repeat_mask()
+        repeat_mask = self.get_repeat_mask(states)
         EdHs *= EdHs_mask * repeat_mask
 
         idx = EdHs.argmax()
@@ -77,22 +78,24 @@ class PlannerMixin:
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
 
-        confirmation = self.should_confirm()
+        confirmation = self.should_confirm(states)
 
-        plan = Plan(
+        plan = StartPlan(
             dots = planbool,
-            newdots = planbool,
-            olddots = None,
+            config_idx = get_config_idx(planbool, self.belief.configs),
+            feats = feats,
             plan_idxs = plan_idxs,
-            should_select = False,
             confirmation = confirmation,
             info_gain = info_gain,
+            confirmed = None, # fill in future turn
         )
         return plan
 
-    def plan_followup(self, belief_dist, plans):
-        if len(plans) == 0:
+    def plan_followup(self, states):
+        if len(states) <= 1:
             return None
+
+        belief_dist = states[-1].belief_dist
 
         EdHs = self.belief.compute_EdHs(belief_dist)
 
@@ -108,7 +111,7 @@ class PlannerMixin:
 
         # mask out plans that aren't dots + 1 new
         EdHs_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
-        repeat_mask = self.get_repeat_mask()
+        repeat_mask = self.get_repeat_mask(states)
         newdot_mask = self.belief.configs.sum(-1) == dots.sum() + 1
         EdHs *= EdHs_mask * repeat_mask * newdot_mask
         idx = EdHs.argmax()
@@ -139,14 +142,12 @@ class PlannerMixin:
             newdots = new,
             olddots = old,
             plan_idxs = plan_idxs,
-            should_select = False,
-            confirmation = confirmation,
             info_gain = info_gain,
         )
         return plan
 
-    def plan_select(self, belief_dist, plans, force=False):
-        if len(plans) == 0: return None
+    def plan_select(self, states, force=False):
+        if len(states) <= 1: return None
 
         dots = self.get_last_confirmed_dots()
         if dots is None: return None
@@ -200,44 +201,44 @@ class PlannerMixin:
 
     def choose(self):
         confirmed_or_select = [
-            x.dots for x in reversed(self.plans_confirmations)
-            if (x.confirmed or x.selection) and x.dots.sum() == 1
+            state.plan.dots for state in reversed(self.states)
+            if state.plan is not None
+            and (state.plan.confirmed or isinstance(state.plan, SelectionPlan))
+            and state.plan.dots.sum() == 1
         ]
         return (
             confirmed_or_select[0].nonzero()[0].item()
             if confirmed_or_select else 0
         )
-        # TODO: REMOVE HACK
-        if self.preds[-1].sum() == 0:
-            return 0
-        return self.preds[-1][0].nonzero()[0].item()
 
-    def should_select(self):
-        max_belief = self.belief.marginals(self.belief_dist).max()
+    def should_select(self, states):
+        belief_dist = states[-1].belief_dist
+        max_belief = self.belief.marginals(belief_dist).max()
         select = max_belief > self.belief_threshold
         return select
 
-    def should_confirm(self):
-        if len(self.preds) == 0:
+    def should_confirm(self, states):
+        if len(states) == 1:
             # first turn
             confirmation = None
-        elif self.preds[-1] is None:
+        elif states[-1].plan.dots is None:
             # no op
             confirmation = None
         else:
-            confirmation = self.preds[-1].sum() > 0
+            confirmation = states[-1].plan.dots.sum() > 0
         return confirmation
 
-    def get_last_confirmed_dots(self):
+    def get_last_confirmed_dots(self, states):
         confirmed = [
-            x.dots for x in reversed(self.plans_confirmations)
-            if x.confirmed
+            state.plan.dots for state in reversed(states)
+            if state.plan is not None and state.plan.confirmed == True
         ]
         return confirmed[0] if confirmed else None
 
-    def get_repeat_mask(self):
+    def get_repeat_mask(self, states):
         # kill any configs that have already been asked
         mask = np.ones(self.belief.configs.shape[0], dtype=float)
-        for x in self.plans_confirmations:
-            mask[x.config_idx] = 0
+        for state in states:
+            if state.plan is not None:
+                mask[state.plan.config_idx] = 0
         return mask

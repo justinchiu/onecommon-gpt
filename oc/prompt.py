@@ -203,7 +203,7 @@ class UnderstandShort2(TemplatePrompt[str]):
             code = code,
             constraints = constraints,
             dots = dots,
-            selection = selection,
+            select = selection,
             speaker = input["speaker"],
             text = input["text"],
         )
