@@ -7,7 +7,7 @@ for block in BLOCKS:
     turn = block["turn"]
     text = block["text"]
     type = block["type"]
-    if type != "No op.":
+    if type == "Follow up question, new dot.":
         state = block["state"]
         refturns = re.findall(r"\d+", state)
         olddots = block["dots"]
@@ -15,10 +15,26 @@ for block in BLOCKS:
 
         string = f"""Turn {turn}: {text}
 Type: {type}
-Reference turn: {refturns[0] if len(refturns) > 0 else None}
-Dots: {olddots}
 Newdots: {newdots}"""
-    else:
+    elif type == "Follow up question.":
+        state = block["state"]
+        refturns = re.findall(r"\d+", state)
+        olddots = block["dots"]
+        newdots = block["newdots"]
+
+        string = f"""Turn {turn}: {text}
+Type: {type}"""
+    elif type == "New question.":
+        state = block["state"]
+
+        string = f"""Turn {turn}: {text}
+Type: {type}"""
+    elif type == "Select a dot.":
+        state = block["state"]
+        refturns = re.findall(r"\d+", state)
+        string = f"""Turn {turn}: {text}
+Type: {type}"""
+    elif type == "No op.":
         string = f"""Turn {turn}: {text}
 Type: {type}"""
     print(string)
