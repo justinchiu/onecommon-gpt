@@ -15,10 +15,10 @@ class Action(Enum):
 
 @dataclass
 class Plan:
-    dots: np.ndarray
-    config_idx: int
-    feats: Any
-    plan_idxs: np.ndarray
+    dots: np.ndarray | None
+    config_idx: int | None
+    feats: Any | None
+    plan_idxs: np.ndarray | None
     # did the turn have a confirmation
     confirmation: bool | None
     confirmed: bool

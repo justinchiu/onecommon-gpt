@@ -100,7 +100,7 @@ class PlannerMixin:
         EdHs = self.belief.compute_EdHs(belief_dist)
 
         # choose plan to follow up on
-        dots = self.get_last_confirmed_dots()
+        dots, reference_turn = self.get_last_confirmed_dots(states)
 
         if dots is None:
             return None
@@ -135,21 +135,28 @@ class PlannerMixin:
 
         new = planbool2 & ~old
 
-        confirmation = self.should_confirm()
+        confirmation = self.should_confirm(states)
 
-        plan = Plan(
+        plan = FollowupPlan(
             dots = planbool2,
+            config_idx = get_config_idx(planbool, self.belief.configs),
+            feats = feats,
+            plan_idxs = plan_idxs,
             newdots = new,
             olddots = old,
-            plan_idxs = plan_idxs,
             info_gain = info_gain,
+            confirmation = confirmation,
+            confirmed = None,
+            reference_turn = reference_turn,
         )
         return plan
 
     def plan_select(self, states, force=False):
         if len(states) <= 1: return None
 
-        dots = self.get_last_confirmed_dots()
+        belief_dist = states[-1].belief_dist
+
+        dots, reference_turn = self.get_last_confirmed_dots(states)
         if dots is None: return None
 
         config_mask = (self.belief.configs & dots).sum(-1) == dots.sum()
@@ -185,16 +192,19 @@ class PlannerMixin:
 
         planbool = newdots + olddots
 
-        confirmation = self.should_confirm()
+        confirmation = self.should_confirm(states)
 
-        plan = Plan(
+        feats = self.belief.get_feats(planbool)
+        plan_idxs = self.belief.resolve_utt(*feats)
+
+        plan = SelectPlan(
             dots = planbool,
-            newdots = newdots,
-            olddots = olddots,
-            plan_idxs = planbool,
-            should_select = True,
+            feats = feats,
+            plan_idxs = plan_idxs,
+            config_idx = get_config_idx(planbool, self.belief.configs),
             confirmation = confirmation,
-            info_gain = None,
+            confirmed = None,
+            reference_turn = reference_turn,
         )
         return plan
 
@@ -230,7 +240,7 @@ class PlannerMixin:
 
     def get_last_confirmed_dots(self, states):
         confirmed = [
-            state.plan.dots for state in reversed(states)
+            (state.plan.dots, i) for i, state in reversed(list(enumerate(states)))
             if state.plan is not None and state.plan.confirmed == True
         ]
         return confirmed[0] if confirmed else None
@@ -239,6 +249,6 @@ class PlannerMixin:
         # kill any configs that have already been asked
         mask = np.ones(self.belief.configs.shape[0], dtype=float)
         for state in states:
-            if state.plan is not None:
+            if state.plan is not None and state.plan.config_idx is not None:
                 mask[state.plan.config_idx] = 0
         return mask

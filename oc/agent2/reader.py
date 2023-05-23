@@ -61,41 +61,49 @@ class ReaderMixin:
 
         # update belief
         belief_dist = state.belief_dist
+        updated_belief_dist = belief_dist
         if len(self.states) > 1 and state.plan is not None:
             prev_plan = state.plan
             if confirmation is True:
-                belief_dist = self.update_belief(belief_dist, prev_plan.dots, 1)
+                updated_belief_dist = self.update_belief(belief_dist, prev_plan.dots, 1)
                 print("UPDATED BELIEF confirmed")
-                state.confirmed = True
-                import pdb; pdb.set_trace()
+                state.plan.confirmed = True
             elif confirmation is False:
-                belief_dist = self.update_belief(belief_dist, prev_plan.dots, 0)
+                updated_belief_dist = self.update_belief(belief_dist, prev_plan.dots, 0)
                 print("UPDATED BELIEF denied")
-                state.confirmed = False
-                import pdb; pdb.set_trace()
+                state.plan.confirmed = False
             elif confirmation is None:
-                pass
+                updated_belief_dist = belief_dist
 
         # construct plan for what they said
-        feats = self.belief.get_feats(preds[0]) # pull out into fn
-        plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
+        feats = None
+        plan_idxs = None
+        config_idx = None
+        confirmed = None
+        if preds is not None:
+            feats = self.belief.get_feats(preds[0]) # pull out into fn
+            plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
+            config_idx = get_config_idx(preds[0], self.belief.configs)
+            confirmed = preds.sum() > 0
         plan = Plan(
-            dots = preds[0],
-            config_idx = get_config_idx(preds[0], self.belief.configs),
+            dots = preds[0] if preds is not None else None,
+            config_idx = config_idx,
             feats = feats,
             plan_idxs = plan_idxs,
             confirmation = confirmation,
-            confirmed = preds is not None and preds.sum() > 0,
+            confirmed = confirmed,
         )
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
+        last_belief_dist = updated_belief_dist
         if plan.confirmed:
-            belief_dist = self.update_belief(belief_dist, preds[0], 1)
+            last_belief_dist = self.update_belief(updated_belief_dist, preds[0], 1)
             print("UPDATED BELIEF we see")
 
         self.states.append(State(
-            belief_dist = belief_dist,
+            belief_dist = last_belief_dist,
             plan = plan,
+            past = past,
             speaker = Speaker.THEM,
             turn = state.turn+1,
             read_extra = extra,

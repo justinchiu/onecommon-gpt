@@ -151,13 +151,12 @@ for example_idx, example in enumerate(data):
         utt = agent.write()
         end_time = time.perf_counter()
         print(f"WRITE TIME: {end_time-start_time:0.4f} seconds for write")
+        plan1 = agent.states[-1].plan
+
         start_time = time.perf_counter()
         reader.read(utt)
         end_time = time.perf_counter()
         print(f"READ TIME: {end_time-start_time:0.4f} seconds for read")
-        plan1 = reader.states[-1].dots
-        import pdb; pdb.set_trace()
-
 
         words = word_tokenize(" ".join(utt).lower().strip()) + ['<eos>']
         partner.read(
@@ -172,8 +171,8 @@ for example_idx, example in enumerate(data):
         fried_pred = partner.partner_ref_preds[-1][:,0]
         fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()
 
-        preds = agent.preds[-1]
-        gpt_rt_success = (plan1.dots == preds).all(1).any()
+        preds = reader.states[-1].plan.dots
+        gpt_rt_success = (plan1.dots == preds).all()
 
         plans.append([plan1.dots])
         fried_preds.append(fried_pred)
@@ -185,7 +184,8 @@ for example_idx, example in enumerate(data):
         agent.read(["Them:", "Yes"])
 
         utt2 = agent.write(force_action=Action.FOLLOWUP)
-        plan2 = agent.plans[-1]
+        reader.read(utt2)
+        plan2 = agent.states[-1].plan
 
         words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']
         partner.read(
@@ -200,8 +200,8 @@ for example_idx, example in enumerate(data):
         fried_pred = partner.partner_ref_preds[-1][:,0]
         fried_rt_success = (plan2.dots == fried_pred.any(0).cpu().numpy()).all()
 
-        preds = agent.preds[-1]
-        gpt_rt_success = (plan2.dots == preds).all(1).any()
+        preds = reader.states[-1].plan.dots
+        gpt_rt_success = (plan2.dots == preds).all()
 
         plans2.append([plan2.dots])
         fried_preds2.append(fried_pred)
@@ -221,14 +221,11 @@ for example_idx, example in enumerate(data):
         # selection prompt
         # just select the new last one mentioned
         select_utt = agent.write(force_action=Action.SELECT)
-        sel_preds = agent.preds[-1]
-        #descs = agent.write_extras[-2]["desc"]
-        #position_desc = agent.write_extras[-2]["position_desc"]
-        #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one on the {position_desc}."
-        #sel_preds, agent.past, extra = agent.resolve_reference(selectutt, agent.past, view)
-        # sort sel_preds by minimum radius of PREVIOUS plans
+        reader.read(select_utt)
+        sel_plan = agent.states[-1].plan.dots
+        sel_preds = reader.states[-1].plan.dots
         if sel_preds is not None and len(sel_preds) > 0:
-            gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == agent.plans[-1].dots.nonzero()[0].item()
+            gpt_sel_rt_success = (sel_preds == sel_plan).all()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()
