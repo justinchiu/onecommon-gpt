@@ -43,3 +43,7 @@ Type: {type}"""
 
 with Path("scratch/short-example.txt").open("w") as f:
     f.write("\n\n".join(strings))
+
+
+with Path("scratch/short-code-example.txt").open("w") as f:
+    f.write("\n\n".join(strings))
