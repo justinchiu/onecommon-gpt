@@ -16,7 +16,7 @@ for block in BLOCKS:
 
         string = f"""Turn {turn}: {text}
 Type: Follow up question, new dots.
-Newdots: {numnew}"""
+New dots: {numnew}"""
     elif type == "Follow up question.":
         state = block["state"]
         refturns = re.findall(r"\d+", state)
