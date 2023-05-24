@@ -3,20 +3,25 @@ send-keys "ocenv" Enter
 split-window -h -p 50
 send-keys "ocenv" Enter
 
-new-window -c "oc" -n "oc"
-split-window -h -c "oc" -p 50
+new-window -n "oc"
+send-keys "cd oc" Enter
+split-window -h -p 50
+send-keys "cd oc" Enter
 
-new-window -c "oc/agent" -n "agent"
-split-window -h -c "oc/agent" -p 50
+new-window -n "agent"
+send-keys "cd oc/agent" Enter
+split-window -h -p 50
+send-keys "cd oc/agent" Enter
 
-new-window -c "oc/agent2" -n "agent2"
-split-window -h -c "oc/agent2" -p 50
+new-window -n "agent2"
+send-keys "cd oc/agent2" Enter
+split-window -h -p 50
+send-keys "cd oc/agent2" Enter
 
-new-window -c "oc/prompts" -n "prompts"
-split-window -h -c "oc/prompts" -p 50
-
-new-window -c "oc/promptdata" -n "promptdata"
-split-window -h -c "oc/promptdata" -p 50
+new-window -n "prompts"
+send-keys "cd oc/prompts" Enter
+split-window -h -p 50
+send-keys "cd oc/prompts" Enter
 
 new-window -c "../onecommon/webapp/src" -n "server"
 send-keys "ocenv" Enter
@@ -27,8 +32,3 @@ new-window -c "../onecommon/aaai2020/experiments" -n "selfplay"
 send-keys "ocenv" Enter
 split-window -h -c "../onecommon/aaai2020/experiments" -p 50
 send-keys "ocenv" Enter
-
-new-window -c "../onecommon-gpt-writing" -n "writing"
-split-window -h -c "../onecommon-gpt-writing" -p 50
-
-
