@@ -66,16 +66,12 @@ def constraints(qtype):
             strings.append(f"Text: {text}\nType: {type}\nCode:\n```\npass\n```")
     return strings
 
-#strings = question_type()
+strings = question_type()
 #print(strings)
-strings = constraints(Qtypes.START.value)
-print("\n".join(strings))
-import pdb; pdb.set_trace()
-"""
 with Path("scratch/short-example.txt").open("w") as f:
     f.write("\n\n".join(strings))
 
 
+strings = constraints(Qtypes.START.value)
 with Path("scratch/short-code-example.txt").open("w") as f:
     f.write("\n\n".join(strings))
-"""
