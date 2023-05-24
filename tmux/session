@@ -23,6 +23,11 @@ send-keys "cd oc/prompts" Enter
 split-window -h -p 50
 send-keys "cd oc/prompts" Enter
 
+new-window -n "promptdata"
+send-keys "cd oc/promptdata" Enter
+split-window -h -p 50
+send-keys "cd oc/promptdata" Enter
+
 new-window -c "../onecommon/webapp/src" -n "server"
 send-keys "ocenv" Enter
 split-window -h -c "../onecommon/webapp/src" -p 50

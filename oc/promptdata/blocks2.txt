@@ -1,0 +1,253 @@
+[{
+    "dialogue": 0,
+    "turn": 0,
+    "speaker": "Them",
+    "text": "Got a triangle of 3 light grey dots by itself.",
+    "type": "New question.",
+    "configs": "getsets(idxs, 3)",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_abc_triangle", "code": "is_triangle([a,b,c], ctx)"},
+        {"name": "check_abc_light", "code": "all([is_light(dot, ctx) for dot in [a,b,c]])"},
+        {"name": "check_abc_alone", "code": "all([not all_close([a,b,c,dot], ctx) for dot in idxs if dot not in [a,b,c]])"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 0,
+    "turn": 1,
+    "speaker": "You",
+    "text": "Could be. One on right is largest with a tiny gray on top??",
+    "type": "Follow up question, no new dots.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_right", "code": "a == get_right([a,b,c], ctx)"},
+        {"name": "check_a_largest", "code": "a == largest([a,b,c], ctx)"},
+        {"name": "check_b_tiny", "code": "is_small(b, ctx)"},
+        {"name": "check_b_grey", "code": "is_grey(b, ctx)"},
+        {"name": "check_b_top", "code": "b == get_top([a,b,c], ctx)"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "states[0]"
+},{
+    "dialogue": 0,
+    "turn": 2,
+    "speaker": "Them",
+    "text": "Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.",
+    "type": "New question.",
+    "configs": "getsets(idxs, 2)",
+    "configdots": "a,b",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_ab_pair", "code": "all_close([a,b], ctx)"},
+        {"name": "check_ab_dark", "code": "is_dark(a, ctx) and is_dark(b, ctx)"},
+        {"name": "check_b_right_a", "code": "is_right(b, a, ctx)"},
+        {"name": "check_b_above_a", "code": "is_above(b, a, ctx)"},
+        {"name": "check_ab_same_size", "code": "same_size([a,b], ctx)"}
+    ],
+    "dots": "a,b",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 0,
+    "turn": 3,
+    "speaker": "You",
+    "text": "No.",
+    "type": "No op.",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 0,
+    "turn": 4,
+    "speaker": "Them",
+    "text": "What about a large medium grey dot near the center?",
+    "type": "New question.",
+    "configs": "getsets(idxs, 1)",
+    "configdots": "a,",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_large", "code": "is_large(a, ctx)"},
+        {"name": "check_a_grey", "code": "is_grey(a, ctx)"},
+        {"name": "check_a_center", "code": "is_middle(a, None, ctx)"}
+    ],
+    "dots": "a",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 0,
+    "turn": 5,
+    "speaker": "You",
+    "text": "Is there a smaller black one next to it?",
+    "type": "Follow up question, new dots.",
+    "configs": "state",
+    "configdots": "a,",
+    "newconfigs": "get1idxs(idxs, exclude=[a])",
+    "newdots": "b,",
+    "constraints": [
+        {"name": "check_b_smaller_a", "code": "is_smaller(b, a, ctx)"},
+        {"name": "check_b_dark", "code": "is_dark(b, ctx)"},
+        {"name": "check_b_next_to_a", "code": "all_close([a,b], ctx)"}
+    ],
+    "dots": "a,b",
+    "select": "False",
+    "state": "states[4]"
+},{
+    "dialogue": 0,
+    "turn": 6,
+    "speaker": "Them",
+    "text": "No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?",
+    "type": "New question.",
+    "configs": "getsets(idxs, 3)",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_abc_line", "code": "is_line([a,b,c], ctx)"},
+        {"name": "check_a_top_left", "code": "a == get_top_left([a,b,c], ctx)"},
+        {"name": "check_a_light", "code": "is_light(a, ctx)"},
+        {"name": "check_b_middle", "code": "is_middle(b, [a,b,c], ctx)"},
+        {"name": "check_b_grey", "code": "is_grey(y, ctx)"},
+        {"name": "check_c_bottom_right", "code": "c == get_bottom_right([a,b,c], ctx)"},
+        {"name": "check_c_dark", "code": "is_dark(c, ctx)"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 0,
+    "turn": 7,
+    "speaker": "You",
+    "text": "Yes. Is the top one close to the middle darker one?",
+    "type": "Follow up question, no new dots.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_top", "code": "a == get_top([a,b,c], ctx)"},
+        {"name": "check_b_middle", "code": "b == get_middle([a,b,c], ctx)"},
+        {"name": "check_ab_close", "code": "all_close([a, b], ctx)"},
+        {"name": "check_b_darker_a", "code": "is_darker(b, a, ctx)"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "states[6]"
+},{
+    "dialogue": 0,
+    "turn": 8,
+    "speaker": "Them",
+    "text": "Yes. And the smallest is on the bottom right.",
+    "type": "Follow up question, no new dots.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_smallest", "code": "a == smallest([a,b,c], ctx)"},
+        {"name": "check_a_bottom_right", "code": "a == get_bottom_right([a,b,c], ctx)"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "states[7]"
+},{
+    "dialogue": 0,
+    "turn": 9,
+    "speaker": "You",
+    "text": "Yes, let's select the large one. <selection>.",
+    "type": "Select a dot.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_large", "code": "is_large(a, ctx)"},
+        {"name": "check_b_not_large", "code": "not is_large(b, ctx)"},
+        {"name": "check_c_not_large", "code": "not is_large(c, ctx)"}
+    ],
+    "dots": "a",
+    "select": "True",
+    "state": "states[8]"
+},{
+    "dialogue": 1,
+    "turn": 0,
+    "speaker": "You",
+    "text": "Do you see a large black dot on the bottom left?",
+    "type": "New question.",
+    "configs": "getsets(idxs, 1)",
+    "configdots": "a,",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_large", "code": "is_large(a, cta)"},
+        {"name": "check_a_dark", "code": "is_dark(a, cta)"},
+        {"name": "check_a_below_left", "code": "is_below(a, None, cta) and is_left(a, None, cta)"}
+    ],
+    "dots": "a",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 1,
+    "turn": 1,
+    "speaker": "Them",
+    "text": "I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.",
+    "type": "New question.",
+    "configs": "getsets(idxs, 3)",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_abc_close", "code": "all_close([a,b,c], ctx)"},
+        {"name": "check_a_large", "code": "is_large(a, ctx)"},
+        {"name": "check_c_dark", "code": "is_dark(c, ctx)"},
+        {"name": "check_b_smaller_a", "code": "is_smaller(b, a, ctx)"},
+        {"name": "check_c_smaller_a", "code": "is_smaller(c, a, ctx)"},
+        {"name": "check_b_lighter_a", "code": "is_lighter(b, a, ctx)"},
+        {"name": "check_c_lighter_a", "code": "is_lighter(c, a, ctx)"},
+        {"name": "check_bc_same_size", "code": "same_size([b,c], ctx)"},
+        {"name": "check_bc_same_color", "code": "same_color([b,c], ctx)"}
+    ],
+    "dots": "a,b,c",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 1,
+    "turn": 2,
+    "speaker": "You",
+    "text": "Select the largest one.",
+    "type": "Select a dot.",
+    "configs": "state",
+    "configdots": "a,b,c",
+    "newconfigs": "[0]",
+    "newdots": "_",
+    "constraints": [
+        {"name": "check_a_largest", "code": "a == get_largest([a,b,c], ctx)"}
+    ],
+    "dots": "a",
+    "select": "True",
+    "state": "states[1]"
+},{
+    "dialogue": 1,
+    "turn": 3,
+    "speaker": "Them",
+    "text": "Yes.",
+    "type": "No op.",
+    "select": "False",
+    "state": "None"
+},{
+    "dialogue": 1,
+    "turn": 4,
+    "speaker": "You",
+    "text": "Okay. <selection>.",
+    "type": "No op.",
+    "select": "False",
+    "state": "None"
+}]
