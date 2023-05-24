@@ -58,18 +58,18 @@ def constraints(qtype):
         type = block["type"]
         state = block["state"]
         if type == Qtypes.NOOP.value:
-            strings.append(f"Text: {text}\nType: {type}\nCode:\n```\npass\n```")
+            strings.append(f"Turn {turn}\nText: {text}\nType: {type}\nCode:\n```\npass\n```")
         elif type == Qtypes.START.value or type == Qtypes.FOLD.value:
             dots = block["dots"]
             constraints = block["constraints"]
-            string = f"Text: {text}\nType: {type}\nDots: {dots}\nCode:"
+            string = f"Turn {turn}\nText: {text}\nType: {type}\nDots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
         else:
             dots = block["dots"]
             refturns = re.findall(r"\d+", state)
             constraints = block["constraints"]
-            string = f"Text: {text}\nType: {type}\nDots: {dots}\nPrevious turn: {refturns[0]}\nCode:"
+            string = f"Turn {turn}\nText: {text}\nType: {type}\nDots: {dots}\nPrevious turn: {refturns[0]}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
 
