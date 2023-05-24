@@ -1,12 +1,12 @@
 Turn 0
 Text: Got a triangle of 3 light grey dots by itself.
 Type: New question.
-Dots: x,y,z
+Dots: a,b,c
 Code:
 ```
-check_xyz_triangle = is_triangle([x,y,z], ctx)
-check_xyz_light = all([is_light(dot, ctx) for dot in [x,y,z]])
-check_xyz_alone = all([not all_close([x,y,z,dot], ctx) for dot in idxs if dot not in [x,y,z]])
+check_abc_triangle = is_triangle([a,b,c], ctx)
+check_abc_light = all([is_light(dot, ctx) for dot in [a,b,c]])
+check_abc_alone = all([not all_close([a,b,c,dot], ctx) for dot in idxs if dot not in [a,b,c]])
 ```
 
 Turn 1
@@ -25,14 +25,14 @@ check_b_top = b == get_top([a,b,c], ctx)
 Turn 2
 Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 Type: New question.
-Dots: x, y
+Dots: a,b
 Code:
 ```
-check_xy_pair = all_close([x,y], ctx)
-check_xy_dark = is_dark(x, ctx) and is_dark(y, ctx)
-check_y_right_x = is_right(y, x, ctx)
-check_y_above_x = is_above(y, x, ctx)
-check_xy_same_size = same_size([x,y], ctx)
+check_ab_pair = all_close([a,b], ctx)
+check_ab_dark = is_dark(a, ctx) and is_dark(b, ctx)
+check_b_right_a = is_right(b, a, ctx)
+check_b_above_a = is_above(b, a, ctx)
+check_ab_same_size = same_size([a,b], ctx)
 ```
 
 Turn 3
@@ -46,39 +46,39 @@ pass
 Turn 4
 Text: What about a large medium grey dot near the center?
 Type: New question.
-Dots: x
+Dots: a
 Code:
 ```
-check_x_large = is_large(x, ctx)
-check_x_grey = is_grey(x, ctx)
-check_x_center = is_middle(x, None, ctx)
+check_a_large = is_large(a, ctx)
+check_a_grey = is_grey(a, ctx)
+check_a_center = is_middle(a, None, ctx)
 ```
 
 Turn 5
 Text: Is there a smaller black one next to it?
 Type: Follow up question, new dots.
-Dots: a,x
+Dots: a,b
 Previous turn: 4
 Code:
 ```
-check_x_smaller_a = is_smaller(x, a, ctx)
-check_x_dark = is_dark(x, ctx)
-check_x_next_to_a = all_close([a,x], ctx)
+check_b_smaller_a = is_smaller(b, a, ctx)
+check_b_dark = is_dark(b, ctx)
+check_b_next_to_a = all_close([a,b], ctx)
 ```
 
 Turn 6
 Text: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
 Type: New question.
-Dots: x,y,z
+Dots: a,b,c
 Code:
 ```
-check_xyz_line = is_line([x,y,z], ctx)
-check_x_top_left = x == get_top_left([x, y, z], ctx)
-check_x_light = is_light(x, ctx)
-check_y_middle = is_middle(y, [x,y,z], ctx)
-check_y_grey = is_grey(y, ctx)
-check_z_bottom_right = z == get_bottom_right([x, y, z], ctx)
-check_z_dark = is_dark(z, ctx)
+check_abc_line = is_line([a,b,c], ctx)
+check_a_top_left = a == get_top_left([a,b,c], ctx)
+check_a_light = is_light(a, ctx)
+check_b_middle = is_middle(b, [a,b,c], ctx)
+check_b_grey = is_grey(y, ctx)
+check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
+check_c_dark = is_dark(c, ctx)
 ```
 
 Turn 7
@@ -99,8 +99,8 @@ Type: Follow up question, no new dots.
 Dots: a,b,c
 Code:
 ```
-check_a_smallest = a == smallest([a,b,c], ctx)
-check_a_bottom_right = a == get_bottom_right([a,b,c], ctx)
+check_c_smallest = c == smallest([a,b,c], ctx)
+check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
 ```
 
 Turn 9
@@ -118,29 +118,29 @@ check_c_not_large = not is_large(c, ctx)
 Turn 0
 Text: Do you see a large black dot on the bottom left?
 Type: New question.
-Dots: x
+Dots: a
 Code:
 ```
-check_x_large = is_large(x, ctx)
-check_x_dark = is_dark(x, ctx)
-check_x_below_left = is_below(x, None, ctx) and is_left(x, None, ctx)
+check_a_large = is_large(a, cta)
+check_a_dark = is_dark(a, cta)
+check_a_below_left = is_below(a, None, cta) and is_left(a, None, cta)
 ```
 
 Turn 1
 Text: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
 Type: New question.
-Dots: x,y,z
+Dots: a,b,c
 Code:
 ```
-check_xyz_close = all_close([x,y,z], ctx)
-check_x_large = is_large(x, ctx)
-check_z_dark = is_dark(z, ctx)
-check_y_smaller_x = is_smaller(y, x, ctx)
-check_z_smaller_x = is_smaller(z, x, ctx)
-check_y_lighter_x = is_lighter(y, x, ctx)
-check_z_lighter_x = is_lighter(z, x, ctx)
-check_yz_same_size = same_size([y,z], ctx)
-check_yz_same_color = same_color([y,z], ctx)
+check_abc_close = all_close([a,b,c], ctx)
+check_a_large = is_large(a, ctx)
+check_c_dark = is_dark(c, ctx)
+check_b_smaller_a = is_smaller(b, a, ctx)
+check_c_smaller_a = is_smaller(c, a, ctx)
+check_b_lighter_a = is_lighter(b, a, ctx)
+check_c_lighter_a = is_lighter(c, a, ctx)
+check_bc_same_size = same_size([b,c], ctx)
+check_bc_same_color = same_color([b,c], ctx)
 ```
 
 Turn 2

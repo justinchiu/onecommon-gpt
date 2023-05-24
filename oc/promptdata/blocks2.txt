@@ -152,8 +152,8 @@
     "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
-        {"name": "check_a_smallest", "code": "a == smallest([a,b,c], ctx)"},
-        {"name": "check_a_bottom_right", "code": "a == get_bottom_right([a,b,c], ctx)"}
+        {"name": "check_c_smallest", "code": "c == smallest([a,b,c], ctx)"},
+        {"name": "check_c_bottom_right", "code": "c == get_bottom_right([a,b,c], ctx)"}
     ],
     "dots": "a,b,c",
     "select": "False",
