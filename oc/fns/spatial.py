@@ -98,19 +98,44 @@ def are_middle(x, y, ctx):
 
 # simplified directions
 def is_above(x, y, ctx):
-    return are_above([x], [y] if y is not None else None, ctx)
+    if y is None:
+        return are_above([x], y, ctx)
+    elif isinstance(y, int):
+        return are_above([x], [y], ctx)
+    elif isinstance(y, lst):
+        return are_above([x], y, ctx)
 
 def is_below(x, y, ctx):
-    return are_below([x], [y] if y is not None else None, ctx)
+    if y is None:
+        return are_below([x], y, ctx)
+    elif isinstance(y, int):
+        return are_below([x], [y], ctx)
+    elif isinstance(y, lst):
+        return are_below([x], y, ctx)
 
 def is_right(x, y, ctx):
-    return are_right([x], [y] if y is not None else None, ctx)
+    if y is None:
+        return are_right([x], y, ctx)
+    elif isinstance(y, int):
+        return are_right([x], [y], ctx)
+    elif isinstance(y, lst):
+        return are_right([x], y, ctx)
 
 def is_left(x, y, ctx):
-    return are_left([x], [y] if y is not None else None, ctx)
+    if y is None:
+        return are_left([x], y, ctx)
+    elif isinstance(y, int):
+        return are_left([x], [y], ctx)
+    elif isinstance(y, lst):
+        return are_left([x], y, ctx)
 
 def is_middle(x, ys, ctx):
-    return are_middle([x], ys if ys is not None else None, ctx)
+    if y is None:
+        return are_middle([x], y, ctx)
+    elif isinstance(y, int):
+        return are_middle([x], [y], ctx)
+    elif isinstance(y, lst):
+        return are_middle([x], y, ctx)
 
 # getters
 def get_magnitude(x, direction, ctx):
