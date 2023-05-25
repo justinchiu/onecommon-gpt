@@ -256,14 +256,12 @@ class ReaderMixin:
                 text = text,
                 savedots = "a",
             )
-            import pdb; pdb.set_trace()
-            blocks = 
 
         # new input for python execution
         kw = dict(
             info=info,
             header=HEADER,
-            blocks=past. + [codeblock_dict],
+            blocks=past.execute_past + [codeblock_dict],
             dots=view.tolist(),
         )
 
