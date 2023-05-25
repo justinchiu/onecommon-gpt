@@ -11,5 +11,5 @@ New dots: Give the number of new dots mentioned.
 
 {% if past | length > 0 %}History:{% for block in past %}
 {{loop.index}}. {{block}}
-{% endfor %}{% endif %}
+{%- endfor %}{% endif %}
 Text: {{ text }}
