@@ -100,42 +100,55 @@ def are_middle(x, y, ctx):
 def is_above(x, y, ctx):
     if y is None:
         return are_above([x], y, ctx)
-    elif isinstance(y, int):
+    elif isinstance(y, int) or isinstance(y, np.int64):
         return are_above([x], [y], ctx)
     elif isinstance(y, list):
         return are_above([x], y, ctx)
+    else:
+        raise ValueError("Weird type")
 
 def is_below(x, y, ctx):
     if y is None:
         return are_below([x], y, ctx)
-    elif isinstance(y, int):
+    elif isinstance(y, int) or isinstance(y, np.int64):
         return are_below([x], [y], ctx)
     elif isinstance(y, list):
         return are_below([x], y, ctx)
+    else:
+        raise ValueError("Weird type")
 
 def is_right(x, y, ctx):
     if y is None:
         return are_right([x], y, ctx)
-    elif isinstance(y, int):
+    elif isinstance(y, int) or isinstance(y, np.int64):
         return are_right([x], [y], ctx)
     elif isinstance(y, list):
         return are_right([x], y, ctx)
+    else:
+        raise ValueError("Weird type")
 
 def is_left(x, y, ctx):
     if y is None:
         return are_left([x], y, ctx)
-    elif isinstance(y, int):
+    elif isinstance(y, int) or isinstance(y, np.int64):
         return are_left([x], [y], ctx)
     elif isinstance(y, list):
         return are_left([x], y, ctx)
+    else:
+        raise ValueError("Weird type")
 
 def is_middle(x, ys, ctx):
-    if y is None:
-        return are_middle([x], y, ctx)
-    elif isinstance(y, int):
-        return are_middle([x], [y], ctx)
-    elif isinstance(y, list):
-        return are_middle([x], y, ctx)
+    if ys is None:
+        return are_middle([x], ys, ctx)
+    elif isinstance(ys, int) or isinstance(ys, np.int64):
+        # this shouldnt happen???
+        # middle iff the same dot then
+        return x == ys
+        return are_middle([x], [ys], ctx)
+    elif isinstance(ys, list):
+        return are_middle([x], ys, ctx)
+    else:
+        raise ValueError("Weird type")
 
 # getters
 def get_magnitude(x, direction, ctx):

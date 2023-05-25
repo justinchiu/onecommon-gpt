@@ -54,5 +54,6 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
                 understand_past = [],
                 execute_past = [],
             ),
+            text = None,
         )]
 

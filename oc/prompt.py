@@ -173,6 +173,7 @@ class ExecuteShort(TemplatePrompt[list[int]]):
 
 class Classify(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "classify.j2")
+    template_file = str(PROMPT_DIR / "classify2.j2")
     stop_templates = ["End"]
     def parse(self, output, input) -> tuple[str, int, str]:
         output = output.strip()
@@ -182,6 +183,25 @@ class Classify(TemplatePrompt[str]):
             qtype, num_dots = output.split("\n")
             num_dots = int(re.findall(r"\d+", num_dots)[0])
             return qtype, num_dots, output
+
+class ClassifyZeroshot(TemplatePrompt[str]):
+    template_file = str(PROMPT_DIR / "classify_zs.j2")
+    stop_templates = ["End"]
+    def parse(self, output, input) -> tuple[str, int]:
+        qtype, num_new = output.split("\n")
+        qtype = int(re.findall(r"\d+", qtype)[0])
+        num_new = int(re.findall(r"\d+", num_new)[0])
+        if qtype == 1:
+            qtype = Qtypes.START
+        elif qtype == 2 and num_new == 0:
+            qtype = Qtypes.FOLD
+        elif qtype == 2 and num_new > 0:
+            qtype = Qtypes.FNEW
+        elif qtype == 3:
+            qtype = Qtypes.NOOP
+        elif qtype == 4:
+            qtype = Qtypes.SELECT
+        return qtype, num_new, output
 
 class UnderstandShort2(TemplatePrompt[str]):
     # input:

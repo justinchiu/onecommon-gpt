@@ -55,7 +55,7 @@ class PlannerMixin:
             # end forced 
         elif select_plan is not None:
             plan = select_plan
-        elif followup_plan is not None and followup_plan.confirmation is True:
+        elif followup_plan is not None and followup_plan.confirmation == True:
             plan = followup_plan
         elif followup_plan is not None and followup_plan.info_gain > start_plan.info_gain:
             plan = followup_plan

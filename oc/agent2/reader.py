@@ -7,7 +7,7 @@ from oc.prompt import UnderstandMc
 
 from oc.prompt import UnderstandShort, ExecuteShort
 from oc.prompt import UnderstandShort2, ExecuteShort2
-from oc.prompt import Classify
+from oc.prompt import Classify, ClassifyZeroshot
 
 from oc.dynamic_prompting.blocks import BLOCKS
 from oc.dynamic_prompting.construct import question_type, constraints_dots
@@ -34,9 +34,10 @@ class ReaderMixin:
         ))
 
         if refres == "shortcodegen2":
-            self.classify = Classify(backend.OpenAIChat(
+            #self.classify = Classify(backend.OpenAIChat(
+            self.classify = ClassifyZeroshot(backend.OpenAIChat(
                 model = model,
-                max_tokens = 64,
+                max_tokens = 16,
             ))
             self.understand = UnderstandShort2(backend.OpenAIChat(
                 model = model,
@@ -119,6 +120,7 @@ class ReaderMixin:
             speaker = Speaker.THEM,
             turn = state.turn+1,
             read_extra = extra,
+            text = text,
         ))
 
     # helper functions
@@ -148,23 +150,38 @@ class ReaderMixin:
         speaker = "You" if "You:" in text else "Them"
         text = self.reformat_text(text, usespeaker=False)
 
+        """
+        # For few-shot question classification
         classify_blocks = question_type()
-
-        start_time = time.perf_counter()
-        qtype, num_new_dots, classify_past = self.classify(dict(
+        classify_kwargs = dict(
             blocks=classify_blocks,
-            past=past.classify_past,
+            past = [state.text for state in self.states if state.turn >= 0],
             text=text,
-        ))
+        )
+        """
+        classify_kwargs = dict(
+            past = [state.text for state in self.states if state.turn >= 0],
+            text = text,
+        )
+        print(self.classify.print(classify_kwargs))
+        start_time = time.perf_counter()
+        qtype, num_new_dots, classify_output = self.classify(classify_kwargs)
         print(f"Classify: {time.perf_counter() - start_time} seconds")
+        print(classify_output)
+        #if len(self.states) == 3:
+        #    import pdb; pdb.set_trace()
 
         num_prev_dots = 0
         prev_dots = None
-        if qtype == Qtypes.FNEW.value or qtype == Qtypes.FOLD.value:
-            previous_dots, last_turn = self.get_last_confirmed(self.states).sum()
-            num_prev_dots = previous_dots.sum().item()
+        all_dots = None
+        if qtype == Qtypes.FNEW or qtype == Qtypes.FOLD:
+            previous_dots, last_turn = self.get_last_confirmed_all_dots(self.states)
+            num_prev_dots = previous_dots[0].sum().item()
             prev_dots = ",".join(letters[:num_prev_dots])
-        dots = ",".join(letters[num_prev_dots:num_prev_dots+num_new_dots])
+        dots = ",".join(letters[num_prev_dots:num_prev_dots+num_new_dots]) + ","
+        if prev_dots is not None:
+            prev_dots += ","
+            all_dots = ",".join(letters[:num_prev_dots+num_new_dots]) + ","
 
         understand_blocks = constraints_dots()
         understand_kwargs = dict(
@@ -172,7 +189,7 @@ class ReaderMixin:
             blocks = understand_blocks,
             speaker = speaker,
             text = text,
-            type = qtype,
+            type = qtype.value,
             prev_dots = prev_dots,
             dots = dots,
         )
@@ -192,7 +209,7 @@ class ReaderMixin:
                 text = text,
                 state = None,
             )
-        elif qtype == Qtypes.NOOP.value:
+        elif qtype == Qtypes.NOOP:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -206,7 +223,7 @@ class ReaderMixin:
                 text = text,
                 state = "None",
             )
-        elif qtype == Qtypes.START.value:
+        elif qtype == Qtypes.START:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -219,8 +236,9 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = dots,
+                state = "None",
             )
-        elif qtype == Qtypes.FOLD.value:
+        elif qtype == Qtypes.FOLD:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -233,8 +251,9 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = prev_dots,
+                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
             )
-        elif qtype == Qtypes.FNEW.value:
+        elif qtype == Qtypes.FNEW:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -246,9 +265,10 @@ class ReaderMixin:
                 select = "False",
                 speaker = speaker,
                 text = text,
-                savedots = ",".join([prev_dots, dots]),
+                savedots = all_dots,
+                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
             )
-        elif qtype == Qtypes.SELECT.value:
+        elif qtype == Qtypes.SELECT:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -261,7 +281,10 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = "a",
+                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
             )
+        else:
+            raise ValueError
 
         # new input for python execution
         kw = dict(
@@ -269,7 +292,10 @@ class ReaderMixin:
             header=HEADER,
             blocks=past.execute_past + [codeblock_dict],
             dots=view.tolist(),
+            state = codeblock_dict["state"],
         )
+        # TODO: CLEAN THIS UP. only execute code for THIS TURN.
+        # results of previous turns are memoized.
 
         # debugging execution input
         input = self.execute.print(kw)
@@ -278,7 +304,6 @@ class ReaderMixin:
         result = self.execute(kw)
         print(result)
         print(f"Read after code: {time.perf_counter() - read_start_time} seconds")
-        import pdb; pdb.set_trace()
 
         mentions = None
         if result is not None:
@@ -290,7 +315,7 @@ class ReaderMixin:
         return (
             mentions,
             Past(
-                classify_past = classify_past,
+                classify_past = [],
                 understand_past = [],
                 execute_past = [],
             ),

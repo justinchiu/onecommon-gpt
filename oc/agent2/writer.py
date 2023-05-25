@@ -25,16 +25,16 @@ class WriterMixin:
         state = self.states[-1]
 
         plan = self.plan(force_action=force_action)
-        past = state.past
-        text, _, write_extra = self.generate_text(plan, past, self.ctx)
+        text, _, write_extra = self.generate_text(plan, state.past, self.ctx)
 
         self.states.append(State(
             belief_dist = state.belief_dist,
             plan = plan,
-            past = past,
+            past = state.past,
             speaker = Speaker.YOU,
             write_extra = write_extra,
             turn = state.turn+1,
+            text = text,
         ))
 
         return text.split() + ["<eos>"]
@@ -70,7 +70,7 @@ class WriterMixin:
         elif plan.confirmation == True:
             desc = f"Yes. {desc}"
         
-        return desc, past + [desc], None
+        return desc, None, None
 
     # for rule-based generation with simple coref
     def generate_new_config(self, plan, past, view, info=None):
@@ -88,7 +88,7 @@ class WriterMixin:
         elif plan.confirmation == False:
             out = f"No. {out}"
 
-        return out, past + [out], {"desc": descs, "position_desc": position_desc}
+        return out, None, {"desc": descs, "position_desc": position_desc}
 
 
     def generate_select(self, plan, past, view, info=None):
@@ -105,4 +105,4 @@ class WriterMixin:
             selectutt = f"Yes. {selectutt}"
         elif plan.confirmation == False:
             selectutt = f"No. {selectutt}"
-        return selectutt, past + [selectutt], None
+        return selectutt, None, None

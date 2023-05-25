@@ -1,0 +1,8 @@
+{% for block in blocks %}{{block}}
+End
+{% endfor %}
+{% set ns = namespace(turn_num=-1)%}{% for block in past %}
+Turn {{ loop.index0 }}: {{block}}
+{% set ns.turn_num = loop.index0%}{% endfor %}
+Turn {{ns.turn_num+1}}: {{text}}
+Type:

@@ -1,0 +1,15 @@
+Classify the text and say how many new dots are mentioned.
+Class: Give the class number. The classes are:
+1. Start: A new question that introduces new dots.
+2. Follow-up: A follow-up question that builds on top of previously mentioned dots. May also mention additional new dots.
+3. No op: Does not give or request any information. May just be Yes, No, or Ok.
+4. Select:  Tells you to select a particular dot.
+New dots: Give the number of new dots mentioned.
+* There are at least 2 dots in a line.
+* There are 3 dots in a triangle.
+* There are 4 dots in a square.
+
+{% if past | length > 0 %}History:{% for block in past %}
+{{loop.index}}. {{block}}
+{% endfor %}{% endif %}
+Text: {{ text }}

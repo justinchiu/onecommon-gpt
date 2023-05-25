@@ -60,6 +60,7 @@ class State:
     speaker: Speaker | None
     turn: int
     past: Any
+    text: str | None
     write_extra: Any = None
     read_extra: Any = None
 
