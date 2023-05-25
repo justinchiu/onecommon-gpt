@@ -22,10 +22,13 @@ class Action(Enum):
 
 @dataclass
 class Plan:
+    # top 1
     dots: np.ndarray | None
     config_idx: int | None
     feats: Any | None
     plan_idxs: np.ndarray | None
+    # all possible
+    all_dots: np.ndarray | None
     # did the turn have a confirmation
     confirmation: bool | None
     confirmed: bool

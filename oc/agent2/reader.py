@@ -100,6 +100,7 @@ class ReaderMixin:
             config_idx = config_idx,
             feats = feats,
             plan_idxs = plan_idxs,
+            all_dots = preds if preds is not None and confirmed else None,
             confirmation = confirmation,
             confirmed = confirmed,
         )
@@ -141,16 +142,21 @@ class ReaderMixin:
             raise ValueError
 
     def resolve_reference_short_codegen2(self, text, past, view, info=None):
+        import time
+        read_start_time = time.perf_counter()
+
         speaker = "You" if "You:" in text else "Them"
         text = self.reformat_text(text, usespeaker=False)
 
         classify_blocks = question_type()
 
+        start_time = time.perf_counter()
         qtype, num_new_dots, classify_past = self.classify(dict(
             blocks=classify_blocks,
             past=past.classify_past,
             text=text,
         ))
+        print(f"Classify: {time.perf_counter() - start_time} seconds")
 
         num_prev_dots = 0
         prev_dots = None
@@ -177,6 +183,9 @@ class ReaderMixin:
         start_time = time.perf_counter()
         constraints = self.understand(understand_kwargs)
         print(f"Understand: {time.perf_counter() - start_time} seconds")
+        print(f"Read until code: {time.perf_counter() - read_start_time} seconds")
+
+        import pdb; pdb.set_trace()
 
         codeblock_dict = None
         if constraints is None:
@@ -281,7 +290,11 @@ class ReaderMixin:
 
         return (
             mentions,
-            past + [codeblock_dict],
+            Past(
+                classify_past = classify_past,
+                understand_past = [],
+                execute_past = [],
+            ),
             {
                 "parsedtext": text,
                 "speaker": speaker,

@@ -91,6 +91,7 @@ class PlannerMixin:
             config_idx = get_config_idx(planbool, self.belief.configs),
             feats = feats,
             plan_idxs = plan_idxs,
+            all_dots = planbool[None], # TODO: not sure this works
             confirmation = confirmation,
             info_gain = info_gain,
             confirmed = None, # fill in future turn
@@ -148,6 +149,7 @@ class PlannerMixin:
             config_idx = get_config_idx(planbool, self.belief.configs),
             feats = feats,
             plan_idxs = plan_idxs,
+            all_dots = planbool2[None], # TODO: not sure this works
             newdots = new,
             olddots = old,
             info_gain = info_gain,
@@ -207,6 +209,7 @@ class PlannerMixin:
             dots = planbool,
             feats = feats,
             plan_idxs = plan_idxs,
+            all_dots = planbool[None], # TODO: not sure this works
             config_idx = get_config_idx(planbool, self.belief.configs),
             confirmation = confirmation,
             confirmed = None,
