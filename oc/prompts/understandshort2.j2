@@ -1,49 +1,29 @@
+Translate the text into code.
+These are the available functions.
+```
 {{ header }}
+```
+`idxs = list(range(7))` corresponds to the available dots.
 
-idxs = list(range(7))
-
-# New.
-ctx = get_ctx()
-states = []
-
+Here are some examples.
 {% for block in blocks %}
-# Turn: {{block.turn}}
-# {{ block.speaker }}: {{ block.text }}{% if block.type != "No op." %}
-def turn(state):
-    # {{ block.type }}
-    for config in {{ block.configs }}:
-        for {{ block.configdots }} in permutations(config):
-            for {{ block.newdots }} in {{ block.newconfigs }}:
-                {%- for constraint in block.constraints %}
-                {{ constraint.name }} = {{ constraint.code}}
-                {%- endfor %}
-    return True
-# Dots: {{ block.dots }}
-# Selection: {{ block.select }}
-# State: {{ block.state }}{% else %}
-def turn(state):
-    # No op.
-    return None{% endif %}
-# End.
+{{block}}
 {% endfor %}
-
-# New.
-ctx = get_ctx()
-states = []
-
-{% set ns= namespace(turn_num=-1) %}{% for block in past %}
-# Turn: {{ loop.index0 }}
-# {{ block.speaker }}: {{ block.text }}{% if block.noop == false %}
-def turn(state):
-{{ block.code }}
-    return True
-# Dots: {{ block.dots }}
-# Selection: {{ block.select }}
-# State: {{ block.state }}{% else %}
-def turn(state):
-    # No op.
-    return None{% endif %}
-# End.{% set ns.turn_num = loop.index0 %}
-{% endfor %}
-# Turn: {{ ns.turn_num+1 }}
-# {{speaker}}: {{ text }}
+Text: {{ text }}
+Type: {{ type }}{% if type == "No op." %}
+Code:
+```{% elif type == "New question." %}
+Dots: {{dots}}
+Code:
+```{% elif type == "Follow up question, no new dots." %}
+Previous dots: {{prev_dots}}
+Code:
+```{% elif type == "Follow up question, new dots." %}
+Previous dots: {{prev_dots}}
+Dots: {{dots}}
+Code:
+```
+{% elif type == "Select a dot." %}
+Previous dots: {{prev_dots}}
+Code:
+```{% endif %}

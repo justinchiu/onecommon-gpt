@@ -7,14 +7,17 @@ from oc.prompt import UnderstandMc
 
 from oc.prompt import UnderstandShort, ExecuteShort
 from oc.prompt import UnderstandShort2, ExecuteShort2
-from oc.prompt import UnderstandJson, ExecuteJson
+from oc.prompt import Classify
 
 from oc.dynamic_prompting.blocks import BLOCKS
+from oc.dynamic_prompting.construct import question_type, constraints_dots
 
-from oc.agent2.utils import Speaker, Plan, State
+from oc.agent2.utils import Speaker, Plan, State, Qtypes
 
 from oc.belief.belief_utils import get_config_idx
 
+
+letters = "abcdefghijklmnop"
 
 class ReaderMixin:
     def __init__(self, backend, refres, gen, model):
@@ -31,9 +34,13 @@ class ReaderMixin:
         ))
 
         if refres == "shortcodegen2":
+            self.classify = Classify(backend.OpenAIChat(
+                model = model,
+                max_tokens = 64,
+            ))
             self.understand = UnderstandShort2(backend.OpenAIChat(
                 model = model,
-                max_tokens=1024,
+                max_tokens=256,
             ))
             self.execute = ExecuteShort2(backend.Python())
         else:
@@ -137,45 +144,126 @@ class ReaderMixin:
         speaker = "You" if "You:" in text else "Them"
         text = self.reformat_text(text, usespeaker=False)
 
-        kwargs = dict(
-            header=HEADER,
-            blocks = BLOCKS,
-            speaker = speaker,
-            text=text,
-            past=past,
-            view=view,
-        )
+        classify_blocks = question_type()
 
-        understand_prompt = self.understand.print(kwargs)
+        qtype, num_new_dots, classify_past = self.classify(dict(
+            blocks=classify_blocks,
+            past=past.classify_past,
+            text=text,
+        ))
+
+        num_prev_dots = 0
+        prev_dots = None
+        if qtype == Qtypes.FNEW.value or qtype == Qtypes.FOLD.value:
+            previous_dots, last_turn = self.get_last_confirmed(self.states).sum()
+            num_prev_dots = previous_dots.sum().item()
+            prev_dots = ",".join(letters[:num_prev_dots])
+        dots = ",".join(letters[num_prev_dots:num_prev_dots+num_new_dots])
+
+        understand_blocks = constraints_dots()
+        understand_kwargs = dict(
+            header = HEADER,
+            blocks = understand_blocks,
+            speaker = speaker,
+            text = text,
+            type = qtype,
+            prev_dots = prev_dots,
+            dots = dots,
+        )
+        understand_prompt = self.understand.print(understand_kwargs)
         print(understand_prompt)
 
-        codeblock = self.understand(kwargs)
+        import time
+        start_time = time.perf_counter()
+        constraints = self.understand(understand_kwargs)
+        print(f"Understand: {time.perf_counter() - start_time} seconds")
 
         codeblock_dict = None
-        if codeblock is None:
+        if constraints is None:
             codeblock_dict = dict(
                 noop = True,
                 speaker = speaker,
                 text = text,
                 state = None,
             )
-        else:
+        elif qtype == Qtypes.NOOP.value:
+            # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
-                code = codeblock.code,
-                constraints = codeblock.constraints,
-                dots = codeblock.dots,
-                select = codeblock.select,
-                speaker = codeblock.speaker,
-                text = codeblock.text,
-                state = codeblock.state,
+                constraints = None,
+                configs = None,
+                dots = None,
+                newconfigs = None,
+                newdots = None,
+                select = "False",
+                speaker = speaker,
+                text = text,
+                state = "None",
             )
+        elif qtype == Qtypes.START.value:
+            # construct codeblocks
+            codeblock_dict = dict(
+                noop = False,
+                constraints = constraints,
+                configs = f"getsets(idxs, {num_new_dots})",
+                dots = dots,
+                newconfigs = "[0]",
+                newdots = "_",
+                select = "False",
+                speaker = speaker,
+                text = text,
+                savedots = dots,
+            )
+        elif qtype == Qtypes.FOLD.value:
+            # construct codeblocks
+            codeblock_dict = dict(
+                noop = False,
+                constraints = constraints,
+                configs = "state",
+                dots = prev_dots,
+                newconfigs = "[0]",
+                newdots = "_",
+                select = "False",
+                speaker = speaker,
+                text = text,
+                savedots = prev_dots,
+            )
+        elif qtype == Qtypes.FNEW.value:
+            # construct codeblocks
+            codeblock_dict = dict(
+                noop = False,
+                constraints = constraints,
+                configs = "state",
+                dots = prev_dots,
+                newconfigs = f"get{num_new_dots}idxs(idxs, exclude=[{prev_dots}])",
+                newdots = dots,
+                select = "False",
+                speaker = speaker,
+                text = text,
+                savedots = ",".join([prev_dots, dots]),
+            )
+        elif qtype == Qtypes.SELECT.value:
+            # construct codeblocks
+            codeblock_dict = dict(
+                noop = False,
+                constraints = constraints,
+                configs = "state",
+                dots = dots,
+                newconfigs = "[0]",
+                newdots = "_",
+                select = "True",
+                speaker = speaker,
+                text = text,
+                savedots = "a",
+            )
+            import pdb; pdb.set_trace()
+            blocks = 
 
         # new input for python execution
         kw = dict(
             info=info,
             header=HEADER,
-            blocks=past + [codeblock_dict],
+            blocks=past. + [codeblock_dict],
             dots=view.tolist(),
         )
 

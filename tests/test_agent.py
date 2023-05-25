@@ -18,8 +18,8 @@ class TestAgent:
             agent2.feed_context(ctx.flatten().tolist())
 
             utterance = "Do you see a pair of dots, where the bottom left dot is large-sized and grey and the top right dot is large-sized and grey?"
-            agent1.read(utterance)
             agent2.read(utterance)
+            agent1.read(utterance)
 
             dots1 = agent1.preds[-1][0]
             dots2 = agent2.states[-1].plan.dots

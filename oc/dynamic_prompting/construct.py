@@ -3,7 +3,7 @@ from enum import Enum
 from pathlib import Path
 import re
 from oc.dynamic_prompting.blocks import BLOCKS
-from oc.agent.utils import Qtypes
+from oc.agent2.utils import Qtypes
 
 
 def question_type():
@@ -32,9 +32,12 @@ New dots: {numnew}"""
 Type: {type}"""
         elif type == "New question.":
             state = block["state"]
+            newdots = block["dots"]
+            numnew = len(re.sub(",$", "", newdots).split(","))
 
             string = f"""Turn {turn}: {text}
-Type: {type}"""
+Type: {type}
+New dots: {numnew}"""
         elif type == "Select a dot.":
             state = block["state"]
             refturns = re.findall(r"\d+", state)
@@ -105,18 +108,21 @@ def constraints_dots():
         type = block["type"]
         state = block["state"]
         if type == Qtypes.NOOP.value:
-            strings.append(f"Turn {turn}\nText: {text}\nType: {type}\nCode:\n```\npass\n```")
+            #strings.append(f"Turn {turn}\nText: {text}\nType: {type}\nCode:\n```\npass\n```")
+            strings.append(f"Text: {text}\nType: {type}\nCode:\n```\npass\n```")
         elif type == Qtypes.START.value:
             dots = block["dots"]
             constraints = block["constraints"]
-            string = f"Turn {turn}\nText: {text}\nType: {type}\nDots: {dots}\nCode:"
+            #string = f"Turn {turn}\nText: {text}\nType: {type}\nDots: {dots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nDots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
         elif type == Qtypes.FOLD.value:
             dots = block["dots"]
             refturns = re.findall(r"\d+", state)
             constraints = block["constraints"]
-            string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {dots}\nCode:"
+            #string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {dots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nPrevious dots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
         else:
@@ -124,7 +130,8 @@ def constraints_dots():
             newdots = block["newdots"]
             refturns = re.findall(r"\d+", state)
             constraints = block["constraints"]
-            string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {olddots}\nNew dots: {newdots}\nCode:"
+            #string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {olddots}\nNew dots: {newdots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nPrevious dots: {olddots}\nNew dots: {newdots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
 

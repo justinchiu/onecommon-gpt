@@ -10,7 +10,7 @@ from oc.prompt import Parse, ParseUnderstand
 from oc.prompt import GenerateScxy, GenerateTemplate
 from oc.prompt import UnderstandMc
 
-from oc.agent2.utils import State
+from oc.agent2.utils import State, Past
 from oc.agent2.reader import ReaderMixin
 from oc.agent2.planner import PlannerMixin
 from oc.agent2.writer import WriterMixin
@@ -49,6 +49,10 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
             plan = None,
             speaker = None,
             turn = -1,
-            past = [],
+            past = Past(
+                classify_past = [],
+                understand_past = [],
+                execute_past = [],
+            ),
         )]
 

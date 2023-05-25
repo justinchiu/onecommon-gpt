@@ -169,9 +169,7 @@
     "newconfigs": "[0]",
     "newdots": "_",
     "constraints": [
-        {"name": "check_a_large", "code": "is_large(a, ctx)"},
-        {"name": "check_b_not_large", "code": "not is_large(b, ctx)"},
-        {"name": "check_c_not_large", "code": "not is_large(c, ctx)"}
+        {"name": "check_a_large", "code": "is_large(a, ctx)"}
     ],
     "dots": "a",
     "select": "True",

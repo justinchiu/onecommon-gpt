@@ -251,6 +251,13 @@ class PlannerMixin:
         ]
         return confirmed[0] if confirmed else None
 
+    def get_last_confirmed(self, states):
+        confirmed = [
+            (state.plan.dots, i) for i, state in reversed(list(enumerate(states)))
+            if state.plan is not None and state.plan.confirmed == True
+        ]
+        return confirmed if confirmed else None
+
     def get_repeat_mask(self, states):
         # kill any configs that have already been asked
         mask = np.ones(self.belief.configs.shape[0], dtype=float)

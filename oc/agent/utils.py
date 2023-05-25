@@ -2,12 +2,6 @@ from dataclasses import dataclass
 from enum import Enum
 import numpy as np
 
-class Qtypes(Enum):
-    START = "New question."
-    FOLD = "Follow up question, no new dots."
-    FNEW = "Follow up question, new dots."
-    SELECT = "Select a dot."
-    NOOP = "No op."
 
 class Speaker(Enum):
     YOU = 1

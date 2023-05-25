@@ -12,7 +12,7 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-states = []
+state = None
 
 {% for block in blocks %}
 # Turn {{ loop.index0 }}
@@ -21,23 +21,27 @@ states = []
     results = set()
     orderedresults = []
     parents = []
-{{ block.code }}
+    for config in {{configs}}:
+        for {{dots}} in permutations(config):
+            for {{newdots}} in {{newconfigs}}:
+                {%for constraint in block.constraints%}
+                {{ constraint.name}} = {{constraint.code}}
+                {%endfor%}
                 if (
                     True 
                     {% for constraint in block.constraints %}and {{ constraint.name }}
                     {% endfor %}
                 ):
-                    dots = frozenset([{{ block.dots }}])
+                    dots = frozenset([{{ block.savedots }}])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)
                         parents.append(config)
     return sort_state(orderedresults, parents, ctx, select={{ block.select }}){% endif %}
-state = {{block.state}} if len(states) > 0 else None
-states.append(turn(state))
+state = turn(state)
 {% endfor %}
 
-if states[-1] is not None:
-    print([tuple(x) for x in states[-1]])
+if state is not None:
+    print([tuple(x) for x in state]])
 else:
     print("None")

@@ -4,6 +4,13 @@ import numpy as np
 from typing import Any
 
 
+class Qtypes(Enum):
+    START = "New question."
+    FOLD = "Follow up question, no new dots."
+    FNEW = "Follow up question, new dots."
+    SELECT = "Select a dot."
+    NOOP = "No op."
+
 class Speaker(Enum):
     YOU = 1
     THEM = 2
@@ -52,3 +59,9 @@ class State:
     past: Any
     write_extra: Any = None
     read_extra: Any = None
+
+@dataclass
+class Past:
+    classify_past: Any
+    understand_past: Any
+    execute_past: Any

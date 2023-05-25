@@ -11,6 +11,7 @@ from minichain import TemplatePrompt as BaseTemplatePrompt
 from minichain import Output, Request, Prompt
 
 from oc.outputs import UnderstandShortOutput
+from oc.agent2.utils import Qtypes
 
 import oc.prompts
 from importlib.resources import files
@@ -170,6 +171,18 @@ class ExecuteShort(TemplatePrompt[list[int]]):
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
 
+class Classify(TemplatePrompt[str]):
+    template_file = str(PROMPT_DIR / "classify.j2")
+    stop_templates = ["End"]
+    def parse(self, output, input) -> tuple[str, int, str]:
+        output = output.strip()
+        if output in [Qtypes.START.value, Qtypes.NOOP.value, Qtypes.FOLD.value, Qtypes.SELECT.value]:
+            return output, 0, output
+        else:
+            qtype, num_dots = output.split("\n")
+            num_dots = int(re.findall(r"\d+", num_dots)[0])
+            return qtype, num_dots, output
+
 class UnderstandShort2(TemplatePrompt[str]):
     # input:
     #   * header: str
@@ -177,14 +190,9 @@ class UnderstandShort2(TemplatePrompt[str]):
     #   * speaker: str
     #   * text: str
     template_file = str(PROMPT_DIR / "understandshort2.j2")
-    stop_templates = ["# End."]
+    stop_templates = ["```"]
 
     def parse(self, output, input) -> UnderstandShortOutput | None:
-        #print(output)
-        #import pdb; pdb.set_trace()
-        if "No op." in output:
-            return None
-
         # debug
         print(output)
         import tiktoken
@@ -192,28 +200,11 @@ class UnderstandShort2(TemplatePrompt[str]):
         print(len(encoding.encode(output)))
         # /debug
 
-        code, dots, select, state = output.split("\n#")
-
-        # remove last line from code
-        code = "\n".join(code.split("\n")[:-1])
-        dots = dots.replace("Dots:", "").strip()
-        select = select.replace("Selection:", "").strip()
-        state = state.replace("State:", "").strip()
-
-        if select == "False":
-            # sometimes dots is incorrect, parse out the dots from the for loop
-            for1, for2 = code.split("\n")[3:5]
-
-            statedots = re.findall("for (.*?) in", for1)[0].replace(" ","").split(",")
-
-            followupdots = re.findall("for (.*?) in", for2)[0].replace(" ","").split(",")
-            #dots = statedots if "_" in followupdots else ",".join([statedots, followupdots])
-            dots = ",".join(statedots + followupdots if "_" not in followupdots else statedots)
-
         # separate constraint names and assignment code
-        constraint_lines = [line.strip() for line in code.split("\n") if "check" in line]
+        constraint_lines = output.split("\n")
         constraint_pairs = [x.split(" = ") for x in constraint_lines]
         constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
+        return constraints
 
         return UnderstandShortOutput(
             # skip the first line of code, which is the fn def
@@ -232,29 +223,6 @@ class ExecuteShort2(TemplatePrompt[list[int]]):
     def parse(self, output, input) -> list[int]:
         return ast.literal_eval(output)
 
-# JSON shortened prompts
-class UnderstandJson(TemplatePrompt[str]):
-    # input:
-    #   * header: str
-    #   * blocks: List[block]
-    #   * speaker: str
-    #   * text: str
-    template_file = str(PROMPT_DIR / "understandjson.j2")
-    stop_templates = ["# End."]
-
-    def parse(self, output, input):
-        import pdb; pdb.set_trace()
-        code, dots, selection = output.split("\n#")
-        #code = code.strip()
-        dots = dots.replace("Dots:", "").strip()
-        selection = selection.replace("Selection:", "").strip()
-        return code, dots, selection
-
-class ExecuteJson(TemplatePrompt[list[int]]):
-    template_file = str(PROMPT_DIR / "executejson.j2")
-
-    def parse(self, output, input) -> list[int]:
-        return ast.literal_eval(output)
 
 # Deprecated
 class ParseUnderstand(TemplatePrompt[str]):
@@ -280,3 +248,26 @@ class GenerateMentions(TemplatePrompt[str]):
     tempalte_file = str(PROMPT_DIR / "generate_mention.j2")
 
 
+# JSON shortened prompts
+class UnderstandJson(TemplatePrompt[str]):
+    # input:
+    #   * header: str
+    #   * blocks: List[block]
+    #   * speaker: str
+    #   * text: str
+    template_file = str(PROMPT_DIR / "understandjson.j2")
+    stop_templates = ["# End."]
+
+    def parse(self, output, input):
+        import pdb; pdb.set_trace()
+        code, dots, selection = output.split("\n#")
+        #code = code.strip()
+        dots = dots.replace("Dots:", "").strip()
+        selection = selection.replace("Selection:", "").strip()
+        return code, dots, selection
+
+class ExecuteJson(TemplatePrompt[list[int]]):
+    template_file = str(PROMPT_DIR / "executejson.j2")
+
+    def parse(self, output, input) -> list[int]:
+        return ast.literal_eval(output)
