@@ -65,6 +65,43 @@ def turn(state):
 state = None if len(states) > 0 else None
 states.append(turn(state))
 
+# Turn 1
+# You: Yes, do you see a pair of dots where the right dot is large-sized and grey and the left dot is large-sized and dark?
+def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+    # Follow up question, new dots.
+    for config in state:
+        for a,b in permutations(config):
+            for c,d in get2idxs(idxs, exclude=[a,b]):
+                check_cd_pair = all_close([c,d], ctx)
+                check_c_left = c == get_left([c,d], ctx)
+                check_c_large = is_large(c, ctx)
+                check_c_dark = is_dark(c, ctx)
+                check_d_right = d == get_right([c,d], ctx)
+                check_d_large = is_large(d, ctx)
+                check_d_grey = is_grey(d, ctx)
+                if (
+                    True 
+                    and check_cd_pair
+                    and check_c_left
+                    and check_c_large
+                    and check_c_dark
+                    and check_d_right
+                    and check_d_large
+                    and check_d_grey
+                    
+                ):
+                    dots = frozenset([a,b,c,d])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
+state = states[0] if len(states) > 0 else None
+states.append(turn(state))
+
 
 if states[-1] is not None:
     print([tuple(x) for x in states[-1]])

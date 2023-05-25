@@ -102,7 +102,7 @@ def is_above(x, y, ctx):
         return are_above([x], y, ctx)
     elif isinstance(y, int):
         return are_above([x], [y], ctx)
-    elif isinstance(y, lst):
+    elif isinstance(y, list):
         return are_above([x], y, ctx)
 
 def is_below(x, y, ctx):
@@ -110,7 +110,7 @@ def is_below(x, y, ctx):
         return are_below([x], y, ctx)
     elif isinstance(y, int):
         return are_below([x], [y], ctx)
-    elif isinstance(y, lst):
+    elif isinstance(y, list):
         return are_below([x], y, ctx)
 
 def is_right(x, y, ctx):
@@ -118,7 +118,7 @@ def is_right(x, y, ctx):
         return are_right([x], y, ctx)
     elif isinstance(y, int):
         return are_right([x], [y], ctx)
-    elif isinstance(y, lst):
+    elif isinstance(y, list):
         return are_right([x], y, ctx)
 
 def is_left(x, y, ctx):
@@ -126,7 +126,7 @@ def is_left(x, y, ctx):
         return are_left([x], y, ctx)
     elif isinstance(y, int):
         return are_left([x], [y], ctx)
-    elif isinstance(y, lst):
+    elif isinstance(y, list):
         return are_left([x], y, ctx)
 
 def is_middle(x, ys, ctx):
@@ -134,7 +134,7 @@ def is_middle(x, ys, ctx):
         return are_middle([x], y, ctx)
     elif isinstance(y, int):
         return are_middle([x], [y], ctx)
-    elif isinstance(y, lst):
+    elif isinstance(y, list):
         return are_middle([x], y, ctx)
 
 # getters
