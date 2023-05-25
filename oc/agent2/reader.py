@@ -12,7 +12,7 @@ from oc.prompt import Classify
 from oc.dynamic_prompting.blocks import BLOCKS
 from oc.dynamic_prompting.construct import question_type, constraints_dots
 
-from oc.agent2.utils import Speaker, Plan, State, Qtypes
+from oc.agent2.utils import Speaker, Plan, State, Qtypes, Past
 
 from oc.belief.belief_utils import get_config_idx
 
@@ -183,9 +183,6 @@ class ReaderMixin:
         start_time = time.perf_counter()
         constraints = self.understand(understand_kwargs)
         print(f"Understand: {time.perf_counter() - start_time} seconds")
-        print(f"Read until code: {time.perf_counter() - read_start_time} seconds")
-
-        import pdb; pdb.set_trace()
 
         codeblock_dict = None
         if constraints is None:
@@ -280,6 +277,8 @@ class ReaderMixin:
 
         result = self.execute(kw)
         print(result)
+        print(f"Read after code: {time.perf_counter() - read_start_time} seconds")
+        import pdb; pdb.set_trace()
 
         mentions = None
         if result is not None:

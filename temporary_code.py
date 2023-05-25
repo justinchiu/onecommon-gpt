@@ -25,7 +25,7 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = None
+states = []
 
 
 # Turn 0
@@ -34,24 +34,17 @@ def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    for config in :
-        for [[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]] in permutations(config):
-            for  in :
-                
+    # New question.
+    for config in getsets(idxs, 2):
+        for a,b in permutations(config):
+            for _ in [0]:
                 check_ab_pair = all_close([a,b], ctx)
-                
                 check_a_bottom_left = a == get_bottom_left([a,b], ctx)
-                
                 check_a_large = is_large(a, ctx)
-                
                 check_a_grey = is_grey(a, ctx)
-                
                 check_b_top_right = b == get_top_right([a,b], ctx)
-                
                 check_b_large = is_large(b, ctx)
-                
                 check_b_grey = is_grey(b, ctx)
-                
                 if (
                     True 
                     and check_ab_pair
@@ -69,10 +62,11 @@ def turn(state):
                         orderedresults.append(dots)
                         parents.append(config)
     return sort_state(orderedresults, parents, ctx, select=False)
-state = turn(state)
+state = None if len(states) > 0 else None
+states.append(turn(state))
 
 
-if state is not None:
-    print([tuple(x) for x in state]])
+if states[-1] is not None:
+    print([tuple(x) for x in states[-1]])
 else:
     print("None")

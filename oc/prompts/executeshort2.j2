@@ -21,11 +21,10 @@ state = None
     results = set()
     orderedresults = []
     parents = []
-    for config in {{configs}}:
-        for {{dots}} in permutations(config):
-            for {{newdots}} in {{newconfigs}}:
-                {%for constraint in block.constraints%}
-                {{ constraint.name}} = {{constraint.code}}
+    for config in {{block.configs}}:
+        for {{block.dots}} in permutations(config):
+            for {{block.newdots}} in {{block.newconfigs}}:
+                {%for constraint in block.constraints%}{{ constraint.name}} = {{constraint.code}}
                 {%endfor%}
                 if (
                     True 
@@ -42,6 +41,6 @@ state = turn(state)
 {% endfor %}
 
 if state is not None:
-    print([tuple(x) for x in state]])
+    print([tuple(x) for x in state])
 else:
     print("None")
