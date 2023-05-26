@@ -57,16 +57,13 @@ class ReaderMixin:
         text = " ".join(input_words)
         past = self.states[-1].past
         ctx = self.ctx
-        preds, past, extra = self.resolve_reference(text, past, ctx)
-        # maybe should rank preds by probability?
 
-        parsed_text = extra["parsedtext"]
-
-        # process our previous plan + their confirmation
-
+        parsed_text = self.reformat_text(text, usespeaker=False)
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=parsed_text))
 
+
+        # process our previous plan + their confirmation
         # update belief
         belief_dist = state.belief_dist
         updated_belief_dist = belief_dist
@@ -83,6 +80,8 @@ class ReaderMixin:
             elif confirmation is None:
                 updated_belief_dist = belief_dist
 
+        # maybe should rank preds by probability?
+        preds, past, extra = self.resolve_reference(parsed_text, past, ctx)
         # construct plan for what they said
         feats = None
         plan_idxs = None
@@ -119,7 +118,7 @@ class ReaderMixin:
             past = past,
             speaker = Speaker.THEM,
             turn = state.turn+1,
-            read_extra = extra,
+            read_extra = {"parsed_text": parsed_text},
             text = text,
         ))
 
@@ -144,11 +143,9 @@ class ReaderMixin:
             raise ValueError
 
     def resolve_reference_short_codegen2(self, text, past, view, info=None):
+        speaker = "Them"
         import time
         read_start_time = time.perf_counter()
-
-        speaker = "You" if "You:" in text else "Them"
-        text = self.reformat_text(text, usespeaker=False)
 
         #"""
         # For few-shot question classification
@@ -321,8 +318,5 @@ class ReaderMixin:
                 understand_past = [],
                 execute_past = [],
             ),
-            {
-                "parsedtext": text,
-                "speaker": speaker,
-            },
+            None,
         )
