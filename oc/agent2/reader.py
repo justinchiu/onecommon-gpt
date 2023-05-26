@@ -77,6 +77,7 @@ class ReaderMixin:
                 print("UPDATED BELIEF denied")
                 state.plan.confirmed = False
             elif confirmation is None:
+                print("NO UPDATED BELIEF none")
                 updated_belief_dist = belief_dist
 
         # maybe should rank preds by probability?

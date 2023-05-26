@@ -237,15 +237,10 @@ class PlannerMixin:
         return select
 
     def should_confirm(self, states):
-        if len(states) == 1:
-            # first turn
-            confirmation = None
-        elif states[-1].plan.dots is None:
-            # no op
-            confirmation = None
+        if states[-1].plan is None:
+            return None
         else:
-            confirmation = states[-1].plan.dots.sum() > 0
-        return confirmation
+            return states[-1].plan.confirmed
 
     def get_last_confirmed_dots(self, states):
         confirmed = [
