@@ -52,5 +52,34 @@ class TestAgent:
             # might actually be different, due to parsing of "pair"
             print(agent2.write())
 
+    def test_consistent_shortcodegen2(self):
+        ctx = np.array([[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]])
+
+        with minichain.start_chain("test-tmp.txt") as backend:
+            agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+            agent.feed_context(ctx.flatten().tolist())
+
+            utterance = "Do you see a pair of dots, where the bottom left dot is large-sized and grey and the top right dot is large-sized and grey?".split()
+            agent.read(utterance)
+
+            dots2 = agent.states[-1].plan.dots
+            print(dots2)
+
+            utt2 = agent.write()
+            print(utt2)
+
+            dots22 = agent.states[-1].plan.dots
+            print(dots22)
+
+            utterance = "No. Is there a large-size grey dot to the left of those though?".split()
+            agent.read(utterance)
+
+            dots32 = agent.states[-1].plan.dots
+            print(dots32)
+
+            print(agent.write())
+
+
 if __name__ == "__main__":
-    TestAgent().test_read_shortcodegen2()
+    #TestAgent().test_read_shortcodegen2()
+    TestAgent().test_consistent_shortcodegen2()

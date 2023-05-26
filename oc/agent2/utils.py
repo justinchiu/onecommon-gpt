@@ -32,17 +32,15 @@ class Plan:
     # did the turn have a confirmation
     confirmation: bool | None
     confirmed: bool
-
-@dataclass
-class OurPlan(Plan):
     info_gain: float | None
+    qtype: Qtypes
 
 @dataclass
-class StartPlan(OurPlan):
+class StartPlan(Plan):
     pass
 
 @dataclass
-class FollowupPlan(OurPlan):
+class FollowupPlan(Plan):
     newdots: np.ndarray
     olddots: np.ndarray
     reference_turn: int
@@ -63,6 +61,9 @@ class State:
     text: str | None
     write_extra: Any = None
     read_extra: Any = None
+    # for dial act classification
+    qtype: Qtypes
+    new_dots: int
 
 @dataclass
 class Past:

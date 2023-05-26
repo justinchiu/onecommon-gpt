@@ -13,6 +13,7 @@ from oc.dynamic_prompting.blocks import BLOCKS
 from oc.dynamic_prompting.construct import question_type, constraints_dots
 
 from oc.agent2.utils import Speaker, Plan, State, Qtypes, Past
+from oc.agent2.utils import StartPlan, FollowupPlan, SelectPlan
 
 from oc.belief.belief_utils import get_config_idx
 
@@ -81,35 +82,13 @@ class ReaderMixin:
                 updated_belief_dist = belief_dist
 
         # maybe should rank preds by probability?
-        preds, past, extra = self.resolve_reference(parsed_text, past, ctx)
-        # construct plan for what they said
-        feats = None
-        plan_idxs = None
-        config_idx = None
-        confirmed = None
-        if preds is not None:
-            # None => they didnt mention anything
-            confirmed = preds.sum() > 0
-            # sum == 0 => we dont see their plan
-            if confirmed:
-                feats = self.belief.get_feats(preds[0]) # pull out into fn
-                plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
-                config_idx = get_config_idx(preds[0], self.belief.configs)
-        plan = Plan(
-            dots = preds[0] if preds is not None and confirmed else None,
-            config_idx = config_idx,
-            feats = feats,
-            plan_idxs = plan_idxs,
-            all_dots = preds if preds is not None and confirmed else None,
-            confirmation = confirmation,
-            confirmed = confirmed,
-        )
+        plan, past, extra = self.resolve_reference(parsed_text, past, ctx)
 
         # if they asked a question and your answer is yes, update belief
         # your answer is yes if preds is not empty
         last_belief_dist = updated_belief_dist
-        if plan.confirmed:
-            last_belief_dist = self.update_belief(updated_belief_dist, preds[0], 1)
+        if plan is not None and plan.confirmed:
+            last_belief_dist = self.update_belief(updated_belief_dist, plan.dots, 1)
             print("UPDATED BELIEF we see")
 
         self.states.append(State(
@@ -152,7 +131,12 @@ class ReaderMixin:
         classify_blocks = question_type()
         classify_kwargs = dict(
             blocks=classify_blocks,
-            past = [state.text for state in self.states if state.turn >= 0],
+            past = [
+                f"{state.text}\n"
+                f"Type: {state.plan.qtype.value if state.plan is not None else 'Qtypes.NOOP.value'}]\n"
+                f"New dots: {state.plan.new_dots if state.plan is not None else 0}"
+                for state in self.states if state.turn >= 0
+            ],
             text=text,
         )
         """
@@ -173,6 +157,7 @@ class ReaderMixin:
         prev_dots = None
         all_dots = None
         previous_dots = None
+        last_turn = None
         if qtype == Qtypes.FNEW or qtype == Qtypes.FOLD or qtype == Qtypes.SELECT:
             previous_dots, last_turn = self.get_last_confirmed_all_dots(self.states)
             num_prev_dots = previous_dots[0].sum().item()
@@ -311,8 +296,9 @@ class ReaderMixin:
             for i in range(num_preds):
                 mentions[i, result[i]] = 1
 
+        plan = self.construct_plan(mentions, qtype, last_turn)
         return (
-            mentions,
+            plan,
             Past(
                 classify_past = [],
                 understand_past = [],
@@ -320,3 +306,54 @@ class ReaderMixin:
             ),
             None,
         )
+
+    def construct_plan(self, preds, qtype, refturn=None):
+        # construct plan for what they said
+        feats = None
+        plan_idxs = None
+        config_idx = None
+        confirmed = None
+        plan = None
+        if preds is not None:
+            # None => they didnt mention anything
+            confirmed = preds.sum() > 0
+            # sum == 0 => we dont see their plan
+            if confirmed:
+                feats = self.belief.get_feats(preds[0]) # pull out into fn
+                plan_idxs = self.belief.resolve_utt(*feats) # pull out into fn
+                config_idx = get_config_idx(preds[0], self.belief.configs)
+
+            plan_dict = dict(
+                dots = preds[0],
+                config_idx = config_idx,
+                feats = feats,
+                plan_idxs = plan_idxs,
+                all_dots = preds,
+                confirmation = None, # FILL IN READ
+                confirmed = confirmed,
+                info_gain = None,
+                qtype = qtype,
+            )
+            if qtype == Qtypes.START:
+                plan_dict["new_dots"] = 0
+                plan = StartPlan(**plan_dict)
+            elif qtype == Qtypes.FOLD:
+                import pdb; pdb.set_trace()
+                plan_dict["new_dots"] = 0
+                plan_dict["olddots"] = 1
+                plan_dict["reference_turn"] = refturn
+                plan = FollowupPlan(**plan_dict)
+            elif qtype == Qtypes.FNEW:
+                import pdb; pdb.set_trace()
+                plan_dict["newdots"] = 1 
+                plan_dict["olddots"] = 1
+                plan_dict["reference_turn"] = refturn
+                plan = FollowupPlan(**plan_dict)
+            elif qtype == Qtypes.SELECT:
+                plan_dict["new_dots"] = 0
+                plan_dict["reference_turn"] = refturn
+                plan = SelectPlan(**plan_dict)
+            else:
+                raise ValueError
+
+        return plan
