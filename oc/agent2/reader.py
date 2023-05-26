@@ -282,7 +282,7 @@ class ReaderMixin:
                 select = "True",
                 speaker = speaker,
                 text = text,
-                savedots = "a",
+                savedots = savedots,
                 state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
             )
         else:
