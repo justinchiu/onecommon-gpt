@@ -18,7 +18,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.125, 0.815, -1.0, -0.8933333333333333], [-0.21, -0.585, 0.3333333333333333, -0.9733333333333334], [0.645, -0.185, -1.0, -0.96], [0.305, -0.645, -1.0, -0.9733333333333334], [-0.705, -0.015, 0.0, 0.84], [0.345, 0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, -0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[0.645, 0.33, 0.3333333333333333, -0.88], [0.5, -0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, 0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, 0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, 0.585, -1.0, -0.3466666666666667], [-0.59, 0.04, 0.0, -0.013333333333333334], [-0.245, -0.855, -0.6666666666666666, -0.37333333333333335]])
     return ctx
 
 idxs = list(range(7))
@@ -29,39 +29,8 @@ state = None
 
 
 # Turn 0
-# Them: Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    for config in getsets(idxs, 2):
-        for a,b, in permutations(config):
-            for _ in [0]:
-                check_ab_pair = all_close([a,b], ctx)
-                check_a_bottom = is_below(a, b, ctx)
-                check_a_medium = is_medium_size(a, ctx)
-                check_a_dark = is_dark(a, ctx)
-                check_b_top = is_above(b, a, ctx)
-                check_b_large = is_large(b, ctx)
-                check_b_light = is_light(b, ctx)
-                
-                if (
-                    True 
-                    and check_ab_pair
-                    and check_a_bottom
-                    and check_a_medium
-                    and check_a_dark
-                    and check_b_top
-                    and check_b_large
-                    and check_b_light
-                    
-                ):
-                    dots = frozenset([a,b,])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
+# Them: Yes.
+def turn(state): return None
 state = turn(state)
 
 
