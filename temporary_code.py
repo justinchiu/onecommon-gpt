@@ -18,115 +18,23 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]])
+    ctx = np.array([[0.645, 0.33, 0.3333333333333333, -0.88], [0.5, -0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, 0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, 0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, 0.585, -1.0, -0.3466666666666667], [-0.59, 0.04, 0.0, -0.013333333333333334], [-0.245, -0.855, -0.6666666666666666, -0.37333333333333335]])
     return ctx
 
 idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-states = []
+state = None
 
 
 # Turn 0
-# Them: Do you see a pair of dots where the bottom left dot is large-sized and grey, and the top right dot is large-sized and grey?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    # New question.
-    for config in getsets(idxs, 2):
-        for a,b in permutations(config):
-            for _ in [0]:
-                check_ab_pair = all_close([a,b], ctx)
-                check_a_bottom_left = a == get_bottom_left([a,b], ctx)
-                check_a_large = is_large(a, ctx)
-                check_a_grey = is_grey(a, ctx)
-                check_b_top_right = b == get_top_right([a,b], ctx)
-                check_b_large = is_large(b, ctx)
-                check_b_grey = is_grey(b, ctx)
-                if (
-                    True 
-                    and check_ab_pair
-                    and check_a_bottom_left
-                    and check_a_large
-                    and check_a_grey
-                    and check_b_top_right
-                    and check_b_large
-                    and check_b_grey
-                    
-                ):
-                    dots = frozenset([a,b])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
-state = None if len(states) > 0 else None
-states.append(turn(state))
-
-# Turn 1
-# You: Yes, is there a large size and dark color dot to the left and above those?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    # Follow up question, new dots.
-    for config in state:
-        for a,b in permutations(config):
-            for c, in get1idxs(idxs, exclude=[a,b]):
-                check_c_large = is_large(c, ctx)
-                check_c_dark = is_dark(c, ctx)
-                check_c_left_ab = is_left(c, [a,b], ctx)
-                check_c_above_ab = is_above(c, [a,b], ctx)
-                if (
-                    True 
-                    and check_c_large
-                    and check_c_dark
-                    and check_c_left_ab
-                    and check_c_above_ab
-                    
-                ):
-                    dots = frozenset([a,b,c,])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
-state = states[0] if len(states) > 0 else None
-states.append(turn(state))
-
-# Turn 2
-# Them: No. Is there a large-size grey dot to the left of those though?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    # Follow up question, new dots.
-    for config in state:
-        for a,b in permutations(config):
-            for c, in get1idxs(idxs, exclude=[a,b]):
-                check_c_large = is_large(c, ctx)
-                check_c_grey = is_grey(c, ctx)
-                check_c_left_ab = is_left(c, [a,b], ctx)
-                if (
-                    True 
-                    and check_c_large
-                    and check_c_grey
-                    and check_c_left_ab
-                    
-                ):
-                    dots = frozenset([a,b,c,])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
-state = states[1] if len(states) > 0 else None
-states.append(turn(state))
+# Them: Yes.
+def turn(state): return None
+state = turn(state)
 
 
-if states[-1] is not None:
-    print([tuple(x) for x in states[-1]])
+if state is not None:
+    print([tuple(x) for x in state])
 else:
     print("None")

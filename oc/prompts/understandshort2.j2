@@ -14,16 +14,11 @@ Type: {{ type }}{% if type == "No op." %}
 Code:
 ```{% elif type == "New question." %}
 Dots: {{dots}}
-Code:
-```{% elif type == "Follow up question, no new dots." %}
+Save dots:{% elif type == "Follow up question, no new dots." %}
 Previous dots: {{prev_dots}}
-Code:
-```{% elif type == "Follow up question, new dots." %}
+Save dots:{% elif type == "Follow up question, new dots." %}
 Previous dots: {{prev_dots}}
-Dots: {{dots}}
-Code:
-```
-{% elif type == "Select a dot." %}
+New dots: {{dots}}
+Save dots:{% elif type == "Select a dot." %}
 Previous dots: {{prev_dots}}
-Code:
-```{% endif %}
+Save dots:{% endif %}

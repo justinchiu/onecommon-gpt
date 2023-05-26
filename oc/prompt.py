@@ -175,18 +175,31 @@ class Classify(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "classify.j2")
     template_file = str(PROMPT_DIR / "classify2.j2")
     stop_templates = ["End"]
+
     def parse(self, output, input) -> tuple[str, int, str]:
         output = output.strip()
-        if output in [Qtypes.START.value, Qtypes.NOOP.value, Qtypes.FOLD.value, Qtypes.SELECT.value]:
-            return output, 0, output
+        qtype, num_dots = output.split("\n")
+        qtype = qtype.strip()
+        num_dots = num_dots.strip()
+        num_dots = int(re.findall(r"\d+", num_dots)[0])
+        if qtype == Qtypes.START.value:
+            qtype = Qtypes.START
+        elif qtype == Qtypes.NOOP.value:
+            qtype = Qtypes.NOOP
+        elif qtype == Qtypes.FOLD.value:
+            qtype = Qtypes.FOLD
+        elif qtype == Qtypes.FNEW.value:
+            qtype = Qtypes.FNEW
+        elif qtype == Qtypes.SELECT.value:
+            qtype = Qtypes.SELECT
         else:
-            qtype, num_dots = output.split("\n")
-            num_dots = int(re.findall(r"\d+", num_dots)[0])
-            return qtype, num_dots, output
+            raise ValueError
+        return qtype, num_dots, output
 
 class ClassifyZeroshot(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "classify_zs.j2")
     stop_templates = ["End"]
+
     def parse(self, output, input) -> tuple[str, int]:
         qtype, num_new = output.split("\n")
         qtype = int(re.findall(r"\d+", qtype)[0])
@@ -210,7 +223,7 @@ class UnderstandShort2(TemplatePrompt[str]):
     #   * speaker: str
     #   * text: str
     template_file = str(PROMPT_DIR / "understandshort2.j2")
-    stop_templates = ["```"]
+    #stop_templates = []
 
     def parse(self, output, input) -> UnderstandShortOutput | None:
         # debug
@@ -220,11 +233,16 @@ class UnderstandShort2(TemplatePrompt[str]):
         print(len(encoding.encode(output)))
         # /debug
 
+        if input["type"] == Qtypes.NOOP.value:
+            return None, None
+
         # separate constraint names and assignment code
-        constraint_lines = output.split("\n")
+        lines = output.split("\n")
+        savedots = lines[0]
+        constraint_lines = lines[3:-1]
         constraint_pairs = [x.split(" = ") for x in constraint_lines]
         constraints = [dict(name=x[0], code=x[1]) for x in constraint_pairs]
-        return constraints
+        return constraints, savedots
 
         return UnderstandShortOutput(
             # skip the first line of code, which is the fn def

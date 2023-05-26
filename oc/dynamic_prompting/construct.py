@@ -29,7 +29,8 @@ New dots: {numnew}"""
             newdots = block["newdots"]
 
             string = f"""Turn {turn}: {text}
-Type: {type}"""
+Type: {type}
+New dots: 0"""
         elif type == "New question.":
             state = block["state"]
             newdots = block["dots"]
@@ -42,10 +43,12 @@ New dots: {numnew}"""
             state = block["state"]
             refturns = re.findall(r"\d+", state)
             string = f"""Turn {turn}: {text}
-Type: {type}"""
+Type: {type}
+New dots: 0"""
         elif type == "No op.":
             string = f"""Turn {turn}: {text}
-Type: {type}"""
+Type: {type}
+New dots: 0"""
         strings.append(string)
     return strings
 
@@ -114,7 +117,7 @@ def constraints_dots():
             dots = block["dots"]
             constraints = block["constraints"]
             #string = f"Turn {turn}\nText: {text}\nType: {type}\nDots: {dots}\nCode:"
-            string = f"Text: {text}\nType: {type}\nDots: {dots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nDots: {dots}\nSave dots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
         elif type == Qtypes.FOLD.value:
@@ -122,16 +125,17 @@ def constraints_dots():
             refturns = re.findall(r"\d+", state)
             constraints = block["constraints"]
             #string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {dots}\nCode:"
-            string = f"Text: {text}\nType: {type}\nPrevious dots: {dots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nPrevious dots: {dots}\nSave dots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
         else:
             olddots = block["configdots"]
             newdots = block["newdots"]
+            dots = block["dots"]
             refturns = re.findall(r"\d+", state)
             constraints = block["constraints"]
             #string = f"Turn {turn}\nText: {text}\nType: {type}\nPrevious turn: {refturns[0]}\nPrevious dots: {olddots}\nNew dots: {newdots}\nCode:"
-            string = f"Text: {text}\nType: {type}\nPrevious dots: {olddots}\nNew dots: {newdots}\nCode:"
+            string = f"Text: {text}\nType: {type}\nPrevious dots: {olddots}\nNew dots: {newdots}\nSave dots: {dots}\nCode:"
             constraint_string = "\n".join(f"{x['name']} = {x['code']}" for x in constraints)
             strings.append("\n".join([string, "```", constraint_string, "```"]))
 

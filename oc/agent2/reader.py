@@ -34,8 +34,8 @@ class ReaderMixin:
         ))
 
         if refres == "shortcodegen2":
-            #self.classify = Classify(backend.OpenAIChat(
-            self.classify = ClassifyZeroshot(backend.OpenAIChat(
+            self.classify = Classify(backend.OpenAIChat(
+            #self.classify = ClassifyZeroshot(backend.OpenAIChat(
                 model = model,
                 max_tokens = 16,
             ))
@@ -150,7 +150,7 @@ class ReaderMixin:
         speaker = "You" if "You:" in text else "Them"
         text = self.reformat_text(text, usespeaker=False)
 
-        """
+        #"""
         # For few-shot question classification
         classify_blocks = question_type()
         classify_kwargs = dict(
@@ -163,6 +163,7 @@ class ReaderMixin:
             past = [state.text for state in self.states if state.turn >= 0],
             text = text,
         )
+        """
         print(self.classify.print(classify_kwargs))
         start_time = time.perf_counter()
         qtype, num_new_dots, classify_output = self.classify(classify_kwargs)
@@ -174,7 +175,8 @@ class ReaderMixin:
         num_prev_dots = 0
         prev_dots = None
         all_dots = None
-        if qtype == Qtypes.FNEW or qtype == Qtypes.FOLD:
+        previous_dots = None
+        if qtype == Qtypes.FNEW or qtype == Qtypes.FOLD or qtype == Qtypes.SELECT:
             previous_dots, last_turn = self.get_last_confirmed_all_dots(self.states)
             num_prev_dots = previous_dots[0].sum().item()
             prev_dots = ",".join(letters[:num_prev_dots])
@@ -198,7 +200,7 @@ class ReaderMixin:
 
         import time
         start_time = time.perf_counter()
-        constraints = self.understand(understand_kwargs)
+        constraints, savedots = self.understand(understand_kwargs)
         print(f"Understand: {time.perf_counter() - start_time} seconds")
 
         codeblock_dict = None
@@ -274,7 +276,7 @@ class ReaderMixin:
                 noop = False,
                 constraints = constraints,
                 configs = "state",
-                dots = dots,
+                dots = prev_dots,
                 newconfigs = "[0]",
                 newdots = "_",
                 select = "True",
