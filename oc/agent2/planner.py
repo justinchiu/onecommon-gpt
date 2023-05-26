@@ -222,7 +222,7 @@ class PlannerMixin:
         confirmed_or_select = [
             state.plan.dots for state in reversed(self.states)
             if state.plan is not None
-            and (state.plan.confirmed or isinstance(state.plan, SelectionPlan))
+            and (state.plan.confirmed or isinstance(state.plan, SelectPlan))
             and state.plan.dots.sum() == 1
         ]
         return (

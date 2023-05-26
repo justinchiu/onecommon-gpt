@@ -86,9 +86,10 @@ class Understand(TemplatePrompt[str]):
 
 class Confirm(TemplatePrompt[str]):
     template_file = str(PROMPT_DIR / "confirm.j2")
-    stop_templates = ["# End."]
+    #stop_templates = ["# End."]
 
     def parse(self, output, input):
+        print(output)
         word = output.strip()
         if word == "Yes":
             return True

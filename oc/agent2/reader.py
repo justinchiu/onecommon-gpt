@@ -60,8 +60,7 @@ class ReaderMixin:
 
         parsed_text = self.reformat_text(text, usespeaker=False)
         # confirmation / deny / none
-        confirmation = self.confirm(dict(text=parsed_text))
-
+        confirmation = self.confirm(dict(text=f"Them: {parsed_text}"))
 
         # process our previous plan + their confirmation
         # update belief
