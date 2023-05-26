@@ -1,7 +1,7 @@
 import numpy as np
 import itertools
 
-from oc.agent2.utils import Plan, StartPlan, FollowupPlan, SelectPlan, Action
+from oc.agent2.utils import Plan, StartPlan, FollowupPlan, SelectPlan, Action, Qtypes
 from oc.belief.belief_utils import get_config_idx
 from oc.fns.spatial import get_minimum_radius
 
@@ -158,6 +158,8 @@ class PlannerMixin:
             confirmation = confirmation,
             confirmed = None,
             reference_turn = reference_turn,
+            qtype = Qtypes.FNEW,
+            new_dots = new.sum().item(),
         )
         return plan
 
@@ -216,6 +218,8 @@ class PlannerMixin:
             confirmation = confirmation,
             confirmed = None,
             reference_turn = reference_turn,
+            qtype = Qtypes.SELECT,
+            new_dots = 0,
         )
         return plan
 

@@ -25,38 +25,28 @@ idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = None
+state = [(1, 2)]
 
 
 # Turn 0
-# Them: Do you see a pair of dots where the bottom left dot is large-sized and grey, and the top right dot is large-sized and grey?
+# Them: No. Is there a large-size grey dot to the left of those though?
 def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    for config in getsets(idxs, 2):
+    for config in state:
         for a,b, in permutations(config):
-            for _ in [0]:
-                check_ab_pair = all_close([a,b], ctx)
-                check_a_bottom_left = a == get_bottom_left([a,b], ctx)
-                check_a_large = is_large(a, ctx)
-                check_a_grey = is_grey(a, ctx)
-                check_b_top_right = b == get_top_right([a,b], ctx)
-                check_b_large = is_large(b, ctx)
-                check_b_grey = is_grey(b, ctx)
+            for c, in get1idxs(idxs, exclude=[a,b,]):
+                check_c_large = is_large(c, ctx)
+                check_c_grey = is_grey(c, ctx)
                 
                 if (
                     True 
-                    and check_ab_pair
-                    and check_a_bottom_left
-                    and check_a_large
-                    and check_a_grey
-                    and check_b_top_right
-                    and check_b_large
-                    and check_b_grey
+                    and check_c_large
+                    and check_c_grey
                     
                 ):
-                    dots = frozenset([a,b,])
+                    dots = frozenset([a,b,c,])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)

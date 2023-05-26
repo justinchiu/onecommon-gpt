@@ -34,6 +34,7 @@ class Plan:
     confirmed: bool
     info_gain: float | None
     qtype: Qtypes
+    new_dots: int
 
 @dataclass
 class StartPlan(Plan):
@@ -62,8 +63,7 @@ class State:
     write_extra: Any = None
     read_extra: Any = None
     # for dial act classification
-    qtype: Qtypes
-    new_dots: int
+
 
 @dataclass
 class Past:
