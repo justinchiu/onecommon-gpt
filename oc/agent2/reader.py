@@ -335,19 +335,27 @@ class ReaderMixin:
                 qtype = qtype,
             )
             if qtype == Qtypes.START:
-                plan_dict["new_dots"] = preds[0].sum().item()
+                plan_dict["new_dots"] = preds[0].sum().item() if confirmed else 0
                 plan = StartPlan(**plan_dict)
             elif qtype == Qtypes.FOLD:
                 last_state = self.states[refturn+1]
-                plan_dict["newdots"] = preds[0] & last_state.plan.dots 
-                plan_dict["olddots"] = preds[0] & ~last_state.plan.dots 
+                if confirmed:
+                    plan_dict["newdots"] = preds[0] & last_state.plan.dots 
+                    plan_dict["olddots"] = preds[0] & ~last_state.plan.dots
+                else:
+                    plan_dict["newdots"] = 0
+                    plan_dict["olddots"] = 0
                 plan_dict["new_dots"] = 0
                 plan_dict["reference_turn"] = refturn
                 plan = FollowupPlan(**plan_dict)
             elif qtype == Qtypes.FNEW:
                 last_state = self.states[refturn+1]
-                plan_dict["newdots"] = preds[0] & last_state.plan.dots 
-                plan_dict["olddots"] = preds[0] & ~last_state.plan.dots 
+                if confirmed:
+                    plan_dict["newdots"] = preds[0] & last_state.plan.dots 
+                    plan_dict["olddots"] = preds[0] & ~last_state.plan.dots
+                else:
+                    plan_dict["newdots"] = 0
+                    plan_dict["olddots"] = 0
                 plan_dict["new_dots"] = plan_dict["newdots"].sum().item()
                 plan_dict["reference_turn"] = refturn
                 plan = FollowupPlan(**plan_dict)
