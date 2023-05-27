@@ -338,17 +338,17 @@ class ReaderMixin:
                 plan_dict["new_dots"] = preds[0].sum().item()
                 plan = StartPlan(**plan_dict)
             elif qtype == Qtypes.FOLD:
-                import pdb; pdb.set_trace()
-                plan_dict["newdots"] = 0
-                plan_dict["olddots"] = 1
+                last_state = self.states[refturn+1]
+                plan_dict["newdots"] = preds[0] & last_state.plan.dots 
+                plan_dict["olddots"] = preds[0] & ~last_state.plan.dots 
                 plan_dict["new_dots"] = 0
                 plan_dict["reference_turn"] = refturn
                 plan = FollowupPlan(**plan_dict)
             elif qtype == Qtypes.FNEW:
-                import pdb; pdb.set_trace()
-                plan_dict["newdots"] = 1 
-                plan_dict["olddots"] = 1
-                plan_dict["new_dots"] = 1 
+                last_state = self.states[refturn+1]
+                plan_dict["newdots"] = preds[0] & last_state.plan.dots 
+                plan_dict["olddots"] = preds[0] & ~last_state.plan.dots 
+                plan_dict["new_dots"] = plan_dict["newdots"].sum().item()
                 plan_dict["reference_turn"] = refturn
                 plan = FollowupPlan(**plan_dict)
             elif qtype == Qtypes.SELECT:
