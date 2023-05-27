@@ -18,18 +18,18 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.125, 0.815, -1.0, -0.8933333333333333], [-0.21, -0.585, 0.3333333333333333, -0.9733333333333334], [0.645, -0.185, -1.0, -0.96], [0.305, -0.645, -1.0, -0.9733333333333334], [-0.705, -0.015, 0.0, 0.84], [0.345, 0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, -0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[0.645, 0.33, 0.3333333333333333, -0.88], [0.5, -0.505, 0.6666666666666666, -0.9733333333333334], [-0.275, 0.505, 0.3333333333333333, -0.6133333333333333], [-0.24, 0.105, -0.6666666666666666, 0.10666666666666667], [-0.63, 0.585, -1.0, -0.3466666666666667], [-0.59, 0.04, 0.0, -0.013333333333333334], [-0.245, -0.855, -0.6666666666666666, -0.37333333333333335]])
     return ctx
 
 idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = [(1, 3, 6)]
+state = [(2, 4, 5)]
 
 
 # Turn 0
-# Them: Let's select the large size and light color one. <selection>.
+# Them: Let's select the small size and dark color one. <selection>
 def turn(state):
     results = set()
     orderedresults = []
@@ -37,16 +37,16 @@ def turn(state):
     for config in state:
         for a,b,c, in permutations(config):
             for _ in [0]:
-                check_a_large = is_large(a, ctx)
-                check_a_light = is_light(a, ctx)
+                check_b_small = is_small(b, ctx)
+                check_b_dark = is_dark(b, ctx)
                 
                 if (
                     True 
-                    and check_a_large
-                    and check_a_light
+                    and check_b_small
+                    and check_b_dark
                     
                 ):
-                    dots = frozenset([a])
+                    dots = frozenset([b])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)

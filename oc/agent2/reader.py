@@ -324,7 +324,7 @@ class ReaderMixin:
                 config_idx = get_config_idx(preds[0], self.belief.configs)
 
             plan_dict = dict(
-                dots = preds[0],
+                dots = preds[0] if len(preds) > 0 else preds,
                 config_idx = config_idx,
                 feats = feats,
                 plan_idxs = plan_idxs,
