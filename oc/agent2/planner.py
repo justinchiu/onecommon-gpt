@@ -218,6 +218,7 @@ class PlannerMixin:
             confirmation = confirmation,
             confirmed = None,
             reference_turn = reference_turn,
+            info_gain = None,
             qtype = Qtypes.SELECT,
             new_dots = 0,
         )
