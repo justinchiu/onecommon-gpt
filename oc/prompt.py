@@ -173,7 +173,7 @@ class ExecuteShort(TemplatePrompt[list[int]]):
         return ast.literal_eval(output)
 
 class Classify(TemplatePrompt[str]):
-    template_file = str(PROMPT_DIR / "classify.j2")
+    #template_file = str(PROMPT_DIR / "classify.j2")
     template_file = str(PROMPT_DIR / "classify2.j2")
     stop_templates = ["End"]
 

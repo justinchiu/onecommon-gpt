@@ -29,39 +29,8 @@ state = None
 
 
 # Turn 0
-# Them: Do you see a pair of dots, where the top left dot is small-sized and light and the bottom right dot is small-sized and light?
-def turn(state):
-    results = set()
-    orderedresults = []
-    parents = []
-    for config in getsets(idxs, 2):
-        for a,b, in permutations(config):
-            for _ in [0]:
-                check_ab_pair = all_close([a,b], ctx)
-                check_a_top_left = a == get_top_left([a,b], ctx)
-                check_a_small = is_small(a, ctx)
-                check_a_light = is_light(a, ctx)
-                check_b_bottom_right = b == get_bottom_right([a,b], ctx)
-                check_b_small = is_small(b, ctx)
-                check_b_light = is_light(b, ctx)
-                
-                if (
-                    True 
-                    and check_ab_pair
-                    and check_a_top_left
-                    and check_a_small
-                    and check_a_light
-                    and check_b_bottom_right
-                    and check_b_small
-                    and check_b_light
-                    
-                ):
-                    dots = frozenset([a,b,])
-                    if dots not in results:
-                        results.add(dots)
-                        orderedresults.append(dots)
-                        parents.append(config)
-    return sort_state(orderedresults, parents, ctx, select=False)
+# Them: Yes.
+def turn(state): return None
 state = turn(state)
 
 

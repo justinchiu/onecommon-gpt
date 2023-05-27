@@ -160,8 +160,9 @@ class ReaderMixin:
         last_turn = None
         if qtype == Qtypes.FNEW or qtype == Qtypes.FOLD or qtype == Qtypes.SELECT:
             previous_dots, last_turn = self.get_last_confirmed_all_dots(self.states)
-            num_prev_dots = previous_dots[0].sum().item()
-            prev_dots = ",".join(letters[:num_prev_dots])
+            if previous_dots is not None:
+                num_prev_dots = previous_dots[0].sum().item()
+                prev_dots = ",".join(letters[:num_prev_dots])
         dots = ",".join(letters[num_prev_dots:num_prev_dots+num_new_dots]) + ","
         if prev_dots is not None:
             prev_dots += ","
@@ -353,10 +354,11 @@ class ReaderMixin:
                 if confirmed:
                     plan_dict["newdots"] = preds[0] & last_state.plan.dots 
                     plan_dict["olddots"] = preds[0] & ~last_state.plan.dots
+                    plan_dict["new_dots"] = plan_dict["newdots"].sum().item()
                 else:
                     plan_dict["newdots"] = 0
                     plan_dict["olddots"] = 0
-                plan_dict["new_dots"] = plan_dict["newdots"].sum().item()
+                    plan_dict["new_dots"] = 0
                 plan_dict["reference_turn"] = refturn
                 plan = FollowupPlan(**plan_dict)
             elif qtype == Qtypes.SELECT:
