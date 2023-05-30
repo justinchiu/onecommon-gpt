@@ -196,14 +196,15 @@ class PlannerMixin:
         # maybe need saliency prior instead of highest prob?
         #import pdb; pdb.set_trace()
 
-        #dot_order = np.argsort(marginals)[::-1]
-        #anchor_dot = dot_order[0]
+        dot_order = np.argsort(marginals)[::-1]
+        anchor_dot = dot_order[0]
 
+        """
         size_color = self.belief.size_color[dots]
         nomatch = ((size_color != size_color[:,None]).all(-1) + np.eye(dots.sum())).all(-1)
         nomatch_ordering = np.argsort(marginals[dots] * nomatch)[::-1]
-
         anchor_dot = dots.nonzero()[0][nomatch_ordering[0]]
+        """
 
         # talk about at most 2 other dots
         #num_sure_dots = min(num_sure_dots, 2)
