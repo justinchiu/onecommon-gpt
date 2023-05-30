@@ -210,7 +210,7 @@ class PlannerMixin:
         #aux_dots = dot_order[1:num_sure_dots+1]
 
         # just one other dot
-        aux_dots = dot_order[1]
+        #aux_dots = dot_order[1]
 
         newdots = np.zeros(7, dtype=bool)
         newdots[anchor_dot] = True
