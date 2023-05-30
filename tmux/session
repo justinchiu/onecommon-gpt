@@ -40,8 +40,3 @@ send-keys "ocenv" Enter
 
 new-window -c "../onecommon-gpt-writing" -n "writing"
 split-window -h -c "../onecommon-gpt-writing" -p 50
-
-new-window -c "../onecommon-ui" -n "ui"
-send-keys "ocenv" Enter
-split-window -h -c "../onecommon-ui" -p 50
-send-keys "ocenv" Enter
