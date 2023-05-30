@@ -200,7 +200,7 @@ class PlannerMixin:
         #anchor_dot = dot_order[0]
 
         size_color = self.belief.size_color[dots]
-        nomatch = ((size_color != size_color[:,None]).all(-1) + np.eye(3)).all(-1)
+        nomatch = ((size_color != size_color[:,None]).all(-1) + np.eye(dots.sum())).all(-1)
         nomatch_ordering = np.argsort(marginals[dots] * nomatch)[::-1]
 
         anchor_dot = dots.nonzero()[0][nomatch_ordering[0]]
