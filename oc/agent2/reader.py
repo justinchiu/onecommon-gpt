@@ -133,7 +133,7 @@ class ReaderMixin:
             blocks=classify_blocks,
             past = [
                 f"{state.text}\n"
-                f"Type: {state.plan.qtype.value if state.plan is not None else 'Qtypes.NOOP.value'}\n"
+                f"Type: {state.plan.qtype.value if state.plan is not None else Qtypes.NOOP.value}\n"
                 f"New dots: {state.plan.new_dots if state.plan is not None else 0}"
                 for state in self.states if state.turn >= 0
             ],

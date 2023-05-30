@@ -189,6 +189,7 @@ class PlannerMixin:
 
         dot_order = np.argsort(marginals)[::-1]
         anchor_dot = dot_order[0]
+        import pdb; pdb.set_trace()
 
         # talk about at most 2 other dots
         #num_sure_dots = min(num_sure_dots, 2)

@@ -79,7 +79,25 @@ class TestAgent:
 
             print(agent.write())
 
+    def test_select_shortcodegen2(self):
+        ctx = np.array([[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]])
+
+        with minichain.start_chain("test-tmp.txt") as backend:
+            agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+            agent.feed_context(ctx.flatten().tolist())
+
+            utt = agent.write()
+            utterance = "Yes".split()
+            agent.read(utterance)
+            utt = agent.write()
+            utterance = "Yes".split()
+            agent.read(utterance)
+            utt = agent.write()
+            utterance = "Yes".split()
+            agent.read(utterance)
+
 
 if __name__ == "__main__":
     #TestAgent().test_read_shortcodegen2()
-    TestAgent().test_consistent_shortcodegen2()
+    #TestAgent().test_consistent_shortcodegen2()
+    TestAgent().test_select_shortcodegen2()
