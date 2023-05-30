@@ -55,7 +55,16 @@ class PlannerMixin:
             # end forced 
         elif select_plan is not None:
             plan = select_plan
-        elif followup_plan is not None and followup_plan.confirmation == True:
+        elif followup_plan is not None and (
+            # you confirm what they said last
+            followup_plan.confirmation == True
+            # or you follow up on your last plan after they only say "yes"
+            or (
+                len(self.states) > 2
+                and self.states[-1].plan == None
+                and self.states[-2].plan.confirmed
+            )
+        ):
             plan = followup_plan
         elif followup_plan is not None and followup_plan.info_gain > start_plan.info_gain:
             plan = followup_plan
@@ -187,9 +196,14 @@ class PlannerMixin:
         # maybe need saliency prior instead of highest prob?
         #import pdb; pdb.set_trace()
 
-        dot_order = np.argsort(marginals)[::-1]
-        anchor_dot = dot_order[0]
-        import pdb; pdb.set_trace()
+        #dot_order = np.argsort(marginals)[::-1]
+        #anchor_dot = dot_order[0]
+
+        size_color = self.belief.size_color[dots]
+        nomatch = ((size_color != size_color[:,None]).all(-1) + np.eye(3)).all(-1)
+        nomatch_ordering = np.argsort(marginals[dots] * nomatch)[::-1]
+
+        anchor_dot = dots.nonzero()[0][nomatch_ordering[0]]
 
         # talk about at most 2 other dots
         #num_sure_dots = min(num_sure_dots, 2)
