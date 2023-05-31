@@ -106,8 +106,8 @@ def new_vs_old_desc(newdot, olddots, ctx, num_buckets=3):
     elif middle:
         position_desc = "in the middle of"
     else:
-        import pdb; pdb.set_trace()
-        raise ValueError
+        position_desc = "near any of"
+        #raise ValueError
 
     size_color = process_ctx(
         ctx,
