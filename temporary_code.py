@@ -18,19 +18,42 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.635, 0.685, -0.6666666666666666, 0.3466666666666667], [0.035, 0.225, -0.6666666666666666, 0.7733333333333333], [0.02, -0.085, 0.3333333333333333, 0.12], [0.81, 0.565, -0.6666666666666666, 0.6133333333333333], [0.685, -0.39, -1.0, 0.64], [0.48, -0.41, -0.6666666666666666, 0.02666666666666667], [0.015, -0.68, 0.3333333333333333, 0.25333333333333335]])
+    ctx = np.array([[-0.565, 0.775, 0.6666666666666666, -0.13333333333333333], [0.075, -0.715, 1.0, 0.16], [0.165, -0.58, 0.6666666666666666, -0.09333333333333334], [0.84, 0.525, 0.6666666666666666, -0.24], [0.655, -0.735, -0.6666666666666666, 0.44], [-0.31, -0.535, 0.6666666666666666, -0.48], [-0.03, -0.09, -0.6666666666666666, 0.9333333333333333]])
     return ctx
 
 idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = None
+state = [(1, 2)]
 
 
 # Turn 0
-# Them: Yes.
-def turn(state): return None
+# Them: No. Is there a small-size grey dot to the left of those though?
+def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in state:
+        for a,b, in permutations(config):
+            for c, in get1idxs(idxs, exclude=[a,b,]):
+                check_c_small = is_small(c, ctx)
+                check_c_grey = is_grey(c, ctx)
+                check_c_left_ab = is_left(c, [a,b], ctx)
+                
+                if (
+                    True 
+                    and check_c_small
+                    and check_c_grey
+                    and check_c_left_ab
+                    
+                ):
+                    dots = frozenset([a,b,c,])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=False)
 state = turn(state)
 
 
