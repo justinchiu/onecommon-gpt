@@ -12,15 +12,29 @@ from scipy.special import logsumexp as lse
 from itertools import combinations, chain
 from scipy.special import comb
 
-from oc.belief.belief_utils import comb_index, entropy, marginal_entropy
+from oc.belief.belief_utils import comb_index, entropy, marginal_entropy, get_config_idx
 
 from oc.belief.belief import process_ctx, CostBelief, PriorType
 
 
-np.seterr(all="raise")
+#np.seterr(all="raise")
 
-def get_size(history, responses, n):
-    if n == 0: return 2
+def get_last(belief, belief_dist, history, responses, n):
+    confirmed_dots = [
+        (
+            dots,
+            #get_config_idx(dots, belief.configs)
+            belief.p_response(belief_dist, dots)[1]
+        )
+        for dots, r in zip(history, responses) if r == 1
+    ]
+    if len(confirmed_dots) == 0: return None
+    print(confirmed_dots)
+    #if len(confirmed_dots) == 2: import pdb; pdb.set_trace()
+    for dots, prob in reversed(confirmed_dots):
+        return dots
+        if prob > 0.5: return dots
+    return None
 
 
 def rollout(ctx, ids, belief, responses, strategy):
@@ -34,6 +48,7 @@ def rollout(ctx, ids, belief, responses, strategy):
     prior = belief.prior
     configs = belief.configs
     for n in range(N):
+        print("n", n)
         repeat_mask = np.ones(128)
         if belief.history:
             history = np.stack(belief.history)
@@ -41,14 +56,28 @@ def rollout(ctx, ids, belief, responses, strategy):
         if strategy == "ig":
             EdHs = belief.compute_EdHs(prior)
             idx = (EdHs * repeat_mask).argmax()
+        elif strategy == "igc":
+            EdHs = belief.compute_EdHs(prior)
+            last = get_last(belief, prior, belief.history, responses, n)
+            plan_mask = belief.configs.sum(-1) == 2
+            if last is not None:
+                last_mask = ((belief.configs & last) == last).all(-1)
+                size_mask = belief.configs.sum(-1) == last.sum() + 1
+                plan_mask = last_mask * size_mask
+            idx = (EdHs * repeat_mask * plan_mask).argmax()
         elif strategy == "ml":
-            size_mask = belief.configs.sum() == get_size(belief.history, responses, n)
+            last = get_last(belief, prior, belief.history, responses, n)
+            plan_mask = belief.configs.sum(-1) == 2
+            if last is not None:
+                last_mask = ((belief.configs & last) == last).all(-1)
+                size_mask = belief.configs.sum(-1) == last.sum() + 1
+                plan_mask = last_mask * size_mask
             confirms = np.array([
+                # confirmation prob
                 belief.p_response(prior, config)[1]
                 for config in belief.configs
             ])
-            idx = (confirms * repeat_mask).argmax()
-            import pdb; pdb.set_trace()
+            idx = (confirms * repeat_mask * plan_mask).argmax()
 
         utt = belief.configs[idx]
         #print("utt", belief.configs[EdHs.argmax()])
@@ -75,7 +104,6 @@ def rollout(ctx, ids, belief, responses, strategy):
         print(responses[n])
         new_prior = belief.posterior(prior, utt, responses[n])
         print("posterior", belief.marginals(new_prior))
-        #import pdb; pdb.set_trace()
 
         belief.history.append(utt)
         prior = new_prior
@@ -104,20 +132,23 @@ def main():
 
     beliefs = [
         #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.UNIFORM),
-        #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.ISING),
-        CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
+        CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
+        #CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
     ]
     responses = [
         [1,0,1,0,0,0,0],
+        #[0,1,0,1,1],
     ]
     strategies = [
         "ig",
+        "igc",
         "ml",
     ]
     for belief in beliefs:
         belief.ids = ids
         for response in responses:
             for strategy in strategies:
+                print(strategy)
                 rollout(ctx, ids, belief, response, strategy)
 
 

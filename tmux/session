@@ -28,15 +28,17 @@ send-keys "cd oc/promptdata" Enter
 split-window -h -p 50
 send-keys "cd oc/promptdata" Enter
 
-new-window -c "../onecommon/webapp/src" -n "server"
+new-window  -n "server"
+send-keys "cd ../onecommon/webapp/src" Enter
 send-keys "ocenv" Enter
-split-window -h -c "../onecommon/webapp/src" -p 50
-send-keys "ocenv" Enter
-
-new-window -c "../onecommon/aaai2020/experiments" -n "selfplay"
-send-keys "ocenv" Enter
-split-window -h -c "../onecommon/aaai2020/experiments" -p 50
+split-window -h -p 50
+send-keys "cd ../onecommon/webapp/src" Enter
 send-keys "ocenv" Enter
 
-new-window -c "../onecommon-gpt-writing" -n "writing"
-split-window -h -c "../onecommon-gpt-writing" -p 50
+new-window -n "selfplay"
+send-keys "cd ../onecommon/aaai2020/experiments" Enter
+send-keys "ocenv" Enter
+split-window -h -p 50
+send-keys "cd ../onecommon/aaai2020/experiments" Enter
+send-keys "ocenv" Enter
+

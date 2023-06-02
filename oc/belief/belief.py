@@ -9,6 +9,7 @@ from scipy.special import logsumexp as lse
 
 from itertools import combinations, chain
 from scipy.special import comb
+from scipy.special import logsumexp as lse
 
 from scipy.spatial import ConvexHull, Delaunay
 
@@ -695,7 +696,7 @@ class OrBelief(OrAndBelief):
         p(r=1|u,s) = initialization
         p(r=0|u,s) = 1-p(r=1|u,s)
     Noisy-OR
-        p(r=0|u,s,z) = 1-p(r=0|u,s)p(r=0|u,z)
+        p(r=1|u,s,z) = 1-p(r=0|u,s)p(r=0|u,z)
     Dot distractors
         p(r=0|u,z) = 1 - |z|C|u| 9^-|u|
 
@@ -883,6 +884,16 @@ class OrBelief(OrAndBelief):
             p_r1.append((1- (1-likelihood)*distractor_prob) * ps)
         return np.array((p_r0, p_r1))
 
+    """
+    def p_response(self, prior, utt):
+        joint = self.joint(prior, utt) 
+        std = joint.sum(1)
+        log = np.exp(lse(np.log(joint), 1))
+        if (np.abs(std - log) > 0.001).any():
+            import pdb; pdb.set_trace()
+        return log
+    """
+
 
 class CostBelief(OrBelief):
     """
@@ -899,7 +910,7 @@ class CostBelief(OrBelief):
         p(r=1|u,s) = initialization
         p(r=0|u,s) = 1-p(r=1|u,s)
     Noisy-OR
-        p(r=0|u,s,z) = 1-p(r=0|u,s)p(r=0|u,z)
+        p(r=1|u,s,z) = 1-p(r=0|u,s)p(r=0|u,z)
     Dot distractors
         p(r=0|u,z) = 1 - |z|C|u| 9^-|u|
 
