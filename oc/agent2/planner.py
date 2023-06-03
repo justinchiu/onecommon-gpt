@@ -266,9 +266,15 @@ class PlannerMixin:
             return states[-1].plan.confirmed
 
     def get_last_confirmed_dots(self, states):
+        belief_dist = states[-1].belief_dist
         confirmed = [
             (state.plan.dots, state.turn) for state in reversed(states)
-            if state.plan is not None and state.plan.confirmed == True
+            if (
+                state.plan is not None
+                and state.plan.confirmed == True
+                #and self.belief.p_response(belief_dist, state.plan.dots)[1] > 0.5
+                and self.belief.p_response(belief_dist, state.plan.dots)[1] > 0.6
+            )
         ]
         return confirmed[0] if confirmed else (None, None)
 

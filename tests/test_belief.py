@@ -14,12 +14,14 @@ from scipy.special import comb
 
 from oc.belief.belief_utils import comb_index, entropy, marginal_entropy, get_config_idx
 
-from oc.belief.belief import process_ctx, CostBelief, PriorType
+from oc.belief.belief import process_ctx, PriorType
+from oc.belief.belief import CostBelief, AndBelief, OrBelief
 
 
-#np.seterr(all="raise")
+np.seterr(all="raise", under="raise")
 
 def get_last(belief, belief_dist, history, responses, n):
+    marginals = belief.marginals(belief_dist)
     confirmed_dots = [
         (
             dots,
@@ -32,8 +34,9 @@ def get_last(belief, belief_dist, history, responses, n):
     print(confirmed_dots)
     #if len(confirmed_dots) == 2: import pdb; pdb.set_trace()
     for dots, prob in reversed(confirmed_dots):
-        return dots
         if prob > 0.5: return dots
+        if (marginals[dots.astype(bool)] > 0.5).all(): return dots
+        return dots
     return None
 
 
@@ -64,8 +67,22 @@ def rollout(ctx, ids, belief, responses, strategy):
                 last_mask = ((belief.configs & last) == last).all(-1)
                 size_mask = belief.configs.sum(-1) == last.sum() + 1
                 plan_mask = last_mask * size_mask
-            idx = (EdHs * repeat_mask * plan_mask).argmax()
+            idx1 = (EdHs * repeat_mask * plan_mask).argmax()
+
+            plan_mask2 = belief.configs.sum(-1) == 2
+            idx2 = (EdHs* repeat_mask * plan_mask2).argmax()
+            print(EdHs[idx1], EdHs[idx2])
+            idx = idx1 if EdHs[idx1] > EdHs[idx2] else idx2
+
         elif strategy == "ml":
+            plan_mask = belief.configs.sum(-1) >= 2
+            confirms = np.array([
+                # confirmation prob
+                belief.p_response(prior, config)[1]
+                for config in belief.configs
+            ])
+            idx = (confirms * repeat_mask * plan_mask).argmax()
+        elif strategy == "mlc":
             last = get_last(belief, prior, belief.history, responses, n)
             plan_mask = belief.configs.sum(-1) == 2
             if last is not None:
@@ -77,7 +94,12 @@ def rollout(ctx, ids, belief, responses, strategy):
                 belief.p_response(prior, config)[1]
                 for config in belief.configs
             ])
-            idx = (confirms * repeat_mask * plan_mask).argmax()
+            idx1 = (confirms * repeat_mask * plan_mask).argmax()
+
+            plan_mask2 = belief.configs.sum(-1) == 2
+            idx2 = (confirms * repeat_mask * plan_mask2).argmax()
+            print(confirms[idx1], confirms[idx2])
+            idx = idx1 if confirms[idx1] > confirms[idx2] else idx2
 
         utt = belief.configs[idx]
         #print("utt", belief.configs[EdHs.argmax()])
@@ -124,7 +146,8 @@ def main():
         0.15,  -0.58,  0.0,  0.24, # 40
         -0.295, 0.685, 0.0, -8/9,  # 50
         0.035, -0.79, -2/3,  0.56, # 77
-    ], dtype=float).reshape(-1, 4)
+    #], dtype=float).reshape(-1, 4)
+    ], dtype=np.float64).reshape(-1, 4)
     ids = np.array(['8', '11', '13', '15', '40', '50', '77'], dtype=int)
 
     # reflect across y axis
@@ -132,17 +155,22 @@ def main():
 
     beliefs = [
         #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.UNIFORM),
-        CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
-        #CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
+        #CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
+        #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.MST),
+        OrBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
+        #OrBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
     ]
     responses = [
-        [1,0,1,0,0,0,0],
-        #[0,1,0,1,1],
+        #[1,0,1,0,0,0,0],
+        #[0,1,0,1,0,0,0],
+        #[0,0,1,1,0,0,0],
+        [1,0,0,0,0,0,0],
     ]
     strategies = [
-        "ig",
+        #"ig",
         "igc",
-        "ml",
+        #"ml",
+        #"mlc",
     ]
     for belief in beliefs:
         belief.ids = ids

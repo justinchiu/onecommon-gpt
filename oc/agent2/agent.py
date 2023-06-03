@@ -15,7 +15,7 @@ from oc.agent2.reader import ReaderMixin
 from oc.agent2.planner import PlannerMixin
 from oc.agent2.writer import WriterMixin
 
-from oc.belief.belief import CostBelief
+from oc.belief.belief import CostBelief, OrBelief, PriorType
 
 
 class Agent(ReaderMixin, PlannerMixin, WriterMixin):
@@ -34,13 +34,15 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         if flip_y:
             self.ctx[:,1] = -self.ctx[:,1]
 
-        self.belief = CostBelief(
+        #self.belief = CostBelief(
+        self.belief = OrBelief(
             7, ctx,
             absolute = True,
             num_size_buckets = self.num_buckets,
             num_color_buckets = self.num_buckets,
             use_diameter = False,
             use_contiguity = False,
+            prior_type = PriorType.ISING,
         )
 
         # dialogue state

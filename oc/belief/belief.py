@@ -476,6 +476,8 @@ class AndBelief(Belief):
             self.prior = prior
         else:
             raise ValueError(f"Invalid prior_type {prior_type}")
+        self.prior[0] = 0
+        self.prior = self.prior / self.prior.sum()
 
 
         # initialize basic likelihood
