@@ -50,6 +50,7 @@ class FollowupPlan(Plan):
 @dataclass
 class SelectPlan(Plan):
     reference_turn: int
+    olddots: np.ndarray | None
     pass
 
 @dataclass

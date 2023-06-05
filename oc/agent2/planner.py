@@ -193,6 +193,7 @@ class PlannerMixin:
                 feats = feats,
                 plan_idxs = plan_idxs,
                 all_dots = planbool[None], # TODO: not sure this works
+                olddots = None,
                 config_idx = get_config_idx(planbool, self.belief.configs),
                 confirmation = confirmation,
                 confirmed = None,
@@ -255,6 +256,7 @@ class PlannerMixin:
             feats = feats,
             plan_idxs = plan_idxs,
             all_dots = planbool[None], # TODO: not sure this works
+            olddots = dots,
             config_idx = get_config_idx(planbool, self.belief.configs),
             confirmation = confirmation,
             confirmed = None,
@@ -264,14 +266,6 @@ class PlannerMixin:
             new_dots = 0,
         )
         return plan
-
-    def plan_giveup(self, states, force=False):
-        belief_dist = states[-1].belief_dist
-        if (self.belief.marginals(belief_dist) < 0.5).all():
-            import pdb; pdb.set_trace()
-        else:
-            return None
-        pass
 
     def choose(self):
         confirmed_or_select = [

@@ -364,6 +364,7 @@ class ReaderMixin:
             elif qtype == Qtypes.SELECT:
                 plan_dict["new_dots"] = 0
                 plan_dict["reference_turn"] = refturn
+                plan_dict["olddots"] = None
                 plan = SelectPlan(**plan_dict)
             else:
                 raise ValueError

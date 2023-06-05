@@ -172,7 +172,7 @@ for example_idx, example in enumerate(data):
         fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()
 
         preds = reader.states[-1].plan.dots
-        gpt_rt_success = (plan1.dots == preds).all()
+        gpt_rt_success = (preds.sum() == plan1.dots.sum()) and (plan1.dots == preds).all()
 
         plans.append([plan1.dots])
         fried_preds.append(fried_pred)
@@ -180,6 +180,9 @@ for example_idx, example in enumerate(data):
 
         fried_successes += fried_rt_success
         gpt_successes += gpt_rt_success
+
+        if not gpt_rt_success:
+            continue
 
         agent.read(["Them:", "Yes"])
 
@@ -201,7 +204,7 @@ for example_idx, example in enumerate(data):
         fried_rt_success = (plan2.dots == fried_pred.any(0).cpu().numpy()).all()
 
         preds = reader.states[-1].plan.dots
-        gpt_rt_success = (plan2.dots == preds).all()
+        gpt_rt_success = (plan2.dots.sum() == preds.sum()) and (plan2.dots == preds).all()
 
         plans2.append([plan2.dots])
         fried_preds2.append(fried_pred)
@@ -225,7 +228,7 @@ for example_idx, example in enumerate(data):
         sel_plan = agent.states[-1].plan.dots
         sel_preds = reader.states[-1].plan.dots
         if sel_preds is not None and len(sel_preds) > 0:
-            gpt_sel_rt_success = (sel_preds == sel_plan).all()
+            gpt_sel_rt_success = (sel_preds.sum() == sel_plan.sum()) and (sel_preds == sel_plan).all()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()

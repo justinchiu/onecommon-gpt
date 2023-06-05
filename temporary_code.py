@@ -18,19 +18,40 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.125, 0.815, -1.0, -0.8933333333333333], [-0.21, -0.585, 0.3333333333333333, -0.9733333333333334], [0.645, -0.185, -1.0, -0.96], [0.305, -0.645, -1.0, -0.9733333333333334], [-0.705, -0.015, 0.0, 0.84], [0.345, 0.545, 0.6666666666666666, -0.9066666666666666], [-0.315, -0.165, 0.6666666666666666, 0.8]])
+    ctx = np.array([[-0.735, -0.46, -1.0, -0.8533333333333334], [0.535, 0.275, -1.0, 0.8533333333333334], [-0.005, 0.455, 1.0, 0.7333333333333333], [0.72, 0.095, -0.3333333333333333, 0.7066666666666667], [0.205, 0.775, 0.0, -0.25333333333333335], [0.72, -0.5, 0.0, -0.18666666666666668], [-0.32, -0.825, -0.3333333333333333, -0.49333333333333335]])
     return ctx
 
 idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = None
+state = [(2, 3, 5)]
 
 
 # Turn 0
-# Them: Yes.
-def turn(state): return None
+# Them: Let's select the medium size and grey color one. <selection>
+def turn(state):
+    results = set()
+    orderedresults = []
+    parents = []
+    for config in state:
+        for a,b,c, in permutations(config):
+            for _ in [0]:
+                check_b_medium_size = is_medium_size(b, ctx)
+                check_b_grey = is_grey(b, ctx)
+                
+                if (
+                    True 
+                    and check_b_medium_size
+                    and check_b_grey
+                    
+                ):
+                    dots = frozenset([b])
+                    if dots not in results:
+                        results.add(dots)
+                        orderedresults.append(dots)
+                        parents.append(config)
+    return sort_state(orderedresults, parents, ctx, select=True)
 state = turn(state)
 
 
