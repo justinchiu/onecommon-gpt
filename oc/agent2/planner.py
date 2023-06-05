@@ -179,7 +179,10 @@ class PlannerMixin:
         confirmation = self.should_confirm(states)
 
         marginals = self.belief.marginals(belief_dist)
-        if (marginals < self.belief_threshold).all() or len(states) >= self.max_turns:
+        if (
+            (marginals < self.belief_threshold).all()
+            and len(states) > self.min_turns
+        ) or len(states) >= self.max_turns:
             # give up and return most likely one
             planbool = np.zeros(7, dtype=bool)
             planbool[marginals.argmax()] = 1
