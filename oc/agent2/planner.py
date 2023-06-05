@@ -250,7 +250,8 @@ class PlannerMixin:
         ]
         return (
             confirmed_or_select[0].nonzero()[0].item()
-            if confirmed_or_select else 0
+            if confirmed_or_select
+            else self.belief.marginals(self.states[-1].belief_dist).argmax()
         )
 
     def should_select(self, states):
