@@ -34,15 +34,16 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         if flip_y:
             self.ctx[:,1] = -self.ctx[:,1]
 
-        #self.belief = CostBelief(
-        self.belief = OrBelief(
+        self.belief = CostBelief(
+        #self.belief = OrBelief(
             7, ctx,
             absolute = True,
             num_size_buckets = self.num_buckets,
             num_color_buckets = self.num_buckets,
             use_diameter = False,
             use_contiguity = False,
-            prior_type = PriorType.ISING,
+            #prior_type = PriorType.ISING,
+            prior_type = PriorType.MST,
         )
 
         # dialogue state

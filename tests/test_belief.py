@@ -157,14 +157,15 @@ def main():
         #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.UNIFORM),
         #CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
         #CostBelief(num_dots, ctx, num_size_buckets=5, num_color_buckets=5, prior_type=PriorType.MST),
-        OrBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
+        #OrBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.ISING),
         #OrBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
+        CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
     ]
     responses = [
-        #[1,0,1,0,0,0,0],
+        [1,0,1,0,0,0,0],
         #[0,1,0,1,0,0,0],
         #[0,0,1,1,0,0,0],
-        [1,0,0,0,0,0,0],
+        #[0,0,0,0,0,0,0],
     ]
     strategies = [
         #"ig",

@@ -273,7 +273,7 @@ class PlannerMixin:
                 state.plan is not None
                 and state.plan.confirmed == True
                 #and self.belief.p_response(belief_dist, state.plan.dots)[1] > 0.5
-                and self.belief.p_response(belief_dist, state.plan.dots)[1] > 0.6
+                #and self.belief.p_response(belief_dist, state.plan.dots)[1] > 0.6
             )
         ]
         return confirmed[0] if confirmed else (None, None)
