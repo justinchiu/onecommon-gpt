@@ -176,6 +176,7 @@ class PlannerMixin:
         if len(states) <= 1: return None
 
         belief_dist = states[-1].belief_dist
+        confirmation = self.should_confirm(states)
 
         marginals = self.belief.marginals(belief_dist)
         if (marginals < self.belief_threshold).all() or len(states) >= self.max_turns:
@@ -242,8 +243,6 @@ class PlannerMixin:
         #olddots[aux_dots] = True
 
         planbool = newdots + olddots
-
-        confirmation = self.should_confirm(states)
 
         feats = self.belief.get_feats(planbool)
         plan_idxs = self.belief.resolve_utt(*feats)
