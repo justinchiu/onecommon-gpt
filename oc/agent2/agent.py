@@ -23,6 +23,8 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         # number of buckets for size and color
         self.num_buckets = 3
         self.belief_threshold = 0.8
+        self.max_turns = 15
+        self.giveup_threshold = 0.5 # dot marginal
         self.backend = backend
         self.model = model
 
