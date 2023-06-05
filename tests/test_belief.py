@@ -34,9 +34,9 @@ def get_last(belief, belief_dist, history, responses, n):
     print(confirmed_dots)
     #if len(confirmed_dots) == 2: import pdb; pdb.set_trace()
     for dots, prob in reversed(confirmed_dots):
+        return dots
         if prob > 0.5: return dots
         if (marginals[dots.astype(bool)] > 0.5).all(): return dots
-        return dots
     return None
 
 
@@ -163,7 +163,7 @@ def main():
     ]
     responses = [
         #[1,0,1,0,0,0,0],
-        [1,0,0,1,0,0,0],
+        [1,0,0,1,1,0,0],
         #[0,1,0,1,0,0,0],
         #[0,0,1,1,0,0,0],
         #[0,0,0,0,0,0,0],
