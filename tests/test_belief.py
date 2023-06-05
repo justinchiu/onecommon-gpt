@@ -121,7 +121,7 @@ def rollout(ctx, ids, belief, responses, strategy):
         for i, id in enumerate(ids):
             ax[n].annotate(id, (xy[i,0]+.025, xy[i,1]+.025))
 
-        print("utt", utt)
+        print("utt", utt, belief.p_response(prior, utt)[1])
         print("prior", belief.marginals(prior))
         print(responses[n])
         new_prior = belief.posterior(prior, utt, responses[n])
@@ -162,7 +162,8 @@ def main():
         CostBelief(num_dots, ctx, num_size_buckets=3, num_color_buckets=3, prior_type=PriorType.MST),
     ]
     responses = [
-        [1,0,1,0,0,0,0],
+        #[1,0,1,0,0,0,0],
+        [1,0,0,1,0,0,0],
         #[0,1,0,1,0,0,0],
         #[0,0,1,1,0,0,0],
         #[0,0,0,0,0,0,0],
