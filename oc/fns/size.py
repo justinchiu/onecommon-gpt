@@ -37,7 +37,21 @@ def are_smaller(x, y, ctx):
 
 # simplify
 def is_larger(x, y, ctx):
-    return ctx[x,-2] > ctx[y,-2]
+    if y is None:
+        return is_large(x, ctx)
+    elif isinstance(y, int) or isinstance(y, np.int64):
+        return ctx[x,-2] > ctx[y,-2]
+    elif isinstance(y, list):
+        return are_larger([x], y, ctx)
+    else:
+        ValueError
 
 def is_smaller(x, y, ctx):
-    return ctx[x,-2] < ctx[y,-2]
+    if y is None:
+        return is_small(x, ctx)
+    elif isinstance(y, int) or isinstance(y, np.int64):
+        return ctx[x,-2] < ctx[y,-2]
+    elif isinstance(y, list):
+        return are_smaller([x], y, ctx)
+    else:
+        ValueError

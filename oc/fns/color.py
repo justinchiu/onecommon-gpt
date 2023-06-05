@@ -44,9 +44,20 @@ def are_lighter(x, y, ctx):
 
 # simplify
 def is_darker(x, y, ctx):
-    return ctx[x,-1] < ctx[y,-1]
-
+    if y is None:
+        return is_dark(x, ctx)
+    elif isinstance(y, int) or isinstance(y, np.int64):
+        return ctx[x,-1] < ctx[y,-1]
+    elif isinstance(y, list):
+        return are_darker([x], y, ctx)
+    else:
+        ValueError
 def is_lighter(x, y, ctx):
-    return ctx[x,-1] > ctx[y,-1]
-
-
+    if y is None:
+        return is_light(x, ctx)
+    elif isinstance(y, int) or isinstance(y, np.int64):
+        return ctx[x,-1] > ctx[y,-1]
+    elif isinstance(y, list):
+        return are_lighter([x], y, ctx)
+    else:
+        ValueError
