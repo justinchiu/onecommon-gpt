@@ -106,3 +106,22 @@ class WriterMixin:
         elif plan.confirmation == False:
             selectutt = f"No. {selectutt}"
         return selectutt, None, None
+
+
+    def generate_giveup(self, plan, past, view, info=None):
+        #newdot = plan.newdots.nonzero()[0].item()
+        #olddots = plan.olddots.nonzero()[0].tolist()
+        #descs, position_desc, olddescs = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
+
+        size_color = self.belief.size_color
+        dot = size_color[plan.dots.nonzero()[0]]
+        descs = size_color_descriptions(dot, size_map=size_map3, color_map=color_map3)
+        #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
+        selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"
+        if plan.confirmation == True:
+            selectutt = f"Yes. {selectutt}"
+        elif plan.confirmation == False:
+            selectutt = f"No. {selectutt}"
+        return selectutt, None, None
+
+

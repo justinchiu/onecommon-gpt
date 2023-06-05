@@ -240,6 +240,13 @@ class PlannerMixin:
         )
         return plan
 
+    def plan_giveup(self, states, force=False):
+        belief_dist = states[-1].belief_dist
+        if (self.belief.marginals(belief_dist) < 0.5).all():
+            import pdb; pdb.set_trace()
+        else:
+            return None
+        pass
 
     def choose(self):
         confirmed_or_select = [
