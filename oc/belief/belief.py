@@ -1007,7 +1007,7 @@ class CostBelief(OrBelief):
             score = score_rec([dot], remaining_dots, 0)
             scores.append(score)
 
-        return min(scores) == 0
+        return min(scores) == 0 if x.sum() == 2 else min(scores) <= 1
 
 
 class EgoCostBelief(CostBelief):
