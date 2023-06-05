@@ -180,7 +180,7 @@ class PlannerMixin:
         marginals = self.belief.marginals(belief_dist)
         if (marginals < self.belief_threshold).all() or len(states) >= self.max_turns:
             # give up and return most likely one
-            planbool = np.zeros(7, dtype=np.bool)
+            planbool = np.zeros(7, dtype=bool)
             planbool[marginals.argmax()] = 1
             feats = self.belief.get_feats(planbool)
             plan_idxs = self.belief.resolve_utt(*feats)
