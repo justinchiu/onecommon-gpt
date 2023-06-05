@@ -177,6 +177,29 @@ class PlannerMixin:
 
         belief_dist = states[-1].belief_dist
 
+        marginals = self.belief.marginals(belief_dist)
+        if (marginals < 0.5).all():
+            # give up and return most likely one
+            planbool = np.zeros(7, dtype=np.bool)
+            planbool[marginals.argmax()] = 1
+            feats = self.belief.get_feats(planbool)
+            plan_idxs = self.belief.resolve_utt(*feats)
+            plan = SelectPlan(
+                dots = planbool,
+                feats = feats,
+                plan_idxs = plan_idxs,
+                all_dots = planbool[None], # TODO: not sure this works
+                config_idx = get_config_idx(planbool, self.belief.configs),
+                confirmation = confirmation,
+                confirmed = None,
+                reference_turn = None,
+                info_gain = None,
+                qtype = Qtypes.SELECT,
+                new_dots = 0,
+            )
+            return plan
+
+
         dots, reference_turn = self.get_last_confirmed_dots(states)
         if dots is None: return None
 
