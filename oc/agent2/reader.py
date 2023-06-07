@@ -194,7 +194,7 @@ class ReaderMixin:
                 text = text,
                 state = None,
             )
-        elif qtype == Qtypes.NOOP:
+        elif qtype == Qtypes.NOOP or qtype == Qtypes.NONE:
             # construct codeblocks
             codeblock_dict = dict(
                 noop = False,
@@ -315,7 +315,7 @@ class ReaderMixin:
         config_idx = None
         confirmed = None
         plan = None
-        if preds is not None:
+        if preds is not None and qtype != Qtypes.NONE:
             # None => they didnt mention anything
             confirmed = preds.sum() > 0
             # sum == 0 => we dont see their plan

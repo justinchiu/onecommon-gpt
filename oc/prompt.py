@@ -194,7 +194,7 @@ class Classify(TemplatePrompt[str]):
         elif qtype == Qtypes.SELECT.value:
             qtype = Qtypes.SELECT
         else:
-            raise ValueError
+            qtype = Qtypes.NONE
         return qtype, num_dots, output
 
 class ClassifyZeroshot(TemplatePrompt[str]):

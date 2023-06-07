@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, auto
 import numpy as np
 from typing import Any
 
@@ -10,6 +10,7 @@ class Qtypes(Enum):
     FNEW = "Follow up question, new dots."
     SELECT = "Select a dot."
     NOOP = "No op."
+    NONE = auto()
 
 class Speaker(Enum):
     YOU = 1
@@ -29,8 +30,9 @@ class Plan:
     plan_idxs: np.ndarray | None
     # all possible
     all_dots: np.ndarray | None
-    # did the turn have a confirmation
+    # should we give a confirmation
     confirmation: bool | None
+    # did the turn have a confirmation
     confirmed: bool
     info_gain: float | None
     qtype: Qtypes
