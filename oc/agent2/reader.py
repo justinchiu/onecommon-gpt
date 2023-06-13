@@ -266,7 +266,9 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = savedots,
-                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
+                state = [tuple(dots.nonzero()[0]) for dots in previous_dots]
+                    if previous_dots is not None
+                    else [[x] for x in range(7)],
             )
         else:
             raise ValueError
