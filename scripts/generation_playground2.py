@@ -11,7 +11,8 @@ from nltk import word_tokenize
 from oc.ocdata import get_data
 from oc.agent.agent import Agent
 from oc.agent2.agent import Agent as Agent2
-from oc.agent.utils import Action
+from oc.agent2.utils import Action
+from oc.agent2.planner import StartPlan, FollowupPlan, SelectPlan
 
 from oc.belief.belief import CostBelief
 from oc.gen.features import size_map3, color_map3, size_map5, color_map5
@@ -24,7 +25,7 @@ from oc.eval.eval import Recall
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -141,8 +142,12 @@ for example_idx, example in enumerate(data):
         
         #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
         #agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
-        agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
-        reader = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+        
+        #agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+        #reader = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
+
+        agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4-0613")
+        reader = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4-0613")
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
         reader.feed_context(view.flatten().tolist(), belief_constructor)
@@ -189,6 +194,8 @@ for example_idx, example in enumerate(data):
         utt2 = agent.write(force_action=Action.FOLLOWUP)
         reader.read(utt2)
         plan2 = agent.states[-1].plan
+        if not isinstance(plan2, FollowupPlan):
+            import pdb; pdb.set_trace()
 
         words = word_tokenize(" ".join(utt2).lower().strip()) + ['<eos>']
         partner.read(
@@ -232,6 +239,7 @@ for example_idx, example in enumerate(data):
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
                 import pdb; pdb.set_trace()
+                pass
         print(f"1 succeses {gpt_successes} / {example_idx+1}")
         print(f"2 succeses {gpt_successes2} / {example_idx+1}")
         print(f"3 succeses {gpt_successes3} / {example_idx+1}")

@@ -4,15 +4,15 @@ import numpy as np
 # -1 is darkest
 def is_dark(x, ctx):
     #return dot[-1] < -0.4
-    #return ctx[x,-1] < -0.3
-    return ctx[x,-1] < -0.2
+    return ctx[x,-1] < -0.3
+    #return ctx[x,-1] < -0.2
 
 # 1 is lightest
 def is_light(x, ctx):
     # colors are in [-1,1]
     #return dot[-1] > 0.4
-    #return ctx[x,-1] > 0.3
-    return ctx[x,-1] > 0.2
+    return ctx[x,-1] > 0.3
+    #return ctx[x,-1] > 0.2
 
 def is_grey(x, ctx):
     #return True
