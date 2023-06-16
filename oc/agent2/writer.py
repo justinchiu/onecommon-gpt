@@ -106,14 +106,16 @@ class WriterMixin:
             descs, position_desc, olddescs = new_vs_old_desc(newdot, olddots, self.ctx, self.num_buckets)
             print("GENERATE SELECT")
             print(descs, olddescs)
-            if descs not in olddescs:
+            if descs[0] not in olddescs:
                 print("no select ambiguity")
                 # no ambiguity
                 selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"
             else:
                 print("yes select ambiguity")
                 # ambiguity
-                selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those. <selection>"
+                #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} those. <selection>"
+                num_other = len(olddescs)
+                selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the other {num_other}. <selection>"
         else:
             #selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one {position_desc} the {olddescs[0][0]} {olddescs[0][1]} one. <selection>"
             selectutt = f"Let's select the {descs[0][0]} size and {descs[0][1]} color one. <selection>"

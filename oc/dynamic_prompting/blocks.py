@@ -12,6 +12,7 @@ dir = Path(PROMPT_DATA_DIR)
 #blockfile = dir / "blocks-temp.txt"
 #blockfile = dir / "blocks.txt"
 blockfile = dir / "blocks2.txt"
+#blockfile = dir / "blocks3.txt"
 with blockfile.open("r") as f:
     BLOCKS = json.load(f)
 
