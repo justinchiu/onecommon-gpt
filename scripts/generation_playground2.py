@@ -224,7 +224,7 @@ for example_idx, example in enumerate(data):
             print(plan2.dots)
             print(preds)
             #print(metric.compute(references=[[planbool2]], predictions=preds))
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
 
         agent.read(["Them:", "Yes"])
 
@@ -238,7 +238,7 @@ for example_idx, example in enumerate(data):
             gpt_sel_rt_success = (sel_preds.sum() == sel_plan.sum()) and (sel_preds == sel_plan).all()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
                 pass
         print(f"1 succeses {gpt_successes} / {example_idx+1}")
         print(f"2 succeses {gpt_successes2} / {example_idx+1}")
