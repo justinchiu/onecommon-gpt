@@ -183,7 +183,11 @@ class ReaderMixin:
 
         import time
         start_time = time.perf_counter()
-        constraints, savedots = self.understand(understand_kwargs)
+        try:
+            constraints, savedots = self.understand(understand_kwargs)
+        except:
+            # :(
+            constraints = None
         print(f"Understand: {time.perf_counter() - start_time} seconds")
 
         codeblock_dict = None
