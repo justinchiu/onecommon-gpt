@@ -25,12 +25,12 @@ class ReaderMixin:
         self.refres = refres
 
         self.reformat = Reformat(backend.OpenAIChat(
-            model = "gpt-3.5-turbo",
+            model = "gpt-3.5-turbo-0613",
             max_tokens = 128,
         ))
 
         self.confirm = Confirm(backend.OpenAIChat(
-            model = "gpt-4",
+            model = "gpt-4-0613",
             max_tokens = 5,
         ))
 
@@ -236,7 +236,8 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = prev_dots,
-                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
+                state = ([tuple(dots.nonzero()[0]) for dots in previous_dots]
+                    if previous_dots is not None else "None"),
             )
         elif qtype == Qtypes.FNEW:
             # construct codeblocks
@@ -251,7 +252,8 @@ class ReaderMixin:
                 speaker = speaker,
                 text = text,
                 savedots = all_dots,
-                state = [tuple(dots.nonzero()[0]) for dots in previous_dots],
+                state = ([tuple(dots.nonzero()[0]) for dots in previous_dots]
+                    if previous_dots is not None else "None"),
             )
         elif qtype == Qtypes.SELECT:
             # construct codeblocks
