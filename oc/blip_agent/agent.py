@@ -15,13 +15,6 @@ DATA_DIR = Path(files(oc.data)._paths[0])
 
 class BlipAgent():
     def __init__(self, backend):
-        with (DATA_DIR / "scenarios.json").open("r") as f:
-            self.scenarios = json.load(f)
-            self.boards = {
-                scenario['uuid']: scenario
-                for scenario in self.scenarios
-            }
-
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo-0613",
             max_tokens = 128,
@@ -35,24 +28,25 @@ class BlipAgent():
         )
         self.model.to(device)
 
-    def feed_context(self, ctx, flip_y, belief_constructor=None, scenario_id=None):
-        dots = [Dot(x) for x in board["kbs"][0]]
-        html = single_board_html(dots)
-        import pdb; pdb.set_trace()
-        self.ctx = Image()
+    def feed_context(self, ctx, flip_y, belief_constructor=None, scenario_id=None, agent_id=None):
+        assert scenario_id is not None
+        assert agent_id is not None
 
-    def read(self, input_words):
+        path = DATA_DIR / scenario_id / f"{agent_id}.jpg"
+        self.image = Image.open(str(path))
+
+    def read(self, input_words, resolve_references=False):
         raw_text = " ".join(input_words)
         text = self.reformat(dict(source=raw_text)).strip()
         self.turns.append(text)
 
-        image = self.ctx
-
-        prompt = "Question: how many cats are there? Answer:"
-        inputs = processor(images=image, text=prompt, return_tensors="pt").to(device, torch.float16)
-        generated_ids = model.generate(**inputs)
-        generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
-        import pdb; pdb.set_trace()
+        if resolve_references:
+            image = self.image
+            prompt = "Question: how many cats are there? Answer:"
+            inputs = processor(images=image, text=prompt, return_tensors="pt").to(device, torch.float16)
+            generated_ids = model.generate(**inputs)
+            generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
+            import pdb; pdb.set_trace()
 
     def write(self):
         pass
