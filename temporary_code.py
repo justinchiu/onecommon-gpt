@@ -29,7 +29,7 @@ state = [(2, 3, 5)]
 
 
 # Turn 0
-# Them: Let's select the medium size and grey color one. <selection>
+# Them: Let's select the medium size and grey color one. <selection>.
 def turn(state):
     results = set()
     orderedresults = []
@@ -37,16 +37,16 @@ def turn(state):
     for config in state:
         for a,b,c, in permutations(config):
             for _ in [0]:
-                check_b_medium = is_medium_size(b, ctx)
-                check_b_grey = is_grey(b, ctx)
+                check_a_medium = is_medium_size(a, ctx)
+                check_a_grey = is_grey(a, ctx)
                 
                 if (
                     True 
-                    and check_b_medium
-                    and check_b_grey
+                    and check_a_medium
+                    and check_a_grey
                     
                 ):
-                    dots = frozenset([b])
+                    dots = frozenset([a])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)
