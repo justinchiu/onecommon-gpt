@@ -1,12 +1,27 @@
+import json
 from PIL import Image
-import requests
+from pathlib import Path
 from transformers import Blip2Processor, Blip2ForConditionalGeneration
 import torch
+import imgkit
 
 from oc.prompt import Reformat
+from oc.dot import Dot, single_board_html
+
+from importlib.resources import files
+import oc.data
+DATA_DIR = Path(files(oc.data)._paths[0])
+
 
 class BlipAgent():
     def __init__(self, backend):
+        with (DATA_DIR / "scenarios.json").open("r") as f:
+            self.scenarios = json.load(f)
+            self.boards = {
+                scenario['uuid']: scenario
+                for scenario in self.scenarios
+            }
+
         self.reformat = Reformat(backend.OpenAIChat(
             model = "gpt-3.5-turbo-0613",
             max_tokens = 128,
@@ -20,7 +35,9 @@ class BlipAgent():
         )
         self.model.to(device)
 
-    def feed_context(self, ctx, flip_y, belief_constructor=None):
+    def feed_context(self, ctx, flip_y, belief_constructor=None, scenario_id=None):
+        dots = [Dot(x) for x in board["kbs"][0]]
+        html = single_board_html(dots)
         import pdb; pdb.set_trace()
         self.ctx = Image()
 

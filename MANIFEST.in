@@ -1,4 +1,5 @@
 include oc/prompts/*.j2
 include oc/promptdata/*
+include oc/data/scenarios.txt
 include oc/data/onecommon/train_reference_1.txt
 include oc/data/onecommon/valid_reference_1.txt

@@ -16,6 +16,7 @@ setup(
     include_package_data = True,
     package_data = {
         "oc.data": [
+            "oc/data/scenarios.json",
             "oc/data/onecommon/train_reference_1.txt",
             "oc/data/onecommon/valid_reference_1.txt",
         ],

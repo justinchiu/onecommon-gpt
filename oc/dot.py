@@ -101,6 +101,17 @@ def visualize_single_board(dots, showlabel=False):
     """
     components.html(html, height=500, width=450)
 
+def single_board_html(dots, showlabel=False):
+    dots_html = map(lambda x: x.html(showlabel = showlabel), dots)
+
+    nl = "\n"
+    return f"""
+    <svg width="450" height="450" overflow="visible">
+    <circle cx="215" cy="215" r="205" fill="none" stroke="black" stroke-width="2" stroke-dasharray="3,3"/>
+    {nl.join(dots_html)}
+    </svg>
+    """
+
 
 if __name__ == "__main__":
     from pathlib import Path
@@ -147,7 +158,6 @@ if __name__ == "__main__":
 
     st.write(f"### Dialogue {log['chat_id']}")
     st.write(f"### Scenario {log['scenario_id']}")
-
 
     board = boards[log["scenario_id"]]
 

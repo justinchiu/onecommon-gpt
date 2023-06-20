@@ -69,8 +69,6 @@ for example_idx, example in enumerate(data):
     belief_constructor = None
     past = []
 
-    import pdb; pdb.set_trace()
-
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         
@@ -86,7 +84,7 @@ for example_idx, example in enumerate(data):
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
         reader.feed_context(view.flatten().tolist(), belief_constructor)
-        blip_reader.feed_context(view.flatten().tolist(), belief_constructor)
+        blip_reader.feed_context(view.flatten().tolist(), belief_constructor, scenario_id=scenarioid)
 
         start_time = time.perf_counter()
         utt = agent.write()
