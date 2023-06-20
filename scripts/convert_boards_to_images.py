@@ -35,9 +35,10 @@ for x in tqdm(data):
     board1 = [Dot(x) for x in boards[scenario_id]["kbs"][1]]
 
     options = dict(
-        format = ""
+        width = 450,
+        height=450,
     )
 
-    imgkit.from_string(single_board_html(board0), str(imgpath0))
-    imgkit.from_string(single_board_html(board1), str(imgpath1))
+    imgkit.from_string(single_board_html(board0), str(imgpath0), options=options)
+    imgkit.from_string(single_board_html(board1), str(imgpath1), options=options)
 
