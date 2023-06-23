@@ -21,12 +21,12 @@ class ReaderMixin:
         self.refres = refres
 
         self.reformat = Reformat(backend.OpenAIChat(
-            model = "gpt-3.5-turbo",
+            model = "gpt-3.5-turbo-0613",
             max_tokens = 128,
         ))
 
         self.confirm = Confirm(backend.OpenAIChat(
-            model = "gpt-4",
+            model = "gpt-4-0613",
             max_tokens = 5,
         ))
 
@@ -220,7 +220,7 @@ class ReaderMixin:
         print(result)
 
         mentions = None
-        if results is not None:
+        if result is not None:
             num_preds = len(result)
             mentions = np.zeros((num_preds, 7), dtype=bool)
             for i in range(num_preds):

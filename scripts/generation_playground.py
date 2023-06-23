@@ -139,8 +139,8 @@ for example_idx, example in enumerate(data):
     with minichain.start_chain("tmp.txt") as backend:
         #agent = Agent(backend, "codegen", "templateonly", "gpt-3.5-turbo")
         
-        #agent = Agent(backend, "codegen", "templateonly", "gpt-4")
-        agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4")
+        agent = Agent(backend, "codegen", "templateonly", "gpt-4-0613")
+        #agent = Agent(backend, "shortcodegen", "templateonly", "gpt-4-0613")
         #agent = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4")
 
         agent.feed_context(view.flatten().tolist(), belief_constructor)
@@ -167,6 +167,8 @@ for example_idx, example in enumerate(data):
         fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()
 
         preds = agent.preds[-1]
+        if preds is None:
+            continue
         gpt_rt_success = (plan1.dots == preds).all(1).any()
 
         plans.append([plan1.dots])
@@ -208,7 +210,7 @@ for example_idx, example in enumerate(data):
             print(plan2.dots)
             print(preds)
             #print(metric.compute(references=[[planbool2]], predictions=preds))
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
 
         agent.read(["Them:", "Yes"])
 
@@ -225,7 +227,8 @@ for example_idx, example in enumerate(data):
             gpt_sel_rt_success = sel_preds[0].nonzero()[0].item() == agent.plans[-1].dots.nonzero()[0].item()
             gpt_successes3 += gpt_sel_rt_success
             if gpt_rt_success and not gpt_sel_rt_success:
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
+                pass
         print(f"1 succeses {gpt_successes} / {example_idx+1}")
         print(f"2 succeses {gpt_successes2} / {example_idx+1}")
         print(f"3 succeses {gpt_successes3} / {example_idx+1}")

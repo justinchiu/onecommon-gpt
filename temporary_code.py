@@ -18,18 +18,18 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[-0.735, -0.46, -1.0, -0.8533333333333334], [0.535, 0.275, -1.0, 0.8533333333333334], [-0.005, 0.455, 1.0, 0.7333333333333333], [0.72, 0.095, -0.3333333333333333, 0.7066666666666667], [0.205, 0.775, 0.0, -0.25333333333333335], [0.72, -0.5, 0.0, -0.18666666666666668], [-0.32, -0.825, -0.3333333333333333, -0.49333333333333335]])
+    ctx = np.array([[-0.57, -0.55, 1.0, -0.76], [-0.88, -0.47, -0.3333333333333333, -0.17333333333333334], [0.54, -0.19, -1.0, -0.5733333333333334], [-0.195, 0.735, -1.0, -0.6666666666666666], [0.22, -0.745, 0.3333333333333333, -0.52], [-0.005, -0.435, 1.0, 0.10666666666666667], [0.795, 0.355, 0.6666666666666666, 0.49333333333333335]])
     return ctx
 
 idxs = list(range(7))
 
 # New.
 ctx = get_ctx()
-state = [(2, 3, 5)]
+state = [(0, 2, 5)]
 
 
 # Turn 0
-# Them: Let's select the medium size and grey color one. <selection>.
+# Them: Let's select the large size and grey color one. <selection>.
 def turn(state):
     results = set()
     orderedresults = []
@@ -37,12 +37,12 @@ def turn(state):
     for config in state:
         for a,b,c, in permutations(config):
             for _ in [0]:
-                check_a_medium = is_medium_size(a, ctx)
+                check_a_large = is_large(a, ctx)
                 check_a_grey = is_grey(a, ctx)
                 
                 if (
                     True 
-                    and check_a_medium
+                    and check_a_large
                     and check_a_grey
                     
                 ):
