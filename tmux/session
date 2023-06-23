@@ -29,10 +29,10 @@ split-window -h -p 50
 send-keys "cd oc/promptdata" Enter
 
 new-window  -n "server"
-send-keys "cd ../onecommon/webapp/src" Enter
+send-keys "cd ../onecommon/webapp/gpt_experiments_turk" Enter
 send-keys "ocenv" Enter
 split-window -h -p 50
-send-keys "cd ../onecommon/webapp/src" Enter
+send-keys "cd ../onecommon/webapp/gpt_experiments_turk" Enter
 send-keys "ocenv" Enter
 
 new-window -n "selfplay"
