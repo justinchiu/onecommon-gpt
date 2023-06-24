@@ -79,6 +79,7 @@ class Understand(TemplatePrompt[str]):
         # debug
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
+        print("OUTPUT LENGTH")
         print(len(encoding.encode(output)))
         # /debug
         return output
@@ -179,6 +180,12 @@ class Classify(TemplatePrompt[str]):
 
     def parse(self, output, input) -> tuple[str, int, str]:
         output = output.strip()
+
+        import tiktoken
+        encoding = tiktoken.encoding_for_model("gpt-4")
+        print("CLASSIFY LEN")
+        print(len(encoding.encode(output)))
+
         qtype, num_dots = output.split("\n")
         qtype = qtype.strip()
         num_dots = num_dots.strip()
@@ -231,6 +238,7 @@ class UnderstandShort2(TemplatePrompt[str]):
         print(output)
         import tiktoken
         encoding = tiktoken.encoding_for_model("gpt-4")
+        print("UNDERSTAND LEN")
         print(len(encoding.encode(output)))
         # /debug
 
