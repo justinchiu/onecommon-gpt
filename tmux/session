@@ -8,10 +8,10 @@ send-keys "cd oc" Enter
 split-window -h -p 50
 send-keys "cd oc" Enter
 
-new-window -n "agent"
-send-keys "cd oc/agent" Enter
+new-window -n "gptagent"
+send-keys "cd oc/gptagent" Enter
 split-window -h -p 50
-send-keys "cd oc/agent" Enter
+send-keys "cd oc/gptagent" Enter
 
 new-window -n "agent2"
 send-keys "cd oc/agent2" Enter
