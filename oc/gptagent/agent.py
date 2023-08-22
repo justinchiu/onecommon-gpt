@@ -5,19 +5,11 @@ import re
 import openai
 import ast
 
-from oc.prompt import HEADER, Understand, Execute, Generate, Reformat
-from oc.prompt import Parse, ParseUnderstand
-from oc.prompt import GenerateScxy, GenerateTemplate
-from oc.prompt import UnderstandMc
-
-from oc.agent.reader import ReaderMixin
-from oc.agent.planner import PlannerMixin
-from oc.agent.writer import WriterMixin
-
-from oc.belief.belief import CostBelief
+from oc.gptagent.construct_prompt import BOARDS
+from oc.gptagent.construct_prompt import verbalize_board, construct_prompt
 
 
-class Agent(ReaderMixin, PlannerMixin, WriterMixin):
+class Agent:
     def __init__(self, backend, refres, gen, model="gpt-3.5-turbo"):
         # number of buckets for size and color
         self.num_buckets = 3
@@ -25,34 +17,33 @@ class Agent(ReaderMixin, PlannerMixin, WriterMixin):
         self.backend = backend
         self.model = model
 
-        super().__init__(backend, refres, gen, model)
-
     # necessary functions for onecommon
-    def feed_context(self, ctx, flip_y=False, belief_constructor=None):
-        self.ctx = 
-        self.ctx = np.array(ctx, dtype=float).reshape((7,4))
-        if flip_y:
-            self.ctx[:,1] = -self.ctx[:,1]
-
-        self.belief = CostBelief(
-            7, ctx,
-            absolute = True,
-            num_size_buckets = self.num_buckets,
-            num_color_buckets = self.num_buckets,
-            use_diameter = False,
-            use_contiguity = False,
-        )
+    def feed_context(
+        self,
+        ctx,
+        flip_y=False, belief_constructor=None,
+        scenario_id=None, agent_id=0,
+    ):
+        self.scenario_id = scenario_id
+        self.agent_id = agent_id
+        # CHECK IF WE NEED TO FLIP Y-AXIS
+        board = BOARDS[scenario_id]["kbs"][agent_id]
+        self.board_desc = verbalize_board(board)
 
         # dialogue state
-        self.past = []
-        self.plans = []
-        self.preds = []
-        self.confirmations = []
-        self.write_extras = []
-        self.read_extras = []
+        self.turns = []
 
-        # not turn-aligned
-        self.plans_confirmations = []
 
-        self.belief_dist = self.belief.prior
+    def read(self, input_words):
+        self.turns.append(input_words)
+        pass
+
+
+    def write(self):
+        prompt_prefix = construct_prompt(self.board_desc, self.turns, self.agent_id)
+
+        import pdb; pdb.set_trace()
+        out = "blah"
+        self.turns.append(out)
+        return out
 

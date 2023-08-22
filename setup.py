@@ -6,6 +6,7 @@ setup(
         "oc",
         "oc.agent",
         "oc.agent2",
+        "oc.gptagent",
         "oc.belief",
         "oc.eval",
         "oc.fns",
