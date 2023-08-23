@@ -172,6 +172,7 @@ for example_idx, example in enumerate(data):
 
         print(plan1)
         print(partner.partner_ref_preds)
+        import pdb; pdb.set_trace()
 
         fried_pred = partner.partner_ref_preds[-1][:,0]
         fried_rt_success = (plan1.dots == fried_pred.any(0).cpu().numpy()).all()

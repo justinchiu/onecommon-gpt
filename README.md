@@ -5,7 +5,13 @@
 pip install -e .
 ```
 
-## Evaluation
+## Selfplay
+After installation, clone the repo `justinchiu/onecommon` and run `bash onecommon/aaai2020/experiments/jc_run_gpt_selfplay.sh`.
+
+## Round-trip
+Run `python scripts/generation_playground2.py`.
+
+## Reference resolution
 Run `python oc/eval/eval.py --run_refres --model gpt-4 --num_examples 25`
 for the reference resolution evaluation.
 

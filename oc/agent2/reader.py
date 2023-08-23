@@ -17,6 +17,9 @@ from oc.agent2.utils import StartPlan, FollowupPlan, SelectPlan
 
 from oc.belief.belief_utils import get_config_idx
 
+def save_prompt_to_file(prompt, path):
+    with open(path, "w") as f:
+        f.write(prompt)
 
 letters = "abcdefghijklmnop"
 
@@ -62,6 +65,7 @@ class ReaderMixin:
         parsed_text = self.reformat_text(text, usespeaker=False)
         # confirmation / deny / none
         confirmation = self.confirm(dict(text=f"Them: {parsed_text}"))
+        save_prompt_to_file(self.confirm.print(dict(text=f"Them: {parsed_text}")), "prompt_examples/confirm.txt")
 
         # process our previous plan + their confirmation
         # update belief
@@ -106,6 +110,7 @@ class ReaderMixin:
         speaker = "You" if "You:" in text else "Them"
         utt = text.replace("You: ", "").replace("Them: ", "")
         #print(self.reformat.print(dict(source=utt.strip())))
+        save_prompt_to_file(self.reformat.print(dict(source=utt.strip())), "prompt_examples/reformat.txt")
         out = self.reformat(dict(source=utt)).strip()
         #print("Reformatted")
         #print(text)
@@ -146,6 +151,8 @@ class ReaderMixin:
         )
         """
         print(self.classify.print(classify_kwargs))
+        save_prompt_to_file(self.classify.print(classify_kwargs), "prompt_examples/classify.txt")
+
         start_time = time.perf_counter()
         qtype, num_new_dots, classify_output = self.classify(classify_kwargs)
         print(f"Classify: {time.perf_counter() - start_time} seconds")
@@ -180,6 +187,7 @@ class ReaderMixin:
         )
         understand_prompt = self.understand.print(understand_kwargs)
         print(understand_prompt)
+        save_prompt_to_file(understand_prompt, "prompt_examples/understand.txt")
 
         import time
         start_time = time.perf_counter()
@@ -293,6 +301,7 @@ class ReaderMixin:
         # debugging execution input
         input = self.execute.print(kw)
         print(input)
+        save_prompt_to_file(input, "prompt_examples/execute.txt")
 
         result = self.execute(kw)
         print(result)

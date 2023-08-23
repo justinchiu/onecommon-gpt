@@ -1,0 +1,35 @@
+Them: Got a triangle of 3 light grey dots by itself.
+Do they see what you asked about?
+Confirmation: None
+
+Them: Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
+Do they see what you asked about?
+Confirmation: None
+
+Them: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
+Do they see what you asked about?
+Confirmation: No
+
+Them: Yes. Is the top one close to the middle darker one?
+Do they see what you asked about?
+Confirmation: Yes
+
+Them: No.
+Do they see what you asked about?
+Confirmation: No
+
+Them: Do you see a pair of dark dots, where the top left is larger and the bottom is smaller.
+Do they see what you asked about?
+Confirmation: None
+
+Them: Sort of.
+Do they see what you asked about?
+Confirmation: None
+
+Them: I don't see that.
+Do they see what you asked about?
+Confirmation: No
+
+Them: Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light?
+Do they see what you asked about?
+Confirmation:

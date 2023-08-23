@@ -1,0 +1,194 @@
+Translate the text into code.
+These are the available functions.
+```
+from oc.fns.context import get_ctx
+from oc.fns.shapes import is_triangle, is_line, is_square
+from oc.fns.spatial import all_close, is_above, is_below, is_right, is_left, is_middle
+from oc.fns.spatial import get_top, get_bottom, get_right, get_left
+from oc.fns.spatial import get_top_right, get_top_left, get_bottom_right, get_bottom_left
+from oc.fns.spatial import get_middle
+from oc.fns.spatial import get_distance, get_minimum_radius
+from oc.fns.color import is_dark, is_grey, is_light, lightest, darkest, same_color, different_color, is_darker, is_lighter
+from oc.fns.size import is_large, is_small, is_medium_size, largest, smallest, same_size, different_size, is_larger, is_smaller
+from oc.fns.iterators import get1idxs, get2idxs, get3idxs, getsets
+from oc.fns.lists import add
+from oc.fns.lists import sort_state
+import numpy as np
+from functools import partial
+from itertools import permutations
+
+```
+`idxs = list(range(7))` corresponds to the available dots.
+
+Here are some examples.
+
+Text: Got a triangle of 3 light grey dots by itself.
+Type: New question.
+Dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_abc_triangle = is_triangle([a,b,c], ctx)
+check_abc_light = all([is_light(dot, ctx) for dot in [a,b,c]])
+check_abc_alone = all([not all_close([a,b,c,dot], ctx) for dot in idxs if dot not in [a,b,c]])
+```
+
+Text: Could be. One on right is largest with a tiny gray on top??
+Type: Follow up question, no new dots.
+Previous dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_a_right = a == get_right([a,b,c], ctx)
+check_a_largest = a == largest([a,b,c], ctx)
+check_b_tiny = is_small(b, ctx)
+check_b_grey = is_grey(b, ctx)
+check_b_top = b == get_top([a,b,c], ctx)
+```
+
+Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
+Type: New question.
+Dots: a,b
+Save dots: a,b
+Code:
+```
+check_ab_pair = all_close([a,b], ctx)
+check_ab_dark = is_dark(a, ctx) and is_dark(b, ctx)
+check_b_right_a = is_right(b, a, ctx)
+check_b_above_a = is_above(b, a, ctx)
+check_ab_same_size = same_size([a,b], ctx)
+```
+
+Text: No.
+Type: No op.
+Code:
+```
+pass
+```
+
+Text: What about a large medium grey dot near the center?
+Type: New question.
+Dots: a
+Save dots: a
+Code:
+```
+check_a_large = is_large(a, ctx)
+check_a_grey = is_grey(a, ctx)
+check_a_center = is_middle(a, None, ctx)
+```
+
+Text: Is there a smaller black one next to it?
+Type: Follow up question, new dots.
+Previous dots: a,
+New dots: b,
+Save dots: a,b
+Code:
+```
+check_b_smaller_a = is_smaller(b, a, ctx)
+check_b_dark = is_dark(b, ctx)
+check_b_next_to_a = all_close([a,b], ctx)
+```
+
+Text: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
+Type: New question.
+Dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_abc_line = is_line([a,b,c], ctx)
+check_a_top_left = a == get_top_left([a,b,c], ctx)
+check_a_light = is_light(a, ctx)
+check_b_middle = is_middle(b, [a,b,c], ctx)
+check_b_grey = is_grey(y, ctx)
+check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
+check_c_dark = is_dark(c, ctx)
+```
+
+Text: Yes. Is the top one close to the middle darker one?
+Type: Follow up question, no new dots.
+Previous dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_a_top = a == get_top([a,b,c], ctx)
+check_b_middle = b == get_middle([a,b,c], ctx)
+check_ab_close = all_close([a, b], ctx)
+check_b_darker_a = is_darker(b, a, ctx)
+```
+
+Text: Yes. And the smallest is on the bottom right.
+Type: Follow up question, no new dots.
+Previous dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_c_smallest = c == smallest([a,b,c], ctx)
+check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
+```
+
+Text: Yes, let's select the large one. <selection>.
+Type: Select a dot.
+Previous dots: a,b,c
+New dots: _
+Save dots: a
+Code:
+```
+check_a_large = is_large(a, ctx)
+```
+
+Text: Do you see a large black dot on the bottom left?
+Type: New question.
+Dots: a
+Save dots: a
+Code:
+```
+check_a_large = is_large(a, cta)
+check_a_dark = is_dark(a, cta)
+check_a_below_left = is_below(a, None, cta) and is_left(a, None, cta)
+```
+
+Text: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
+Type: New question.
+Dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_abc_close = all_close([a,b,c], ctx)
+check_a_large = is_large(a, ctx)
+check_c_dark = is_dark(c, ctx)
+check_b_smaller_a = is_smaller(b, a, ctx)
+check_c_smaller_a = is_smaller(c, a, ctx)
+check_b_lighter_a = is_lighter(b, a, ctx)
+check_c_lighter_a = is_lighter(c, a, ctx)
+check_bc_same_size = same_size([b,c], ctx)
+check_bc_same_color = same_color([b,c], ctx)
+```
+
+Text: Select the largest one.
+Type: Select a dot.
+Previous dots: a,b,c
+New dots: _
+Save dots: a
+Code:
+```
+check_a_largest = a == get_largest([a,b,c], ctx)
+```
+
+Text: Yes.
+Type: No op.
+Code:
+```
+pass
+```
+
+Text: Okay. <selection>.
+Type: No op.
+Code:
+```
+pass
+```
+
+Text: Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light?
+Type: New question.
+Dots: a,b,
+Save dots:
