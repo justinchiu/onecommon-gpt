@@ -60,5 +60,5 @@ New dots: 0
 End
 
 
-Turn 0: Do you see a lone small grey dot?
+Turn 0: Pair with large grey on top and black small on bottom.
 Type:

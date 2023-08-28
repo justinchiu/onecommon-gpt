@@ -29,6 +29,6 @@ Answer:
 Okay. <selection>.
 
 Text:
-D o   y o u   s e e   a   l o n e   s m a l l   g r e y   d o t ?
+p a i r   w i t h   l a r g e   g r e y   o n   t o p   a n d   b l a c k   s m a l l   o n   b o t t o m
 Reformat the text. Do not change the words or punctuation, but do remove <eos>.
 Answer:

@@ -35,22 +35,17 @@ check_b_grey = is_grey(b, ctx)
 check_b_top = b == get_top([a,b,c], ctx)
 ```
 
-Text: No.
-Type: No op.
-Code:
-```
-pass
-```
-
-Text: What about a large medium grey dot near the center?
+Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 Type: New question.
-Dots: a
-Save dots: a
+Dots: a,b
+Save dots: a,b
 Code:
 ```
-check_a_large = is_large(a, ctx)
-check_a_grey = is_grey(a, ctx)
-check_a_center = is_middle(a, None, ctx)
+check_ab_pair = all_close([a,b], ctx)
+check_ab_dark = is_dark(a, ctx) and is_dark(b, ctx)
+check_b_right_a = is_right(b, a, ctx)
+check_b_above_a = is_above(b, a, ctx)
+check_ab_same_size = same_size([a,b], ctx)
 ```
 
 Text: Is there a smaller black one next to it?
@@ -65,6 +60,18 @@ check_b_dark = is_dark(b, ctx)
 check_b_next_to_a = all_close([a,b], ctx)
 ```
 
+Text: Yes. Is the top one close to the middle darker one?
+Type: Follow up question, no new dots.
+Previous dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_a_top = a == get_top([a,b,c], ctx)
+check_b_middle = b == get_middle([a,b,c], ctx)
+check_ab_close = all_close([a, b], ctx)
+check_b_darker_a = is_darker(b, a, ctx)
+```
+
 Text: Yes. And the smallest is on the bottom right.
 Type: Follow up question, no new dots.
 Previous dots: a,b,c
@@ -75,62 +82,7 @@ check_c_smallest = c == smallest([a,b,c], ctx)
 check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
 ```
 
-Text: Yes, let's select the large one. <selection>.
-Type: Select a dot.
-Previous dots: a,b,c
-New dots: _
-Save dots: a
-Code:
-```
-check_a_large = is_large(a, ctx)
-```
-
-Text: Do you see a large black dot on the bottom left?
+Text: Pair with large grey on top and black small on bottom.
 Type: New question.
-Dots: a
-Save dots: a
-Code:
-```
-check_a_large = is_large(a, cta)
-check_a_dark = is_dark(a, cta)
-check_a_below_left = is_below(a, None, cta) and is_left(a, None, cta)
-```
-
-Text: I see a large black dot next to two smaller lighter dots. The two smaller ones are the same size and color. We have different views though.
-Type: New question.
-Dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_abc_close = all_close([a,b,c], ctx)
-check_a_large = is_large(a, ctx)
-check_c_dark = is_dark(c, ctx)
-check_b_smaller_a = is_smaller(b, a, ctx)
-check_c_smaller_a = is_smaller(c, a, ctx)
-check_b_lighter_a = is_lighter(b, a, ctx)
-check_c_lighter_a = is_lighter(c, a, ctx)
-check_bc_same_size = same_size([b,c], ctx)
-check_bc_same_color = same_color([b,c], ctx)
-```
-
-Text: Select the largest one.
-Type: Select a dot.
-Previous dots: a,b,c
-New dots: _
-Save dots: a
-Code:
-```
-check_a_largest = a == get_largest([a,b,c], ctx)
-```
-
-Text: Yes.
-Type: No op.
-Code:
-```
-pass
-```
-
-Text: Do you see a lone small grey dot?
-Type: New question.
-Dots: a,
+Dots: a,b,
 Save dots:

@@ -134,10 +134,12 @@ gpt_successes3 = 0
 
 
 subsets = [
-    np.random.choice(15, size=10, replace=False) for _ in range(5)
+    #np.random.choice(15, size=10, replace=False) for _ in range(5)
+    np.random.choice(15, size=5, replace=False) for _ in range(5)
 ]
 
 accuracies = [[] for _ in range(5)]
+counter = 0
 
 for example_idx, example in enumerate(chats):
     # debug
@@ -191,10 +193,13 @@ for example_idx, example in enumerate(chats):
 
             if plan_15 is not None and plan_10 is not None:
                 accuracies[i].append((plan_15.dots == plan_10.dots).all())
-            elif plan_15 is not None and plan_10 is not None:
+            elif plan_15 is None and plan_10 is None:
                 accuracies[i].append(True)
             else:
                 accuracies[i].append(False)
+        counter += 1
+        print("COUNTER", counter)
 
-    if len(accuracies[0]) == 25:
+    if counter >= 20:
+        print(np.array(accuracies).mean(1).mean(), np.array(accuracies).mean(1).std())
         import pdb; pdb.set_trace()

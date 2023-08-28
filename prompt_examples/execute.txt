@@ -18,7 +18,7 @@ from itertools import permutations
 
 
 def get_ctx():
-    ctx = np.array([[0.42, -0.605, -0.3333333333333333, 0.49333333333333335], [-0.55, 0.03, 1.0, 0.9866666666666667], [-0.22, 0.47, 0.3333333333333333, 0.84], [0.53, -0.19, -0.6666666666666666, -0.7066666666666667], [-0.525, -0.8, -0.3333333333333333, 0.06666666666666667], [0.61, 0.755, -0.6666666666666666, 0.08], [0.7, -0.105, 0.6666666666666666, 0.8133333333333334]])
+    ctx = np.array([[0.23, -0.95, 0.0, 0.22666666666666666], [-0.96, 0.255, -0.6666666666666666, -0.18666666666666668], [-0.47, 0.02, -0.3333333333333333, -1.0], [-0.01, -0.295, 0.0, -0.41333333333333333], [-0.51, 0.215, 0.6666666666666666, 0.28], [-0.375, 0.815, 0.6666666666666666, 0.10666666666666667], [0.535, 0.69, 0.3333333333333333, 0.48]])
     return ctx
 
 idxs = list(range(7))
@@ -29,24 +29,34 @@ state = None
 
 
 # Turn 0
-# Them: Do you see a lone small grey dot?
+# Them: Pair with large grey on top and black small on bottom.
 def turn(state):
     results = set()
     orderedresults = []
     parents = []
-    for config in getsets(idxs, 1):
-        for a, in permutations(config):
+    for config in getsets(idxs, 2):
+        for a,b, in permutations(config):
             for _ in [0]:
-                check_a_small = is_small(a, ctx)
+                check_ab_pair = all_close([a,b], ctx)
+                check_a_large = is_large(a, ctx)
                 check_a_grey = is_grey(a, ctx)
+                check_a_top = a == get_top([a,b], ctx)
+                check_b_small = is_small(b, ctx)
+                check_b_dark = is_dark(b, ctx)
+                check_b_bottom = b == get_bottom([a,b], ctx)
                 
                 if (
                     True 
-                    and check_a_small
+                    and check_ab_pair
+                    and check_a_large
                     and check_a_grey
+                    and check_a_top
+                    and check_b_small
+                    and check_b_dark
+                    and check_b_bottom
                     
                 ):
-                    dots = frozenset([a,])
+                    dots = frozenset([a,b,])
                     if dots not in results:
                         results.add(dots)
                         orderedresults.append(dots)
