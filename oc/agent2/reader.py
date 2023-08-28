@@ -51,6 +51,9 @@ class ReaderMixin:
         else:
             raise ValueError
 
+        # change this to a subset of range(len(BLOCKS)) to subsample prompt examples
+        self.example_subset = None
+
         super(ReaderMixin, self).__init__(backend, refres, gen, model)
 
     def read(self, input_words):
@@ -175,7 +178,7 @@ class ReaderMixin:
             prev_dots += ","
             all_dots = ",".join(letters[:num_prev_dots+num_new_dots]) + ","
 
-        understand_blocks = constraints_dots()
+        understand_blocks = constraints_dots(self.example_subset)
         understand_kwargs = dict(
             header = HEADER,
             blocks = understand_blocks,

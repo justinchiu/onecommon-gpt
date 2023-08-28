@@ -29,6 +29,6 @@ Answer:
 Okay. <selection>.
 
 Text:
-Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light <eos>
+D o   y o u   s e e   a   l o n e   s m a l l   g r e y   d o t ?
 Reformat the text. Do not change the words or punctuation, but do remove <eos>.
 Answer:

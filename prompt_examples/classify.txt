@@ -60,5 +60,5 @@ New dots: 0
 End
 
 
-Turn 0: Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light?
+Turn 0: Do you see a lone small grey dot?
 Type:

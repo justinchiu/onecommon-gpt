@@ -22,17 +22,6 @@ from itertools import permutations
 
 Here are some examples.
 
-Text: Got a triangle of 3 light grey dots by itself.
-Type: New question.
-Dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_abc_triangle = is_triangle([a,b,c], ctx)
-check_abc_light = all([is_light(dot, ctx) for dot in [a,b,c]])
-check_abc_alone = all([not all_close([a,b,c,dot], ctx) for dot in idxs if dot not in [a,b,c]])
-```
-
 Text: Could be. One on right is largest with a tiny gray on top??
 Type: Follow up question, no new dots.
 Previous dots: a,b,c
@@ -44,19 +33,6 @@ check_a_largest = a == largest([a,b,c], ctx)
 check_b_tiny = is_small(b, ctx)
 check_b_grey = is_grey(b, ctx)
 check_b_top = b == get_top([a,b,c], ctx)
-```
-
-Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
-Type: New question.
-Dots: a,b
-Save dots: a,b
-Code:
-```
-check_ab_pair = all_close([a,b], ctx)
-check_ab_dark = is_dark(a, ctx) and is_dark(b, ctx)
-check_b_right_a = is_right(b, a, ctx)
-check_b_above_a = is_above(b, a, ctx)
-check_ab_same_size = same_size([a,b], ctx)
 ```
 
 Text: No.
@@ -87,33 +63,6 @@ Code:
 check_b_smaller_a = is_smaller(b, a, ctx)
 check_b_dark = is_dark(b, ctx)
 check_b_next_to_a = all_close([a,b], ctx)
-```
-
-Text: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
-Type: New question.
-Dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_abc_line = is_line([a,b,c], ctx)
-check_a_top_left = a == get_top_left([a,b,c], ctx)
-check_a_light = is_light(a, ctx)
-check_b_middle = is_middle(b, [a,b,c], ctx)
-check_b_grey = is_grey(y, ctx)
-check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
-check_c_dark = is_dark(c, ctx)
-```
-
-Text: Yes. Is the top one close to the middle darker one?
-Type: Follow up question, no new dots.
-Previous dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_a_top = a == get_top([a,b,c], ctx)
-check_b_middle = b == get_middle([a,b,c], ctx)
-check_ab_close = all_close([a, b], ctx)
-check_b_darker_a = is_darker(b, a, ctx)
 ```
 
 Text: Yes. And the smallest is on the bottom right.
@@ -181,14 +130,7 @@ Code:
 pass
 ```
 
-Text: Okay. <selection>.
-Type: No op.
-Code:
-```
-pass
-```
-
-Text: Do you see a pair of dots, where the bottom dot is medium-sized and dark and the top dot is large-sized and light?
+Text: Do you see a lone small grey dot?
 Type: New question.
-Dots: a,b,
+Dots: a,
 Save dots:

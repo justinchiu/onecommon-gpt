@@ -96,7 +96,7 @@ class Confirm(TemplatePrompt[str]):
             return True
         elif word == "No":
             return False
-        elif word == "None":
+        elif word == "None" or word == "Not Applicable":
             return None
         else:
             raise ValueError(f"Confirmation prompt returned: {word}")

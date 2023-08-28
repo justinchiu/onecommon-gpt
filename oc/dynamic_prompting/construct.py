@@ -103,9 +103,10 @@ def constraints_no_var():
     return strings
 
 
-def constraints_dots():
+def constraints_dots(subset=None):
     strings = []
-    for block in BLOCKS:
+    blocks = BLOCKS if subset is None else [x for i,x in enumerate(BLOCKS) if i in subset]
+    for block in blocks:
         turn = block["turn"]
         text = block["text"]
         type = block["type"]
