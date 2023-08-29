@@ -22,19 +22,6 @@ from itertools import permutations
 
 Here are some examples.
 
-Text: Could be. One on right is largest with a tiny gray on top??
-Type: Follow up question, no new dots.
-Previous dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_a_right = a == get_right([a,b,c], ctx)
-check_a_largest = a == largest([a,b,c], ctx)
-check_b_tiny = is_small(b, ctx)
-check_b_grey = is_grey(b, ctx)
-check_b_top = b == get_top([a,b,c], ctx)
-```
-
 Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
 Type: New question.
 Dots: a,b
@@ -48,41 +35,7 @@ check_b_above_a = is_above(b, a, ctx)
 check_ab_same_size = same_size([a,b], ctx)
 ```
 
-Text: Is there a smaller black one next to it?
-Type: Follow up question, new dots.
-Previous dots: a,
-New dots: b,
-Save dots: a,b
-Code:
-```
-check_b_smaller_a = is_smaller(b, a, ctx)
-check_b_dark = is_dark(b, ctx)
-check_b_next_to_a = all_close([a,b], ctx)
-```
-
-Text: Yes. Is the top one close to the middle darker one?
-Type: Follow up question, no new dots.
-Previous dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_a_top = a == get_top([a,b,c], ctx)
-check_b_middle = b == get_middle([a,b,c], ctx)
-check_ab_close = all_close([a, b], ctx)
-check_b_darker_a = is_darker(b, a, ctx)
-```
-
-Text: Yes. And the smallest is on the bottom right.
-Type: Follow up question, no new dots.
-Previous dots: a,b,c
-Save dots: a,b,c
-Code:
-```
-check_c_smallest = c == smallest([a,b,c], ctx)
-check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
-```
-
-Text: Pair with large grey on top and black small on bottom.
+Text: I have a black medium dot and small light dot to its left.
 Type: New question.
 Dots: a,b,
 Save dots:

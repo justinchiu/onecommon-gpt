@@ -136,6 +136,8 @@ gpt_successes3 = 0
 subsets = [
     #np.random.choice(15, size=10, replace=False) for _ in range(5)
     np.random.choice(15, size=5, replace=False) for _ in range(5)
+    #np.random.choice(15, size=3, replace=False) for _ in range(5)
+    #np.random.choice(15, size=1, replace=False) for _ in range(5)
 ]
 
 accuracies = [[] for _ in range(5)]
@@ -183,6 +185,9 @@ for example_idx, example in enumerate(chats):
         agent_15.feed_context(view.flatten().tolist(), belief_constructor)
         agent_15.read(first_turn)
         plan_15 = agent_15.states[-1].plan
+
+        if plan_15 is None:
+            continue
 
         for i in range(len(subsets)):
             agent_10 = Agent2(backend, "shortcodegen2", "templateonly", "gpt-4-0613")
