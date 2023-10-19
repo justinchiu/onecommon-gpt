@@ -22,17 +22,43 @@ from itertools import permutations
 
 Here are some examples.
 
-Text: Nevermind. Do you see a pair of dark dots? One with another above and to the right of it? Same size as well.
-Type: New question.
-Dots: a,b
-Save dots: a,b
+Text: Could be. One on right is largest with a tiny gray on top??
+Type: Follow up question, no new dots.
+Previous dots: a,b,c
+Save dots: a,b,c
 Code:
 ```
-check_ab_pair = all_close([a,b], ctx)
-check_ab_dark = is_dark(a, ctx) and is_dark(b, ctx)
-check_b_right_a = is_right(b, a, ctx)
-check_b_above_a = is_above(b, a, ctx)
-check_ab_same_size = same_size([a,b], ctx)
+check_a_right = a == get_right([a,b,c], ctx)
+check_a_largest = a == largest([a,b,c], ctx)
+check_b_tiny = is_small(b, ctx)
+check_b_grey = is_grey(b, ctx)
+check_b_top = b == get_top([a,b,c], ctx)
+```
+
+Text: No. Do you see three dots in a diagonal line, where the top left dot is light, middle dot is grey, and bottom right dot is dark?
+Type: New question.
+Dots: a,b,c
+Save dots: a,b,c
+Code:
+```
+check_abc_line = is_line([a,b,c], ctx)
+check_a_top_left = a == get_top_left([a,b,c], ctx)
+check_a_light = is_light(a, ctx)
+check_b_middle = is_middle(b, [a,b,c], ctx)
+check_b_grey = is_grey(y, ctx)
+check_c_bottom_right = c == get_bottom_right([a,b,c], ctx)
+check_c_dark = is_dark(c, ctx)
+```
+
+Text: Do you see a large black dot on the bottom left?
+Type: New question.
+Dots: a
+Save dots: a
+Code:
+```
+check_a_large = is_large(a, cta)
+check_a_dark = is_dark(a, cta)
+check_a_below_left = is_below(a, None, cta) and is_left(a, None, cta)
 ```
 
 Text: I have a black medium dot and small light dot to its left.

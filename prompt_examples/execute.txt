@@ -37,19 +37,19 @@ def turn(state):
     for config in getsets(idxs, 2):
         for a,b, in permutations(config):
             for _ in [0]:
-                check_a_black = is_dark(a, ctx)
                 check_a_medium = is_medium_size(a, ctx)
-                check_b_light = is_light(b, ctx)
+                check_a_dark = is_dark(a, ctx)
                 check_b_small = is_small(b, ctx)
-                check_b_left_a = is_left(b, a, ctx)
+                check_b_light = is_light(b, ctx)
+                check_b_left = b == get_left([a,b], ctx)
                 
                 if (
                     True 
-                    and check_a_black
                     and check_a_medium
-                    and check_b_light
+                    and check_a_dark
                     and check_b_small
-                    and check_b_left_a
+                    and check_b_light
+                    and check_b_left
                     
                 ):
                     dots = frozenset([a,b,])

@@ -26,13 +26,13 @@ from oc.eval.eval import Recall
 
 
 chats = Path("/home/justinchiu/research/onecommon/webapp/gpt_experiments_turk/blah.json")
-chats = Path("/Users/justinchiu/research/onecommon/webapp/gpt_experiments_turk/blah.json")
+#chats = Path("/Users/justinchiu/research/onecommon/webapp/gpt_experiments_turk/blah.json")
 with chats.open("r") as f:
     chats = json.load(f)
 
 # fried arguments
 oc_dir = Path("/home/justinchiu/research/onecommon/aaai2020/experiments")
-oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
+#oc_dir = Path("/Users/justinchiu/research/onecommon/aaai2020/experiments")
 #model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/jc-baseline/baseline/1/1_best.th"
 model_file = oc_dir / "expts/rel3_tsel_ref_dial_model_separate/nov-15/plain-hierarchical-structured-recurrence/1/1_best.th"
 detector_file = oc_dir / "serialized_models/markable_detector_with_dict_1.th"
@@ -45,7 +45,8 @@ from agent import RnnAgent
 import utils
 from utils import ContextGenerator
 
-ctx_gen = ContextGenerator("/Users/justinchiu/research/onecommon/aaai2020/experiments/data/onecommon/shared_4.txt")
+#ctx_gen = ContextGenerator("/Users/justinchiu/research/onecommon/aaai2020/experiments/data/onecommon/shared_4.txt")
+ctx_gen = ContextGenerator("/home/justinchiu/research/onecommon/aaai2020/experiments/data/onecommon/shared_4.txt")
 boards = {
     x[0][0]: x
     for x in ctx_gen.ctxs
@@ -135,8 +136,8 @@ gpt_successes3 = 0
 
 subsets = [
     #np.random.choice(15, size=10, replace=False) for _ in range(5)
-    np.random.choice(15, size=5, replace=False) for _ in range(5)
-    #np.random.choice(15, size=3, replace=False) for _ in range(5)
+    #np.random.choice(15, size=5, replace=False) for _ in range(5)
+    np.random.choice(15, size=3, replace=False) for _ in range(5)
     #np.random.choice(15, size=1, replace=False) for _ in range(5)
 ]
 
