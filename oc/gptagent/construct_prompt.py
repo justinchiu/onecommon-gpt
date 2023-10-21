@@ -60,12 +60,14 @@ def construct_prompt(board_desc, turns, agent_id):
         f"Example {i+1}:\n{x}"
         for i, x in enumerate(examples)
     ])
+    turn_string = "\n".join(turns)
     prompt = f"""{OC_INSTRUCTIONS}
 
 {example_string}
 
 Example {len(examples)+1}:
-"""
+{board_desc}
+{turn_string}"""
     return prompt
 
     print(prompt)

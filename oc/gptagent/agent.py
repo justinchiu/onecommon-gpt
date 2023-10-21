@@ -36,14 +36,23 @@ class Agent:
 
     def read(self, input_words):
         self.turns.append(input_words)
-        pass
 
 
     def write(self):
         prompt_prefix = construct_prompt(self.board_desc, self.turns, self.agent_id)
 
         import pdb; pdb.set_trace()
-        out = "blah"
+        response = openai.ChatCompletion.create(
+            model=self.model,
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Who won the world series in 2020?"},
+                {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+                {"role": "user", "content": "Where was it played?"}
+            ]
+        )
+
+        out = "You: "
         self.turns.append(out)
         return out
 
