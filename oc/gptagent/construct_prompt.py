@@ -17,10 +17,13 @@ BOARDS = {
     for scenario in scenario_list
 }
 
-OC_INSTRUCTIONS = """You and your partner are trying to find one dot in common.
+OC_INSTRUCTIONS = """You are a helpful assistant.
+You and your partner (They) are trying to find one dot in common.
 You both see overlapping but different view of a game board.
 Your view contains 7 dots, a few of which are shared with your partner.
-Your goal is to discuss groups of dots in order to arrive at a single shared dot."""
+Your goal is to discuss groups of dots in order to arrive at a single shared dot.
+
+We give a couple example dialogues to follow below. Complete the last one."""
 
 PROMPT_EXAMPLE_IDXS = [2,3]
 
@@ -61,18 +64,17 @@ def construct_prompt(board_desc, turns, agent_id):
         for i, x in enumerate(examples)
     ])
     turn_string = "\n".join(turns)
-    prompt = f"""{OC_INSTRUCTIONS}
-
-{example_string}
+    prompt = f"""{example_string}
 
 Example {len(examples)+1}:
 {board_desc}
 {turn_string}"""
     return prompt
 
+    """
     print(prompt)
-
     enc = tiktoken.encoding_for_model("gpt-4")
     encoded_prompt = enc.encode(prompt)
     print(len(encoded_prompt))
+    """
 
