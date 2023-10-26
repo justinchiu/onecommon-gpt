@@ -1,0 +1,20 @@
+Translate the text into code.
+These are the available functions.
+```
+{{ header }}
+```
+`idxs = list(range(7))` corresponds to the available dots.
+
+Text: {{ text }}
+Type: {{ type }}{% if type == "No op." %}
+Code:
+```{% elif type == "New question." %}
+Dots: {{dots}}
+Save dots:{% elif type == "Follow up question, no new dots." %}
+Previous dots: {{prev_dots}}
+Save dots:{% elif type == "Follow up question, new dots." %}
+Previous dots: {{prev_dots}}
+New dots: {{dots}}
+Save dots:{% elif type == "Select a dot." %}
+Previous dots: {{prev_dots}}
+Save dots:{% endif %}
