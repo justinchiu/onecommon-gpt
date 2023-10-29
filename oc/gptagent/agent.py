@@ -57,6 +57,7 @@ class Agent:
         prompt_prefix = construct_prompt(self.board_desc, self.turns, self.agent_id)
 
         response = complete(self.model, OC_INSTRUCTIONS, prompt_prefix)
+        #import pdb; pdb.set_trace()
         utterance = response.choices[0].message.content
         self.turns.append(utterance)
         split_utterance = utterance.split()

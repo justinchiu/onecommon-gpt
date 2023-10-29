@@ -1,4 +1,4 @@
-from dot import Dot, visualize_board, visualize_single_board
+from oc.dot import Dot, visualize_board, visualize_single_board
 
 if __name__ == "__main__":
     from pathlib import Path
@@ -15,7 +15,7 @@ if __name__ == "__main__":
         st.session_state['past'] = []
 
     # visualize logging information
-    with open('data/scenarios.json', "r") as f:
+    with open('oc/data/scenarios.json', "r") as f:
         scenario_list = json.load(f)
     boards = {
         scenario['uuid']: scenario
@@ -54,10 +54,10 @@ if __name__ == "__main__":
     </style>
     """, unsafe_allow_html=True)
 
-    with st.sidebar:
-        st.write(f"### Scenario {scenario_id}")
-        #visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
-        visualize_single_board(board, showlabel=False)
+    #with st.sidebar:
+    st.write(f"### Scenario {scenario_id}")
+    visualize_board(b0, b1, mentions0, mentions1, intersect0, intersect1)
+    visualize_single_board(board, showlabel=False)
 
     placeholder = st.empty()
     user_input = st.text_input("You: ", key="widget", on_change=submit)

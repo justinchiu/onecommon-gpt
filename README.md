@@ -33,6 +33,9 @@ Execution template: Take the output of previous prompts and turn them into a pro
 * Template: oc-anon/oc/prompts/executeshort2.j2
 * Example: https://pastebin.com/JJvGAtyU
 
+GPT4 w/o codegen prompt
+* System prompt: https://pastebin.com/8k1tVn4w
+* Example: https://pastebin.com/tq9S2UtU
 
 ## Selfplay
 After installation, clone the repo `justinchiu/onecommon` and run `bash onecommon/aaai2020/experiments/jc_run_gpt_selfplay.sh`.
