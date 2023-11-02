@@ -65,7 +65,6 @@ def is_triangle(x, ctx):
     # only take most compact triangles
     radii = []
     dots = []
-    #for idxs in get3idxs(list(range(7))):
     for idxs in getcombs(list(range(7)), 3):
         if not is_line(idxs, ctx) and is_contiguous(idxs, ctx):
             mp = MultiPoint(ctx[idxs,:2])
