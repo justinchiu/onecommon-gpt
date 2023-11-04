@@ -229,9 +229,9 @@ for example_idx, example in enumerate(data):
             if gpt_rt_success and not gpt_sel_rt_success:
                 #import pdb; pdb.set_trace()
                 pass
-        print(f"1 succeses {gpt_successes} / {example_idx+1}")
-        print(f"2 succeses {gpt_successes2} / {example_idx+1}")
-        print(f"3 succeses {gpt_successes3} / {example_idx+1}")
+        print(f"1 successes {gpt_successes} / {example_idx+1}")
+        print(f"2 successes {gpt_successes2} / {example_idx+1}")
+        print(f"3 successes {gpt_successes3} / {example_idx+1}")
 
 
 metric = Recall("multilabel")
